@@ -1,0 +1,12 @@
+.st-button::before {
+    content: '';
+    display: inline-block;
+    width: 57px;
+    position: relative;
+    height: 48px;
+    background-image: url(/src/assets/arrow.svg);
+    background-size: cover;
+    left: -20px;
+}
+
+/* 654 */

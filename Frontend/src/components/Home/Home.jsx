@@ -11,11 +11,10 @@ function Home() {
 
     function handleResize() {
         setww(window.innerWidth);
-        console.log(ww);
     }
 
     function widthCal() {
-        if (ww > 654)
+        if (ww > 640)
         {
             return (
                 <>
@@ -36,7 +35,7 @@ function Home() {
 
 
     return (
-        <div className="Home mx-[15%] max-OurSize:mx-[0%] h-full">
+        <div className="Home mx-[15%] FullSize:w-[1280px] max-LapSize:mx-[10%] FullSize:m-auto max-TabSize:mx-[0%] h-full">
             {window.addEventListener('resize', handleResize)}
             {widthCal()}
         </div>

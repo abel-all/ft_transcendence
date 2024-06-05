@@ -1,0 +1,59 @@
+.btn-sub::before {
+    content: '';
+    display: inline-block;
+    width: 29px;
+    position: relative;
+    height: 2px;
+    top: -2px;
+    background-color: black;
+    left: -15px;
+}
+
+
+.btn-sub::after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    position: relative;
+    height: 14px;
+    top: -20px;
+    background-color: transparent;
+    left: -7px;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+    transform: rotate(45deg);
+}
+
+.usernamelabel {
+    display: none;
+}
+.emaillabel {
+    display: none;
+}
+
+.Usernameinpute:focus ~ .usernamelabel {
+    display: block ;
+}
+
+.emailinpute:focus ~ .emaillabel
+{
+    display: block ;
+}
+
+.Usernameinpute:focus-visible {
+    outline: none;
+}
+textarea {
+    outline: none;
+}
+.emailinpute:focus-visible
+{
+    outline: none;
+}
+
+.Usernameinpute:focus::placeholder {
+    color: transparent;
+}
+.emailinpute:focus::placeholder {
+    color: transparent;
+}

@@ -8,9 +8,14 @@ export default {
     extend: {
       backgroundImage: {
         'home-bg': "url('src/assets/home_background.jpg')",
+        'liner-filed': 'linear-gradient(to bottom, #002a43, #022e48 50%, #002a43)',
       },
       screens: {
-        'OurSize': '654px',
+        'FullFullSize': '1536px',
+        'FullSize': '1280px',
+        'LapSize': '1028px',
+        'TabSize': '640px',
+        'SmallSize': '427px'
       },
     },
   },

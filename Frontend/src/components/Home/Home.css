@@ -1,12 +1,26 @@
+
 .st-button::before {
     content: '';
     display: inline-block;
     width: 57px;
     position: relative;
-    height: 48px;
-    background-image: url(/src/assets/arrow.svg);
-    background-size: cover;
-    left: -20px;
+    height: 3px;
+    top: 7px;
+    background-color: black;
+    left: -32px;
 }
 
-/* 654 */
+
+.st-button::after {
+    content: '';
+    display: inline-block;
+    width: 17px;
+    position: relative;
+    height: 17px;
+    top: -18px;
+    background-color: transparent;
+    left: -11px;
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+    transform: rotate(45deg);
+}

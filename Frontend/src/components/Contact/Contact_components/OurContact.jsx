@@ -5,7 +5,7 @@ import email from "../../../assets/email.png"
 
 function OurContact() {
     return (
-        <div className="Contact-holder p-[43px] mt-[60px] flex text-center items-center flex-col mx-auto w-[481px]">
+        <div className="Contact-holder max-TabSize:w-[100%] max-SmallSize:p-[0px] p-[43px] mt-[60px] flex text-center items-center flex-col mx-auto w-[481px]">
             <div className="call-phone mt-[25px] flex w-[100%]">
                 <div className="w-[20%]"><img className="w-[32.75px] h-[32.75px]" src={cell} alt="" /></div>
                 <span className="w-[80%] font-bold text-white text-[20px] inter text-start">+212 613608904</span>

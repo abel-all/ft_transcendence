@@ -1,34 +1,5 @@
 import logo from "../../../assets/logo.png"
-import React, { useState } from 'react';
-
-
-function Fields (Data) {
-    const [Value, setValue] = useState('');
-
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
-
-    if (Data.element == "textaria") {
-        return (
-            <textarea
-            className={Data.classes}
-            value={Value}
-            onChange={handleChange}
-            placeholder={Data.placeholder}/>
-        );
-    }
-    else {
-        return (
-            <input
-            className={Data.classes}
-            type={Data.type}
-            value={Value}
-            onChange={handleChange}
-            placeholder={Data.placeholder}/>
-        );
-    }
-}
+import Fields from "./Filed_comp"
 
 
 function Fileds() {
@@ -58,8 +29,6 @@ function Fileds() {
                     placeholder = "Your Message"
                     classes = "h-[250px] w-full p-[25px] bg-transparent block border-[1px] border-solid border-[#626262] rounded-md mb-[15px]"
                 />
-
-
                 <div className="p-[7px] h-[40px] mb-[20px] text-right pl-[14px] bg-[#EEEEEE] 
                     flex-row flex text-[#000000] text-[16px] font-bold string rounded-full w-full">
                     <span className="w-2/4 text-left ">Send Message </span>

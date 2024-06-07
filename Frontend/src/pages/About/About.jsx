@@ -1,10 +1,10 @@
 import Navb from "./About_components/Navb"
 import Content from "./About_components/Content"
 import Cards from "./About_components/Cards"
-import Cup from "../../assets/Cup.png"
-import Sienz from "../../assets/sienz.png"
-import Throne from "../../assets/throne.png"
-import GameBoeard from "../../assets/gameBoeard.png"
+import Cup from "../../assets/imgs/Cup.png"
+import Sienz from "../../assets/imgs/sienz.png"
+import Throne from "../../assets/imgs/throne.png"
+import GameBoeard from "../../assets/imgs/gameBoeard.png"
 import Card from "../../assets/Cards.json"
 
 function About() {

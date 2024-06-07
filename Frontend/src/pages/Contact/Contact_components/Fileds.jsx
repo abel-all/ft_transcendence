@@ -1,4 +1,4 @@
-import logo from "../../../assets/logo.png"
+import logo from "../../../assets/imgs/logo.png"
 import Fields from "./Filed_comp"
 
 

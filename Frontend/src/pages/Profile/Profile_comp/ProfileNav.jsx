@@ -1,8 +1,8 @@
-import bell from "../../../assets/bell.png"
-import gametable from "../../../assets/gametable.png"
-import chat from "../../../assets/chat.png"
-import settings from "../../../assets/settings.png"
-import user from "../../../assets/user.png"
+import bell from "../../../assets/imgs/bell.png"
+import gametable from "../../../assets/imgs/gametable.png"
+import chat from "../../../assets/imgs/chat.png"
+import settings from "../../../assets/imgs/settings.png"
+import user from "../../../assets/imgs/user.png"
 import { Link } from 'react-router-dom'
 
 

@@ -1,4 +1,4 @@
-import userbg from "../../../assets/userbg.png"
+import userbg from "../../../assets/imgs/userbg.png"
 
 function Userbg() {
     return (

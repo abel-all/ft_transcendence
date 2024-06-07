@@ -19,7 +19,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'home-bg': "url('src/assets/home_background.jpg')",
+        'home-bg': "url('src/assets/imgs/home_background.jpg')",
         'liner-filed': 'linear-gradient(to bottom, #002a43, #022e48 50%, #002a43)',
       },
       colors: {

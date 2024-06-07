@@ -1,4 +1,4 @@
-import Button from '../../Assets/Button'
+import Button from '../../../components/Button'
 
 function HomeContent() {
 

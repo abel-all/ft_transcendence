@@ -1,4 +1,4 @@
-import deef from '../../../assets/deffe.png'
+import deef from '../../../assets/imgs/deffe.png'
 import "../About.css"
 
 

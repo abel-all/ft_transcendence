@@ -1,6 +1,6 @@
-import adress from "../../../assets/adress.png"
-import cell from "../../../assets/cell.png"
-import email from "../../../assets/email.png"
+import adress from "../../../assets/imgs/adress.png"
+import cell from "../../../assets/imgs/cell.png"
+import email from "../../../assets/imgs/email.png"
 
 
 function OurContact() {

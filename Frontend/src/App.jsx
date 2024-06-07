@@ -1,15 +1,11 @@
 import './App.css'
-import Login from './components/Login/Login.jsx'
-import Home from './components/Home/Home.jsx'
-import Contact from './components/Contact/Contact.jsx'
-import About from './components/About/About.jsx'
-import Page424 from './components/Page424/Page424.jsx'
-import Profile from './components/Profile/Profile.jsx'
+import Login from './pages/Login/Login.jsx'
+import Home from './pages/Home/Home.jsx'
+import Contact from './pages/Contact/Contact.jsx'
+import About from './pages/About/About.jsx'
+import Page424 from './pages/Page424/Page424.jsx'
+import Profile from './pages/Profile/Profile.jsx'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-
-
-
-
 
 function App() {
 

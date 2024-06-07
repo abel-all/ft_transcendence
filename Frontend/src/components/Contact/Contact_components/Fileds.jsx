@@ -4,7 +4,7 @@ import Fields from "./Filed_comp"
 
 function Fileds() {
     return (
-        <div className="Fileds max-TabSize:w-[100%] pb-[20px] min-TabSize:bg-liner-filed min-TabSize:border-[1px] min-TabSize:border-solid min-TabSize:border-[#626262] flex text-center items-center flex-col mx-auto w-[481px]	rounded-md">
+        <div className="Fileds max-TabSize:w-[100%] pb-[20px] TabSize:bg-liner-filed TabSize:border-[1px] TabSize:border-solid TabSize:border-[#626262] flex text-center items-center flex-col mx-auto w-[481px]	rounded-md">
             <img className="w-[120px] h-[120px]" src={logo} alt=""/>
             <h1 className="mt-[20px] mb-[40px] text-white text-[36px] Inter font-bold ">Contact Us</h1>
             <form className="px-[25px] w-full text-white" action="done.php" method="post">
@@ -40,12 +40,3 @@ function Fileds() {
 }
 
 export default Fileds
-
-
-// position: relative;
-// right: 156px;
-// background: #002e47;
-// color: #9da3af;
-// top: 12px;
-// padding: 5px;
-// border: 1px solid #626262;

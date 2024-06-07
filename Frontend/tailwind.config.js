@@ -21,7 +21,6 @@ module.exports = {
       backgroundImage: {
         'home-bg': "url('src/assets/home_background.jpg')",
         'liner-filed': 'linear-gradient(to bottom, #002a43, #022e48 50%, #002a43)',
-        'backColor' : "#161C20",
       },
       colors: {
         backColor: '#161C20',

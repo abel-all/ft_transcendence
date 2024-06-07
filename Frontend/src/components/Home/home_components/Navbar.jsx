@@ -1,5 +1,6 @@
 import "../Home.css"
 import logo from "../../../assets/logo.png"
+import { Link } from 'react-router-dom'
 
 function Navbar() {
 
@@ -11,13 +12,13 @@ function Navbar() {
             <div className="menu w-3/4 float-right ">
                 <ul className="home-ul flex flex-nowrap justify-end p-6">
                     <li className="text-white py-2">
-                        <a href="hello.com">About Us</a>
+                        <Link to="/about">About Us</Link>
                     </li>
                     <li className="text-white ml-6 py-2">
-                        <a href="hello.com">Contact</a>
+                        <Link to='/contact'>Contact</Link>
                     </li>
                     <li className="home-active-button text-[#002A43] rounded-full bg-[#EEEEEE] ml-6 px-7 py-2">
-                        <a href="hello.com">Sign In</a>
+                        <Link to="/signin">Sign In</Link>
                     </li>
                 </ul>
             </div>

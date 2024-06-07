@@ -1,4 +1,5 @@
 import logo from "../../../assets/logo.png"
+import { Link } from 'react-router-dom'
 
 
 function MiniNavbar() {
@@ -11,7 +12,7 @@ function MiniNavbar() {
             <div className="menu w-2/4 float-right ">
                 <ul className="home-ul flex flex-nowrap justify-end p-6">
                     <li className="text-white ml-6 py-2">
-                        <a href="hello.com">Sign In</a>
+                        <Link to="/signin">Sign In</Link>
                     </li>
                 </ul>
             </div>

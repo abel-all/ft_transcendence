@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 
 function Footer() {
 
@@ -5,10 +6,10 @@ function Footer() {
         <div className="Foter w-full text-center absolute bottom-0">
             <ul className="home-ul flex flex-nowrap justify-center p-6">
                 <li className="text-white py-2">
-                    <a href="hello.com">About Us</a>
+                    <Link to="/about">About Us</Link>
                 </li>
                 <li className="text-white ml-6 py-2">
-                    <a href="hello.com">Contact</a>
+                    <Link to="/contact">Contact</Link>
                 </li>
             </ul>
         </div>

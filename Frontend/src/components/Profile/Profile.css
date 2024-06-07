@@ -1,0 +1,25 @@
+.btn-editProfile::after {
+    content: "";
+    width: 14px;
+    height: 14px;
+    display: block;
+    position: absolute;
+    background: #ffffff00;
+    top: 16px;
+    right: 15px;
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+    transform: rotate(-1deg);
+}
+
+.btn-editProfile::before {
+    content: "";
+    width: 21px;
+    height: 2px;
+    display: block;
+    position: absolute;
+    background: white;
+    top: 24px;
+    right: 13px;
+    transform: rotate(132deg);
+}

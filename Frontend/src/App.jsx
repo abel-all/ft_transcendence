@@ -4,6 +4,7 @@ import Home from './components/Home/Home.jsx'
 import Contact from './components/Contact/Contact.jsx'
 import About from './components/About/About.jsx'
 import Page424 from './components/Page424/Page424.jsx'
+import Profile from './components/Profile/Profile.jsx'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/contact" element={<Contact/>} />
           <Route path="/about" element={<About/>} />
           <Route path="/home" element={<Home/>} />
+          <Route path="/profile" element={<Profile/>} />
           <Route path="*" element={<Page424/>} />
         </Routes>
       </BrowserRouter>

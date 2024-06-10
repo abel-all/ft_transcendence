@@ -15,12 +15,12 @@ function ProfileNav() {
                 <p className="font-medium text-[#FFFFFF] opacity-80 text-[30px] font-Outfit py-[30px]">Profile</p>
             </div>
             <div className=" ProfileSections basis-1/3">
-                <ul className="flex flex-row py-[30px]">
-                    <li className="pr-[60px]"><Link to="/profile" ><img className="w-[40px] h-[40px]" src={user} alt="" /> </Link></li>
-                    <li className="pr-[60px]"><Link to="/game" ><img className="w-[40px] h-[40px]" src={gametable} alt="" /> </Link></li>
-                    <li className="pr-[60px]"><Link to="/chat" ><img className="w-[40px] h-[40px]" src={chat} alt="" /> </Link></li>
-                    <li className="pr-[60px]"><Link to="settings" ><img className="w-[40px] h-[40px]" src={settings} alt="" /> </Link></li>
-                    <li className="pr-[60px]"><Link to="/notification" ><img className="w-[40px] h-[40px]" src={bell} alt="" /> </Link></li>
+                <ul className="flex flex-row py-[30px] gap-5">
+                    <li><Link to="/profile" ><img className="w-[40px] h-[40px]" src={user} alt="" /> </Link></li>
+                    <li><Link to="/game" ><img className="w-[40px] h-[40px]" src={gametable} alt="" /> </Link></li>
+                    <li><Link to="/chat" ><img className="w-[40px] h-[40px]" src={chat} alt="" /> </Link></li>
+                    <li><Link to="settings" ><img className="w-[40px] h-[40px]" src={settings} alt="" /> </Link></li>
+                    <li><Link to="/notification" ><img className="w-[40px] h-[40px]" src={bell} alt="" /> </Link></li>
                 </ul>
             </div>
             <div className="logout basis-1/3">

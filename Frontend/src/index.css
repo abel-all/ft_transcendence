@@ -1,3 +1,93 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --bg-color: #161C20;
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+
+.wins::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 20px;
+    background-color: #ffcb61;
+    border-radius: 100%;
+    position: absolute;
+    left: -35px;
+    top: 9px;
+}
+
+.losses::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 20px;
+    background-color: #A8293F;
+    border-radius: 100%;
+    position: absolute;
+    left: -35px;
+    top: 9px;
+}
+
+.draws::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 20px;
+    background-color: #8374D1;
+    border-radius: 100%;
+    position: absolute;
+    left: -35px;
+    top: 9px;
+}
+
+:root {
+    --total: 14;
+    --yellow-part: 10;
+    --red-part: 3;
+    --purple-part: 1;
+}
+
+.StatisticsChart {
+    background: conic-gradient(
+        #ffcb61 0% calc(10 / 14 * 100%),
+        #A8293F calc(10 / 14 * 100%) calc(13 / 14 * 100%),
+        #8374D1 calc(13 / 14 * 100%) 100%
+    );
+}
+
+.trendup-icon::after {
+    background: url(/src/assets/imgs/trend-up.svg) 0 0 no-repeat;
+    content: '';
+    padding: 0 0 0 21px;
+    position: relative;
+    top: -3px;
+}
+
+.activeuser {
+    content: "";
+    position: absolute;
+    width: 12px;
+    border-radius: 47px;
+    height: 12px;
+    background: #00FF00;
+    top: 33px;
+    left: 35px;
+}
+
+.notactiveuser {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #808080;
+    border-radius: 47px;
+    top: 33px;
+    left: 35px;
+}

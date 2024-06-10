@@ -12,7 +12,7 @@ function MiniNavbar() {
             <div className="menu w-2/4 float-right ">
                 <ul className="home-ul flex flex-nowrap justify-end p-6">
                     <li className="text-white ml-6 py-2">
-                        <Link to="/signin">Sign In</Link>
+                        <Link to="/login">Sign In</Link>
                     </li>
                 </ul>
             </div>

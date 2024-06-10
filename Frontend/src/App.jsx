@@ -1,10 +1,10 @@
 import './App.css'
-import Login from './pages/Login/Login.jsx'
 import Home from './pages/Home/Home.jsx'
 import Contact from './pages/Contact/Contact.jsx'
 import About from './pages/About/About.jsx'
 import Page424 from './pages/Page424/Page424.jsx'
 import Profile from './pages/Profile/Profile.jsx'
+import Login from './pages/Login/Login.jsx'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
           <Route path="/about" element={<About/>} />
           <Route path="/home" element={<Home/>} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/login" element={<Login/>} />
           <Route path="*" element={<Page424/>} />
         </Routes>
       </BrowserRouter>

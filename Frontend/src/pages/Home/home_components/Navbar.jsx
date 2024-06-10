@@ -18,7 +18,7 @@ function Navbar() {
                         <Link to='/contact'>Contact</Link>
                     </li>
                     <li className="home-active-button text-[#002A43] rounded-full bg-[#EEEEEE] ml-6 px-7 py-2">
-                        <Link to="/signin">Sign In</Link>
+                        <Link to="/login">Sign In</Link>
                     </li>
                 </ul>
             </div>

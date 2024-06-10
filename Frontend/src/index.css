@@ -70,6 +70,14 @@ body {
     top: -3px;
 }
 
+.trendup-icon-profile::after {
+    background: url(/src/assets/imgs/trend-up-black.svg) 0 0 no-repeat;
+    content: '';
+    padding: 0 0 8px 35px;
+    position: relative;
+    top: -3px;
+}
+
 .activeuser {
     content: "";
     position: absolute;

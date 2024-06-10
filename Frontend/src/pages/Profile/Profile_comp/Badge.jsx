@@ -11,7 +11,7 @@ function Badge() {
                 <div className='InfoHolder flex flex-col relative top-[13px]'>
                     <span className="Rank text-[16px] text-center font-semibold font-Outfit"> Bronze</span>
                     <span className="Level text-[16px] text-center font-semibold font-Outfit">95</span>
-                    <span className="Chart">H</span>
+                    <span className="trendup-icon-profile"></span>
                 </div>
             </div>
                 <div className='tranglr realative w-[100px] h-[122px] border-x-[49px] border-x-[#00000000] border-t-[27px]  flex flex-col border-[#cd7f32]'>

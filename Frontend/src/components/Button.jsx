@@ -1,13 +1,12 @@
+import circleArrow from './circleArrow.jsx'
 
 
-function Button() {
+function Button(props) {
     return (
-        <div className="getStart mt-[40px] text-black text-left p-5 text-2xl max-SmallSize:w-[260px] rounded-full bg-[#EEEEEE] w-80 m-auto">
-            Get Started
-            <button className="st-button bg-[#219EBC] rounded-full w-14 h-14 float-right mt-[-11px] mr-[-8px]">
-                <a href="alo.com">
-
-                </a>
+        <div className={props.width + " bg-white border border-black mx-auto rounded-[40px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:scale-[1.02] hover:opacity-90 duration-[400ms]"}>
+            <button className="py-[13px] px-[24px] w-full flex justify-between">
+                <div className="font-bold text-base">{props.title}</div>
+                {circleArrow()}
             </button>
         </div>
     )

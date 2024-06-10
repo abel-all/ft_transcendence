@@ -10,7 +10,7 @@ function HomeContent() {
             <span className="opacity-90 block max-OurSize:px-[0px] text-xl text-[#EEEEEE] pt-[20px] px-[15%] text-center w-full">
                 Ready to elevate your ping pong game? Compete in matches and tournaments on our platform to sharpen your skills and track your pro gress.
             </span>
-            <Button/>
+            <Button width="w-[305px]" title="Get Started" />
         </div>
     )
 }

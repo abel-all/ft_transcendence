@@ -29,8 +29,10 @@ module.exports = {
         'FullFullSize': '1536px',
         'FullSize': '1280px',
         'LapSize': '1028px',
+        'LapSizeS': '768px',
         'TabSize': '640px',
-        'SmallSize': '427px'
+        'SmallSize': '427px',
+        'LastSize': '320px'
       },
     },
   },

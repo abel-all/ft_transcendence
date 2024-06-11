@@ -2,10 +2,18 @@ import FriendPic from "../assets/imgs/FriendPic.svg"
 import playfriend from "../assets/imgs/paly_friend.svg"
 import chatfreind from "../assets/imgs/chat_friend.svg"
 import removefriend from "../assets/imgs/remove_friend.svg"
-
-
+import Moudel from "../pages/Profile/Profile_comp/Moudel"
+import {useState } from "react"
 
 function Friend(Data) {
+
+    const [isTrue, setIsTrue] = useState(false);
+
+
+    function toggle() {
+        setIsTrue(!isTrue);
+    }
+
     return (
             <div className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
                 <div className="flex items-center shrink overflow-hidden">
@@ -23,7 +31,8 @@ function Friend(Data) {
                 </div>
                 <div className="flex items-center shrink-0">
                     <button className="btn-frnds deleteFriend">
-                        <img className="px-[7px]" src={removefriend} alt="" />
+                        <img className="px-[7px]" onClick={toggle} src={removefriend} alt="" />
+                        {isTrue && <Moudel toggle = {toggle} username = {Data.username}/> }
                     </button>
                     <button className="btn-frnds chatFriend">
                         <img className="px-[7px]" src={chatfreind} alt="" />

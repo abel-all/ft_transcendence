@@ -99,3 +99,27 @@ body {
     top: 33px;
     left: 35px;
 }
+
+.friends-list::-webkit-scrollbar {
+    width: 2px;
+}
+
+.MatchHistor::-webkit-scrollbar {
+  width: 2px;
+}
+
+.friends-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.MatchHistor::-webkit-scrollbar {
+    background: #f1f1f1;
+}
+
+.friends-list::-webkit-scrollbar-thumb {
+    background: rgb(45 60 63);
+}
+
+.MatchHistor::-webkit-scrollbar{
+    background: rgb(45 60 63);
+}

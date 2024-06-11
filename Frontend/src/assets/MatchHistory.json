@@ -1,0 +1,98 @@
+[
+    {
+      "rankone": 1423,
+      "ranktwo": 1158,
+      "userone": "AceStriker",
+      "usertwo": "MysticMage",
+      "home": 87,
+      "away": 34
+    },
+    {
+      "rankone": 1098,
+      "ranktwo": 1342,
+      "userone": "BladeRunner",
+      "usertwo": "ShadowFiend",
+      "home": 65,
+      "away": 77
+    },
+    {
+        "rankone": 1200,
+        "ranktwo": 1500,
+        "userone": "SwiftArrow",
+        "usertwo": "CrimsonWarrior",
+        "home": 45,
+        "away": 55
+      },
+      {
+        "rankone": 1100,
+        "ranktwo": 1400,
+        "userone": "MightyEagle",
+        "usertwo": "SilentAssassin",
+        "home": 60,
+        "away": 40
+      },
+      {
+        "rankone": 1423,
+        "ranktwo": 1159,
+        "userone": "Maverick_07",
+        "usertwo": "Athena_21",
+        "home": 63,
+        "away": 37
+      },
+      {
+        "rankone": 1342,
+        "ranktwo": 856,
+        "userone": "SaharaKnight",
+        "usertwo": "BerberStar",
+        "home": 68,
+        "away": 32
+      },
+      {
+        "ranktwo": 1325,
+        "rankone": 1420,
+        "userone": "Alice",
+        "usertwo": "Bob",
+        "home": 73,
+        "away": 58
+    },
+    {
+        "ranktwo": 1150,
+        "rankone": 1275,
+        "userone": "Charlie",
+        "usertwo": "David",
+        "home": 42,
+        "away": 87
+    },
+    {
+        "ranktwo": 1425,
+        "rankone": 1150,
+        "userone": "Elena",
+        "usertwo": "Frank",
+        "home": 64,
+        "away": 72
+    },
+    {
+        "ranktwo": 1230,
+        "rankone": 1375,
+        "userone": "Grace",
+        "usertwo": "Henry",
+        "home": 51,
+        "away": 89
+    },
+    {
+        "ranktwo": 1425,
+        "rankone": 1150,
+        "userone": "Elena",
+        "usertwo": "Frank",
+        "home": 64,
+        "away": 72
+    },
+    {
+        "ranktwo": 1230,
+        "rankone": 1375,
+        "userone": "Grace",
+        "usertwo": "Henry",
+        "home": 51,
+        "away": 89
+    }  
+]

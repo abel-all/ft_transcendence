@@ -4,22 +4,37 @@ import googleImage from '../../assets/imgs/google.svg'
 import Button from '../../components/Button.jsx';
 import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
-// import { useState } from 'react';
+import { useState } from 'react';
 import FormInput from '../../components/FormInput.jsx'
 
 function SignUp() {
 
+    const [formValues, setFormValues] = useState({});
+
+    const handleUserClick = () => {
+        console.log("hhhhhhh");
+        console.log(formValues["Username"]);
+        console.log(formValues["Email"]);
+        console.log(formValues["Password"]);
+        console.log(formValues["Repeat Password"]);
+        // return true;
+    }
+
     return (
         <div className='container flex flex-col justify-center items-center mx-auto relative'>
-            <div className="login-container w-[460px] border border-[#626262] rounded-[7px] mt-[120px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20]">
-                <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="sorry" />
-                <div className="inputs flex items-center flex-col gap-3 pb-[48px]">
-                    <FormInput placeHolder="Username" type="text" />
-                    <FormInput placeHolder="Email" type="email" />
-                    <FormInput placeHolder="Password" type="password" />
-                    <FormInput placeHolder="Repeat Password" type="password" />
+            <div className="w-full max-w-[460px] border border-[#626262] rounded-[7px] mt-[120px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20]">
+                <div className="w-[97px] m-auto pb-[41px]" >
+                    <Link to="/"><img src={LogoImage} alt="PING! image" /></Link>
                 </div>
-                <Button width="w-[364px]" title="Sign Up" />
+                <div className="inputs flex items-center flex-col gap-3 pb-[48px]">
+                    <FormInput placeHolder="Username" type="text" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                    <FormInput placeHolder="Email" type="email" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                    <FormInput placeHolder="Password" type="password" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                    <FormInput placeHolder="Repeat Password" type="password" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                </div>
+                <div onClick={handleUserClick}>
+                    <Button width="w-[364px]" title="Sign Up" formValues={formValues}/>
+                </div>
                 <div className="flex justify-center items-center py-[16px]">
                     <div className="w-[166px] h-[1px] bg-[#626262]"></div>
                     <div className="text-[#EEEEEE] px-[8px] text-[16px] font-normal">Or</div>

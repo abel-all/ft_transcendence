@@ -11,7 +11,9 @@ function ProfileNav() {
                 <p className="font-medium text-[#FFFFFF] opacity-80 text-[30px] font-Outfit py-[30px]">Profile</p>
             </div>
             <div className=" ProfileSections basis-1/3">
-                <NavActive active = "UserIcon"/>
+                <ul className="md:flex flex-row hidden justify-around py-[30px] gap-5">
+                    <NavActive active = "UserIcon"/>
+                </ul>
             </div>
             <div className="logout basis-1/3">
                 <ul className="flex flex-row-reverse py-[30px]">

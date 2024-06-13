@@ -6,6 +6,7 @@ import Page424 from './pages/Page424/Page424.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'
+import Settings from "./pages/Settings/Settings"
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/home" element={<Home/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/signin" element={<SignIn/>} />
+          <Route path="/settings" element={<Settings/>} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="*" element={<Page424/>} />
         </Routes>

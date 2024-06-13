@@ -9,8 +9,8 @@ function MiniNavbar() {
             <div className="logo h-full w-2/4 float-left">
                 <img className="w-19 h-full ml-0" src={logo}/>
             </div>
-            <div className="menu w-2/4 float-right ">
-                <ul className="home-ul flex flex-nowrap justify-end p-6">
+            <div className="w-2/4 float-right ">
+                <ul className="flex flex-nowrap justify-end p-6">
                     <li className="text-white ml-6 py-2">
                         <Link to="/login">Sign In</Link>
                     </li>

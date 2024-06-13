@@ -1,5 +1,5 @@
 
-.st-button::before {
+/* .st-button::before {
     content: '';
     display: inline-block;
     width: 57px;
@@ -23,4 +23,4 @@
     border-top: 3px solid black;
     border-right: 3px solid black;
     transform: rotate(45deg);
-}
+} */

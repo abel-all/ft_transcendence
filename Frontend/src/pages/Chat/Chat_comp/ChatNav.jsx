@@ -4,15 +4,15 @@ import logout from "../../../assets/imgs/logout.svg"
 import { Link } from 'react-router-dom'
 
 
-function SettingsNav() {
+function ChatNav() {
     return (
-        <div className="SettingsNav flex flex-row">
+        <div className="ChatNav flex flex-row">
             <div className="ProfileTitle basis-2/3 md:basis-1/3">
-                <p className="font-medium text-[#FFFFFF] opacity-80  text-[21px] md:text-[30px] font-Outfit py-[30px]">Account Settings</p>
+                <p className="font-medium text-[#FFFFFF] opacity-80  text-[21px] md:text-[30px] font-Outfit py-[30px]">Chat</p>
             </div>
             <div className=" ProfileSections basis-1/3">
             <ul className="md:flex flex-row hidden justify-around py-[30px] gap-5">
-                <NavActive active = "SettingsIcon"/>
+                <NavActive active = "ChatIcon"/>
             </ul>
             </div>
             <div className="logout basis-1/3">
@@ -25,4 +25,4 @@ function SettingsNav() {
     )
 }
 
-export default SettingsNav
+export default ChatNav

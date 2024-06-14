@@ -11,7 +11,7 @@ function NavActive(Data) {
                 <li><Link to="/profile" > <UserIcon who = {Data.active}/> </Link></li>
                 <li><Link to="/game" > <GameplayIcon who = {Data.active}/> </Link></li>
                 <li><Link to="/chat" ><ChatIcon who = {Data.active}/> </Link></li>
-                <li><Link to="settings" ><SettingsIcon who = {Data.active}/> </Link></li>
+                <li><Link to="/settings" ><SettingsIcon who = {Data.active}/> </Link></li>
                 <li><Link to="/notification" ><BellIcon  who = {Data.active}/> </Link></li>
             </>
     )

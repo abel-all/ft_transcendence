@@ -1,0 +1,22 @@
+.ProfileSettings .ProfileSettingsButton,
+.Profile  .ProfileSettingsButton  {
+    color: black;
+    background-color: #FFCA61;
+    border: 1px solid #626262;
+    font-weight: 500;
+    font-family: Outfit;
+}
+
+.SecuritySettings .SecuritySettingsButton,
+.Security .SecuritySettingsButton  {
+    color: black;
+    background-color: #FFCA61;
+    border: 1px solid #626262;
+    font-weight: 500;
+    font-family: Outfit;
+}
+
+.SecuritySettingsButton:hover,
+.ProfileSettingsButton:hover {
+    border: 1px solid #626262;
+}

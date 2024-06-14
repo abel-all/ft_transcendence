@@ -1,7 +1,7 @@
-
 import arrow from '../assets/imgs/arrow-right.svg'
 
-const circleArrow = () => {
+function circleArrow() {
+    
     return (
         <div className="arrow-container flex relative">
             <div className="w-[26px] h-[26px] bg-[#00CEFF] rounded-full border border-black"></div>

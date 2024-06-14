@@ -6,7 +6,6 @@ import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import FormInput from '../../components/FormInput.jsx'
-import './Login.css'
 
 function SignUp() {
 

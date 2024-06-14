@@ -1,25 +1,16 @@
-import adress from "../../../assets/imgs/location.svg"
+import address from "../../../assets/imgs/location.svg"
 import cell from "../../../assets/imgs/phone.svg"
 import email from "../../../assets/imgs/mail.svg"
-
+import ContactCard from './ContactCard.jsx'
 
 function OurContact() {
     return (
-        <div className="Contact-holder max-TabSize:w-[100%] max-SmallSize:p-[0px] p-[43px] mt-[60px] flex text-center items-center flex-col mx-auto w-[481px]">
-            <div className="call-phone mt-[25px] flex w-[100%]">
-                <div className="w-[20%]"><img className="w-[32.75px] h-[32.75px]" src={cell} alt="" /></div>
-                <span className="w-[80%] font-bold text-white text-[20px] inter text-start">+212 613608904</span>
-            </div>
-            <div className="email-contact mt-[25px] flex w-[100%]">
-                <div className="w-[20%]"><img className="w-[27.75px] h-[27.75px]" src={email} alt="" /></div>
-                <span className="w-[80%] font-bold text-white text-[20px] inter text-start">contact@ft-transcendence.net</span>
-            </div>
-            <div className="address mt-[25px] flex w-[100%]">
-                <div className="w-[20%]"><img className="w-[32.75px] h-[32.75px]" src={adress} alt="" /></div>
-                <span className="w-[80%] font-bold text-white text-[20px] inter text-start">1337, Khouribga, Morocco</span>
-            </div>
+        <div className="flex flex-wrap justify-center gap-[20px] mt-[200px]">
+            <ContactCard image={email} text="contact@ft-transcendence.net" />
+            <ContactCard image={cell} text="+212 600000000" />
+            <ContactCard image={address} text="1337, Khouribga, Morocco" />
         </div>
     )
 }
 
-export default OurContact
+export default OurContact;

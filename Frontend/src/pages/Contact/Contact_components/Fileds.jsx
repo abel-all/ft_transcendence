@@ -1,40 +1,42 @@
-import logo from "../../../assets/imgs/logo.png"
-import Fields from "./Filed_comp"
-
+import LogoImage from "../../../assets/imgs/logo.png"
+import FormInput from '../../../components/FormInput.jsx'
+import { useState } from 'react';
+import { Link } from 'react-router-dom'
+import Button from '../../../components/Button.jsx';
 
 function Fileds() {
+
+    const [formValues, setFormValues] = useState({});
+
+    const handleUserClick = () => {
+        console.log("hhhhhhh");
+        console.log(formValues["Username"]);
+        console.log(formValues["Email"]);
+        console.log(formValues["Your Message"]);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("dfhsdjf")
+        console.log(formValues["Username"] + "hello");
+        console.log(formValues["Email"] + "hello");
+        console.log(formValues["Your Message"] + "hello");
+    }
+
     return (
-        <div className="Fileds max-TabSize:w-[100%] pb-[20px] TabSize:bg-liner-filed TabSize:border-[1px] TabSize:border-solid TabSize:border-[#626262] flex text-center items-center flex-col mx-auto w-[481px]	rounded-md">
-            <img className="w-[120px] h-[120px]" src={logo} alt=""/>
-            <h1 className="mt-[20px] mb-[40px] text-white text-[36px] Inter font-bold ">Contact Us</h1>
-            <form className="px-[25px] w-full text-white" action="done.php" method="post">
-                <Fields
-                    placeholder = "Username"
-                    type = "text"
-                    classes = "Usernameinpute max-TabSize:bg-liner-filed mb-[22px] w-full h-[45px] p-[25px] bg-transparent block border-[1px] border-solid border-[#626262] rounded-md "
-                />
-                <label className="usernamelabel relative m-[-16px] w-[91px] right-[-30px] bg-[#002e47] text-[#9da3af] top-[-76px] p-[5px]">
-                    Username
-                </label>
-                <Fields
-                    placeholder = "email"
-                    type = "text"
-                    classes = "emailinpute max-TabSize:bg-liner-filed  mb-[22px] w-full h-[45px] p-[25px] bg-transparent block border-[1px] border-solid border-[#626262] rounded-md"
-                />
-                <label className="emaillabel relative right-[-30px] m-[-16px] w-[91px] bg-[#002e47] text-[#9da3af] top-[-77px] p-[5px]">
-                    Email
-                </label>
-                <Fields
-                    element = "textaria"
-                    placeholder = "Your Message"
-                    classes = "h-[250px] w-full p-[25px] max-TabSize:bg-liner-filed  bg-transparent block border-[1px] border-solid border-[#626262] rounded-md mb-[15px]"
-                />
-                <div className="p-[7px] h-[40px] mb-[20px] text-right pl-[14px] bg-[#EEEEEE] 
-                    flex-row flex text-[#000000] text-[16px] font-bold string rounded-full w-full">
-                    <span className="w-2/4 text-left ">Send Message </span>
-                    <button className="btn-sub w-[30px] h-[30px] bg-[#219EBC] ml-[39%] rounded-full" type="submit" value="" />
-                </div>
+        <div className="px-[40px] mx-auto w-full max-w-[460px] border border-[#626262] rounded-[7px] mt-[120px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] flex flex-col justify-between items-center">
+            <Link to="/"><img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" /></Link>
+            <div className="text-white font-bold text-[36px] mb-[65px]" >Contact Us</div>
+            <form onSubmit={handleSubmit} className="w-full inputs flex items-center flex-col gap-3 pb-[48px]">
+                <FormInput placeHolder="Username" type="text" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                <FormInput placeHolder="Email" type="email" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                <FormInput placeHolder="Your Message" type="text" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                <input className="hidden" type="submit" />
+                {/* For this FormInput you can use map function instead of repetition */}
             </form>
+            <div className=" mb-[20px] w-full" onClick={handleUserClick}>
+                <Button bgColor=" bg-[#FFCA61]" title="Send Message" formValues={formValues}/>
+            </div>
         </div>
     )
 }

@@ -1,18 +1,22 @@
 import Button from '../../../components/Button'
+import Cards from './Cards.jsx';
+import { Link } from 'react-router-dom'
 
 function HomeContent() {
 
     return (
-        <div className="HomeContent block mt-[17%] mx-[18%] max-SmallSize:mx-[0%]">
-            <h1 className="text-[64px] max-OurSize:text-[42px] max-lg:text-[51px] text-center text-white">
-                Embrace the Ping Pong Challenge!
-            </h1>
-            <span className="opacity-90 block max-OurSize:px-[0px] text-xl text-[#EEEEEE] pt-[20px] px-[15%] text-center w-full">
-                Ready to elevate your ping pong game? Compete in matches and tournaments on our platform to sharpen your skills and track your pro gress.
-            </span>
-            <Button width="w-[205px]" title="Get Started" />
-        </div>
+        <>
+            <div className="mt-[150px] flex flex-col gap-[30px] items-center w-full">
+                <div className="text-[64px] max-md:text-[40px] max-sm:text-[31px] font-bold text-white text-center max-w-[450px]">
+                    Play <span className="text-[#FFDB22] font-extrabold">Ping Pong</span> Anytime, Anywhere
+                </div>
+                <p className="opacity-90 text-[#EEEEEE] text-center max-sm:text-[13px] max-w-[450px]">
+                    Ready to elevate your ping pong game? Compete in matches and tournaments on our platform to sharpen your skills and track your progress.
+                </p>
+                <Link to="/signup"><Button width="w-[200px]" title="Get Started" bgColor=" bg-[#F6F6B3]" /></Link>
+            </div>
+            <Cards/>
+        </>
     )
 }
-
 export default HomeContent;

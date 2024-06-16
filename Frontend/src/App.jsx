@@ -1,4 +1,3 @@
-import './App.css'
 import Home from './pages/Home/Home.jsx'
 import Contact from './pages/Contact/Contact.jsx'
 import About from './pages/About/About.jsx'
@@ -7,7 +6,7 @@ import Profile from './pages/Profile/Profile.jsx'
 import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'
 import Settings from "./pages/Settings/Settings"
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
 
@@ -15,15 +14,15 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home/>} />
-          <Route path="/contact" element={<Contact/>} />
-          <Route path="/about" element={<About/>} />
-          <Route path="/home" element={<Home/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/signin" element={<SignIn/>} />
-          <Route path="/settings" element={<Settings/>} />
-          <Route path="/signup" element={<SignUp/>} />
-          <Route path="*" element={<Page424/>} />
+          <Route index element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<Page424 />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -28,14 +28,14 @@ function Fileds() {
             <Link to="/"><img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" /></Link>
             <div className="text-white font-bold text-[36px] mb-[65px]" >Contact Us</div>
             <form onSubmit={handleSubmit} className="w-full inputs flex items-center flex-col gap-3 pb-[48px]">
-                <FormInput placeHolder="Username" type="text" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
-                <FormInput placeHolder="Email" type="email" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
-                <FormInput placeHolder="Your Message" type="text" handleChange={(type, value) => {setFormValues(prevState => { return ({...prevState, ...{[type]: value}}) }); }}/>
+                <FormInput placeHolder="Username" type="text" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
+                <FormInput placeHolder="Email" type="email" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
+                <FormInput height="h-[200px]" placeHolder="Your Message" type="textarea" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
                 <input className="hidden" type="submit" />
                 {/* For this FormInput you can use map function instead of repetition */}
             </form>
             <div className=" mb-[20px] w-full" onClick={handleUserClick}>
-                <Button bgColor=" bg-[#FFCA61]" title="Send Message" formValues={formValues}/>
+                <Button bgColor=" bg-[#FFCA61]" title="Send Message" formValues={formValues} />
             </div>
         </div>
     )

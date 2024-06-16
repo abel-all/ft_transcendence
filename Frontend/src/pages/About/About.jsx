@@ -1,38 +1,17 @@
-import Navb from "./About_components/Navb"
-import Content from "./About_components/Content"
-import Cards from "./About_components/Cards"
-import Cup from "../../assets/imgs/Cup.png"
-import Sienz from "../../assets/imgs/sienz.png"
-import Throne from "../../assets/imgs/throne.png"
-import GameBoeard from "../../assets/imgs/gameBoeard.png"
-import Card from "../../assets/Cards.json"
+import Navbar from "../../components/Navbar.jsx"
+import AboutContent from './AboutContent.jsx'
+import Cards from './Cards.jsx'
 
 function About() {
 
-    let comps = [Cup, Sienz, Throne, GameBoeard];
-
     return (
-        <div className="About w-[100% - 15.74%] mx-[15.74%] h-full">
-            <Navb/>
-            <Content/>
-            <div className="About-Cards space-x-2 mx-[35px] flex flex-row">
-            {
-                Card.map( card => {
-                    return (
-                        <Cards
-                            title    = {card.title}
-                            body     = {card.body}
-                            img      = {comps[card.id]}
-                            uniqe    = {card.uniqe}
-                            color    = {card.color}
-                        />
-                    )
-                })
-            }
-            </div>
+        <div className="container mx-auto px-[10px]">
+            <Navbar />
+            <AboutContent />
+            <Cards />
         </div>
     )
 }
 
-export default About
+export default About;
 

@@ -1,4 +1,3 @@
-import './App.css'
 import Home from './pages/Home/Home.jsx'
 import Contact from './pages/Contact/Contact.jsx'
 import About from './pages/About/About.jsx'
@@ -26,7 +25,7 @@ function App() {
           <Route path="/settings" element={<Settings/>} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/chat" element={<Chat/>} />
-          <Route path="/chatComp" element={<ChatComp/>} />
+          <Route path="/chatcomp" element={<ChatComp/>} />
           <Route path="*" element={<Page424/>} />
         </Routes>
       </BrowserRouter>

@@ -9,7 +9,7 @@ function Cards() {
     return (
         <>
             <div className='text-white text-center mt-[130px] max-sm:mt-[80px] mb-[20px] font-semibold text-[20px] max-sm:text-[16px]'>Website Features :</div>
-            <div className='flex justify-center items-center gap-[15px] flex-wrap'>
+            <div className='flex justify-center items-center gap-[15px] flex-wrap mb-[200px]'>
                 <Card
                     image={playWithfriendImg}
                     title="Play with Friends"

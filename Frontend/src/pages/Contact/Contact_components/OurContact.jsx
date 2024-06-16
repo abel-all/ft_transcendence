@@ -5,7 +5,7 @@ import ContactCard from './ContactCard.jsx'
 
 function OurContact() {
     return (
-        <div className="flex flex-wrap justify-center gap-[20px] mt-[200px]">
+        <div className="flex flex-wrap justify-center gap-[20px] mt-[100px] mb-[200px]">
             <ContactCard image={email} text="contact@ft-transcendence.net" />
             <ContactCard image={cell} text="+212 600000000" />
             <ContactCard image={address} text="1337, Khouribga, Morocco" />

@@ -8,6 +8,7 @@ import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'
 import Settings from "./pages/Settings/Settings"
 import Chat from './pages/Chat/Chat.jsx'
+import ChatComp from './pages/Chat/Chat_comp/ChatComp.jsx'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/settings" element={<Settings/>} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/chat" element={<Chat/>} />
+          <Route path="/chatComp" element={<ChatComp/>} />
           <Route path="*" element={<Page424/>} />
         </Routes>
       </BrowserRouter>

@@ -11,8 +11,8 @@ function Chat() {
             <div className='w-full'>
                 <ChatNav/>
                 <div className="flex indexchatHolder flex-row">
-                    <ProprtesSide className="basis-full flex flex-col"/>
-                    <ChatSide className="basis-0/12"/>
+                    <ProprtesSide className="basis-full md:basis-4/12 flex flex-col"/>
+                    <ChatSide className="hidden md:flex md:basis-8/12"/>
                 </div>
                 <ChatNavBottom/>
             </div>

@@ -1,0 +1,11 @@
+.ChatBody::-webkit-scrollbar {
+    width: 2px;
+}
+
+.ChatBody::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.ChatBody::-webkit-scrollbar-thumb {
+    background: rgb(45 60 63);
+}

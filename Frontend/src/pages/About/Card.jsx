@@ -8,7 +8,7 @@ function Card(props) {
                 {props.title}
             </div>
             <img src={props.image} alt="ping pong website" />
-            <div className="text-center">
+            <div className="text-center min-w-[195px] px-[10px]">
                 {props.description}
             </div>
         </div>

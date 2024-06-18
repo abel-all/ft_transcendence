@@ -30,7 +30,7 @@ function SignIn() {
 
     return (
         <div className='container flex flex-col justify-center items-center mx-auto relative'>
-            <div className="px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] mt-[120px]">
+            <div className="px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] mt-[120px] max-sm:border-none max-sm:px-[0px] max-sm:bg-gradient-to-b max-sm:from-transparent max-sm:to-transparent max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="flex items-center flex-col gap-3 pb-[16px]">
                     <FormInput placeHolder="Email" type="email" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />

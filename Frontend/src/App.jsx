@@ -8,7 +8,8 @@ import SignUp from './pages/Login/SignUp.jsx'
 import Settings from "./pages/Settings/Settings"
 import Chat from './pages/Chat/Chat.jsx'
 import ChatComp from './pages/Chat/Chat_comp/ChatComp.jsx'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Game from './pages/Game/Game.jsx'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
 
@@ -16,17 +17,18 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home/>} />
-          <Route path="/contact" element={<Contact/>} />
-          <Route path="/about" element={<About/>} />
-          <Route path="/home" element={<Home/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/signin" element={<SignIn/>} />
-          <Route path="/settings" element={<Settings/>} />
-          <Route path="/signup" element={<SignUp/>} />
-          <Route path="/chat" element={<Chat/>} />
-          <Route path="/chatcomp" element={<ChatComp/>} />
-          <Route path="*" element={<Page424/>} />
+          <Route index element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chatcomp" element={<ChatComp />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="*" element={<Page424 />} />
         </Routes>
       </BrowserRouter>
     </>

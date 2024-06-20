@@ -9,7 +9,7 @@ import UserProfileBlock from './UserProfileBlock';
 
 
 
-function ChatHeader() {
+function ChatHeader(Data) {
 
     const [display, setDisplay] = useState(false);
 
@@ -19,7 +19,7 @@ function ChatHeader() {
 
     return (
         <div className="ChatHeader flex flex-row items-center border-b-[1px] py-[10px] border-[#626262] bg-[#161c20]">
-            <Link className="" to="/chat"> <img src={chevron} alt=""/></Link>
+            <Link className="" to="/chat"> <img src={Data.Data.userProfile} alt=""/></Link>
             <img className=" w-[40px] h-[40px]" src={testUser} alt=""/>
             <div className="UserHolder flex basis-3/12 mx-[10px] flex-col pt-[5px]">
                 <span className="UserUserName text-white font-[500] font-[Outfit] text-[14px]">username</span>

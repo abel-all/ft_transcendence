@@ -1,0 +1,186 @@
+[
+    {
+      "id": 1,
+      "user_owner": "Alice_Wonder",
+      "nickname": "Alice",
+      "socketid": "d45b31a8-1d6c-4c5a-bbde-826f8a15e938",
+      "total_messages": 20,
+      "userProfile": "https://randomuser.me/api/portraits/women/1.jpg",
+      "lastMessage": "See you tomorrow!",
+      "unreadMessages": 2,
+      "lastMessageTime": "5 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "user_owner": "BobBuilder",
+      "nickname": "Bob",
+      "socketid": "e81d9f14-3f4b-4b76-a042-79ef2c8bc4f7",
+      "total_messages": 45,
+      "userProfile": "https://randomuser.me/api/portraits/men/2.jpg",
+      "lastMessage": "I'll get back to you on that.",
+      "unreadMessages": 1,
+      "lastMessageTime": "10 minutes ago",
+      "isActive": false
+    },
+    {
+      "id": 3,
+      "user_owner": "Charlie_Chaplin",
+      "nickname": "Charlie",
+      "socketid": "b49e76a3-593e-4c3a-87db-4b6a4d6f8c49",
+      "total_messages": 30,
+      "userProfile": "https://randomuser.me/api/portraits/men/3.jpg",
+      "lastMessage": "Let's discuss this over lunch.",
+      "unreadMessages": 0,
+      "lastMessageTime": "15 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "user_owner": "Dora_Explorer",
+      "nickname": "Dora",
+      "socketid": "f732a5c2-89bc-45f4-8b8a-5b31f9a5c620",
+      "total_messages": 12,
+      "userProfile": "https://randomuser.me/api/portraits/women/4.jpg",
+      "lastMessage": "Where are we going next?",
+      "unreadMessages": 5,
+      "lastMessageTime": "2 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "user_owner": "ElmoSesame",
+      "nickname": "Elmo",
+      "socketid": "c66e7a2b-927b-4f5b-a54d-63a1a4e7b7f6",
+      "total_messages": 50,
+      "userProfile": "https://randomuser.me/api/portraits/men/5.jpg",
+      "lastMessage": "Can you believe it?",
+      "unreadMessages": 3,
+      "lastMessageTime": "20 minutes ago",
+      "isActive": false
+    },
+    {
+      "id": 6,
+      "user_owner": "Fiona_Shrek",
+      "nickname": "Fiona",
+      "socketid": "d9b1e7b4-6f7c-4d2f-8b9e-72a9a6f3e2e7",
+      "total_messages": 8,
+      "userProfile": "https://randomuser.me/api/portraits/women/6.jpg",
+      "lastMessage": "I'm on my way.",
+      "unreadMessages": 0,
+      "lastMessageTime": "25 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "user_owner": "GeorgeCurious",
+      "nickname": "George",
+      "socketid": "e3a8c9f1-2b8d-4b5f-8b1a-5d9c8e7f1a5b",
+      "total_messages": 60,
+      "userProfile": "https://randomuser.me/api/portraits/men/7.jpg",
+      "lastMessage": "Did you see that?",
+      "unreadMessages": 4,
+      "lastMessageTime": "30 minutes ago",
+      "isActive": false
+    },
+    {
+      "id": 8,
+      "user_owner": "Harry_Potter",
+      "nickname": "Harry",
+      "socketid": "f6b7a1e9-7c3d-4d5f-a2e9-4c6a9f2d3b5e",
+      "total_messages": 25,
+      "userProfile": "https://randomuser.me/api/portraits/men/8.jpg",
+      "lastMessage": "Expecto Patronum!",
+      "unreadMessages": 1,
+      "lastMessageTime": "35 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 9,
+      "user_owner": "Igor_Frankenstein",
+      "nickname": "Igor",
+      "socketid": "c8a5e7b3-4d7f-4f5a-8b9e-7a6f2d3b5e4a",
+      "total_messages": 35,
+      "userProfile": "https://randomuser.me/api/portraits/men/9.jpg",
+      "lastMessage": "It's alive!",
+      "unreadMessages": 6,
+      "lastMessageTime": "40 minutes ago",
+      "isActive": false
+    },
+    {
+      "id": 10,
+      "user_owner": "Jack_Sparrow",
+      "nickname": "Jack",
+      "socketid": "e9f1a8c7-2b4d-4b5e-8b1a-7a5d8e3f9b2c",
+      "total_messages": 28,
+      "userProfile": "https://randomuser.me/api/portraits/men/10.jpg",
+      "lastMessage": "Why is the rum gone?",
+      "unreadMessages": 0,
+      "lastMessageTime": "45 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 11,
+      "user_owner": "Kermit_Frog",
+      "nickname": "Kermit",
+      "socketid": "d3b6f9e7-4a5c-4f2e-8b9e-6b7f2d3b5e4a",
+      "total_messages": 22,
+      "userProfile": "https://randomuser.me/api/portraits/men/11.jpg",
+      "lastMessage": "It's not easy being green.",
+      "unreadMessages": 2,
+      "lastMessageTime": "50 minutes ago",
+      "isActive": false
+    },
+    {
+      "id": 12,
+      "user_owner": "Lara_Croft",
+      "nickname": "Lara",
+      "socketid": "f9e1a7b4-3c8d-4f5e-a2b9-6a5e7d3c5b4a",
+      "total_messages": 18,
+      "userProfile": "https://randomuser.me/api/portraits/women/12.jpg",
+      "lastMessage": "On an adventure!",
+      "unreadMessages": 0,
+      "lastMessageTime": "55 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 13,
+      "user_owner": "Mickey_Mouse",
+      "nickname": "Mickey",
+      "socketid": "c3f8b7e4-2d5a-4b7e-8b9a-7f6e3d5b4a2c",
+      "total_messages": 40,
+      "userProfile": "https://randomuser.me/api/portraits/men/13.jpg",
+      "lastMessage": "Oh boy!",
+      "unreadMessages": 5,
+      "lastMessageTime": "1 hour ago",
+      "isActive": false
+    },
+    {
+      "id": 14,
+      "user_owner": "Nemo_Fish",
+      "nickname": "Nemo",
+      "socketid": "e7d1f3b5-4a6d-4b2e-8a9e-7b5e3d2f4c1a",
+      "total_messages": 33,
+      "userProfile": "https://randomuser.me/api/portraits/men/14.jpg",
+      "lastMessage": "Just keep swimming.",
+      "unreadMessages": 1,
+      "lastMessageTime": "1 hour 5 minutes ago",
+      "isActive": true
+    },
+    {
+      "id": 15,
+      "user_owner": "Olaf_Frozen",
+      "nickname": "Olaf",
+      "socketid": "d8a1e7f3-5b4c-4f2e-8b9a-7a5e6d3b4f2a",
+      "total_messages": 27,
+      "userProfile": "https://randomuser.me/api/portraits/men/15.jpg",
+      "lastMessage": "I love warm hugs!",
+      "unreadMessages": 0,
+      "lastMessageTime": "1 hour 10 minutes ago",
+      "isActive": false
+    }
+  ]
+  
+
+
+

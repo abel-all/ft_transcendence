@@ -4,8 +4,7 @@ import Userlist from "./Userlist"
 import inboxIcon from "../../../assets/imgs/inbox.svg"
 import InboxUsers from "./InboxUsers"
 import { Link } from "react-router-dom"
-
-
+import chatUsers from "../../../assets/ChatUsers.json"
 
 function BoxInboxUsers() {
     return (
@@ -21,13 +20,29 @@ function BoxInboxUsers() {
             <div className="OnlineList flex flex-row flex-wrap h-[58px] overflow-hidden">
                 <Userlist/>
             </div>
-            <div className="inboxField mt-[60px]">
+            <div className="inboxField mt-[60px] h-[560px] overflow-y-scroll">
                 <div className="inboxHolder flex flex-row pb-[15px] border-b-[1px] border-white border-opacity-40">
                     <img className="opacity-80" src={inboxIcon} alt="" />
                     <span className="ml-[20px] text-white text-[20px] font-[400] font-[Outfit]"> Inbox </span>
                 </div>
-                <Link to="/chatComp"><InboxUsers/></Link>
-                <Link to="/chatComp"><InboxUsers/></Link>
+                {
+                    chatUsers.map( users => {
+                        return (
+                            <Link to={"/chatComp?user=" + users.nickname + "?profile=" + users.userProfile}>
+                                <InboxUsers
+                                    nickname = {users.nickname}  
+                                    socketid = {users.socketid}  
+                                    total_messages = {users.total_messages}  
+                                    userProfile = {users.userProfile}        
+                                    lastMessage = {users.lastMessage}  
+                                    unreadMessages = {users.unreadMessages}  
+                                    lastMessageTime = {users.lastMessageTime}  
+                                    isActive = {users.isActive}  
+                                />
+                             </Link>
+                        )
+                    })
+                }
             </div>
         </>
     )

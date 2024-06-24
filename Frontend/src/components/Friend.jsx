@@ -4,6 +4,7 @@ import chatfreind from "../assets/imgs/chat_friend.svg"
 import removefriend from "../assets/imgs/remove_friend.svg"
 import Moudel from "../pages/Profile/Profile_comp/Moudel"
 import {useState } from "react"
+import { Link } from "react-router-dom"
 
 function Friend(Data) {
 
@@ -35,10 +36,14 @@ function Friend(Data) {
                         {isTrue && <Moudel toggle = {toggle} username = {Data.username}/> }
                     </button>
                     <button className="btn-frnds chatFriend">
-                        <img className="px-[7px]" src={chatfreind} alt="" />
+                        <Link to={"/chat?user=" + Data.username} >
+                            <img className="px-[7px]" src={chatfreind} alt="" />
+                        </Link>
                     </button>
                     <button className="btn-frnds playFriend">
-                        <img className="px-[7px]" src={playfriend} alt="" />
+                        <Link to={"/PlayWith?user=" + Data.username} >
+                            <img className="px-[7px]" src={playfriend} alt="" />
+                        </Link>
                     </button>
                 </div>
             </div>

@@ -6,23 +6,43 @@ import play from "../../../assets/imgs/gametable.svg"
 import { Link } from "react-router-dom"
 import testUser from '../../../assets/users/user (9).png'
 import UserProfileBlock from './UserProfileBlock';
+import chatUsers from "../../../assets/ChatUsers.json"
 
 
-
-function ChatHeader(Data) {
+function ChatHeader() {
 
     const [display, setDisplay] = useState(false);
+    let From = false;
+    let FromUser;
+    let UsrProfile;
 
     function handelDisplay(){
         setDisplay(!display);
     }
 
+    function SetFrom() {
+        let windo = window.location.href;
+        if (windo.lastIndexOf("user=") != -1) {
+            FromUser = windo.substring(windo.lastIndexOf("user=") + 5);
+            chatUsers.map( users => {
+               if (users.nickname == FromUser) {
+                    UsrProfile = users.userProfile;
+                    From = true;
+               }
+            })
+        }
+    }
+    
+    window.addEventListener('popstate', function(event) {
+        console.log('URL changed to: ' + document.location.href);
+    });
     return (
         <div className="ChatHeader flex flex-row items-center border-b-[1px] py-[10px] border-[#626262] bg-[#161c20]">
-            <Link className="" to="/chat"> <img src={Data.Data.userProfile} alt=""/></Link>
-            <img className=" w-[40px] h-[40px]" src={testUser} alt=""/>
+            {SetFrom()}
+            {From && <Link className="" to="/chat"> <img src={chevron} alt=""/></Link>}
+            <img className=" w-[40px] h-[40px] rounded-full" src={UsrProfile} alt=""/>
             <div className="UserHolder flex basis-3/12 mx-[10px] flex-col pt-[5px]">
-                <span className="UserUserName text-white font-[500] font-[Outfit] text-[14px]">username</span>
+                <span className="UserUserName text-white font-[500] font-[Outfit] text-[14px]"> {FromUser} </span>
                 <div className="rankHolder flex flex-row">
                     <span className="trendup-icon"></span>
                     <span className="text-white opacity-60 font-[500] font-[Outfit] text-[12px]">6225</span>

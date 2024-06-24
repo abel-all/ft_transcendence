@@ -3,10 +3,10 @@
 module.exports = {
   mode: 'jit',
   purge: {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+    content: [
+      "./index.html",
+      "./src/**/*.{js,ts,jsx,tsx}",
+    ],
     options: {
       safelist: [
         'bg-[#7DAA48]',

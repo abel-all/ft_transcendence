@@ -7,6 +7,45 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import FormInput from '../../components/FormInput.jsx'
 
+const fieldProps = [
+    {
+        placeHolder: "Username", type: "text"
+    },
+    {
+        placeHolder: "Email", type: "email"
+    },
+    {
+        placeHolder: "Password", type: "password"
+    },
+    {
+        placeHolder: "Repeat Password", type: "password"
+    }
+]
+
+const itemData = [
+    {
+        className: "w-[166px] h-[1px] bg-[#626262]",
+        content: ""
+    },
+    {
+        className: "text-[#EEEEEE] px-[8px] text-[16px] font-normal",
+        content: "Or"
+    },
+    {
+        className: "w-[166px] h-[1px] bg-[#626262]",
+        content: ""
+    }
+]
+
+const oAuthItems = [
+    {
+        image: ftImage, imgTilte: "42"
+    },
+    {
+        image: googleImage, imgTilte: "google"
+    }
+]
+
 function SignUp() {
 
     const [formValues, setFormValues] = useState({});
@@ -17,7 +56,6 @@ function SignUp() {
         console.log(formValues["Email"]);
         console.log(formValues["Password"]);
         console.log(formValues["Repeat Password"]);
-        // return true;
     }
 
     const handleSubmit = (e) => {
@@ -34,24 +72,34 @@ function SignUp() {
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] mt-[120px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] max-sm:border-none max-sm:px-[0px] max-sm:bg-gradient-to-b max-sm:from-transparent max-sm:to-transparent max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="inputs flex items-center flex-col gap-3 pb-[48px]">
-                    <FormInput placeHolder="Username" type="text" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
-                    <FormInput placeHolder="Email" type="email" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
-                    <FormInput placeHolder="Password" type="password" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
-                    <FormInput placeHolder="Repeat Password" type="password" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
+                    {fieldProps.map((item, index) => (
+                        <FormInput
+                            key={index}
+                            placeHolder={item.placeHolder}
+                            type={item.type}
+                            handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
+                        />
+                    ))}
                     <input className="hidden" type="submit" />
-                    {/* For this FormInput you can use map function instead of repetition */}
                 </form>
                 <div onClick={handleUserClick}>
                     <Button width="w-full" title="Sign Up" formValues={formValues} />
                 </div>
                 <div className="flex justify-center items-center py-[16px]">
-                    <div className="w-[166px] h-[1px] bg-[#626262]"></div>
-                    <div className="text-[#EEEEEE] px-[8px] text-[16px] font-normal">Or</div>
-                    <div className="w-[166px] h-[1px] bg-[#626262]"></div>
+                    {itemData.map((item, index) => (
+                        <div key={index} className={item.className}>
+                            {item.content}
+                        </div>
+                    ))}
                 </div>
                 <div className="flex flex-col gap-[11px]">
-                    <OAuthButton image={ftImage} imgTilte="42" />
-                    <OAuthButton image={googleImage} imgTilte="google" />
+                    {oAuthItems.map((item, index) => (
+                        <OAuthButton
+                            key={index}
+                            image={item.image}
+                            imgTilte={item.imgTilte}
+                        />
+                    ))}
                 </div>
                 <div className="footer flex justify-between text-[16px] pt-[29px] pb-[29px]">
                     <div className="pl-[10px] text-[rgba(238,238,238,0.51)] font-normal">Already Have An Account?</div>

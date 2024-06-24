@@ -1,64 +1,39 @@
 import LogoImage from '../../assets/imgs/logo.png'
-import ftImage from '../../assets/imgs/42.svg'
-import googleImage from '../../assets/imgs/google.svg'
 import Button from '../../components/Button.jsx';
 import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
 import FormInput from '../../components/FormInput.jsx'
 import { useState } from 'react';
+import Axios from 'axios'
+import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
 
-const fieldProps = [
-    {
-        placeHolder: "Email", type: "email"
-    },
-    {
-        placeHolder: "Password", type: "password"
-    }
-]
-
-const itemData = [
-    {
-        className: "w-[166px] h-[1px] bg-[#626262]",
-        content: ""
-    },
-    {
-        className: "text-[#EEEEEE] px-[8px] text-[16px] font-normal",
-        content: "Or"
-    },
-    {
-        className: "w-[166px] h-[1px] bg-[#626262]",
-        content: ""
-    }
-]
-
-const oAuthItems = [
-    {
-        image: ftImage, imgTilte: "42"
-    },
-    {
-        image: googleImage, imgTilte: "google"
-    }
-]
 
 function SignIn() {
 
     const [formValues, setFormValues] = useState({});
+    const [message, setMessage] = useState("");
 
+    const checkFieldInput = () => {
+        setMessage("redirect to profile")
+        Axios.post("http://10.13.100.192:8000/api/signup/", {
+            email: formValues["Email"],
+            password: formValues["Password"]
+        }).then(res => {
+            if (res.status === 200)
+                // must redirect the user to your profile.
+                console.log("infos created in database successfuly")
+            else
+                setMessage("Incorrect information")
+        })
+    }
     const handleUserClick = () => {
-        console.log("hhhhhhh");
-        console.log(formValues["Username"]);
-        console.log(formValues["Email"]);
-        console.log(formValues["Password"]);
-        console.log(formValues["Repeat Password"]);
+        checkFieldInput();
+        setMessage("redirect to profile")
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("dfhsdjf")
-        console.log(formValues["Username"] + "hello");
-        console.log(formValues["Email"] + "hello");
-        console.log(formValues["Password"] + "hello");
-        console.log(formValues["Repeat Password"] + "hello");
+        checkFieldInput();
     }
 
     return (
@@ -66,7 +41,7 @@ function SignIn() {
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] mt-[120px] max-sm:border-none max-sm:px-[0px] max-sm:bg-gradient-to-b max-sm:from-transparent max-sm:to-transparent max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="flex items-center flex-col gap-3 pb-[16px]">
-                    {fieldProps.map((item, index) => (
+                    {signInFieldProps.map((item, index) => (
                         <FormInput
                             key={index}
                             placeHolder={item.placeHolder}
@@ -77,6 +52,7 @@ function SignIn() {
                     <input className="hidden" type="submit" />
                 </form>
                 <div className="flex justify-end underline text-[#EEEEEE] font-normal text-[12px] pb-[34px]">Forget Password?</div>
+                <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 <div onClick={handleUserClick}>
                     <Button type="submit" width="w-full" title="Sign In" formValues={formValues} />
                 </div>

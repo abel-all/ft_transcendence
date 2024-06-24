@@ -1,61 +1,41 @@
 import LogoImage from '../../assets/imgs/logo.png'
-import ftImage from '../../assets/imgs/42.svg'
-import googleImage from '../../assets/imgs/google.svg'
 import Button from '../../components/Button.jsx';
 import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import FormInput from '../../components/FormInput.jsx'
-
-const fieldProps = [
-    {
-        placeHolder: "Username", type: "text"
-    },
-    {
-        placeHolder: "Email", type: "email"
-    },
-    {
-        placeHolder: "Password", type: "password"
-    },
-    {
-        placeHolder: "Repeat Password", type: "password"
-    }
-]
-
-const itemData = [
-    {
-        className: "w-[166px] h-[1px] bg-[#626262]",
-        content: ""
-    },
-    {
-        className: "text-[#EEEEEE] px-[8px] text-[16px] font-normal",
-        content: "Or"
-    },
-    {
-        className: "w-[166px] h-[1px] bg-[#626262]",
-        content: ""
-    }
-]
-
-const oAuthItems = [
-    {
-        image: ftImage, imgTilte: "42"
-    },
-    {
-        image: googleImage, imgTilte: "google"
-    }
-]
+import Axios from 'axios'
+import {itemData, oAuthItems, signUpFieldProps, fieldReGex} from './variables.jsx'
 
 function SignUp() {
 
     const [formValues, setFormValues] = useState({});
+    const [message, setMessage] = useState("");
 
     const handleUserClick = () => {
-        console.log("hhhhhhh");
-        console.log(formValues["Username"]);
-        console.log(formValues["Email"]);
-        console.log(formValues["Password"]);
-        console.log(formValues["Repeat Password"]);
+
+        if (fieldReGex["nameReGex"].test(formValues["First Name"]) &&
+            fieldReGex["nameReGex"].test(formValues["Last Name"]) &&
+            fieldReGex["usernameReGex"].test(formValues["Username"]) &&
+            fieldReGex["emailReGex"].test(formValues["Email"]) &&
+            fieldReGex["passwordReGex"].test(formValues["Password"])) {
+                Axios.post("http://10.13.100.192:8000/api/signup/", {
+                    firstName: formValues["First Name"],
+                    lastName: formValues["Last Name"],
+                    username: formValues["Username"],
+                    email: formValues["Email"],
+                    password: formValues["Password"]
+                }).then(res => {
+                    if (res.status === 200)
+                        // must redirect user to sign in page
+                        console.log("infos created in database successfuly")
+                    else
+                        setMessage(res.data["reason"])
+                })
+                setMessage("your infos is valid")
+            }
+        else
+            setMessage("not")
     }
 
     const handleSubmit = (e) => {
@@ -72,7 +52,7 @@ function SignUp() {
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] mt-[120px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] max-sm:border-none max-sm:px-[0px] max-sm:bg-gradient-to-b max-sm:from-transparent max-sm:to-transparent max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="inputs flex items-center flex-col gap-3 pb-[48px]">
-                    {fieldProps.map((item, index) => (
+                    {signUpFieldProps.map((item, index) => (
                         <FormInput
                             key={index}
                             placeHolder={item.placeHolder}
@@ -82,6 +62,7 @@ function SignUp() {
                     ))}
                     <input className="hidden" type="submit" />
                 </form>
+                <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 <div onClick={handleUserClick}>
                     <Button width="w-full" title="Sign Up" formValues={formValues} />
                 </div>

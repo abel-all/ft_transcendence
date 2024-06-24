@@ -11,7 +11,7 @@ function Badge() {
                     <span className="trendup-icon-white"></span>
                     <span className="Rank text-[12px] text-[#FFFFFF] text-center font-semibold font-Outfit"> Bronze</span>
                 </div>
-                <div className='flex flex-row md:relative md:top-[-220px] md:right-[-341px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'>
+                <div className='flex flex-row lg:right-[-553px] xl:right-[-759px] 2xl:right-[-974px] md:relative md:top-[-220px] md:right-[-341px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'>
                     <span className='px-[2px] font-[500] font-[Outfit] text-[#626262] md:text-white md:opacity-60'>Edit</span>
                     <img className='px-[2px]' src={Edit} alt='' />
                 </div>

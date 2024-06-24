@@ -28,7 +28,7 @@ function BoxInboxUsers() {
                 {
                     chatUsers.map( users => {
                         return (
-                            <Link to={"/chatComp?user=" + users.nickname + "?profile=" + users.userProfile}>
+                            <Link to={"/chat?user=" + users.nickname}>
                                 <InboxUsers
                                     nickname = {users.nickname}  
                                     socketid = {users.socketid}  

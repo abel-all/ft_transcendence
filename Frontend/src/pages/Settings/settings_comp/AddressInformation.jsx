@@ -7,7 +7,7 @@ import Edit from '../../../assets/imgs/edit.svg'
 
 function AddressInformation(className) {
 
-    const placeHolder = "bg-transparent placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]";
+    const placeHolder = "bg-transparent focus-visible:outline-0  placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]";
     const labelFiled = "text-[#FFFFFF] opacity-60 my-[7px]";
     const DivHolder  = "FiledHolder flex flex-col";
 

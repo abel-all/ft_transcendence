@@ -15,7 +15,7 @@ function SignIn() {
 
     const checkFieldInput = () => {
         setMessage("redirect to profile")
-        Axios.post("http://10.13.100.192:8000/api/signup/", {
+        Axios.post("http://10.13.100.192:8000/api/signin/", {
             email: formValues["Email"],
             password: formValues["Password"]
         }).then(res => {

@@ -3,13 +3,11 @@
 function Card(props) {
 
     return (
-        <div className={props.bgColor + " flex-1 px-[30px] pt-[10px] hover:scale-[1.03] duration-[400ms] shadow-[10px_10px_10px_rgba(0,0,0,0.4)] " + props.rounded}>
-            <div className="text-white font-bold mb-[27px]">{props.title}</div>
-            <div className="font-semibold text-[35px]">
-                {props.description}
-            </div>
-            <div className="w-full flex justify-end">
-                <img src={props.image} alt="play oing pong game" />
+        <div className={props.bgColor + " w-[300px] max-sm:w-full h-[360px] relative rounded-[10px] hover:scale-[1.02] duration-[600ms]"}>
+            <img className="absolute top-[-146px]" src={props.image} alt="ping pong game" />
+            <div className="h-full flex flex-col justify-end pb-[30px] pl-[20px]">
+                <div className="font-bold text-[45px] text-[#29292C]">{props.title}</div>
+                <div className="font-medium opacity-80 text-[#29292C]">{props.description}</div>
             </div>
         </div>
     )

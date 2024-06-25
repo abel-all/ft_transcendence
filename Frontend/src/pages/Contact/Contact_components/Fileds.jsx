@@ -4,6 +4,24 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import Button from '../../../components/Button.jsx';
 
+const formData = [
+    {
+        placeHolder: "Username",
+        type: "text",
+        height: "h-[58px]",
+    },
+    {
+        placeHolder: "Email",
+        type: "email",
+        height: "h-[58px]",
+    },
+    {
+        placeHolder: "Your Message",
+        type: "textarea",
+        height: "h-[200px]",
+    }
+]
+
 function Fileds() {
 
     const [formValues, setFormValues] = useState({});
@@ -28,11 +46,16 @@ function Fileds() {
             <Link to="/"><img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" /></Link>
             <div className="text-white font-bold text-[36px] mb-[65px]" >Contact Us</div>
             <form onSubmit={handleSubmit} className="w-full inputs flex items-center flex-col gap-3 pb-[48px]">
-                <FormInput placeHolder="Username" type="text" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
-                <FormInput placeHolder="Email" type="email" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
-                <FormInput height="h-[200px]" placeHolder="Your Message" type="textarea" handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }} />
+                {formData.map((field, index) => (
+                    <FormInput
+                        key={index}
+                        placeHolder={field.placeHolder}
+                        type={field.type}
+                        height={field.height}
+                        handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
+                    />
+                ))}
                 <input className="hidden" type="submit" />
-                {/* For this FormInput you can use map function instead of repetition */}
             </form>
             <div className=" mb-[20px] w-full" onClick={handleUserClick}>
                 <Button bgColor=" bg-[#FFCA61]" title="Send Message" formValues={formValues} />

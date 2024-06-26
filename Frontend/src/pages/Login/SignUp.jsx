@@ -9,6 +9,7 @@ import {itemData, oAuthItems, signUpFieldProps, fieldReGex} from './variables.js
 
 function SignUp() {
 
+    
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
 

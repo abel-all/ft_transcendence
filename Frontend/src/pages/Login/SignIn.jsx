@@ -4,8 +4,10 @@ import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
 import FormInput from '../../components/FormInput.jsx'
 import { useState } from 'react';
-import Axios from 'axios'
+// import Axios from 'axios'
 import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
+import { useAuth } from '../../components/Auth.jsx';
+import { useNavigate } from 'react-router-dom';
 
 
 function SignIn() {
@@ -13,22 +15,25 @@ function SignIn() {
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
 
+    const navigate = useNavigate();
+    const auth = useAuth();
     const checkFieldInput = () => {
-        setMessage("redirect to profile")
-        Axios.post("http://10.13.100.192:8000/api/signin/", {
-            email: formValues["Email"],
-            password: formValues["Password"]
-        }).then(res => {
-            if (res.status === 201)
-                // must redirect the user to your profile.
-                console.log("infos created in database successfuly")
-            else
-                setMessage("Incorrect information")
-        })
+        setMessage("redirect to profile");
+        auth.login(formValues["Email"]);
+        navigate("/game", { replace: true });
+        // Axios.post("http://10.13.100.192:8000/api/signin/", {
+        //     email: formValues["Email"],
+        //     password: formValues["Password"]
+        // }).then(res => {
+        //     if (res.status === 201)
+        //         // must redirect the user to your profile.
+        //         console.log("infos created in database successfuly")
+        //     else
+        //         setMessage("Incorrect information")
+        // })
     }
     const handleUserClick = () => {
         checkFieldInput();
-        setMessage("redirect to profile")
     }
 
     const handleSubmit = (e) => {

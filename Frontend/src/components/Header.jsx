@@ -2,9 +2,19 @@ import NavActive from "./NavActive"
 import search from "../assets/imgs/search.svg"
 import logout from "../assets/imgs/logout.svg"
 import { Link } from 'react-router-dom'
-
+import { useAuth } from "./Auth"
+import { useNavigate } from 'react-router-dom';
 
 function Header(props) {
+
+    const auth = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        auth.logout();
+        navigate("/", { replace: true })
+    }
+
     return (
         <div className="flex flex-row">
             <div className="basis-1/3">
@@ -17,7 +27,7 @@ function Header(props) {
             </div>
             <div className="basis-1/3">
                 <ul className="flex flex-row-reverse py-[30px]">
-                    <li className="ml-[10px]"><Link to="/logout" ><img className="w-[40px] h-[40px]" src={logout} alt="" /> </Link></li>
+                    <li className="ml-[10px] cursor-pointer" onClick={handleLogout}><img className="w-[40px] h-[40px]" src={logout} alt="" /></li>
                     <li className=""><Link to="/search" ><img className="w-[40px] h-[40px]" src={search} alt="" /> </Link></li>
                 </ul>
             </div>

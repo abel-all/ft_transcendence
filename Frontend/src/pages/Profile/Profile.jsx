@@ -1,4 +1,4 @@
-import ProfileNav from './Profile_comp/ProfileNav'
+import Header from '../../components/Header'
 import Userbg from './Profile_comp/Userbg'
 import Badge from './Profile_comp/Badge'
 import Statistics from './Profile_comp/Statistics'
@@ -13,7 +13,7 @@ function Profile() {
     return (
         <div className="container mx-auto flex justify-center w-full h-full">
             <div className='w-full'>
-                <ProfileNav/>
+                <Header title="Profile" activeSection="UserIcon" />
                 <Userbg/>
                 <Badge/>
                 <div className='w-full flex flex-col lg:flex-row gap-2'>

@@ -1,18 +1,19 @@
 import LogoImage from '../../assets/imgs/logo.png'
 import Button from '../../components/Button.jsx';
 import OAuthButton from '../../components/OAuthButton.jsx';
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import { useState } from 'react';
 import FormInput from '../../components/FormInput.jsx'
-import Axios from 'axios'
+// import Axios from 'axios'
 import {itemData, oAuthItems, signUpFieldProps, fieldReGex} from './variables.jsx'
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
 
-    
+
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
-
+    const navigate = useNavigate();
     const handleUserClick = () => {
 
         if (fieldReGex["nameReGex"].test(formValues["First Name"]) &&
@@ -20,24 +21,28 @@ function SignUp() {
             fieldReGex["usernameReGex"].test(formValues["Username"]) &&
             fieldReGex["emailReGex"].test(formValues["Email"]) &&
             fieldReGex["passwordReGex"].test(formValues["Password"])) {
-                Axios.post("http://10.13.100.192:8000/api/signup/", {
-                    firstName: formValues["First Name"],
-                    lastName: formValues["Last Name"],
-                    username: formValues["Username"],
-                    email: formValues["Email"],
-                    password: formValues["Password"]
-                }).then(res => {
-                    console.log(res.data)
-                    // if (res.status === 201)
-                        // must redirect user to sign in page
-                        // console.log("infos created in database successfuly")
-                    // else
-                    //     setMessage(res.data["reason"])
-                })
-                setMessage("your infos is valid")
+                setMessage("Valid Info");
+                navigate("/signin");
+                // Axios.post("http://10.13.100.192:8000/api/signup/", {
+                //     firstName: formValues["First Name"],
+                //     lastName: formValues["Last Name"],
+                //     username: formValues["Username"],
+                //     email: formValues["Ema il"],
+                //     password: formValues["Password"]
+                // }).then(res => {
+                //     // console.log(res.data)
+                //     if (res.status === 201) {
+                //         <Navigate to="/profile"/>
+                //         // must redirect user to sign in page
+                //         // console.log("infos created in database successfuly")
+                //     }
+                //     else
+                //         setMessage("something Wrong!")
+                // })
+                // setMessage("your infos is valid")
             }
         else
-            setMessage("not")
+            setMessage("Invalid Info")
     }
 
     const handleSubmit = (e) => {

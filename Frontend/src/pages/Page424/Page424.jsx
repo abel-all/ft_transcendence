@@ -8,7 +8,7 @@ function Page424() {
         <>
             <div className="w-[100%] h-[100%] text-[70px] py-[250px] text-center text-white ">
                 404 Not found
-                <Link className="block bg-[#00] " to="/home"> Go Home</Link>
+                <Link className="block bg-[#00] " to="/"> Go Home</Link>
             </div>
         </>
     )

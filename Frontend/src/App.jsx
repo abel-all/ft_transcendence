@@ -10,26 +10,30 @@ import Chat from './pages/Chat/Chat.jsx'
 import ChatComp from './pages/Chat/Chat_comp/ChatComp.jsx'
 import Game from './pages/Game/Game.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ContextProvider } from './components/Auth.jsx'
+import RequireAuth from './components/RequireAuth.jsx'
+import DontRequireAuth from './components/DontRequireAuth.jsx'
 
 function App() {
 
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/chatcomp" element={<ChatComp />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="*" element={<Page424 />} />
-        </Routes>
+        <ContextProvider>
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
+            <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
+            <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+            <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
+            <Route path="/chatcomp" element={<RequireAuth><ChatComp /></RequireAuth>} />
+            <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+            <Route path="*" element={<Page424 />} />
+          </Routes>
+        </ContextProvider>
       </BrowserRouter>
     </>
   )

@@ -19,7 +19,7 @@ function SignIn() {
             email: formValues["Email"],
             password: formValues["Password"]
         }).then(res => {
-            if (res.status === 200)
+            if (res.status === 201)
                 // must redirect the user to your profile.
                 console.log("infos created in database successfuly")
             else

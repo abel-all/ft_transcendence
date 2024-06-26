@@ -26,12 +26,12 @@ function SignUp() {
                     email: formValues["Email"],
                     password: formValues["Password"]
                 }).then(res => {
-                    if (res.status === 200)
-                        setMessage(res.data)
+                    console.log(res.data)
+                    // if (res.status === 201)
                         // must redirect user to sign in page
                         // console.log("infos created in database successfuly")
-                    else
-                        setMessage(res.data["reason"])
+                    // else
+                    //     setMessage(res.data["reason"])
                 })
                 setMessage("your infos is valid")
             }

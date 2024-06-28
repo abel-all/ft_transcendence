@@ -2,17 +2,24 @@ import NavActive from "./NavActive"
 import search from "../assets/imgs/search.svg"
 import logout from "../assets/imgs/logout.svg"
 import { Link } from 'react-router-dom'
-import { useAuth } from "./Auth"
 import { useNavigate } from 'react-router-dom';
+import Axios from 'axios'
 
 function Header(props) {
 
-    const auth = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        auth.logout();
-        navigate("/", { replace: true })
+    const handleLogout = async () => {
+        try {
+            // api endpoint tal men ba3d 3ad nbedlohom
+            const response = await Axios.post("http://10.13.100.192:8000/api/logout/")
+            if (response.status === 200)
+                navigate("/", { replace: true });
+            else { console.log(response.data.reason) }
+        } catch (err) {
+            if(!err?.response) { console.log("No Server Response") }
+            else { alert(!err?.response?.data?.reason) }
+        }
     }
 
     return (

@@ -4,9 +4,8 @@ import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
 import FormInput from '../../components/FormInput.jsx'
 import { useState } from 'react';
-// import Axios from 'axios'
+import Axios from 'axios'
 import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
-import { useAuth } from '../../components/Auth.jsx';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -16,21 +15,25 @@ function SignIn() {
     const [message, setMessage] = useState("");
 
     const navigate = useNavigate();
-    const auth = useAuth();
-    const checkFieldInput = () => {
-        setMessage("redirect to profile");
-        auth.login(formValues["Email"]);
-        navigate("/game", { replace: true });
-        // Axios.post("http://10.13.100.192:8000/api/signin/", {
-        //     email: formValues["Email"],
-        //     password: formValues["Password"]
-        // }).then(res => {
-        //     if (res.status === 201)
-        //         // must redirect the user to your profile.
-        //         console.log("infos created in database successfuly")
-        //     else
-        //         setMessage("Incorrect information")
-        // })
+    const checkFieldInput = async () => {
+        try {
+            const response = await Axios.post("http://10.13.100.192:8000/api/token/", JSON.stringify({
+                    username: formValues.Username,
+                    password: formValues.Password
+                }), {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            if (response?.status === 200)
+                navigate("/game", { replace: true });
+            else
+                setMessage(response.data.reason)
+        } catch (err) {
+            // if(err.response.status === 404) { setMessage("No Server Response") }
+            if(err.response.status === 404) { setMessage("No Server Response") }
+            else { setMessage(err.response.data.reason) }
+        }
     }
     const handleUserClick = () => {
         checkFieldInput();

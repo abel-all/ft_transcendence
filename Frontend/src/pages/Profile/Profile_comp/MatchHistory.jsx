@@ -6,16 +6,19 @@ function MatchHistory({className}) {
         <div className={"MatchHistor max-h-[687px] overflow-auto mb-[82px] w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262] mr-[2px] mt-[4px]" + (className ? ` ${className}` : '')}>
             <div className="Title text-[20px] md:text-[30px] font-[500] font-Outfit  text-[#FFFFFF] opacity-80 block mb-[25px]"> Match History</div>
                 {
-                    MatchHistor.map( MatchJson => {
+                    MatchHistor.map( (MatchJson, index )=> {
                         return (
-                            <MatchHistoryfiled
-                                ranktwo =   {MatchJson.ranktwo}
-                                rankone =   {MatchJson.rankone}
-                                userone =   {MatchJson.userone}
-                                usertwo =   {MatchJson.usertwo}
-                                home    =   {MatchJson.home}
-                                away    =   {MatchJson.away}
-                            />
+                            <div key={index} className="flex justify-around items-center historyHolder w-[100%] mb-[5px] h-[123px] md:rounded-full bg-[#2d3c3f] border-[1px] text-[#ffffff] border-[#000000]">
+                                <MatchHistoryfiled
+                                    ranktwo =   {MatchJson.ranktwo}
+                                    rankone =   {MatchJson.rankone}
+                                    userone =   {MatchJson.userone}
+                                    usertwo =   {MatchJson.usertwo}
+                                    home    =   {MatchJson.home}
+                                    away    =   {MatchJson.away}
+                                    index   = {index}
+                                />
+                            </div>
                         )
                     })
                 }

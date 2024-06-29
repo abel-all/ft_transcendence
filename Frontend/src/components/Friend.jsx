@@ -20,7 +20,7 @@ function Friend(Data) {
     }
 
     return (
-            <div className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+            <>
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
                         <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={FriendPic} alt="" />
@@ -90,7 +90,7 @@ function Friend(Data) {
                     </>
                 }
                 </div>
-            </div>
+            </>
     )
 }
 

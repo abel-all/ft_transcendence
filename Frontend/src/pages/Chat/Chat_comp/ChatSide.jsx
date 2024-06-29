@@ -9,15 +9,15 @@ import {chatHeaderOnClick} from '../Chat'
 function ChatSide(Data) {
 
     const ChatContext = useContext(chatHeaderOnClick);
-
-    
-    console.log(ChatContext.chatHeader.name);
     return (
         <div className={" " + (Data.className) ? Data.className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
-                <ChatHeader Data={Data}/>
-                <Messages className="ChatBody bg-[#161c20] h-[calc(100vh-276px)] overflow-y-scroll flex flex-col"/>
-                <ChatBottom/>
+                {(ChatContext.chatHeader.name || ChatContext.userFromUrl.user) &&
+                <>
+                    <ChatHeader Data={Data}/>
+                    <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
+                    <ChatBottom/>
+                </>}
             </div>
         </div>
     )

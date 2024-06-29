@@ -42,14 +42,16 @@ function FriendsList({className}) {
                         <>
                             <input className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
                             {
-                                friendlist.map( friend => {
+                                friendlist.map( (friend, index) => {
                                     return (
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Search"
-                                        />
+                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                            <Friend
+                                                username =   {friend.username}
+                                                status =   {friend.status}
+                                                rank =   {friend.rank}
+                                                reason = "Search"
+                                            />
+                                        </div>
                                     )
                                 })
                             }
@@ -58,14 +60,16 @@ function FriendsList({className}) {
                     {prop == "Blocked Users" &&
                         <>                            
                             {
-                                friendlist.map( friend => {
+                                friendlist.map( (friend, index) => {
                                     return (
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Blocked Users"
-                                        />
+                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                            <Friend
+                                                username =   {friend.username}
+                                                status =   {friend.status}
+                                                rank =   {friend.rank}
+                                                reason = "Blocked Users"
+                                            />
+                                        </div>
                                     )
                                 })
                             }
@@ -74,14 +78,16 @@ function FriendsList({className}) {
                     {prop == "Panding Requests" &&
                         <>                            
                             {
-                                friendlist.map( friend => {
+                                friendlist.map( (friend, index) => {
                                     return (
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Panding Requests"
-                                        />
+                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                            <Friend
+                                                username =   {friend.username}
+                                                status =   {friend.status}
+                                                rank =   {friend.rank}
+                                                reason = "Panding Requests"
+                                            />
+                                        </div>
                                     )
                                 })
                             }
@@ -96,15 +102,17 @@ function FriendsList({className}) {
                 </button>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 max-h-[230px] overflow-auto">
                 {
-                        friendlist.map( friend => {
+                        friendlist.map( (friend, index) => {
                             return (
-                                <Friend
-                                    username =   {friend.username}
-                                    status =   {friend.status}
-                                    rank =   {friend.rank}
-                                    reason = "Friends list"
-                                    isFriend = {true}
-                                />
+                                <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                    <Friend
+                                        username =   {friend.username}
+                                        status =   {friend.status}
+                                        rank =   {friend.rank}
+                                        reason = "Friends list"
+                                        isFriend = {true}
+                                    />
+                                </div>
                             )
                         })
                     }

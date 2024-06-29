@@ -23,7 +23,7 @@ function Header(props) {
     }
 
     return (
-        <div className="flex flex-row">
+        <div className={`flex flex-row ${props.hide}`}>
             <div className="basis-1/3">
                 <p className="font-medium text-[#FFFFFF] opacity-80 text-[30px] font-Outfit py-[30px]">{props.title}</p>
             </div>

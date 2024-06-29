@@ -4,7 +4,7 @@ import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link} from 'react-router-dom'
 import { useState } from 'react';
 import FormInput from '../../components/FormInput.jsx'
-// import Axios from 'axios'
+import Axios from 'axios'
 import {itemData, oAuthItems, signUpFieldProps, fieldReGex} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
 
@@ -14,44 +14,45 @@ function SignUp() {
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
-    const handleUserClick = () => {
 
-        if (fieldReGex["nameReGex"].test(formValues["First Name"]) &&
-            fieldReGex["nameReGex"].test(formValues["Last Name"]) &&
-            fieldReGex["usernameReGex"].test(formValues["Username"]) &&
-            fieldReGex["emailReGex"].test(formValues["Email"]) &&
-            fieldReGex["passwordReGex"].test(formValues["Password"])) {
-                setMessage("Valid Info");
-                navigate("/signin");
-                // Axios.post("http://10.13.100.192:8000/api/signup/", {
-                //     firstName: formValues["First Name"],
-                //     lastName: formValues["Last Name"],
-                //     username: formValues["Username"],
-                //     email: formValues["Ema il"],
-                //     password: formValues["Password"]
-                // }).then(res => {
-                //     // console.log(res.data)
-                //     if (res.status === 201) {
-                //         <Navigate to="/profile"/>
-                //         // must redirect user to sign in page
-                //         // console.log("infos created in database successfuly")
-                //     }
-                //     else
-                //         setMessage("something Wrong!")
-                // })
-                // setMessage("your infos is valid")
+    const checkFieldInput = async () => {
+        
+        if (fieldReGex.nameReGex.test(formValues["First Name"]) &&
+            fieldReGex.nameReGex.test(formValues["Last Name"]) &&
+            fieldReGex.usernameReGex.test(formValues["Username"]) &&
+            fieldReGex.emailReGex.test(formValues["Email"]) &&
+            fieldReGex.passwordReGex.test(formValues["Password"])) {
+                try {
+                    const response = await Axios.post("http://10.13.100.192:8000/api/signup/", JSON.stringify({
+                            first_name: formValues["First Name"],
+                            last_name: formValues["Last Name"],
+                            username: formValues.Username,
+                            email: formValues.Email,
+                            password: formValues.Password
+                        }), {
+                            headers: { 'Content-Type': 'application/json' },
+                            withCredentials: true
+                        }
+                    )
+                    if (response.status === 201)
+                        navigate("/signin", { replace: true });
+                    else
+                        setMessage("No Server Response [reason-from-backend]")
+                } catch (err) {
+                    if(!err?.response) { setMessage("No Server Response") }
+                    else { setMessage(!err?.response?.data?.reason) }
+                }
             }
         else
-            setMessage("Invalid Info")
+            setMessage("Invalid Information")
+    }
+    const handleUserClick = () => {
+        checkFieldInput();
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("dfhsdjf")
-        console.log(formValues["Username"] + "hello");
-        console.log(formValues["Email"] + "hello");
-        console.log(formValues["Password"] + "hello");
-        console.log(formValues["Repeat Password"] + "hello");
+        checkFieldInput();
     }
 
     return (

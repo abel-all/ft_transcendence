@@ -3,7 +3,7 @@ import googleImage from '../../assets/imgs/google.svg'
 
 const signInFieldProps = [
     {
-        placeHolder: "Email", type: "email"
+        placeHolder: "Username", type: "text"
     },
     {
         placeHolder: "Password", type: "password"

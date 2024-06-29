@@ -10,6 +10,7 @@ import Chat from './pages/Chat/Chat.jsx'
 import Game from './pages/Game/Game.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
+import Loader from './components/Loader.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DontRequireAuth from './components/DontRequireAuth.jsx'
 
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/loader" element={<Loader />} />
             <Route path="/about" element={<About />} />
             <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
             <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />

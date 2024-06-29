@@ -7,7 +7,6 @@ import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'
 import Settings from "./pages/Settings/Settings"
 import Chat from './pages/Chat/Chat.jsx'
-import ChatComp from './pages/Chat/Chat_comp/ChatComp.jsx'
 import Game from './pages/Game/Game.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
@@ -29,7 +28,6 @@ function App() {
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
             <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-            <Route path="/chatcomp" element={<RequireAuth><ChatComp /></RequireAuth>} />
             <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
             <Route path="*" element={<Page424 />} />
           </Routes>

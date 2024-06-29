@@ -2,7 +2,8 @@ import { useState } from "react"
 import Search from "../../../assets/imgs/search.svg"
 import BoxInboxUsers from "./BoxInboxUsers"
 import BoxSearch from "./BoxSearch";
-
+import {useContext} from 'react'
+import {chatHeaderOnClick} from '../Chat'
 
 function ProprtesSide(Data) {
 
@@ -18,6 +19,8 @@ function ProprtesSide(Data) {
             return <BoxInboxUsers/>;
         return <BoxSearch data= {input} />;
     }
+
+    const ChatContext = useContext(chatHeaderOnClick);
 
     if (input)
         styleSearch = "SearchInpute p-[25px] focus-visible:outline-0 text-[white]  w-full  text-[16px] bg-[#2d353a] border-y-[1px] border-[#626262]";

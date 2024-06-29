@@ -1,30 +1,26 @@
 import Chat from '../../../assets/Chat.json'
-
+import seen from '../../../assets/imgs/chat/seen.svg'
+import notseen from '../../../assets/imgs/chat/notyet.svg'
 function Messages(Data) {
 
+    let userStyle;
     return (
         <div className={"" + (Data.className) ? Data.className : ''}>
             {
                 Chat.chat.messages.map(chatMessages => {
+                    {(chatMessages.sender == "User1") ? userStyle = "text-white bg-[#0A0C0E] rounded-tr-lg " : userStyle = "text-black bg-white self-end rounded-tl-lg "}
                     return (
-                        <>
-                            {chatMessages.sender == "User1" &&
+                        <div key={chatMessages.message_id} className={userStyle + 'relative flex rounded-b-lg w-[70%] lg:w-[450px] m-[10px] p-[20px]'}>
+                            <p className='pb-[15px]'>{chatMessages.message}</p>
+                            {(chatMessages.sender == "User2") ?
                                 <>
-                                    <div className='text-white rounded-b-lg rounded-tr-lg bg-[#0A0C0E] w-[70%] lg:w-[450px] m-[10px] p-[20px]'>
-                                        {chatMessages.message}
-                                    </div>
-                                    <span className='text-white text-center opacity-60'> {chatMessages.timestamp}</span>
+                                    <span className='absolute right-[45px] bottom-[5px]'>{chatMessages.timestamp}</span>
+                                    <img src={chatMessages.seen ? seen : notseen} alt='' className='absolute right-[15px] bottom-[5px]'/>
                                 </>
+                                : 
+                                    <span className='absolute right-[15px] bottom-[5px]'>{chatMessages.timestamp}</span>
                             }
-                            {chatMessages.sender == "User2" &&
-                                <>
-                                    <div className='text-black self-end rounded-b-lg rounded-tl-lg bg-white w-[70%] lg:w-[450px] m-[10px] p-[20px]'>
-                                        {chatMessages.message}
-                                    </div>
-                                    <span className='text-white text-center opacity-60'> {chatMessages.timestamp}</span>
-                                </>
-                            }
-                        </>
+                        </div>
                     )
                 })
             }

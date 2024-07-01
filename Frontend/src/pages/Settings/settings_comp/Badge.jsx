@@ -66,7 +66,7 @@ function Badge() {
                         <span className='text-[#000] p-[5px] font-Outfit'>Uplaod</span>
                     </label>
                 </div>
-                <div className='InfoHolder flex flex-col md:mt-[30px] md:static top-[57px]'>
+                <div className='InfoHolder flex flex-col md:mt-[30px] relative md:static top-[57px]'>
                     <span className='text-[25px] ml-[10px] font-normal text-[#d0d4d4] font-Outfit'>Name Name</span>
                     <div className='flex flex-row ml-[10px] justify-center md:justify-normal'>
                         <span className="trendup-icon-white"></span>

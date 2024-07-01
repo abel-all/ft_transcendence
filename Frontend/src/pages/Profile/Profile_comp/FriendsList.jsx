@@ -5,6 +5,9 @@ import removefriend from "../../../assets/imgs/remove_friend.svg"
 import { useState } from 'react'
 import userIcon from "../../../assets/imgs/userprofile.svg"
 import close from "../../../assets/imgs/close.svg"
+import invite from "../../../assets/imgs/panding.svg"
+
+
 
 function FriendsList({className}) {
     const [toggle, setToggle] = useState(false);
@@ -36,20 +39,25 @@ function FriendsList({className}) {
                     <button onClick={() => HandelProp("Panding Requests")}>
                         <img className=" top-[20px] right-[138px] absolute w-[25.6px] h-[25.6px]" src={userIcon} alt=''/>
                     </button>
+                    <button onClick={() => HandelProp("Invetations")}>
+                        <img className=" top-[20px] right-[178px] absolute w-[25.6px] h-[25.6px]" src={invite} alt=''/>
+                    </button>
                 </div>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 h-[254px] overflow-auto">
                     {prop == "Search" &&
                         <>
                             <input className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
                             {
-                                friendlist.map( friend => {
+                                friendlist.map( (friend, index) => {
                                     return (
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Search"
-                                        />
+                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                            <Friend
+                                                username =   {friend.username}
+                                                status =   {friend.status}
+                                                rank =   {friend.rank}
+                                                reason = "Search"
+                                            />
+                                        </div>
                                     )
                                 })
                             }
@@ -58,14 +66,16 @@ function FriendsList({className}) {
                     {prop == "Blocked Users" &&
                         <>                            
                             {
-                                friendlist.map( friend => {
+                                friendlist.map( (friend, index) => {
                                     return (
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Blocked Users"
-                                        />
+                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                            <Friend
+                                                username =   {friend.username}
+                                                status =   {friend.status}
+                                                rank =   {friend.rank}
+                                                reason = "Blocked Users"
+                                            />
+                                        </div>
                                     )
                                 })
                             }
@@ -74,19 +84,39 @@ function FriendsList({className}) {
                     {prop == "Panding Requests" &&
                         <>                            
                             {
-                                friendlist.map( friend => {
+                                friendlist.map( (friend, index) => {
                                     return (
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Panding Requests"
-                                        />
+                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                            <Friend
+                                                username =   {friend.username}
+                                                status =   {friend.status}
+                                                rank =   {friend.rank}
+                                                reason = "Panding Requests"
+                                            />
+                                        </div>
                                     )
                                 })
                             }
                         </>
                     }
+                    {prop == "Invetations" &&
+                    <>                            
+                        {
+                            friendlist.map( (friend, index) => {
+                                return (
+                                    <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                        <Friend
+                                            username =   {friend.username}
+                                            status =   {friend.status}
+                                            rank =   {friend.rank}
+                                            reason = "Invetations"
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
+                    </>
+                }
                 </div>
             </div>}
             {!toggle && <div className={"relative w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262] mt-[2px] mr-[2px]"  + (className ? ` ${className}` : '')}>
@@ -96,15 +126,17 @@ function FriendsList({className}) {
                 </button>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 max-h-[230px] overflow-auto">
                 {
-                        friendlist.map( friend => {
+                        friendlist.map( (friend, index) => {
                             return (
-                                <Friend
-                                    username =   {friend.username}
-                                    status =   {friend.status}
-                                    rank =   {friend.rank}
-                                    reason = "Friends list"
-                                    isFriend = {true}
-                                />
+                                <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                    <Friend
+                                        username =   {friend.username}
+                                        status =   {friend.status}
+                                        rank =   {friend.rank}
+                                        reason = "Friends list"
+                                        isFriend = {true}
+                                    />
+                                </div>
                             )
                         })
                     }

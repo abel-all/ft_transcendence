@@ -15,30 +15,30 @@ function Player (Data) {
 
 function MatchHistoryfiled(Data) {
     return (
-        <div className="flex justify-around items-center historyHolder w-[100%] mb-[5px] h-[123px] md:rounded-full bg-[#2d3c3f] border-[1px] text-[#ffffff] border-[#000000]">
-        <div className="playerone flex flex-col text-center justify-between items-center ">
-            <Player
-                rank = {Data.rankone}
-                username = {Data.userone}
-                profile = {FriendPic}
-            />
-        </div>
-        <div className="detailes flex flex-col items-center">
-            <div className="resulte flex flex-row justify-between">
-                <div className="playeronePoint text-[17px] md:text-[35px] text-[#FFFFFF] font-[500] font-[Outfit]">{Data.home}</div>
-                <div className="double text-[17px] md:text-[35px] text-[#FFFFFF] font-[500] mx-[25px] font-[Outfit]">:</div>
-                <div className="playertowPoint text-[17px] md:text-[35px] text-[#FFFFFF] font-[500] font-[Outfit]">{Data.away}</div>
-            </div>
-            <div className="date text-[16px] px-[3px] font-[500] font-[Outfit] opacity-60"> {Data.date}</div>
-        </div>
-        <div className="playertwo flex flex-col text-center items-center">
-            <Player
-                    rank = {Data.ranktwo}
-                    username = {Data.usertwo}
+        <>
+            <div className="playerone flex flex-col text-center justify-between items-center ">
+                <Player
+                    rank = {Data.rankone}
+                    username = {Data.userone}
                     profile = {FriendPic}
                 />
-        </div>
-    </div>
+            </div>
+            <div className="detailes flex flex-col items-center">
+                <div className="resulte flex flex-row justify-between">
+                    <div className="playeronePoint text-[17px] md:text-[35px] text-[#FFFFFF] font-[500] font-[Outfit]">{Data.home}</div>
+                    <div className="double text-[17px] md:text-[35px] text-[#FFFFFF] font-[500] mx-[25px] font-[Outfit]">:</div>
+                    <div className="playertowPoint text-[17px] md:text-[35px] text-[#FFFFFF] font-[500] font-[Outfit]">{Data.away}</div>
+                </div>
+                <div className="date text-[16px] px-[3px] font-[500] font-[Outfit] opacity-60"> {Data.date}</div>
+            </div>
+            <div className="playertwo flex flex-col text-center items-center">
+                <Player
+                        rank = {Data.ranktwo}
+                        username = {Data.usertwo}
+                        profile = {FriendPic}
+                    />
+            </div>
+        </>
     )
 }
 

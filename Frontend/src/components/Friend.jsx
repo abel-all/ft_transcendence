@@ -4,7 +4,7 @@ import chatfreind from "../assets/imgs/chat_friend.svg"
 import AddUser from "../assets/imgs/AddUser.svg"
 import removefriend from "../assets/imgs/remove_friend.svg"
 import Moudel from "../pages/Profile/Profile_comp/Moudel"
-import {useState } from "react"
+import {useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import unblock from "../assets/imgs/unblock.svg"
 import panding from "../assets/imgs/panding.svg"
@@ -20,7 +20,7 @@ function Friend(Data) {
     }
 
     return (
-            <div className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+            <>
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
                         <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={FriendPic} alt="" />
@@ -39,7 +39,7 @@ function Friend(Data) {
                     <>
                         <button className="btn-frnds deleteFriend">
                             <img className="px-[7px]" onClick={toggle} src={removefriend} alt="" />
-                            {isTrue && <Moudel toggle = {toggle} username = {Data.username}/> }
+                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to Block" reason="block"/> }
                         </button>
                         <button className="btn-frnds chatFriend">
                             <Link to={"/chat?user=" + Data.username} >
@@ -73,14 +73,16 @@ function Friend(Data) {
                 {Data.reason == "Blocked Users" &&
                     <>
                         <button className="btn-frnds Unblock">
-                            <img className="px-[7px]" src={unblock} alt="" />
+                            <img className="px-[7px]" onClick={toggle} src={unblock} alt="" />
+                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to UnBlock" reason="unblock"/> }
                         </button>
                     </>
                 }
                 {Data.reason == "Panding Requests" &&
                     <>
                         <button className="btn-frnds Unblock">
-                            <img className="px-[7px]" src={panding} alt="" />
+                            <img className="px-[7px]" onClick={toggle} src={panding} alt="" />
+                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to Undo" reason="undo"/> }
                         </button>
                         <button className="btn-frnds chatFriend">
                             <Link to={"/chat?user=" + Data.username} >
@@ -89,8 +91,20 @@ function Friend(Data) {
                         </button>
                     </>
                 }
+                {Data.reason == "Invetations" &&
+                <>
+                    <button className="btn-frnds Unblock">
+                        <img className="px-[7px]" src={AddUser} alt="" />
+                    </button>
+                    <button className="btn-frnds chatFriend">
+                        <Link to={"/chat?user=" + Data.username} >
+                            <img className="px-[7px]" src={chatfreind} alt="" />
+                        </Link>
+                    </button>
+                </>
+            }
                 </div>
-            </div>
+            </>
     )
 }
 

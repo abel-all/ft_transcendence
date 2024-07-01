@@ -5,8 +5,16 @@ import inboxIcon from "../../../assets/imgs/inbox.svg"
 import InboxUsers from "./InboxUsers"
 import { Link } from "react-router-dom"
 import chatUsers from "../../../assets/ChatUsers.json"
+import {chatHeaderOnClick} from '../Chat'
+import {useContext} from 'react'
+
+
+
 
 function BoxInboxUsers() {
+
+    const ChatHeader = useContext(chatHeaderOnClick);
+
     return (
         <>
             <div className="OnlineFriends my-[15px]">
@@ -26,9 +34,9 @@ function BoxInboxUsers() {
                     <span className="ml-[20px] text-white text-[20px] font-[400] font-[Outfit]"> Inbox </span>
                 </div>
                 {
-                    chatUsers.map( users => {
+                    chatUsers.map( (users, index) => {
                         return (
-                            <Link to={"/chat?user=" + users.nickname}>
+                            <div className="cursor-pointer" key={index} onClick={() => ChatHeader.handelChatHeader(users.nickname, 623, users.userProfile)}>
                                 <InboxUsers
                                     nickname = {users.nickname}  
                                     socketid = {users.socketid}  
@@ -39,7 +47,7 @@ function BoxInboxUsers() {
                                     lastMessageTime = {users.lastMessageTime}  
                                     isActive = {users.isActive}  
                                 />
-                             </Link>
+                             </div>
                         )
                     })
                 }

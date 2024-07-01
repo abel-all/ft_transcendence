@@ -7,7 +7,6 @@ import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'
 import Settings from "./pages/Settings/Settings"
 import Chat from './pages/Chat/Chat.jsx'
-import ChatComp from './pages/Chat/Chat_comp/ChatComp.jsx'
 import Game from './pages/Game/Game.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
@@ -31,15 +30,14 @@ function App() {
             <Route path="/2fa/congrats" element={<TwoFaAuthStep2 />} />
             <Route path="/2fa/backupcodes" element={<TwoFaAuthStep3 />} />
             <Route path="/about" element={<About />} />
-            {/* <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
-            <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} /> */}
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
+            <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
+            {/* <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} /> */}
             <Route path="/oauthcallback" element={<OauthCallBack />} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
             <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-            <Route path="/chatcomp" element={<RequireAuth><ChatComp /></RequireAuth>} />
             {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
             <Route path="/game" element={<Game />} />
             <Route path="*" element={<Page424 />} />

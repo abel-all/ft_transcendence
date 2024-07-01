@@ -5,6 +5,9 @@ import removefriend from "../../../assets/imgs/remove_friend.svg"
 import { useState } from 'react'
 import userIcon from "../../../assets/imgs/userprofile.svg"
 import close from "../../../assets/imgs/close.svg"
+import invite from "../../../assets/imgs/panding.svg"
+
+
 
 function FriendsList({className}) {
     const [toggle, setToggle] = useState(false);
@@ -35,6 +38,9 @@ function FriendsList({className}) {
                     </button>
                     <button onClick={() => HandelProp("Panding Requests")}>
                         <img className=" top-[20px] right-[138px] absolute w-[25.6px] h-[25.6px]" src={userIcon} alt=''/>
+                    </button>
+                    <button onClick={() => HandelProp("Invetations")}>
+                        <img className=" top-[20px] right-[178px] absolute w-[25.6px] h-[25.6px]" src={invite} alt=''/>
                     </button>
                 </div>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 h-[254px] overflow-auto">
@@ -93,6 +99,24 @@ function FriendsList({className}) {
                             }
                         </>
                     }
+                    {prop == "Invetations" &&
+                    <>                            
+                        {
+                            friendlist.map( (friend, index) => {
+                                return (
+                                    <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
+                                        <Friend
+                                            username =   {friend.username}
+                                            status =   {friend.status}
+                                            rank =   {friend.rank}
+                                            reason = "Invetations"
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
+                    </>
+                }
                 </div>
             </div>}
             {!toggle && <div className={"relative w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262] mt-[2px] mr-[2px]"  + (className ? ` ${className}` : '')}>

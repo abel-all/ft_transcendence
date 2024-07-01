@@ -30,10 +30,10 @@ function ChatHeader() {
                 </div>
             </div>
             <div className="Spaces grow"></div>
-            <img className=" w-[30px] mr-[7px] h-[30px] opacity-60 cursor-pointer" src={play} alt="" />
-            <div className=" cursor-pointer relative">
+            <Link to={`/game?playWith=${ChatContext.chatHeader.name}`}><img className=" w-[30px] mr-[7px] h-[30px] opacity-60 cursor-pointer" src={play} alt="" /></Link>
+            <div className=" cursor-pointer">
                 <img onClick={handelDisplay} className=" w-[30px] opacity-60 mr-[7px] h-[30px]" src={dots} alt=""/>
-                {display && <UserProfileBlock/>}
+                {display && <UserProfileBlock dplay={display} dhand={handelDisplay}/>}
             </div>
         </div>
     )

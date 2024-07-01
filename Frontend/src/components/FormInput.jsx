@@ -14,6 +14,8 @@ const validateInput = (type, value) => {
             return fieldReGex.emailReGex.test(value)
         case "Password":
             return fieldReGex.passwordReGex.test(value)
+        case "Your Message":
+            return /^[a-zA-Z0-9\s.,!?'"@#$%^&*()_+={}\[\]:;-]{10,1000}$/.test(value)
         default:
             return true
     }
@@ -39,7 +41,7 @@ function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
             {type === 'textarea' ? (
                 <textarea
                     onChange={handleInputChange}
-                    className={"bg-transparent outline-[0px] bg-white bg-opacity-[2%] w-full text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border max-h-[200px] focus:border-[#00FF00]"}
+                    className={"bg-transparent outline-[0px] bg-white bg-opacity-[2%] w-full text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border max-h-[200px] " + focusColor}
                     placeholder={placeHolder}
                     required
                 />

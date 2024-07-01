@@ -2,11 +2,14 @@ import LogoImage from '../../assets/imgs/logo.png'
 import Button from '../../components/Button.jsx';
 import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link} from 'react-router-dom'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FormInput from '../../components/FormInput.jsx'
 import Axios from 'axios'
 import {itemData, oAuthItems, signUpFieldProps, fieldReGex} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
+import LoaderOntop from "../../components/LoaderOntop.jsx";
+import { handle42OauthClick } from './handle42Oauth.jsx'
+import { handleGoogleOauthClick } from './handleGoogleOauth.jsx'
 
 function SignUp() {
 
@@ -14,6 +17,13 @@ function SignUp() {
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const [isloaded, setIsloaded] = useState(true);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsloaded(false)
+        }, 300);
+    }, [])
 
     const checkFieldInput = async () => {
         
@@ -22,26 +32,25 @@ function SignUp() {
             fieldReGex.usernameReGex.test(formValues["Username"]) &&
             fieldReGex.emailReGex.test(formValues["Email"]) &&
             fieldReGex.passwordReGex.test(formValues["Password"])) {
-                try {
-                    const response = await Axios.post("http://10.13.100.192:8000/api/signup/", JSON.stringify({
-                            first_name: formValues["First Name"],
-                            last_name: formValues["Last Name"],
-                            username: formValues.Username,
-                            email: formValues.Email,
-                            password: formValues.Password
-                        }), {
-                            headers: { 'Content-Type': 'application/json' },
-                            withCredentials: true
-                        }
-                    )
-                    if (response.status === 201)
+                await Axios.post("http://10.13.100.55:8090/api/signup/", {
+                    first_name: formValues["First Name"],
+                    last_name: formValues["Last Name"],
+                    username: formValues.Username,
+                    email: formValues.Email,
+                    password: formValues.Password
+                }).then(response => {
+                    console.log(response);
+                    if (response.status == 201 || response.status == 200 || response.status == 304) {
                         navigate("/signin", { replace: true });
-                    else
-                        setMessage("No Server Response [reason-from-backend]")
-                } catch (err) {
-                    if(!err?.response) { setMessage("No Server Response") }
-                    else { setMessage(!err?.response?.data?.reason) }
-                }
+                    }
+                    else {
+                        console.log(response.data.reason)
+                        setMessage("Please check you information, and try again")
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    setMessage("No Server Response")
+                })
             }
         else
             setMessage("Invalid Information")
@@ -54,6 +63,9 @@ function SignUp() {
         e.preventDefault();
         checkFieldInput();
     }
+
+    if (isloaded)
+        return <LoaderOntop />
 
     return (
         <div className='container flex flex-col justify-center items-center mx-auto relative'>
@@ -82,13 +94,12 @@ function SignUp() {
                     ))}
                 </div>
                 <div className="flex flex-col gap-[11px]">
-                    {oAuthItems.map((item, index) => (
-                        <OAuthButton
-                            key={index}
-                            image={item.image}
-                            imgTilte={item.imgTilte}
-                        />
-                    ))}
+                <div onClick={handle42OauthClick}>
+                    <OAuthButton image={oAuthItems[0].image} imgTilte={oAuthItems[0].imgTilte} />
+                </div>
+                <div onClick={handleGoogleOauthClick}>
+                    <OAuthButton image={oAuthItems[1].image} imgTilte={oAuthItems[1].imgTilte} />
+                </div>
                 </div>
                 <div className="footer flex justify-between text-[16px] pt-[29px] pb-[29px]">
                     <div className="pl-[10px] text-[rgba(238,238,238,0.51)] font-normal">Already Have An Account?</div>

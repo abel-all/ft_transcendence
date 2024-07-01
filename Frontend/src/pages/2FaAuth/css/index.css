@@ -1,0 +1,12 @@
+.setup-bg-gradient {
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(191, 223, 240, 1) 100%);
+}
+.congrats-bg-gradient {
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, #6BC5EE 100%);
+}
+.backup-bg-gradient {
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, #858AD4 100%);
+}

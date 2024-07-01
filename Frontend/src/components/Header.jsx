@@ -10,16 +10,19 @@ function Header(props) {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        try {
-            // api endpoint tal men ba3d 3ad nbedlohom
-            const response = await Axios.post("http://10.13.100.192:8000/api/logout/")
-            if (response.status === 200)
+        await Axios.post("http://10.13.100.55:8000/api/logout/")
+        .then(response => {
+            console.log(response);
+            if (response.status == 200 || response.status == 304) {
                 navigate("/", { replace: true });
-            else { console.log(response.data.reason) }
-        } catch (err) {
-            if(!err?.response) { console.log("No Server Response") }
-            else { alert(!err?.response?.data?.reason) }
-        }
+            }
+            else {
+                console.log(response.data.reason)
+            }
+        }).catch(err => {
+            console.log(err);
+            console.log("No Server Response")
+        })
     }
 
     return (

@@ -6,25 +6,29 @@ import Card from './Card.jsx'
 
 const cardsData = [
     {
-        bgColor: "bg-[#FFCD3E]",
+        route: "/",
+        bgColor: "playonline-bg-gradient",
         title: "Play Online",
         description: "Play vs a person of similar skill",
         image: imageone,
     },
     {
-        bgColor: "bg-[#6E9AC9]",
+        route: "/",
+        bgColor: "ai-bg-gradient",
         title: "Computer",
         description: "Challenge a bot from Easy to Master",
         image: imagetwo,
     },
     {
-        bgColor: "bg-[#92C2C8]",
+        route: "/",
+        bgColor: "playfriend-bg-gradient",
         title: "Play a Friend",
         description: "Invite a friend to a game of ping pong",
         image: imagethree,
     },
     {
-        bgColor: "bg-[#DC5E61]",
+        route: "/",
+        bgColor: "tournm-bg-gradient",
         title: "Tournaments",
         description: "Join an Arena where anyone can win",
         image: imagefour,
@@ -38,6 +42,7 @@ function CardContainer() {
             {cardsData.map((card, index) => (
                 <Card
                     key={index}
+                    route={card.route}
                     bgColor={card.bgColor}
                     title={card.title}
                     description={card.description}

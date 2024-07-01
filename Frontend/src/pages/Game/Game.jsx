@@ -2,7 +2,7 @@ import Header from "../../components/Header.jsx"
 import BottomNaveBar from "../../components/BottomNavBar.jsx"
 import CardContainer from "./CardContainer.jsx";
 import { useEffect, useState } from "react";
-import Loader from "../../components/Loader.jsx";
+import LoaderOntop from "../../components/LoaderOntop.jsx";
 
 
 function Game() {
@@ -12,17 +12,17 @@ function Game() {
     useEffect(() => {
         setTimeout(() => {
             setIsloaded(false)
-        }, 3000);
+        }, 500);
     }, [])
 
     return (
         <>
-        {isloaded ? <Loader /> : <div></div>}
-        <div className="container mx-auto px-[10px]">
-            <Header title="Game" activeSection="GametableIcon" />
-            <CardContainer/>
-            <BottomNaveBar activeSection="GametableIcon" />
-        </div>
+            {isloaded ? <LoaderOntop /> : <div></div>}
+            <div className="container mx-auto px-[10px]">
+                <Header title="Game" activeSection="GametableIcon" />
+                <CardContainer/>
+                <BottomNaveBar activeSection="GametableIcon" />
+            </div>
         </>
     )
 }

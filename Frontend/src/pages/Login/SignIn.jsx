@@ -3,37 +3,44 @@ import Button from '../../components/Button.jsx';
 import OAuthButton from '../../components/OAuthButton.jsx';
 import { Link } from 'react-router-dom'
 import FormInput from '../../components/FormInput.jsx'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Axios from 'axios'
 import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
+import LoaderOntop from "../../components/LoaderOntop.jsx";
 
 
 function SignIn() {
 
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
+    const [isloaded, setIsloaded] = useState(true);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsloaded(false)
+        }, 300);
+    }, [])
 
     const navigate = useNavigate();
     const checkFieldInput = async () => {
-        try {
-            const response = await Axios.post("http://10.13.100.192:8000/api/token/", JSON.stringify({
-                    username: formValues.Username,
-                    password: formValues.Password
-                }), {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+        
+        await Axios.post("http://10.13.100.55:8090/api/token/", {
+                username: formValues.Username,
+                password: formValues.Password
+            }).then(response => {
+                console.log(response);
+                if (response.status == 200 || response.status == 304) {
+                    navigate("/game", { replace: true });
                 }
-            )
-            if (response?.status === 200)
-                navigate("/game", { replace: true });
-            else
-                setMessage(response.data.reason)
-        } catch (err) {
-            // if(err.response.status === 404) { setMessage("No Server Response") }
-            if(err.response.status === 404) { setMessage("No Server Response") }
-            else { setMessage(err.response.data.reason) }
-        }
+                else {
+                    console.log(response.data.reason)
+                    setMessage("Please check you information, and try again")
+                }
+            }).catch(err => {
+                console.log(err);
+                setMessage("No Server Response")
+            })
     }
     const handleUserClick = () => {
         checkFieldInput();
@@ -43,6 +50,9 @@ function SignIn() {
         e.preventDefault();
         checkFieldInput();
     }
+
+    if (isloaded)
+        return <LoaderOntop />
 
     return (
         <div className='container flex flex-col justify-center items-center mx-auto relative'>

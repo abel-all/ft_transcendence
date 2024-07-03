@@ -7,23 +7,23 @@ import LoaderOntop from "../../components/LoaderOntop.jsx";
 
 function Game() {
 
-    const [isloaded, setIsloaded] = useState(true);
+    const [isLoaded, setIsLoaded] = useState(true);
 
     useEffect(() => {
         setTimeout(() => {
-            setIsloaded(false)
+            setIsLoaded(false)
         }, 500);
     }, [])
 
+    if (isLoaded)
+        return <LoaderOntop />
+
     return (
-        <>
-            {isloaded ? <LoaderOntop /> : <div></div>}
-            <div className="container mx-auto px-[10px]">
-                <Header title="Game" activeSection="GametableIcon" />
-                <CardContainer/>
-                <BottomNaveBar activeSection="GametableIcon" />
-            </div>
-        </>
+        <div className="container mx-auto px-[10px]">
+            <Header title="Game" activeSection="GametableIcon" />
+            <CardContainer/>
+            <BottomNaveBar activeSection="GametableIcon" />
+        </div>
     )
 }
 

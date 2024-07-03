@@ -8,6 +8,7 @@ import SignUp from './pages/Login/SignUp.jsx'
 import Settings from "./pages/Settings/Settings"
 import Chat from './pages/Chat/Chat.jsx'
 import Game from './pages/Game/Game.jsx'
+import PlayOnline from './pages/Game/PlayOnline.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
 import TwoFaAuthStep1 from './pages/2FaAuth/TwoFaAuthStep1.jsx'
@@ -38,8 +39,10 @@ function App() {
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
             <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-            {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
-            <Route path="/game" element={<Game />} />
+            {/* <Route path="/chat" element={<Chat />} /> */}
+            <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+            {/* <Route path="game" element={<Game />} /> */}
+            <Route path="game/play/online" element={<PlayOnline />} />
             <Route path="*" element={<Page424 />} />
           </Routes>
         </ContextProvider>

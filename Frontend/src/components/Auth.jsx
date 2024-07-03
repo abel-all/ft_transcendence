@@ -9,14 +9,18 @@ export const ContextProvider = ({ children }) => {
 
     const isAuthenticated = async () => {
         // try {
-        await Axios.post("http://10.13.100.55:8090/api/token/")
+        await Axios.get("http://10.13.100.18:8800/api/token/", {
+            withCredentials:true
+        })
         .then(async response => {
             console.log(response);
             if (response.status == 200 || response.status == 304) {
                 setIsAuth(true);
             }
             else if (response.status == 401) {
-                await Axios.post("http://10.13.100.55:8090/api/token/refresh/")
+                await Axios.get("http://10.13.100.18:8800/api/token/refresh/", {
+                    withCredentials:true
+                })
                 .then(response => {
                     console.log(response);
                     if (response.status == 200) {

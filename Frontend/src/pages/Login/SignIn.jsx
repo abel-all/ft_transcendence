@@ -25,9 +25,12 @@ function SignIn() {
     const navigate = useNavigate();
     const checkFieldInput = async () => {
         
-        await Axios.post("http://10.13.100.55:8090/api/token/", {
+        await Axios.post("http://10.13.100.18:8800/api/token/", {
                 username: formValues.Username,
                 password: formValues.Password
+            },
+            {
+                credentials: 'include',
             }).then(response => {
                 console.log(response);
                 if (response.status == 200 || response.status == 304) {

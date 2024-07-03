@@ -10,3 +10,25 @@
 .tournm-bg-gradient {
     background: #DC5E61;
 }
+
+/* clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); */
+
+.top-person,
+.bottom-person {
+    clip-path: polygon(10% 0%, 100% 0%, 75% 100%, 0% 100%);
+    background-image: url(https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.spiner {
+    border-width: 2px;
+    border-color: black  transparent transparent transparent;
+    animation: spin .5s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

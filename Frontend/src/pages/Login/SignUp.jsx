@@ -32,12 +32,14 @@ function SignUp() {
             fieldReGex.usernameReGex.test(formValues["Username"]) &&
             fieldReGex.emailReGex.test(formValues["Email"]) &&
             fieldReGex.passwordReGex.test(formValues["Password"])) {
-                await Axios.post("http://10.13.100.55:8090/api/signup/", {
+                await Axios.post("http://10.13.100.18:8800/api/signup/", {
                     first_name: formValues["First Name"],
                     last_name: formValues["Last Name"],
                     username: formValues.Username,
                     email: formValues.Email,
                     password: formValues.Password
+                }, {
+                    credentials: 'include',
                 }).then(response => {
                     console.log(response);
                     if (response.status == 201 || response.status == 200 || response.status == 304) {

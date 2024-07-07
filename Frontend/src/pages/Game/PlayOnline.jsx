@@ -1,4 +1,4 @@
-// import MatchMaking from "./MatchMaking.jsx";
+import MatchMaking from "./MatchMaking.jsx";
 import { useEffect, useRef, useState } from "react"
 import LoaderOntop from "../../components/LoaderOntop.jsx";
 import Header from "../../components/Header.jsx"
@@ -49,12 +49,12 @@ const PlayOnline = () => {
     return (
         <div className="h-[100vh] container mx-auto px-[10px]">
             <Header title="Online Game" activeSection="GametableIcon" />
-            {/* <MatchMaking /> */}
-            <div className="w-full sm:h-[calc(100%-105px)] sm:flex sm:flex-col sm:justify-center sm:items-center">
+            <MatchMaking />
+            {/* <div className="w-full sm:h-[calc(100%-105px)] sm:flex sm:flex-col sm:justify-center sm:items-center">
                 <canvas ref={ref} id="game-canva" className="w-full max-w-[900px] h-[600px] bg-[#1F1F1F] border border-[#626262] rounded-[13px]">
 
                 </canvas>
-            </div>
+            </div> */}
             <BottomNaveBar activeSection="GametableIcon" />
         </div>
     )

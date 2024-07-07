@@ -12,7 +12,7 @@ const MatchMakingCard = (props) => {
         image = avatarIcon;
         hideSpiner = "";
         bg = "bg-white";
-        border=""
+        border = ""
     }
     return (
         <div className="flex flex-col gap-[5px] w-[130px]">

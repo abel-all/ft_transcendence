@@ -22,7 +22,7 @@ function About() {
         <div className="container mx-auto px-[10px]">
             <Navbar />
             <AboutContent />
-            <Cards />
+            <Cards />   
         </div>
     )
 }

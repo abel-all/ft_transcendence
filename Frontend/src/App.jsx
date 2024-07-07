@@ -31,13 +31,13 @@ function App() {
             <Route path="/2fa/backupcodes" element={<TwoFaAuthStep3 />} />
             <Route path="/about" element={<About />} />
             <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
-            <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
+            <Route path="/signup" element={<SignUp />} />
             {/* <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} /> */}
             <Route path="/oauthcallback" element={<OauthCallBack />} />
-            <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
-            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
-            <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/chat" element={<Chat />} />
             {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
             <Route path="/game" element={<Game />} />
             <Route path="*" element={<Page424 />} />

@@ -10,7 +10,7 @@ const MatchMaking = () => {
     useEffect(() => {
         setTimeout(() => {
             setAvatar(false)
-        }, 8000);
+        }, 5000);
     }, [])
 
     return (

@@ -6,7 +6,7 @@ import Card from './Card.jsx'
 
 const cardsData = [
     {
-        route: "/",
+        route: "play/online",
         bgColor: "playonline-bg-gradient",
         title: "Play Online",
         description: "Play vs a person of similar skill",

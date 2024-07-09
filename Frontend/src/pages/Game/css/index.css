@@ -13,17 +13,18 @@
 
 /* clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); */
 
-.top-person,
-.bottom-person {
-    clip-path: polygon(10% 0%, 100% 0%, 75% 100%, 0% 100%);
-    background-image: url(https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg);
-    background-repeat: no-repeat;
-    background-size: contain;
+.main-color-gradient {
+    background: linear-gradient(180deg, #676767 0%, rgba(22,28,32,1) 100%);
 }
 
 .spiner {
     border-width: 2px;
     border-color: black  transparent transparent transparent;
+    animation: spin .5s linear infinite;
+}
+.spiner-settings {
+    border-width: 2px;
+    border-color: #ffffff  transparent transparent transparent;
     animation: spin .5s linear infinite;
 }
 

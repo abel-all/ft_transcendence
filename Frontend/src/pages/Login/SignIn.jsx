@@ -25,21 +25,15 @@ function SignIn() {
     const navigate = useNavigate();
     const checkFieldInput = async () => {
         
-        await Axios.post("http://10.13.100.18:8800/api/token/", {
-                username: formValues.Username,
-                password: formValues.Password
-            },
-            {
-                credentials: 'include',
-            }).then(response => {
-                console.log(response);
-                if (response.status == 200 || response.status == 304) {
-                    navigate("/game", { replace: true });
-                }
-                else {
-                    console.log(response.data.reason)
-                    setMessage("Please check you information, and try again")
-                }
+        await Axios.post("https://www.fttran.tech/api/token/", {
+            username: formValues.Username,
+            password: formValues.Password
+        },
+        {
+            withCredentials:true,
+        }).then(() => {
+                console.log("ooooo");
+                navigate("/game", { replace: true });
             }).catch(err => {
                 console.log(err);
                 setMessage("No Server Response")

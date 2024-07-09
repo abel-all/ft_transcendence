@@ -8,8 +8,7 @@ export const ContextProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(null);
 
     const isAuthenticated = async () => {
-        // try {
-        await Axios.get("http://10.13.100.18:8800/api/token/", {
+        await Axios.post("https://www.fttran.tech/api/token/", {
             withCredentials:true
         })
         .then(async response => {
@@ -17,35 +16,31 @@ export const ContextProvider = ({ children }) => {
             if (response.status == 200 || response.status == 304) {
                 setIsAuth(true);
             }
-            else if (response.status == 401) {
-                await Axios.get("http://10.13.100.18:8800/api/token/refresh/", {
+        })
+        .catch(async (err) => {
+            if (err.response.status == 401) {
+                await Axios.post("https://www.fttran.tech/api/token/refresh/", {
                     withCredentials:true
                 })
                 .then(response => {
                     console.log(response);
-                    if (response.status == 200) {
-                        setIsAuth(true);
-                    }
-                    else
-                        setIsAuth(false);
+                    setIsAuth(true);
                 }).catch(err => {
-                    console.log(err);
                     setIsAuth(false);
+                    console.log(err);
                 })
             }
             else {
                 setIsAuth(false);
             }
-        })
-        .catch(err => {
-            console.log("this err : ");
-            console.log(err.response.status);
-            console.log(err);
+            // console.log("this err : ");
+            // console.log(err.response.status);
+            // console.log(err);
             // if (err.response.status == 400) {
             //     setIsAuth(true);
             // }
             // else
-            setIsAuth(false);
+            // setIsAuth(false);
         })
     }
 

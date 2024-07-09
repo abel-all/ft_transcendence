@@ -32,23 +32,24 @@ function SignUp() {
             fieldReGex.usernameReGex.test(formValues["Username"]) &&
             fieldReGex.emailReGex.test(formValues["Email"]) &&
             fieldReGex.passwordReGex.test(formValues["Password"])) {
-                await Axios.post("http://10.13.100.18:8800/api/signup/", {
+                console.log("yyyyy");
+                await Axios.post("https://www.fttran.tech/api/signup/", {
                     first_name: formValues["First Name"],
                     last_name: formValues["Last Name"],
                     username: formValues.Username,
                     email: formValues.Email,
                     password: formValues.Password
-                }, {
-                    credentials: 'include',
-                }).then(response => {
-                    console.log(response);
-                    if (response.status == 201 || response.status == 200 || response.status == 304) {
-                        navigate("/signin", { replace: true });
-                    }
-                    else {
-                        console.log(response.data.reason)
-                        setMessage("Please check you information, and try again")
-                    }
+                },
+                {
+                    withCredentials:true,
+                }).then(() => {
+                    navigate("/signin", { replace: true });
+                    // if (response.status == 201 || response.status == 200 || response.status == 304) {
+                    // }
+                    // else {
+                    //     console.log(response.data.reason)
+                    //     setMessage("Please check you information, and try again")
+                    // }
                 }).catch(err => {
                     console.log(err);
                     setMessage("No Server Response")

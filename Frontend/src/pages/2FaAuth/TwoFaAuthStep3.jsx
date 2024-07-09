@@ -1,6 +1,8 @@
 import TwoFaCard from './TwoFaCard.jsx'
 import backupImg from '../../assets/imgs/backup.svg'
-
+import { useEffect, useState } from 'react'
+import Axios from 'axios'
+import LoaderOnTop from '../../components/LoaderOntop.jsx'
 
 const TwoFaAuthStep4 = () => {
 
@@ -12,6 +14,29 @@ const TwoFaAuthStep4 = () => {
         {"number1": 440325, "number2": 209171},
         {"number1": 749486, "number2": 713701}
     ]
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        const fetchBackUpCodes = async () => {
+            await Axios.get("https://www.fttran.tech/api/2fa/backup-codes/",
+            {
+                withCredentials:true,
+            })
+            .then(response => {
+                setIsLoading(false);
+                console.log(response);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                console.log("Invalid request, please try again");
+            })
+        }
+        fetchBackUpCodes();
+    }, []);
+
+    if (isLoading)
+        return <LoaderOnTop />
 
     return (
         <div className="container mx-auto border-[#213135] border-x-[3px] max-sm:border-x-0">

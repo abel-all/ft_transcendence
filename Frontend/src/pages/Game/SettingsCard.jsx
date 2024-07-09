@@ -80,8 +80,6 @@ const ChooseSectionHandler = (name, path) => {
                     Continue To Play
                 </Link>
             )
-        default :
-            break;
     }
 }
 

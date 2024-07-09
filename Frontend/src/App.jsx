@@ -17,6 +17,10 @@ import TwoFaAuthStep3 from './pages/2FaAuth/TwoFaAuthStep3.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DontRequireAuth from './components/DontRequireAuth.jsx'
 import OauthCallBack from './pages/Login/OauthCallBack.jsx'
+import Search from './pages/Search/Search.jsx'
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 function App() {
 
@@ -35,6 +39,7 @@ function App() {
             <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
             {/* <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} /> */}
+            <Route path="/search" element={<Search />} />
             <Route path="/oauthcallback" element={<OauthCallBack />} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />

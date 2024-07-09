@@ -10,7 +10,7 @@ function Header(props) {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await Axios.post("http://10.13.100.18:8800/api/logout/")
+        await Axios.post("https://www.fttran.tech/api/logout/")
         .then(response => {
             console.log(response);
             if (response.status == 200 || response.status == 304) {

@@ -3,21 +3,21 @@
 }
 
 .ChatBody::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: rgb(45 60 63);
 }
 
 .ChatBody::-webkit-scrollbar-thumb {
-    background: rgb(45 60 63);
+    background: #f1f1f1;
 }
 
-.inboxField::-webkit-scrollbar {
+.HolderOfusersChat::-webkit-scrollbar {
     width: 2px;
 }
 
-.inboxField::-webkit-scrollbar-track {
+.HolderOfusersChat::-webkit-scrollbar-track {
     background: rgb(45 60 63);
 }
 
-.inboxField::-webkit-scrollbar-thumb {
+.HolderOfusersChat::-webkit-scrollbar-thumb {
     background: #f1f1f1;
 }

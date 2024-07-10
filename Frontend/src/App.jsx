@@ -20,7 +20,7 @@ import OauthCallBack from './pages/Login/OauthCallBack.jsx'
 import Search from './pages/Search/Search.jsx'
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 function App() {
 
@@ -36,17 +36,18 @@ function App() {
             <Route path="/2fa/backupcodes" element={<TwoFaAuthStep3 />} />
             <Route path="/about" element={<About />} />
             <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
-            <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
+            <Route path="/signup" element={<SignUp />} />
             {/* <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} /> */}
             <Route path="/search" element={<Search />} />
             <Route path="/oauthcallback" element={<OauthCallBack />} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
-            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
-            <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-            {/* <Route path="/chat" element={<Chat />} /> */}
-            <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
-            {/* <Route path="game" element={<Game />} /> */}
+            {/* <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} /> */}
+            <Route path="/profile" element={<Profile />} />
+            {/* <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} /> */}
+            <Route path="/chat" element={<Chat />} />
+            {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
+            <Route path="game" element={<Game />} />
             <Route path="game/play/online" element={<PlayOnline />} />
             <Route path="*" element={<Page424 />} />
           </Routes>

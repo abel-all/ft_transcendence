@@ -20,7 +20,7 @@ import OauthCallBack from './pages/Login/OauthCallBack.jsx'
 import Search from './pages/Search/Search.jsx'
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 function App() {
 

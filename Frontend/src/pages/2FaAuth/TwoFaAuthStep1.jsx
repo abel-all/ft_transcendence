@@ -58,9 +58,9 @@ const TwoFaAuthStep2 = () => {
             withCredentials:true,
         })
         .then(response => {
-            setImage(response.data.image);
+            console.log(response.data.qr_code);
+            setImage(response.data.qr_code);
             setIsEnable(false)
-            console.log(response);
         })
         .catch(() => {
             setIsEnable(true);
@@ -85,7 +85,7 @@ const TwoFaAuthStep2 = () => {
                     <div className="flex flex-col gap-[15px]">
                         <div className="text-white w-full max-w-[400px]">Great! Now let's get started...</div>
                         <div className="text-white w-full max-w-[400px] opacity-60">Step 1: Visit the App Store to get an authenticator app like Google Authenticator or Authy, then follow the app's instructions to set up an account with them.<br />Step 2: Use your authenticator app to scan the barcode below or get a token to enter manually instead.</div>
-                        <img className="w-[200px]" src={image} alt="" />
+                        <img className="w-[200px]" src={`data:image/png;base64,${image}`} alt="" />
                         <form onSubmit={handleSubmit}>
                             <input
                                 onChange={handleInputChange}

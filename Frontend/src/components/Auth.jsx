@@ -13,9 +13,7 @@ export const ContextProvider = ({ children }) => {
         })
         .then(async response => {
             console.log(response);
-            if (response.status == 200 || response.status == 304) {
                 setIsAuth(true);
-            }
         })
         .catch(async (err) => {
             if (err.response.status == 401) {
@@ -33,14 +31,6 @@ export const ContextProvider = ({ children }) => {
             else {
                 setIsAuth(false);
             }
-            // console.log("this err : ");
-            // console.log(err.response.status);
-            // console.log(err);
-            // if (err.response.status == 400) {
-            //     setIsAuth(true);
-            // }
-            // else
-            // setIsAuth(false);
         })
     }
 

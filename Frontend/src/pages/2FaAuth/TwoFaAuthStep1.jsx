@@ -27,7 +27,7 @@ const TwoFaAuthStep2 = () => {
         setIsLoading(true);
 
         if (/^[0-9]{6,6}$/.test(e.target.digitcode.value)) {
-            await Axios.get("https://www.fttran.tech/api/2fa/verify/", {
+            await Axios.post("https://www.fttran.tech/api/2fa/verify/", {
                 otp_code: e.target.digitcode.value,
             },
             {

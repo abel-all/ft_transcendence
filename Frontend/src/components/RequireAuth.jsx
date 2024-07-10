@@ -10,20 +10,34 @@ const RequireAuth = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        let isMounted = true;
         const authIsChecked = async () => {
-            await auth.isAuthenticated();
-            setLoading(false);
+            if (isMounted) {
+                await auth.isAuthenticated();
+                setLoading(false);
+            }
         };
         authIsChecked();
-    }, [auth])
-
-    useEffect(() => {
-        if (!loading) {
-            if (!auth.isAuth)
-            navigate("/signin", {replace: true})
+        
+        return () => {
+            isMounted = false;
         }
-
+    }, [auth])
+    
+    useEffect(() => {
+        let isMounted = true;
+        if (!loading) {
+            if (isMounted) {
+                if (!auth.isAuth)
+                    navigate("/signin", {replace: true})
+            }
+        }
+    
+        return () => {
+            isMounted = false;
+        }
     })
+    
     if (loading)
         return <Loader />
     return children;

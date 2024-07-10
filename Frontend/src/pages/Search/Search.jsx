@@ -18,7 +18,7 @@ const Search = () => {
 
     return (
         <div className="container mx-auto px-[10px]">
-            <Header title="Game" activeSection="GametableIcon" />
+            <Header title="Search" activeSection="" />
             <SearchEngine />
             <BottomNaveBar activeSection="GametableIcon" />
         </div>

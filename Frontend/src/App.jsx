@@ -14,6 +14,7 @@ import { ContextProvider } from './components/Auth.jsx'
 import TwoFaAuthStep1 from './pages/2FaAuth/TwoFaAuthStep1.jsx'
 import TwoFaAuthStep2 from './pages/2FaAuth/TwoFaAuthStep2.jsx'
 import TwoFaAuthStep3 from './pages/2FaAuth/TwoFaAuthStep3.jsx'
+import TwoFaAuthVerify from './pages/2FaAuth/TwoFaAuthVerify.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DontRequireAuth from './components/DontRequireAuth.jsx'
 import OauthCallBack from './pages/Login/OauthCallBack.jsx'
@@ -34,6 +35,7 @@ function App() {
             <Route path="/2fa/setup" element={<TwoFaAuthStep1 />} />
             <Route path="/2fa/congrats" element={<TwoFaAuthStep2 />} />
             <Route path="/2fa/backupcodes" element={<TwoFaAuthStep3 />} />
+            <Route path="/2fa/verify" element={<TwoFaAuthVerify />} />
             <Route path="/about" element={<About />} />
             <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
             <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />

@@ -15,6 +15,7 @@ function SignIn() {
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
     const [isloaded, setIsloaded] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setTimeout(() => {
@@ -22,7 +23,6 @@ function SignIn() {
         }, 300);
     }, [])
 
-    const navigate = useNavigate();
     const checkFieldInput = async () => {
         
         await Axios.post("https://www.fttran.tech/api/token/", {
@@ -31,13 +31,15 @@ function SignIn() {
         },
         {
             withCredentials:true,
-        }).then(() => {
-                console.log("ooooo");
-                navigate("/game", { replace: true });
-            }).catch(err => {
-                console.log(err);
-                setMessage("No Server Response")
-            })
+        }).then((response) => {
+            if (response.data.is_2fa_enabled) // is 2fa enable must redirect them to 2fa page
+                navigate("/2fa/verify");
+            else
+                navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
+        }).catch(err => {
+            console.log(err);
+            setMessage("No Server Response")
+        })
     }
     const handleUserClick = () => {
         checkFieldInput();

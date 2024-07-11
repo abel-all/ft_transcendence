@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 
-const TwoFaAuthStep4 = () => {
+const TwoFaAuthStep3 = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [backupCodes, setBackupCodes] = useState([]);
@@ -61,4 +61,4 @@ const TwoFaAuthStep4 = () => {
     )
 }
 
-export default TwoFaAuthStep4
+export default TwoFaAuthStep3

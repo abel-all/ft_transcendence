@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom';
 import TwoFaCard from './TwoFaCard.jsx'
 import congratsImg from '../../assets/imgs/congrats.svg'
+import { useTwoFaContext } from "./TwoFaContext"
 
-
-const TwoFaAuthStep3 = () => {
-
+const TwoFaAuthStep2 = () => {
+    
+    const TwoFaContext = useTwoFaContext();
+    
+    const clickHandler = () => {
+        TwoFaContext.setHandler("step2", false);
+        TwoFaContext.setHandler("step3", true);
+    }
     return (
         <div className="container mx-auto border-[#213135] border-x-[3px] max-sm:border-x-0">
             <div className="h-[100vh] flex flex-col justify-between">
@@ -12,7 +17,7 @@ const TwoFaAuthStep3 = () => {
                     <div className="text-[#FCC447] w-full max-w-[400px] text-[20px] font-semibold">You're two-factor authenticated!</div>
                     <div className="text-white w-full max-w-[400px]">Next time you log in, you'll need to use your password and authentication code.</div>
                     <div className="text-white w-full max-w-[400px]">In case you lose your authentication code, we also provide you with 
-                        <Link className="text-[#21c4ff]" to="/2fa/backupcodes" > backup codes</Link>.</div>
+                        <span onClick={clickHandler} className="text-[#21c4ff]" to="/2fa/backupcodes" > backup codes</span>.</div>
                 </div>
                 <TwoFaCard bgColor="congrats-bg-gradient" image={congratsImg} title="Congrats"/>
             </div>
@@ -20,4 +25,4 @@ const TwoFaAuthStep3 = () => {
     )
 }
 
-export default TwoFaAuthStep3
+export default TwoFaAuthStep2

@@ -11,9 +11,7 @@ import Game from './pages/Game/Game.jsx'
 import PlayOnline from './pages/Game/PlayOnline.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
-import TwoFaAuthStep1 from './pages/2FaAuth/TwoFaAuthStep1.jsx'
-import TwoFaAuthStep2 from './pages/2FaAuth/TwoFaAuthStep2.jsx'
-import TwoFaAuthStep3 from './pages/2FaAuth/TwoFaAuthStep3.jsx'
+import SetupTwoFa from './pages/2FaAuth/SetupTwoFa.jsx'
 import TwoFaAuthVerify from './pages/2FaAuth/TwoFaAuthVerify.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DontRequireAuth from './components/DontRequireAuth.jsx'
@@ -32,23 +30,20 @@ function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/2fa/setup" element={<TwoFaAuthStep1 />} />
-            <Route path="/2fa/congrats" element={<TwoFaAuthStep2 />} />
-            <Route path="/2fa/backupcodes" element={<TwoFaAuthStep3 />} />
-            <Route path="/2fa/verify" element={<TwoFaAuthVerify />} />
+            <Route path="/2fa/setup" element={<RequireAuth><SetupTwoFa /></RequireAuth>} />
+            <Route path="/2fa/verify" element={<RequireAuth><TwoFaAuthVerify /></RequireAuth>} />
             <Route path="/about" element={<About />} />
             <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
             <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
             {/* <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} /> */}
-            <Route path="/search" element={<Search />} />
+            <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} />
             <Route path="/oauthcallback" element={<OauthCallBack />} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
-            <Route path="/profile" element={<Profile />} />
-            {/* <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} /> */}
+            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
             <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
             <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
-            <Route path="game/play/online" element={<PlayOnline />} />
+            <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
             <Route path="*" element={<Page424 />} />
           </Routes>
         </ContextProvider>

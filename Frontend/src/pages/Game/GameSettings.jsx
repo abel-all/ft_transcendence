@@ -27,7 +27,6 @@ const GameSettings = () => {
                 name="last" 
                 title="Congratulations, you set up settings successfully."
                 buttonHidden="hidden"
-                path="/game"
             />}
         </div>
     )

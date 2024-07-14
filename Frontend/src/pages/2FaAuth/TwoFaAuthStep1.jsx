@@ -1,18 +1,18 @@
 import { useState } from "react"
 import Axios from 'axios'
-import { useNavigate } from 'react-router-dom';
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import TwoFaCard from './TwoFaCard.jsx'
 import setupImg from '../../assets/imgs/setup.svg'
+import { useTwoFaContext } from "./TwoFaContext"
 
-const TwoFaAuthStep2 = () => {
+const TwoFaAuthStep1 = () => {
 
     const [message, setMessage] = useState("");
     const [focusColor, setFocusColor] = useState("focus:border-[#FF0000]")
     const [isLoading, setIsLoading] = useState(false);
     const [isEnable, setIsEnable] = useState(true);
     const [image, setImage] = useState(null);
-    const navigate = useNavigate();
+    const TwoFaContext = useTwoFaContext();
 
     const handleInputChange = (e) => {
 
@@ -27,15 +27,15 @@ const TwoFaAuthStep2 = () => {
         setIsLoading(true);
 
         if (/^[0-9]{6,6}$/.test(e.target.digitcode.value)) {
-            await Axios.get("https://www.fttran.tech/api/2fa/verify/", {
+            await Axios.post("https://www.fttran.tech/api/2fa/verify/", {
                 otp_code: e.target.digitcode.value,
             },
             {
                 withCredentials:true,
             })
-            .then(response => {
-                console.log(response);
-                navigate("/2fa/congrats");
+            .then(() => {
+                TwoFaContext.setHandler("step1", false);
+                TwoFaContext.setHandler("step2", true);
             })
             .catch(() => {
                 setIsLoading(false);
@@ -105,4 +105,4 @@ const TwoFaAuthStep2 = () => {
     )
 }
 
-export default TwoFaAuthStep2
+export default TwoFaAuthStep1

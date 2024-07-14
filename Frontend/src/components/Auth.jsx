@@ -8,18 +8,16 @@ export const ContextProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(null);
 
     const isAuthenticated = async () => {
-        await Axios.post("https://www.fttran.tech/api/token/", {
+        await Axios.get("https://www.fttran.tech/api/token/", {
             withCredentials:true
         })
         .then(async response => {
             console.log(response);
-            if (response.status == 200 || response.status == 304) {
-                setIsAuth(true);
-            }
+            setIsAuth(true);
         })
         .catch(async (err) => {
             if (err.response.status == 401) {
-                await Axios.post("https://www.fttran.tech/api/token/refresh/", {
+                await Axios.get("https://www.fttran.tech/api/token/refresh/", {
                     withCredentials:true
                 })
                 .then(response => {
@@ -33,14 +31,6 @@ export const ContextProvider = ({ children }) => {
             else {
                 setIsAuth(false);
             }
-            // console.log("this err : ");
-            // console.log(err.response.status);
-            // console.log(err);
-            // if (err.response.status == 400) {
-            //     setIsAuth(true);
-            // }
-            // else
-            // setIsAuth(false);
         })
     }
 

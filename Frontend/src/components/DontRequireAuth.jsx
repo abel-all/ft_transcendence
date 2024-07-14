@@ -9,20 +9,34 @@ const DontRequireAuth = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        let isMounted = true;
         const authIsChecked = async () => {
-            await auth.isAuthenticated();
-            setLoading(false);
+            if (isMounted) {
+                await auth.isAuthenticated();
+                setLoading(false);
+            }
         };
         authIsChecked();
-    }, [auth])
 
-    useEffect(() => {
-        if (!loading) {
-            if (auth.isAuth)
-            navigate("/game", {replace: true})
+        return () => {
+            isMounted = false;
         }
+    }, [auth])
+    
+    useEffect(() => {
+        let isMounted = true;
+        if (!loading) {
+            if (isMounted) {
+                if (auth.isAuth)
+                    navigate("/game", {replace: true})
+            }
+        }
+        
+        return () => {
+            isMounted = false;
+        }
+    }, [loading, auth, navigate])
 
-    })
     if (loading)
         return <Loader />
     return children;

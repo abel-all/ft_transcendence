@@ -7,7 +7,6 @@ import MapImg from "../../components/MapImg"
 import PaddleImg from "../../components/PaddleImg"
 import { useGameSettings } from "./GameSettingsContext"
 import { useEffect, useState } from "react"
-import { Link } from 'react-router-dom'
 import './css/index.css'
 
 
@@ -32,7 +31,7 @@ const scoreData = [
     {title: "Fifteen", image: fifteenImg, value: "Fifteen"},
 ]
 
-const ChooseSectionHandler = (name, path) => {
+const ChooseSectionHandler = (name) => {
 
     const gameContext = useGameSettings();
 
@@ -50,6 +49,11 @@ const ChooseSectionHandler = (name, path) => {
         gameContext.addsettingsData(e.currentTarget.dataset.value)
         gameContext.setHandler("score", false);
         gameContext.setHandler("last", true);
+    }
+    
+    const lastClickHandler = () => {
+        gameContext.setHandler("last", false);
+        gameContext.setHandler("game", true);
     }
 
     switch(name) {
@@ -76,17 +80,17 @@ const ChooseSectionHandler = (name, path) => {
             )))
         case "last":
             return (
-                <Link to={path} className='main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]'>
+                <button onClick={lastClickHandler} className='main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]'>
                     Continue To Play
-                </Link>
+                </button>
             )
     }
 }
 
-const SettingsCard = ({ name, title, description="", buttonHidden="", path=""}) => {
+const SettingsCard = ({ name, title, description="", buttonHidden="" }) => {
 
     const [isLoaded, setIsLoaded] = useState(true);
-    const chooseSectionData = ChooseSectionHandler(name, path);
+    const chooseSectionData = ChooseSectionHandler(name);
 
     useEffect(() => {
         setTimeout(() => {

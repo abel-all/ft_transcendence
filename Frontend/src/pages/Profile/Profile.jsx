@@ -16,12 +16,12 @@ function Profile() {
                 <Header title="Profile" activeSection="UserIcon" />
                 <Userbg/>
                 <Badge/>
-                <div className='w-full flex flex-col lg:flex-row gap-2'>
+                <div className='w-full flex flex-col mt-[0.5rem] lg:flex-row gap-2'>
                     <div className='flex flex-col w-full gap-2'>
                             <Statistics className="w-full" />
-                            <FriendsList className="w-full" />
+                            <FriendsList className="w-full rounded-none lg:rounded-bl-lg" />
                     </div>
-                    <MatchHistory className="grow w-full"/>
+                    <MatchHistory className="grow w-full lg:rounded-br-lg lg:rounded-none rounded-b-lg"/>
                 </div>
                 <ProfileNavBottom/>
             </div>

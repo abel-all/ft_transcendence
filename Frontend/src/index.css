@@ -113,24 +113,24 @@ body {
     width: 2px;
 }
 
-.MatchHistor::-webkit-scrollbar {
-  width: 2px;
-}
-
 .friends-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.MatchHistor::-webkit-scrollbar {
-    background: #f1f1f1;
+    background: rgb(45 60 63);
 }
 
 .friends-list::-webkit-scrollbar-thumb {
+    background: #f1f1f1;
+}
+
+.HistoryContainer::-webkit-scrollbar {
+    width: 2px;
+}
+
+.HistoryContainer::-webkit-scrollbar-track {
     background: rgb(45 60 63);
 }
 
-.MatchHistor::-webkit-scrollbar{
-    background: rgb(45 60 63);
+.HistoryContainer::-webkit-scrollbar-thumb{
+    background: #f1f1f1;
 }
 
 

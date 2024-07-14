@@ -2,7 +2,7 @@
 
 function Statistics({className}) {
     return (
-        <div className={"w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262] mt-[4px] mr-[2px]" + (className ? ` ${className}` : '')}>
+        <div className={"w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]" + (className ? ` ${className}` : '')}>
             <div className="Title text-[20px] md:text-[30px] font-[500] font-Outfit  text-[#FFFFFF] opacity-80 block mb-[25px]"> Statistics</div>
             <div className="flex flex-row text-[#FFFFFF] opacity-80">
                 <div className="pl-[35px] basis-1/2">

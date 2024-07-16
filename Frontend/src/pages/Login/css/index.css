@@ -1,0 +1,4 @@
+.input-gradient {
+    background: #161c20;
+    background: linear-gradient(0deg, #161c20 0%, #273036 100%);
+}

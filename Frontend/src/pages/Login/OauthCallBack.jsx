@@ -11,14 +11,11 @@ const OauthCallBack = () => {
         let isMounted = true;
 
         const check2Fa = async () => {
-            await Axios.post("https://www.fttran.tech/api/token/", // must edited
+            await Axios.post("https://www.fttran.tech/api/GnrToken/", // must edited
             {
                 withCredentials:true,
-            }).then((response) => {
+            }).then(() => {
                 if (isMounted) {
-                    if (response.data.is_2fa_enabled) // is 2fa enable must redirect them to 2fa page
-                        navigate("/2fa/verify");
-                    else
                         navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
                 }
             }).catch(() => {

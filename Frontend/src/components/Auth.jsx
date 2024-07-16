@@ -7,11 +7,11 @@ export const ContextProvider = ({ children }) => {
 
     const [isAuth, setIsAuth] = useState(null);
 
-    const isAuthenticated = async () => {
-        await Axios.get("https://www.fttran.tech/api/token/", {
+    const isAuthenticated = () => {
+        Axios.get("https://www.fttran.tech/api/token/", {
             withCredentials:true
         })
-        .then(async response => {
+        .then(response => {
             console.log(response);
             setIsAuth(true);
         })

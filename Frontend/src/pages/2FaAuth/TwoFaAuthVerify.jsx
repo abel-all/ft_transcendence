@@ -32,7 +32,15 @@ const TwoFaAuthVerify = () => {
             })
             .then(response => {
                 console.log(response);
-                navigate("/game", { replace: true });
+                Axios.get("https://www.fttran.tech/api/GnrToken/",
+                {
+                    withCredentials:true,
+                }).then(() => {
+                    navigate("/game", { replace: true });
+                }).catch(err => {
+                    console.log(err);
+                    console.log("No Server Response")
+                });
             })
             .catch(() => {
                 setIsLoading(false);

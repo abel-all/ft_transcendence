@@ -1,4 +1,4 @@
-import circleArrow from './circleArrow.jsx'
+
 
 
 function OAuthButton(props) {
@@ -12,13 +12,12 @@ function OAuthButton(props) {
     }
 
     return (
-        <div className="bg-[#FFCA61] w-full border border-black rounded-[40px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:scale-[1.02] hover:opacity-90 duration-[600ms]">
-            <button onClick={clickHandler} className="py-[13px] px-[24px] w-full flex justify-between">
-                <div className="w-full flex">
-                    <div className="font-bold pr-[25px]">Continue With</div>
+        <div className="bg-[#019F9F] w-full rounded-[15px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:scale-[1.02] hover:opacity-90 duration-[600ms]">
+            <button onClick={clickHandler} className="py-[8px] w-full flex">
+                <div className="w-full flex justify-center gap-[13px]">
+                    <div className="font-medium text-[18px]">Continue With</div>
                     <img src={props.image} alt={props.imgTilte + " image"} />
                 </div>
-                {circleArrow()}
             </button>
         </div>
     )

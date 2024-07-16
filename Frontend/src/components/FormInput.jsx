@@ -37,18 +37,18 @@ function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
     }
 
     return (
-        <div className={"flex border-[0px] border-[#626262] w-full " + height}>
+        <div className={"flex w-full " + height}>
             {type === 'textarea' ? (
                 <textarea
                     onChange={handleInputChange}
-                    className={"bg-transparent outline-[0px] bg-white bg-opacity-[2%] w-full text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border max-h-[200px] " + focusColor}
+                    className={"rounded-[15px] bg-transparent outline-[0px] bg-white bg-opacity-[3%] w-full text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border max-h-[200px] " + focusColor}
                     placeholder={placeHolder}
                     required
                 />
             ) : (
                 <input
                     onChange={handleInputChange}
-                    className={"m-[0px] outline-[0px] w-full bg-white bg-opacity-[2%] text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border " + focusColor}
+                    className={"rounded-[15px] m-[0px] outline-[0px] w-full bg-white bg-opacity-[3%] text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border " + focusColor}
                     placeholder={placeHolder}
                     type={type}
                     required

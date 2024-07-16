@@ -8,6 +8,7 @@ import Axios from 'axios'
 import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
 import LoaderOntop from "../../components/LoaderOntop.jsx";
+import "./css/index.css"
 
 
 function SignIn() {
@@ -27,15 +28,28 @@ function SignIn() {
         
         await Axios.post("https://www.fttran.tech/api/token/", {
             username: formValues.Username,
-            password: formValues.Password
+            password: formValues.Password,
+            withCrd:true,
         },
         {
             withCredentials:true,
         }).then((response) => {
-            if (response.data.is_2fa_enabled) // is 2fa enable must redirect them to 2fa page
+            if (response.data.is_2fa_enabled) {// is 2fa enable must redirect them to 2fa page
                 navigate("/2fa/verify");
-            else
-                navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
+            }
+            else {
+                Axios.post("https://www.fttran.tech/api/GnrToken/", {
+                    user_id: response.data.user_id,
+                },
+                {
+                    withCredentials:true,
+                }).then(() => {
+                    navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
+                }).catch(err => {
+                    console.log(err);
+                    setMessage("No Server Response")
+                });
+            }
         }).catch(err => {
             console.log(err);
             setMessage("No Server Response")
@@ -55,7 +69,7 @@ function SignIn() {
 
     return (
         <div className='container flex flex-col justify-center items-center mx-auto relative'>
-            <div className="px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] mt-[120px] max-sm:border-none max-sm:px-[0px] max-sm:bg-gradient-to-b max-sm:from-transparent max-sm:to-transparent max-sm:mt-[20px] max-sm:mb-[0px]">
+            <div className="px-[40px] mb-[200px] w-full max-w-[460px] rounded-[15px]  mt-[120px] max-sm:px-[0px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="flex items-center flex-col gap-3 pb-[16px]">
                     {signInFieldProps.map((item, index) => (
@@ -89,8 +103,8 @@ function SignIn() {
                         />
                     ))}
                 </div>
-                <div className="flex justify-between text-[16px] pt-[29px] pb-[29px]">
-                    <div className="pl-[10px] text-[rgba(238,238,238,0.51)] font-normal">Don’t Have An Account?</div>
+                <div className="flex justify-between text-[14px] pt-[29px] pb-[29px]">
+                    <div className="pl-[10px] text-[rgba(238,238,238,0.51)]">Don’t Have An Account?</div>
                     <Link className="pr-[10px] text-[#EEEEEE] font-medium underline" to="/signup">Sign Up</Link>
                 </div>
             </div>

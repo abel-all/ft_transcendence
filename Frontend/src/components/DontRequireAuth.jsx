@@ -12,8 +12,8 @@ const DontRequireAuth = ({ children }) => {
         let isMounted = true;
         const authIsChecked = async () => {
             if (isMounted) {
-                await auth.isAuthenticated();
                 setLoading(false);
+                await auth.isAuthenticated();
             }
         };
         authIsChecked();

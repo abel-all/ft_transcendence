@@ -17,7 +17,7 @@ function Home() {
         return <LoaderOntop />
 
     return (
-        <div className="container mx-auto px-[10px] ">
+        <div className="container mx-auto px-[10px]">
             <Navbar />
             <HomeContent />
         </div>

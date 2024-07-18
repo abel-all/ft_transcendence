@@ -100,7 +100,7 @@ function Chat() {
             <div className='w-full'>
                 <Header title="Chat" activeSection="ChatIcon" hide={!chatHeader.ChatShown ? "hidden md:flex" : ""}/>
                 <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, userFromUrl}}>
-                    <div className="flex indexchatHolder flex-row">
+                    <div className="flex indexchatHolder mt-[101px] flex-row">
                         <ProprtesSide className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
                         <ChatSide className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>
                     </div>

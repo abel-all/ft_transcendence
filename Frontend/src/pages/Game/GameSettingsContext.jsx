@@ -51,10 +51,6 @@ export const GameSettingsContextProvider = ({ children }) => {
         ]);
     }
 
-    useEffect(() => {
-        console.log(settingsData);
-    }, [settingsData]);
-
     return (
         <GameSettingContext.Provider 
             value={ { isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>

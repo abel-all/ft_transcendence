@@ -5,6 +5,7 @@ import { useMemo, useRef, useContext, useEffect, createContext, useState } from 
 import {chatHeaderOnClick} from '../Chat'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
+import { flushSync } from 'react-dom';
 
 
 
@@ -25,7 +26,6 @@ function ChatSide(Data) {
         });
     }
     
-    // Example usage:
     const now = new Date();
     const formattedTime = formatTime(now);
     
@@ -77,9 +77,9 @@ function ChatSide(Data) {
     useEffect(() => {
         function getingData() {
             if (ChatContext.chatHeader.name)
-                SetUsername(priveState);
+                    SetUsername(ChatContext.chatHeader.name);
             else if (ChatContext.userFromUrl.user)
-                SetUsername(ChatContext.userFromUrl.user);
+                    SetUsername(ChatContext.userFromUrl.user);
             if (username) {
                 axios.get(`http://127.0.0.1:8000/messages/${username}`)
                 .then(res => {
@@ -96,7 +96,7 @@ function ChatSide(Data) {
         }
         
         getingData();
-    }, [username]);
+    }, [ChatContext.chatHeader.name, ChatContext.userFromUrl.user, username]);
     
     
     
@@ -107,14 +107,9 @@ function ChatSide(Data) {
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
-        let username;
-        if (ChatContext.chatHeader.name)
-            username = ChatContext.chatHeader.name
-        else if (ChatContext.userFromUrl.user)
-            username = ChatContext.userFromUrl.user
         axios.post(`http://127.0.0.1:8000/messages/${username}`, {
             message_id : uuidv4(),
-            timestamp : formatTime(now),
+            timestamp :  CreateMessages.timestamp,
             sender : sender,
             message : message,
             seen : false,

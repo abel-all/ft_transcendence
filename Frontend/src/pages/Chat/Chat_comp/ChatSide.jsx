@@ -1,7 +1,7 @@
 import ChatHeader from "./ChatHeader"
 import ChatBottom from "./ChatBottom"
 import Messages from './Messages'
-import { useRef, useContext, useEffect, createContext, useState } from "react"
+import { useMemo, useRef, useContext, useEffect, createContext, useState } from "react"
 import {chatHeaderOnClick} from '../Chat'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
@@ -32,6 +32,7 @@ function ChatSide(Data) {
     
     
     const [messages, setMessages] = useState([]);
+    const [username, SetUsername] = useState("");
     const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(false);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
     const [CreateMessages, setCreateMessages] = useState({
@@ -75,11 +76,10 @@ function ChatSide(Data) {
 
     useEffect(() => {
         function getingData() {
-            let username;
             if (ChatContext.chatHeader.name)
-                username = ChatContext.chatHeader.name
+                SetUsername(priveState);
             else if (ChatContext.userFromUrl.user)
-                username = ChatContext.userFromUrl.user
+                SetUsername(ChatContext.userFromUrl.user);
             if (username) {
                 axios.get(`http://127.0.0.1:8000/messages/${username}`)
                 .then(res => {
@@ -96,7 +96,7 @@ function ChatSide(Data) {
         }
         
         getingData();
-    }, [getMessagesFromDataBase]);
+    }, [username]);
     
     
     

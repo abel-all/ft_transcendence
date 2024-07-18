@@ -16,7 +16,7 @@ const sendMessageContext = createContext();
 
 
 function ChatSide(Data) {
-
+    
     const formatTime = (date) => {
         return date.toLocaleTimeString('en-US', {
             hour: '2-digit',
@@ -24,14 +24,15 @@ function ChatSide(Data) {
             hour12: true
         });
     }
-
+    
     // Example usage:
     const now = new Date();
     const formattedTime = formatTime(now);
-
-
-
+    
+    
+    
     const [messages, setMessages] = useState([]);
+    const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(false);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
     const [CreateMessages, setCreateMessages] = useState({
         message : '',
@@ -41,36 +42,29 @@ function ChatSide(Data) {
         seen : false,
         depands : "waiting"
     });
-
+    
     const  UpdateCreatedMessage = (msg, send) => {
         setCreateMessages({
-                message : msg,
-                message_id : uuidv4(),
-                timestamp : formattedTime,
-                sender : send,
-                seen : false,
-                depands : "waiting"
-            });
+            message : msg,
+            message_id : uuidv4(),
+            timestamp : formattedTime,
+            sender : send,
+            seen : false,
+            depands : "waiting"
+        });
     }
     
     const  UpdateCreatedMessageState = (seen, state) => {
         setCreateMessages( prevState => ({ 
-                ...prevState,
-                seen : seen,
-                depands : state
+            ...prevState,
+            seen : seen,
+            depands : state
             })
         );
     }
-
-    const messagesRef = useRef(null);
     
-    useEffect(() => {
-        axios.get('http://localhost:3000/messages')
-        .then(res => {
-            setMessages(res.data);
-        })
-    }, []);
-
+    const messagesRef = useRef(null);
+    const ChatContext = useContext(chatHeaderOnClick);
     
     const goToButtom = (scrollBehavior) => {
         messagesRef.current.scrollTo({
@@ -79,7 +73,33 @@ function ChatSide(Data) {
         });
     }
 
-
+    useEffect(() => {
+        function getingData() {
+            let username;
+            if (ChatContext.chatHeader.name)
+                username = ChatContext.chatHeader.name
+            else if (ChatContext.userFromUrl.user)
+                username = ChatContext.userFromUrl.user
+            if (username) {
+                axios.get(`http://127.0.0.1:8000/messages/${username}`)
+                .then(res => {
+                    setMessages(res.data);
+                    setGetMessagesFromDataBase((prevState) => {
+                        return true;
+                    });
+                    console.log("Getting data in chat side", res.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching messages:', error);
+                });
+            }
+        }
+        
+        getingData();
+    }, [getMessagesFromDataBase]);
+    
+    
+    
     const addMessage = (message) => {
         UpdateCreatedMessage(message, "User2");
         sendMessageToDataBase(message, "User2", CreateMessages);
@@ -87,11 +107,16 @@ function ChatSide(Data) {
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
-        axios.post('http://localhost:3000/messages', {
-            message : message,
+        let username;
+        if (ChatContext.chatHeader.name)
+            username = ChatContext.chatHeader.name
+        else if (ChatContext.userFromUrl.user)
+            username = ChatContext.userFromUrl.user
+        axios.post(`http://127.0.0.1:8000/messages/${username}`, {
             message_id : uuidv4(),
-            timestamp : CreateMessages.formattedTime,
+            timestamp : formatTime(now),
             sender : sender,
+            message : message,
             seen : false,
         })
         .then(res => {
@@ -103,7 +128,7 @@ function ChatSide(Data) {
             serUserAbleToSendMessage(false);
         })
     };
-
+    
     useEffect(() => {
         messages.length == 0 && setMessages(
             prevState => {
@@ -114,10 +139,10 @@ function ChatSide(Data) {
             prevState => {
                 let lastmessage = prevState[prevState.length - 1];
                 if (lastmessage.message_id == CreateMessages.message_id) {
-                        const UpdateLastMessage = {...lastmessage, depands: CreateMessages.depands};
-                        const updateMessaes = [...prevState.slice(0, prevState.length - 1), UpdateLastMessage];
-                        return updateMessaes;
-                    }
+                    const UpdateLastMessage = {...lastmessage, depands: CreateMessages.depands};
+                    const updateMessaes = [...prevState.slice(0, prevState.length - 1), UpdateLastMessage];
+                    return updateMessaes;
+                }
                 else {
                     return [...prevState, CreateMessages];
                 }
@@ -125,18 +150,20 @@ function ChatSide(Data) {
         );               
     }, [CreateMessages])
 
-
-    const ChatContext = useContext(chatHeaderOnClick);
+    console.log("users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")
     return (
         <div className={" " + (Data.className) ? Data.className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
                 {
-                    (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) &&
-                    <sendMessageContext.Provider value={{addMessage,messages, messagesRef, goToButtom, userAbleToSendMessage}}>
-                        <ChatHeader Data={Data}/>
-                        <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
-                        <ChatBottom/>
-                    </sendMessageContext.Provider>
+                    (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
+                    <>
+                        {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")}
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesRef, goToButtom, userAbleToSendMessage}}>
+                            <ChatHeader Data={Data}/>
+                            <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
+                            <ChatBottom/>
+                        </sendMessageContext.Provider>
+                    </>
                 }
             </div>
         </div>

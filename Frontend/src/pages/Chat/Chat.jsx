@@ -23,7 +23,7 @@ function Chat() {
         ChatShown:true
     }); 
     
-
+    
     
     function handelSetingUser(username, userurl, userrank) {
         setUserFromUrl(prevState => ({
@@ -33,13 +33,13 @@ function Chat() {
             rank: (userrank) ? userrank : prevState.rank,
         }));
     }
-
+    
     const [userFromUrl, setUserFromUrl] = useState({
         user:"",
         url:"",
         rank:""
     });
-
+    
 
     
     
@@ -76,7 +76,6 @@ function Chat() {
         }
     }
     
-    
     useEffect (() => {
         SetFrom();
     }, []);
@@ -91,7 +90,7 @@ function Chat() {
             clicked: state,
         }));
     }
-    
+
     useEffect (() => {
         chatHeader;
     }, []);

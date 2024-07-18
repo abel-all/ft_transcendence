@@ -8,8 +8,6 @@ import Axios from 'axios'
 import {itemData, oAuthItems, signUpFieldProps, fieldReGex} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
 import LoaderOntop from "../../components/LoaderOntop.jsx";
-import { handle42OauthClick } from './handle42Oauth.jsx'
-import { handleGoogleOauthClick } from './handleGoogleOauth.jsx'
 
 function SignUp() {
 
@@ -32,7 +30,6 @@ function SignUp() {
             fieldReGex.usernameReGex.test(formValues["Username"]) &&
             fieldReGex.emailReGex.test(formValues["Email"]) &&
             fieldReGex.passwordReGex.test(formValues["Password"])) {
-                console.log("yyyyy");
                 await Axios.post("https://www.fttran.tech/api/signup/", {
                     first_name: formValues["First Name"],
                     last_name: formValues["Last Name"],
@@ -44,15 +41,9 @@ function SignUp() {
                     withCredentials:true,
                 }).then(() => {
                     navigate("/signin", { replace: true });
-                    // if (response.status == 201 || response.status == 200 || response.status == 304) {
-                    // }
-                    // else {
-                    //     console.log(response.data.reason)
-                    //     setMessage("Please check you information, and try again")
-                    // }
                 }).catch(err => {
                     console.log(err);
-                    setMessage("No Server Response")
+                    setMessage("Please try again!")
                 })
             }
         else
@@ -71,7 +62,7 @@ function SignUp() {
         return <LoaderOntop />
 
     return (
-        <div className='container flex flex-col justify-center items-center mx-auto relative'>
+        <div className='container max-sm:scale-[0.8] flex flex-col justify-center items-center mx-auto relative'>
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] rounded-[15px] mt-[120px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] max-sm:px-[0px] max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="inputs flex items-center flex-col gap-3 pb-[48px]">
@@ -83,7 +74,6 @@ function SignUp() {
                             handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
                         />
                     ))}
-                    <input className="hidden" type="submit" />
                 </form>
                 <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 <div onClick={handleUserClick}>
@@ -97,12 +87,13 @@ function SignUp() {
                     ))}
                 </div>
                 <div className="flex flex-col gap-[11px]">
-                <div onClick={handle42OauthClick}>
-                    <OAuthButton image={oAuthItems[0].image} imgTilte={oAuthItems[0].imgTilte} />
-                </div>
-                <div onClick={handleGoogleOauthClick}>
-                    <OAuthButton image={oAuthItems[1].image} imgTilte={oAuthItems[1].imgTilte} />
-                </div>
+                    {oAuthItems.map((item, index) => (
+                        <OAuthButton
+                            key={index}
+                            image={item.image}
+                            imgTilte={item.imgTilte}
+                        />
+                    ))}
                 </div>
                 <div className="footer flex justify-between text-[16px] pt-[29px] pb-[29px]">
                     <div className="pl-[10px] text-[rgba(238,238,238,0.51)] font-normal">Already Have An Account?</div>

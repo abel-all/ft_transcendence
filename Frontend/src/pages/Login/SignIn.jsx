@@ -8,6 +8,7 @@ import Axios from 'axios'
 import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
 import LoaderOntop from "../../components/LoaderOntop.jsx";
+import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
 import "./css/index.css"
 
 
@@ -15,6 +16,8 @@ function SignIn() {
 
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
+    const [userId, setUserId] = useState("");
+    const [isVerify, setIsVerify] = useState(false);
     const [isloaded, setIsloaded] = useState(true);
     const navigate = useNavigate();
 
@@ -29,29 +32,32 @@ function SignIn() {
         await Axios.post("https://www.fttran.tech/api/token/", {
             username: formValues.Username,
             password: formValues.Password,
-            withCrd:true,
         },
         {
             withCredentials:true,
         }).then((response) => {
+            console.log("first request");
+            setUserId(response.data.user_id);
             if (response.data.is_2fa_enabled) {// is 2fa enable must redirect them to 2fa page
-                navigate("/2fa/verify");
+                setIsVerify(true);
             }
             else {
                 Axios.post("https://www.fttran.tech/api/GnrToken/", {
-                    user_id: response.data.user_id,
+                    user_id: userId,
                 },
                 {
                     withCredentials:true,
                 }).then(() => {
+                    console.log("second request");
                     navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
-                }).catch(() => {
-                    setMessage("No Server Response")
+                }).catch((err) => {
+                    console.log(err);
+                    setMessage("Somethings wrong, please try again!")
                 });
             }
         }).catch(err => {
             console.log(err);
-            setMessage("No Server Response")
+            setMessage("Somethings wrong, please try again!")
         })
     }
     const handleUserClick = () => {
@@ -63,11 +69,14 @@ function SignIn() {
         checkFieldInput();
     }
 
+    if (isVerify)
+        return <TwoFaAuthVerify userId={userId}/>
+
     if (isloaded)
         return <LoaderOntop />
 
     return (
-        <div className='container flex flex-col justify-center items-center mx-auto relative'>
+        <div className='container max-sm:scale-[0.8] flex flex-col justify-center items-center mx-auto relative'>
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] rounded-[15px]  mt-[120px] max-sm:px-[0px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] max-sm:mt-[20px] max-sm:mb-[0px]">
                 <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
                 <form onSubmit={handleSubmit} className="flex items-center flex-col gap-3 pb-[16px]">
@@ -79,7 +88,6 @@ function SignIn() {
                             handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
                         />
                     ))}
-                    <input className="hidden" type="submit" />
                 </form>
                 <div className="flex justify-end underline text-[#EEEEEE] font-normal text-[12px] pb-[34px]">Forget Password?</div>
                 <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>

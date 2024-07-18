@@ -1,13 +1,11 @@
 import Axios from 'axios'
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/LoaderOntop.jsx";
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const OauthCallBack = () => {
     
     const navigate = useNavigate();
-    // const [code, setCode] = useState("");
-    // const id = useParams;
     
     useEffect(() => {
         let isMounted = true;
@@ -29,32 +27,25 @@ const OauthCallBack = () => {
         }
         else {
             const checkCode = async () => {
-                if (isMounted) {
-                    console.log("jjjd");
-    
-                    await Axios.post("https://www.fttran.tech/api/GnrToken/",{
-                        user_id: paramValue,
-                    }, // must edited
-                    {
-                        withCredentials:true,
-                    }
-                ).then((response) => {
-                    console.log(response);
-                    if (isMounted) {
-                        navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
-                    }
-                }).catch(() => {
-                    if (isMounted) {
-                        console.log("catch")
-                        navigate("/signin", { replace: true }); // is an error catched must redirect them to game page
-                    }
+                await Axios.post("https://www.fttran.tech/api/GnrToken/",{
+                    user_id: paramValue,
+                }, // must edited
+                {
+                    withCredentials:true,
+                }
+                ).then(() => {
+                    console.log("first request");
+                    navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
+                }).catch((err) => {
+                    console.log(err)
+                    navigate("/signin", { replace: true }); // is an error catched must redirect them to game page
                 })
+
             }
-
+            if (isMounted) {
+                checkCode();
+            }
         }
-        checkCode();
-    }
-
 
         return () => {
             isMounted = false;

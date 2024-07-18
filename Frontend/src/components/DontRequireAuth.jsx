@@ -12,8 +12,8 @@ const DontRequireAuth = ({ children }) => {
         let isMounted = true;
         const authIsChecked = async () => {
             if (isMounted) {
-                await auth.isAuthenticated();
                 setLoading(false);
+                await auth.isAuthenticated();
             }
         };
         authIsChecked();
@@ -27,8 +27,10 @@ const DontRequireAuth = ({ children }) => {
         let isMounted = true;
         if (!loading) {
             if (isMounted) {
-                if (auth.isAuth)
+                if (auth.isAuth) {
+                    console.log("gameeeeeees")
                     navigate("/game", {replace: true})
+                }
             }
         }
         

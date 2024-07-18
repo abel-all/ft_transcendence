@@ -1,4 +1,4 @@
-import circleArrow from './circleArrow.jsx'
+
 
 
 function OAuthButton(props) {
@@ -6,19 +6,18 @@ function OAuthButton(props) {
     const clickHandler = () => {
 
         if (props.imgTilte === "google")
-            window.location.href = "https://bit.ly/oAuth-google";
+            window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=895845289499-jt7kib2t1n5tr6ah3oekfdp6l6i29abm.apps.googleusercontent.com&redirect_uri=https://www.fttran.tech/api/oauth/google/callback/&response_type=code&scope=email%20profile";
         else
             window.location.href = "https://bit.ly/oAuth42";
     }
 
     return (
-        <div className="bg-[#FFCA61] w-full border border-black rounded-[40px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:scale-[1.02] hover:opacity-90 duration-[600ms]">
-            <button onClick={clickHandler} className="py-[13px] px-[24px] w-full flex justify-between">
-                <div className="w-full flex">
-                    <div className="font-bold pr-[25px]">Continue With</div>
+        <div className="bg-[#019F9F] w-full rounded-[15px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:scale-[1.02] hover:opacity-90 duration-[600ms]">
+            <button onClick={clickHandler} className="py-[8px] w-full flex">
+                <div className="w-full flex justify-center gap-[13px]">
+                    <div className="font-medium text-[18px]">Continue With</div>
                     <img src={props.image} alt={props.imgTilte + " image"} />
                 </div>
-                {circleArrow()}
             </button>
         </div>
     )

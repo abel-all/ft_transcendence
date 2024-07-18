@@ -10,28 +10,28 @@ const cardData = [
         title: "Play with Friends",
         description: "Challenge your friends to a game of ping pong, no matter where they are!",
         actionTitle: "Invite Now",
-        color: " bg-[#f6f6b3]",
+        color: " bg-[#009F9F]",
     },
     {
         image: LeaderboardsImg,
         title: "Leaderboards",
         description: "Compete for the top spot and see how you rank against other players.",
         actionTitle: "View Rankings",
-        color: " bg-[#f6f6b3]",
+        color: " bg-[#009F9F]",
     },
     {
         image: TournamentsImg,
         title: "Tournaments",
         description: "Join exciting tournaments and compete for prizes and glory.",
         actionTitle: "Join Tournament",
-        color: " bg-[#f6f6b3]",
+        color: " bg-[#009F9F]",
     },
     {
         image: PracticeModeImg,
         title: "Practice Mode",
         description: "Hone your skills in practice mode with AI opponents.",
         actionTitle: "Start Practicing",
-        color: " bg-[#f6f6b3]",
+        color: " bg-[#009F9F]",
     }
 ]
 

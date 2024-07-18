@@ -27,8 +27,10 @@ const DontRequireAuth = ({ children }) => {
         let isMounted = true;
         if (!loading) {
             if (isMounted) {
-                if (auth.isAuth)
+                if (auth.isAuth) {
+                    console.log("gameeeeeees")
                     navigate("/game", {replace: true})
+                }
             }
         }
         

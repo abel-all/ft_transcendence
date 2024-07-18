@@ -24,7 +24,7 @@ function Navbar() {
             <div className="container mx-auto px-[10px]">
                 <div className="shadow-md backdrop-blur-md bg-[#161c20]/40 rounded-full px-[20px] w-full max-sm:pb-[20px] flex gap-[15px] justify-between max-sm:flex-col max-sm:items-center">
                     <Link to="/"><img className="w-[70px] h-[70px]" src={logo} /></Link>
-                    <ul className="flex items-center gap-[20px]">
+                    <ul className="flex items-center gap-[20px] max-sm:gap-[10px]">
                         {listItems.map((item, index) => (
                             <li key={index} className="text-[#eee] hover:text-[#00CEFF] duration-[600ms]">
                                 {item.specialitem ?

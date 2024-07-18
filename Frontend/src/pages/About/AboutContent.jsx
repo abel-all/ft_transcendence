@@ -5,11 +5,11 @@ const aboutItems = [
         text: "About Us",
     },
     {
-        className: "text-[#eee] font-semibold text-[36px] text-center",
+        className: "text-[#009f9f] font-semibold text-[36px] text-center",
         text: "Welcom to PING!",
     },
     {
-        className: "text-[#eee] opacity-90 text-center mx-[25px] mb-[45px] max-w-[600px]",
+        className: "tracking-wide text-[#eee] opacity-60 text-center mx-[25px] mb-[45px] max-w-[600px]",
         text: "At PING!, we believe that ping pong is more than just a game it's a passion, a community, and a journey of self-improvement. Our mission is to create a dynamic platform where ping pong enthusiasts of all skill levels can come together , compete, and elevate their game.",
     },
 ]

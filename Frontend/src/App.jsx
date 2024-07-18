@@ -13,6 +13,7 @@ import Tournament from './pages/Game/Tournament.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
 import SetupTwoFa from './pages/2FaAuth/SetupTwoFa.jsx'
+import TwoFaAuthStep1 from './pages/2FaAuth/TwoFaAuthStep1.jsx'
 import TwoFaAuthVerify from './pages/2FaAuth/TwoFaAuthVerify.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DontRequireAuth from './components/DontRequireAuth.jsx'
@@ -32,8 +33,10 @@ function App() {
           <GameSettingsContextProvider>
             <Routes>
               <Route index element={<Home />} />
+              <Route path="/test" element={<TwoFaAuthStep1 />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/2fa/setup" element={<RequireAuth><SetupTwoFa /></RequireAuth>} />
+              {/* <Route path="/2fa/setup" element={<RequireAuth><SetupTwoFa /></RequireAuth>} /> */}
+              <Route path="/2fa/setup" element={<SetupTwoFa />} />
               <Route path="/2fa/verify" element={<TwoFaAuthVerify />} />
               {/* <Route path="/2fa/verify" element={<RequireAuth><TwoFaAuthVerify /></RequireAuth>} /> */}
               <Route path="/about" element={<About />} />
@@ -42,7 +45,7 @@ function App() {
               {/* <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} /> */}
               <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} />
-              <Route path="/oauthcallback" element={<OauthCallBack />} />
+              <Route path="/oauth" element={<OauthCallBack />} />
               <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />

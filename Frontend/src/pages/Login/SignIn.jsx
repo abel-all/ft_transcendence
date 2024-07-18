@@ -45,8 +45,7 @@ function SignIn() {
                     withCredentials:true,
                 }).then(() => {
                     navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
-                }).catch(err => {
-                    console.log(err);
+                }).catch(() => {
                     setMessage("No Server Response")
                 });
             }

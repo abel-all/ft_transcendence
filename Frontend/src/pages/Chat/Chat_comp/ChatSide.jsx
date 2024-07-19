@@ -45,6 +45,7 @@ function ChatSide(Data) {
         setCreateMessages( prevState => ({ 
             ...prevState,
             message : msg,
+            timestamp :  formattedTime,
             sender : send,
         })
     );
@@ -54,6 +55,7 @@ function ChatSide(Data) {
         setCreateMessages( prevState => ({ 
             ...prevState,
             seen : seen,
+            timestamp :  formattedTime,
             depands : state
             })
         );
@@ -105,7 +107,7 @@ function ChatSide(Data) {
         serUserAbleToSendMessage(false);
         axios.post(`http://127.0.0.1:8000/messages/${username}`, {
             message_id : uuidv4(),
-            timestamp :  CreateMessages.timestamp,
+            timestamp :  formattedTime,
             sender : sender,
             message : message,
             seen : false,
@@ -152,7 +154,7 @@ function ChatSide(Data) {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
                         {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
-                        <sendMessageContext.Provider value={{addMessage,messages, messagesRef, goToButtom, userAbleToSendMessage}}>
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages}}>
                             <ChatHeader Data={Data}/>
                             <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>

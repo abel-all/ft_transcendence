@@ -48,8 +48,21 @@ function Messages(Data) {
                         </div>
                     )
                 })
-
             }
+            <div className='text-white'>
+            <p className='pb-[15px]'>{messageContext.CreateMessages.message}</p>
+            {(messageContext.CreateMessages.sender == "User2") ?
+                                <>
+                                    <span className='right-[45px] bottom-[5px]'>{messageContext.CreateMessages.timestamp}</span>
+                                    <img
+                                        src={
+                                            messageContext.CreateMessages.seen ? seen : (messageContext.CreateMessages.depands ? ((messageContext.CreateMessages.depands == "failed") ? failed : waithing) : notseen)}
+                                        alt='' className='right-[15px] bottom-[5px]'/>
+                                </>
+                                : 
+                                    <span className='right-[15px] bottom-[5px]'>{messageContext.CreateMessages.timestamp}</span>
+                            }
+            </div>
         </div>
 
 

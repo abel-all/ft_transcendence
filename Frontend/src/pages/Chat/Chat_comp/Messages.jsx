@@ -25,11 +25,11 @@ function Messages(Data) {
     }, [])
 
     const {messages} = useContext(sendMessageContext);
-
+    // console.log("Messages Section", messages.messages);
     return (
         <div ref={messageContext.messagesRef} className={"" + (Data.className) ? Data.className : ''}>
             {
-                messages.messages.map(chatMessages => {
+                Array.isArray(messages.messages) && messages.messages.map(chatMessages => {
                     {(chatMessages.sender == "User1") ? userStyle = "text-white bg-[#0A0C0E] rounded-tr-lg " : userStyle = "text-black bg-white self-end rounded-tl-lg "}
                     return (
                         <div key={chatMessages.message_id} className={userStyle + 'break-all relative flex rounded-b-lg w-[70%] lg:w-[450px] m-[10px] p-[20px]'}>
@@ -48,6 +48,7 @@ function Messages(Data) {
                         </div>
                     )
                 })
+
             }
         </div>
 

@@ -1,38 +1,39 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Axios from 'axios'
 
 export const Authcontext = createContext(null);
 
 export const ContextProvider = ({ children }) => {
 
-    let isAuth = false;
-    
+    const [isAuth, setIsAuth] = useState(false);
+
     const isAuthenticated = () => {
         Axios.get("https://www.fttran.tech/api/token/", {
             withCredentials:true
         })
-        .then(response => {
-            console.log(response);
-            isAuth = true;
+        .then(() => {
+            console.log("first request");
+            setIsAuth(true);
         })
         .catch((err) => {
-            if (err.response.status == 401) {
+            if (err.response?.status === undefined)
+                setIsAuth(false);
+            if (err.response?.status == 401) {
                 Axios.get("https://www.fttran.tech/api/token/refresh/", {
                     withCredentials:true
                 })
-                .then(response => {
-                    console.log(response);
-                    isAuth = true;
+                .then(() => {
+                    console.log("second request");
+                    setIsAuth(true);
                 }).catch(err => {
-                    isAuth = false;
                     console.log(err);
+                    setIsAuth(false);
                 })
             }
             else {
-                isAuth = false;
+                setIsAuth(false);
             }
         })
-        console.log("isauth : ", isAuth);
     }
 
     return (

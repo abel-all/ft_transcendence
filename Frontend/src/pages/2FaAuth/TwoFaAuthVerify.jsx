@@ -5,14 +5,16 @@ import Axios from 'axios'
 import "./css/index.css"
 import { useNavigate } from "react-router-dom"
 
-const TwoFaAuthVerify = () => {
+const TwoFaAuthVerify = ({userId}) => {
 
     const [focusColor, setFocusColor] = useState("focus:border focus:border-[#FF0000]");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [code, setCode] = useState(false);
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
+        setCode(e.currentTarget.value);
 
         if (/^[a-f0-9]{6,8}$/.test(e.currentTarget.value))
             setFocusColor("focus:border focus:border-[#00FF00]");
@@ -20,7 +22,7 @@ const TwoFaAuthVerify = () => {
             setFocusColor("focus:border focus:border-[#FF0000]");
     }
 
-    const verify2FaCode = async (code) => {
+    const verify2FaCode = async () => {
         setIsLoading(true);
 
         if (/^[a-f0-9]{6,8}$/.test(code)) {
@@ -30,16 +32,19 @@ const TwoFaAuthVerify = () => {
             {
                 withCredentials:true,
             })
-            .then(response => {
-                console.log(response);
-                Axios.get("https://www.fttran.tech/api/GnrToken/",
+            .then(() => {
+                console.log("first request");
+                Axios.post("https://www.fttran.tech/api/GnrToken/", {
+                    user_id: userId,
+                },
                 {
                     withCredentials:true,
                 }).then(() => {
+                    console.log("second request");
                     navigate("/game", { replace: true });
                 }).catch(err => {
                     console.log(err);
-                    console.log("No Server Response")
+                    navigate("/signin", { replace: true });
                 });
             })
             .catch(() => {
@@ -54,13 +59,11 @@ const TwoFaAuthVerify = () => {
     }
 
     const handleButtonClick = () => {
-        console.log("clickkkkk");
         verify2FaCode();
     }
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("submittt");
         verify2FaCode();
     }
 

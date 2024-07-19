@@ -13,9 +13,6 @@ import { flushSync } from 'react-dom';
 const sendMessageContext = createContext();
 
 
-
-
-
 function ChatSide(Data) {
     
     const formatTime = (date) => {
@@ -29,30 +26,28 @@ function ChatSide(Data) {
     const now = new Date();
     const formattedTime = formatTime(now);
     
-    
+    const initialState = {
+        message: '',
+        message_id: uuidv4(),
+        timestamp: formattedTime,
+        sender: '',
+        seen: false,
+        depands: "waiting"
+      };
     
     const [messages, setMessages] = useState([]);
     const [username, SetUsername] = useState("");
     const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(false);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
-    const [CreateMessages, setCreateMessages] = useState({
-        message : '',
-        message_id : uuidv4(),
-        timestamp : formattedTime,
-        sender : '',
-        seen : false,
-        depands : "waiting"
-    });
+    const [CreateMessages, setCreateMessages] = useState(initialState);
     
     const  UpdateCreatedMessage = (msg, send) => {
-        setCreateMessages({
+        setCreateMessages( prevState => ({ 
+            ...prevState,
             message : msg,
-            message_id : uuidv4(),
-            timestamp : formattedTime,
             sender : send,
-            seen : false,
-            depands : "waiting"
-        });
+        })
+    );
     }
     
     const  UpdateCreatedMessageState = (seen, state) => {
@@ -76,6 +71,7 @@ function ChatSide(Data) {
 
     useEffect(() => {
         function getingData() {
+            console.log("Data Featched!");
             if (ChatContext.chatHeader.name)
                     SetUsername(ChatContext.chatHeader.name);
             else if (ChatContext.userFromUrl.user)
@@ -87,7 +83,7 @@ function ChatSide(Data) {
                     setGetMessagesFromDataBase((prevState) => {
                         return true;
                     });
-                    console.log("Getting data in chat side", res.data);
+                    // console.log("Getting data in chat side", res.data);
                 })
                 .catch(error => {
                     console.error('Error fetching messages:', error);
@@ -125,34 +121,37 @@ function ChatSide(Data) {
     };
     
     useEffect(() => {
-        messages.length == 0 && setMessages(
-            prevState => {
-                return [...prevState, CreateMessages];
-            }
-        );
-        messages.length > 0 &&  setMessages(
-            prevState => {
-                let lastmessage = prevState[prevState.length - 1];
-                if (lastmessage.message_id == CreateMessages.message_id) {
-                    const UpdateLastMessage = {...lastmessage, depands: CreateMessages.depands};
-                    const updateMessaes = [...prevState.slice(0, prevState.length - 1), UpdateLastMessage];
-                    return updateMessaes;
-                }
-                else {
-                    return [...prevState, CreateMessages];
-                }
-            }
-        );               
-    }, [CreateMessages])
+        console.log("1 ", CreateMessages);
+        if (Array.isArray(messages.messages)) {
+          
+          if (messages.messages.length === 0) {
+            setMessages(prevState => ({
+              messages: [...prevState.messages, CreateMessages],
+            }));
+          } else {
+            setMessages(prevState => {
+              let lastMessage = prevState.messages[prevState.messages.length - 1];
+              console.log("went from here! ");
+              if (lastMessage.message_id === CreateMessages.message_id) {
+                const updatedLastMessage = { ...lastMessage, depands: CreateMessages.depands };
+                const updatedMessages = [...prevState.messages.slice(0, -1), updatedLastMessage];
+                return { messages: updatedMessages };
+              } else {
+                return { messages: [...prevState.messages, CreateMessages] };
+              }
+            });
+          }
+        }
+      }, [CreateMessages]);
 
-    console.log("users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")
+    // console.log("users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")
     return (
         <div className={" " + (Data.className) ? Data.className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
                 {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
-                        {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")}
+                        {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
                         <sendMessageContext.Provider value={{addMessage,messages, messagesRef, goToButtom, userAbleToSendMessage}}>
                             <ChatHeader Data={Data}/>
                             <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>

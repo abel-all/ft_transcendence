@@ -34,7 +34,7 @@ const TwoFaAuthPassStep = () => {
         setIsLoading(true);
 
         if (passwordReGex.test(password)) {
-            await Axios.post("https://www.fttran.tech/api/2fa/password/", {
+            await Axios.post("https://www.fttran.tech/api/passwd/verify/", {
                 password: password,
             },
             {
@@ -68,7 +68,7 @@ const TwoFaAuthPassStep = () => {
         return <LoaderOntop />
 
     return (
-        <div className="container mx-auto p-[10px] sm:mt-[300px] max-sm:scale-[0.8] flex justify-center items-center">
+        <div className="container mx-auto p-[10px] sm:my-[300px] max-sm:scale-[0.8] flex justify-center items-center">
             <div className="input-gradient px-[60px] w-full max-w-[500px] h-[600px] bg-[#7b9d18] rounded-[15px] flex flex-col justify-between">
                 <div className="text-input-container flex flex-col gap-[7px]">
                     <img className="w-[97px] self-center mb-[20px]" src={logoImg} alt="" />

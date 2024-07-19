@@ -20,9 +20,10 @@ const Tournament = () => {
         return <LoaderOntop />
 
     return (
-            <div className="h-[100vh] container mx-auto px-[10px]">
+            <div className="container mx-auto px-[10px]">
                 <Header title="Tournament" activeSection="GametableIcon" />
-                <div></div>
+                <div className="mt-[200px] max-sm:mt-[50px] bg-red-700">
+                </div>
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         )

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fieldReGex } from '../pages/Login/variables'
+import usePasswordToggle from "../hooks/usePasswordToggle";
 
 
 const validateInput = (type, value) => {
@@ -24,16 +25,36 @@ const validateInput = (type, value) => {
 
 function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
 
-    const [focusColor, setFocusColor] = useState("focus:border-[#FF0000]")
+    const [focusColor, setFocusColor] = useState("");
+    const [eyeIcon, inputType] = usePasswordToggle();
+
     const handleInputChange = (e) => {
         const type = e.currentTarget.placeholder;
         const value = e.currentTarget.value;
         if (validateInput(type, value))
-            setFocusColor("focus:border-[#00FF00]");
+            setFocusColor("border border-[#00FF00]");
         else
-            setFocusColor("focus:border-[#FF0000]");
+            setFocusColor("border border-[#FF0000]");
 
         handleChange(type, value);
+    }
+
+    if (type === "password") {
+
+        return (
+            <div className={`rounded-[15px] w-full bg-white bg-opacity-[3%] duration-70 ${focusColor} p-[15px] flex`}>
+                <input
+                    onChange={handleInputChange}
+                    className="flex-1 m-[0px] outline-[0px] text-[#eee] bg-transparent"
+                    placeholder={placeHolder}
+                    type={inputType}
+                    onBlur={() => {setFocusColor("")}}
+                    onFocus={handleInputChange}
+                    required
+                />
+                <div>{eyeIcon}</div>
+            </div>
+        )
     }
 
     return (

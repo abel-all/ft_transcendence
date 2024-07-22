@@ -21,6 +21,7 @@ import Search from './pages/Search/Search.jsx'
 import axios from 'axios';
 import { GameSettingsContextProvider } from './pages/Game/GameSettingsContext.jsx'
 
+
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -42,11 +43,12 @@ function App() {
               {/* <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} /> */}
               <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} />
-              <Route path="/oauth/callback" element={<OauthCallBack />} />
+              <Route path="/oauth" element={<OauthCallBack />} />
               <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-              <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+              <Route path="/game" element={<Game />} />
+              {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
               <Route path="game/play/online" element={<PlayOnline />} />
               <Route path="game/play/tournament" element={<Tournament />} />
               {/* <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} /> */}

@@ -9,11 +9,15 @@ export const GameSettingsContextProvider = ({ children }) => {
     const [isScoreSection, setIsScoreSection] = useState(false);
     const [isLastStep, setIsLastStep] = useState(false);
     const [isGame, setIsGame] = useState(false);
+    const [modal, setModal] = useState(false);
     const [settingsData, setSettingsData] = useState([]);
 
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
 
+    const handleModalClick = () => {
+        setModal(!modal);
+    }
     const setPlayerScore = (player, score) => {
         switch (player) {
             case 1 :
@@ -57,7 +61,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 
     return (
         <GameSettingContext.Provider 
-            value={ { isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>
+            value={ { handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>
                 {children}
         </GameSettingContext.Provider>
     )

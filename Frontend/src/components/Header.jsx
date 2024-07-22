@@ -3,22 +3,21 @@ import search from "../assets/imgs/search.svg"
 import logout from "../assets/imgs/logout.svg"
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "./Auth";
 import Axios from 'axios'
 
 function Header(props) {
 
     const navigate = useNavigate();
+    const auth = useAuth();
 
     const handleLogout = async () => {
         await Axios.post("https://www.fttran.tech/api/logout/")
         .then(response => {
             console.log(response);
-            if (response.status == 200 || response.status == 304) {
-                navigate("/", { replace: true });
-            }
-            else {
-                console.log(response.data.reason)
-            }
+            auth.setHandler("game", false);
+            auth.setHandler("login", false);
+            navigate("/", { replace: true });
         }).catch(err => {
             console.log(err);
             console.log("No Server Response")

@@ -4,16 +4,18 @@ import LoaderOntop from "../../components/LoaderOntop.jsx";
 import Axios from 'axios'
 import { useTwoFaContext } from "./TwoFaContext"
 import "./css/index.css"
+import usePasswordToggle from "../../hooks/usePasswordToggle.jsx";
 
 
 const TwoFaAuthPassStep = () => {
     
-    const [focusColor, setFocusColor] = useState("focus:border focus:border-[#FF0000]");
+    const [focusColor, setFocusColor] = useState("");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [password, setPassword] = useState("");
     const TwoFaContext = useTwoFaContext();
     const passwordReGex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+    const [eyeIcon, inputType] = usePasswordToggle();
 
     useEffect(() => {
         setTimeout(() => {
@@ -25,9 +27,9 @@ const TwoFaAuthPassStep = () => {
         setPassword(e.currentTarget.value);
 
         if (passwordReGex.test(e.currentTarget.value))
-            setFocusColor("focus:border focus:border-[#00FF00]");
+            setFocusColor("border border-[#00FF00]");
         else
-            setFocusColor("focus:border focus:border-[#FF0000]");
+            setFocusColor("border border-[#FF0000]");
     }
 
     const verifyPassword = async () => {
@@ -79,7 +81,18 @@ const TwoFaAuthPassStep = () => {
                         To continue, enter your password:
                     </div>
                     <form onSubmit={handleSubmit} className="w-full bg-[#eee] rounded-[15px] bg-opacity-20">
-                        <input onChange={handleInputChange} name="code" className={`rounded-[15px] bg-transparent text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`} placeholder="Password" type="text" required/>
+                        <div className={`rounded-[15px] w-full bg-white bg-opacity-[3%] duration-70 ${focusColor} p-[15px] flex`}>
+                            <input
+                                onChange={handleInputChange}
+                                className="flex-1 m-[0px] outline-[0px] text-[#eee] bg-transparent"
+                                placeholder="Password"
+                                type={inputType}
+                                onBlur={() => {setFocusColor("")}}
+                                onFocus={handleInputChange}
+                                required
+                            />
+                            <div>{eyeIcon}</div>
+                        </div>
                     </form>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 </div>

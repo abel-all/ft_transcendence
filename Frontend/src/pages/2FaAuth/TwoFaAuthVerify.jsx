@@ -4,6 +4,7 @@ import LoaderOntop from "../../components/LoaderOntop.jsx";
 import Axios from 'axios'
 import "./css/index.css"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../components/Auth.jsx";
 
 const TwoFaAuthVerify = ({userId}) => {
 
@@ -12,6 +13,7 @@ const TwoFaAuthVerify = ({userId}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [code, setCode] = useState(false);
     const navigate = useNavigate();
+    const auth = useAuth();
 
     const handleInputChange = (e) => {
         setCode(e.currentTarget.value);
@@ -28,28 +30,21 @@ const TwoFaAuthVerify = ({userId}) => {
         if (/^[a-f0-9]{6,8}$/.test(code)) {
             await Axios.post("https://www.fttran.tech/api/2fa/verify/", {
                 otp_code: code,
+                user_id: userId,
             },
             {
                 withCredentials:true,
             })
             .then(() => {
                 console.log("first request");
-                Axios.post("https://www.fttran.tech/api/GnrToken/", {
-                    user_id: userId,
-                },
-                {
-                    withCredentials:true,
-                }).then(() => {
-                    console.log("second request");
-                    navigate("/game", { replace: true });
-                }).catch(err => {
-                    console.log(err);
-                    navigate("/signin", { replace: true });
-                });
+                auth.setHandler("game", true);
+                navigate("/game", { replace: true });
             })
             .catch(() => {
                 setIsLoading(false);
                 setMessage("Incorrect code, try again")
+                auth.setHandler("login", true);
+                navigate("/signin", { replace: true });
             })
         }
         else {

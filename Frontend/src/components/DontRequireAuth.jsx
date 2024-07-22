@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./Auth";
 import { useEffect, useState } from "react";
-import Game from "../pages/Game/Game";
 import Loader from "./LoaderOntop";
 
 const DontRequireAuth = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [oneTime, setOneTime] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-    const [isGame, setIsGame] = useState(false);
+    // const [isLogin, setIsLogin] = useState(false);
     const auth = useAuth();
     const navigate = useNavigate();
 
@@ -16,11 +14,13 @@ const DontRequireAuth = ({ children }) => {
         let isMounted = true;
         const authIsChecked = async () => {
             await auth.isAuthenticated();
-            setLoading(false);
-            setOneTime(true);
+            if (isMounted) {
+                setLoading(false);
+                setOneTime(true);
+            }
         }
 
-        if (isMounted && !oneTime) {
+        if (isMounted && !oneTime && !auth.isLogin) {
             authIsChecked();
         }
 
@@ -30,28 +30,25 @@ const DontRequireAuth = ({ children }) => {
     }, [auth, oneTime])
     
     useEffect(() => {
-        let isMounted = true;
-        if (!loading) {
-            if (isMounted) {
-                if (!auth.isAuth) {
-                    console.log("signinnnnnn")
-                    setIsLogin(true);
-                }
-                else
-                    setIsGame(true);
-            }
+        if (!loading && auth.isAuth) {
+            navigate("/game", { replace: true });
+            // if (isMounted) {
+            //     if (!auth.isAuth) {
+            //         console.log("signinnnnnn")
+            //         setIsLogin(true);
+            //     }
+            //     else {
+            //         // auth.setHandler("game", true);
+            //     }
+            // }
         }
         
-        return () => {
-            isMounted = false;
-        }
-    }, [loading, auth, navigate])
+    }, [loading, auth.isAuth, navigate]) 
 
-    if (isLogin)
-        return children;
-    else if (isGame)
-        return <Game />;
-    return <Loader />
+    if (loading && !auth.isLogin)
+        return <Loader />
+        
+    return children;
 }
 
 export default DontRequireAuth

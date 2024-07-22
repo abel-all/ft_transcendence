@@ -1,14 +1,31 @@
 import { createContext, useContext, useState } from "react";
 import Axios from 'axios'
+import axios from 'axios';
+import GetCookie from "../hooks/GetCookie"
 
 export const Authcontext = createContext(null);
 
 export const ContextProvider = ({ children }) => {
 
     const [isAuth, setIsAuth] = useState(false);
+    const [isGame, setIsGame] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    axios.defaults.headers.common['X-CSRFToken'] = GetCookie("csrftoken");
 
-    const isAuthenticated = () => {
-        Axios.get("https://www.fttran.tech/api/token/", {
+    const setHandler = (key, value) => {
+
+        switch (key) {
+            case "game":
+                setIsGame(value);
+                break;
+            case "login":
+                setIsLogin(value);
+                break;
+        }
+    }
+
+    const isAuthenticated = async () => {
+        await Axios.get("https://www.fttran.tech/api/token/", {
             withCredentials:true
         })
         .then(() => {
@@ -18,17 +35,20 @@ export const ContextProvider = ({ children }) => {
         .catch((err) => {
             if (err.response?.status === undefined)
                 setIsAuth(false);
-            if (err.response?.status == 401) {
-                Axios.get("https://www.fttran.tech/api/token/refresh/", {
-                    withCredentials:true
-                })
-                .then(() => {
-                    console.log("second request");
-                    setIsAuth(true);
-                }).catch(err => {
-                    console.log(err);
-                    setIsAuth(false);
-                })
+            if (err.response?.status == 403) {
+                const refrechToken = async () => {
+                    await Axios.get("https://www.fttran.tech/api/token/refresh/", {
+                        withCredentials:true
+                    })
+                    .then(() => {
+                        console.log("second request");
+                        setIsAuth(true);
+                    }).catch(err => {
+                        console.log(err);
+                        setIsAuth(false);
+                    })
+                }
+                refrechToken();
             }
             else {
                 setIsAuth(false);
@@ -37,7 +57,7 @@ export const ContextProvider = ({ children }) => {
     }
 
     return (
-        <Authcontext.Provider value={ { isAuthenticated, isAuth } }>
+        <Authcontext.Provider value={ { isAuthenticated, setHandler, isAuth, isGame, isLogin } }>
             {children}
         </Authcontext.Provider>
     )

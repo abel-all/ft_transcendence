@@ -9,6 +9,7 @@ import {signInFieldProps, itemData, oAuthItems} from './variables.jsx'
 import { useNavigate } from 'react-router-dom';
 import LoaderOntop from "../../components/LoaderOntop.jsx";
 import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
+import { useAuth } from "../../components/Auth";
 import "./css/index.css"
 
 
@@ -20,6 +21,7 @@ function SignIn() {
     const [isVerify, setIsVerify] = useState(false);
     const [isloaded, setIsloaded] = useState(true);
     const navigate = useNavigate();
+    const auth = useAuth();
 
     useEffect(() => {
         setTimeout(() => {
@@ -42,18 +44,8 @@ function SignIn() {
                 setIsVerify(true);
             }
             else {
-                Axios.post("https://www.fttran.tech/api/GnrToken/", {
-                    user_id: userId,
-                },
-                {
-                    withCredentials:true,
-                }).then(() => {
-                    console.log("second request");
-                    navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
-                }).catch((err) => {
-                    console.log(err);
-                    setMessage("Somethings wrong, please try again!")
-                });
+                auth.setHandler("game", true);
+                navigate("/game", { replace: true }); // is 2fa disable must redirect them to game page
             }
         }).catch(err => {
             console.log(err);

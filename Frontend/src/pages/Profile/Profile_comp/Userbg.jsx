@@ -6,7 +6,7 @@ function Userbg() {
     //     background:url(userbg)
     // }
     return (
-        <div className="userbgHolder relative">
+        <div className="userbgHolder mt-[101px] relative">
             <div className={`rounded-t-lg bg-cover bg-center bg-[url('src/assets/imgs/userbg.png')] h-[182px] w-full`} ></div>
             <Link to="/settings">
                 <div className="Btn-dec flex flex-row justify-around bg-[#15262A]  opacity-90 font-Outfit rounded-full top-[3px] right-[6px] absolute w-[153px] h-[42px] ">

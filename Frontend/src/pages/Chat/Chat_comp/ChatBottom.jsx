@@ -14,11 +14,13 @@ function ChatBottom() {
     const textAreaRef = useRef(null);
 
     const HandelSendMessage = (e) => {
-        if (messageContext.userAbleToSendMessage){
+        if (messageContext.userAbleToSendMessage && textValue && textValue.trim(" ") && (textValue.length < 20000)){
             flushSync(() => {
                 messageContext.addMessage(textValue);
-                if (textAreaRef.current)
+                if (textAreaRef.current) {
                     textAreaRef.current.value = "";
+                    setTextValue("");
+                }
             });
             setTimeout(() => {
                 messageContext.goToButtom("smooth");

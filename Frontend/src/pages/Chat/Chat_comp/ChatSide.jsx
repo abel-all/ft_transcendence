@@ -1,63 +1,63 @@
 import ChatHeader from "./ChatHeader"
 import ChatBottom from "./ChatBottom"
 import Messages from './Messages'
-import { useRef, useContext, useEffect, createContext, useState } from "react"
+import { useMemo, useRef, useContext, useEffect, createContext, useState } from "react"
 import {chatHeaderOnClick} from '../Chat'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
-
+import { flushSync } from 'react-dom';
+import TimeHM from '../../../components/TimeHM'
 
 
 
 const sendMessageContext = createContext();
 
 
+function messagesAddedLoop(msg , add) {
 
+    for (let i = 0; i < msg.length; i++) {
+        if (msg[i].message_id === add.message_id && msg[i].depands != add.depands) {
+            msg[i] = add;
+            return (false);
+        }
+    }
+    return (true);
+}
 
 
 function ChatSide(Data) {
     
-    const formatTime = (date) => {
-        return date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        });
-    }
-    
-    // Example usage:
-    const now = new Date();
-    const formattedTime = formatTime(now);
-    
-    
+    const initialState = {
+        message: '',
+        message_id: uuidv4(),
+        timestamp: TimeHM(),
+        sender: '',
+        seen: false,
+        depands: "waiting"
+      };
     
     const [messages, setMessages] = useState([]);
+    const [messagesAdded, setMessagesAdded] = useState([]);
+    const [username, SetUsername] = useState("");
     const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(false);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
-    const [CreateMessages, setCreateMessages] = useState({
-        message : '',
-        message_id : uuidv4(),
-        timestamp : formattedTime,
-        sender : '',
-        seen : false,
-        depands : "waiting"
-    });
+    const [CreateMessages, setCreateMessages] = useState(initialState);
     
     const  UpdateCreatedMessage = (msg, send) => {
-        setCreateMessages({
+        setCreateMessages( prevState => ({ 
+            ...prevState,
             message : msg,
-            message_id : uuidv4(),
-            timestamp : formattedTime,
+            timestamp :  TimeHM(),
             sender : send,
-            seen : false,
-            depands : "waiting"
-        });
+        })
+    );
     }
     
     const  UpdateCreatedMessageState = (seen, state) => {
         setCreateMessages( prevState => ({ 
             ...prevState,
             seen : seen,
+            timestamp :  TimeHM(),
             depands : state
             })
         );
@@ -74,32 +74,35 @@ function ChatSide(Data) {
     }
 
     useEffect(() => {
-        function getingData() {
-            let username;
+        function FetchFullBack() {
+            console.log("Data Featched!");
             if (ChatContext.chatHeader.name)
-                username = ChatContext.chatHeader.name
+                    SetUsername(ChatContext.chatHeader.name);
             else if (ChatContext.userFromUrl.user)
-                username = ChatContext.userFromUrl.user
+                    SetUsername(ChatContext.userFromUrl.user);
             if (username) {
-                axios.get(`http://127.0.0.1:8000/messages/${username}`)
+                axios.get(`http://10.13.5.5:8000/messages/${username}`)
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
                         return true;
                     });
-                    console.log("Getting data in chat side", res.data);
                 })
                 .catch(error => {
-                    console.error('Error fetching messages:', error);
+                    console.log('Error fetching messages:', error);
                 });
             }
         }
         
-        getingData();
-    }, [getMessagesFromDataBase]);
+        FetchFullBack();
+    }, [ChatContext.chatHeader.name, ChatContext.userFromUrl.user, username]);
     
     
-    
+    useEffect(() => {
+        setMessagesAdded([]);
+    }, [ChatContext.chatHeader]);
+
+
     const addMessage = (message) => {
         UpdateCreatedMessage(message, "User2");
         sendMessageToDataBase(message, "User2", CreateMessages);
@@ -107,14 +110,9 @@ function ChatSide(Data) {
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
-        let username;
-        if (ChatContext.chatHeader.name)
-            username = ChatContext.chatHeader.name
-        else if (ChatContext.userFromUrl.user)
-            username = ChatContext.userFromUrl.user
-        axios.post(`http://127.0.0.1:8000/messages/${username}`, {
+        axios.post(`http://10.13.5.5:8000/messages/${username}`, {
             message_id : uuidv4(),
-            timestamp : formatTime(now),
+            timestamp :  TimeHM(),
             sender : sender,
             message : message,
             seen : false,
@@ -130,35 +128,28 @@ function ChatSide(Data) {
     };
     
     useEffect(() => {
-        messages.length == 0 && setMessages(
-            prevState => {
-                return [...prevState, CreateMessages];
-            }
-        );
-        messages.length > 0 &&  setMessages(
-            prevState => {
-                let lastmessage = prevState[prevState.length - 1];
-                if (lastmessage.message_id == CreateMessages.message_id) {
-                    const UpdateLastMessage = {...lastmessage, depands: CreateMessages.depands};
-                    const updateMessaes = [...prevState.slice(0, prevState.length - 1), UpdateLastMessage];
-                    return updateMessaes;
+            CreateMessages.message && messagesAddedLoop(messagesAdded, CreateMessages) && setMessagesAdded(prevState => [
+                ...prevState, {
+                    message: CreateMessages.message,
+                    message_id: CreateMessages.message_id,
+                    timestamp: CreateMessages.timestamp,
+                    sender: CreateMessages.sender,
+                    seen: CreateMessages.seen,
+                    depands: CreateMessages.depands,
                 }
-                else {
-                    return [...prevState, CreateMessages];
-                }
-            }
-        );               
-    }, [CreateMessages])
+            ]);
+            CreateMessages.depands != "waiting" && setCreateMessages(initialState);
+      }, [CreateMessages]);
 
-    console.log("users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")
+      // console.log("users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")
     return (
         <div className={" " + (Data.className) ? Data.className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
                 {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
-                        {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")}
-                        <sendMessageContext.Provider value={{addMessage,messages, messagesRef, goToButtom, userAbleToSendMessage}}>
+                        {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages}}>
                             <ChatHeader Data={Data}/>
                             <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>

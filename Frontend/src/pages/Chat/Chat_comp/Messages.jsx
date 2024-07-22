@@ -1,68 +1,40 @@
-import Chat from '../../../assets/Chat.json'
-import seen from '../../../assets/imgs/chat/seen.svg'
-import notseen from '../../../assets/imgs/chat/notyet.svg'
-import waithing from '../../../assets/imgs/chat/msg_waiting.svg'
-import failed from '../../../assets/imgs/chat/msg_failed.svg'
+
 import { useContext, useEffect, useState } from 'react'
 import { sendMessageContext } from './ChatSide'
-
+import GetChatFromDataBase from '../../../components/GetChatFromDataBase'
+import StoreMessages from '../../../components/StoreMessages'
 
 
 
 function Messages(Data) {
-
-    const messageContext = useContext(sendMessageContext);
-    let userStyle;
     
+    
+    const messageContext = useContext(sendMessageContext);
     useEffect(() => {
-        const timer = setTimeout(() => {
-            messageContext.goToButtom("auto")
-        }, 500)
-
-        return (() => {
-            clearTimeout(timer)
-        })
-    }, [])
-
-    const {messages} = useContext(sendMessageContext);
+        messageContext.goToButtom("auto")
+    },);
+    
     // console.log("Messages Section", messages.messages);
+    const {messages} = useContext(sendMessageContext);
+    const {messagesAdded} = useContext(sendMessageContext);
     return (
         <div ref={messageContext.messagesRef} className={"" + (Data.className) ? Data.className : ''}>
+           <>
             {
-                Array.isArray(messages.messages) && messages.messages.map(chatMessages => {
-                    {(chatMessages.sender == "User1") ? userStyle = "text-white bg-[#0A0C0E] rounded-tr-lg " : userStyle = "text-black bg-white self-end rounded-tl-lg "}
+                Array.isArray(messages.messages) && messages.messages.map((chatMessages, index) => {
                     return (
-                        <div key={chatMessages.message_id} className={userStyle + 'break-all relative flex rounded-b-lg w-[70%] lg:w-[450px] m-[10px] p-[20px]'}>
-                            <p className='pb-[15px]'>{chatMessages.message}</p>
-                            {(chatMessages.sender == "User2") ?
-                                <>
-                                    <span className='absolute right-[45px] bottom-[5px]'>{chatMessages.timestamp}</span>
-                                    <img
-                                        src={
-                                            chatMessages.seen ? seen : (chatMessages.depands ? ((chatMessages.depands == "failed") ? failed : waithing) : notseen)}
-                                        alt='' className='absolute right-[15px] bottom-[5px]'/>
-                                </>
-                                : 
-                                    <span className='absolute right-[15px] bottom-[5px]'>{chatMessages.timestamp}</span>
-                            }
-                        </div>
-                    )
+                        <GetChatFromDataBase chatMessages={chatMessages} key={index}/>
+                    );
                 })
             }
-            <div className='text-white'>
-            <p className='pb-[15px]'>{messageContext.CreateMessages.message}</p>
-            {(messageContext.CreateMessages.sender == "User2") ?
-                                <>
-                                    <span className='right-[45px] bottom-[5px]'>{messageContext.CreateMessages.timestamp}</span>
-                                    <img
-                                        src={
-                                            messageContext.CreateMessages.seen ? seen : (messageContext.CreateMessages.depands ? ((messageContext.CreateMessages.depands == "failed") ? failed : waithing) : notseen)}
-                                        alt='' className='right-[15px] bottom-[5px]'/>
-                                </>
-                                : 
-                                    <span className='right-[15px] bottom-[5px]'>{messageContext.CreateMessages.timestamp}</span>
-                            }
-            </div>
+            {
+                Array.isArray(messagesAdded) && messagesAdded.map((chatMessages, index) => {
+                    return (
+                        <StoreMessages chatMessages={chatMessages} key={index}/>
+                    );
+                })
+            }
+            </>
         </div>
 
 

@@ -52,17 +52,41 @@ const SearchResultCard = ({rank, userImage, username, bgColor}) => {
     )
 }
 
-const SearchEngine = () => {
+const SearchEngine = ({scroll="", gap="my-[100px] gap-[100px]"}) => {
 
     const [inSearch, setInSearch] = useState("false");
 
     return (
-        <div className="w-full my-[100px] max-sm:mt-[20px] flex flex-col gap-[100px] items-center">
+        <div className={`w-full ${gap} max-sm:mt-[20px] flex flex-col items-center`}>
             <div className="search-bar w-full max-w-[968px] h-[71px] max-sm:h-[50px] flex justify-between bg-[#d9d9d9] px-[20px] rounded-[8px] bg-opacity-20">
                 <input className="text-[#eee] outline-none border-none flex-1 bg-transparent" placeholder="Type Somethings..." type="text" />
                 <img className="w-full max-w-[40px]" src={search} />
             </div>
-            <div className="search-res-container w-full max-w-[968px] flex flex-col gap-[20px]">
+            <div className={`${scroll} search-res-container w-full max-w-[968px] flex flex-col gap-[20px]`}>
+                <SearchResultCard 
+                    rank="5343"
+                    userImage="https://picsum.photos/100/100"
+                    username="abel-all"
+                    bgColor="bg-[#CB3401]"
+                />
+                <SearchResultCard 
+                    rank="5343"
+                    userImage="https://picsum.photos/100/100"
+                    username="abel-all"
+                    bgColor="bg-[#CB3401]"
+                />
+                <SearchResultCard 
+                    rank="5343"
+                    userImage="https://picsum.photos/100/100"
+                    username="abel-all"
+                    bgColor="bg-[#CB3401]"
+                />
+                <SearchResultCard 
+                    rank="5343"
+                    userImage="https://picsum.photos/100/100"
+                    username="abel-all"
+                    bgColor="bg-[#CB3401]"
+                />
                 <SearchResultCard 
                     rank="5343"
                     userImage="https://picsum.photos/100/100"

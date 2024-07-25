@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const GameSettingContext = createContext(null);
 
@@ -10,6 +10,7 @@ export const GameSettingsContextProvider = ({ children }) => {
     const [isLastStep, setIsLastStep] = useState(false);
     const [isGame, setIsGame] = useState(false);
     const [modal, setModal] = useState(false);
+    const [isSettings, setIsSettings] = useState(false);
     const [settingsData, setSettingsData] = useState([]);
 
     const [player1Score, setPlayer1Score] = useState(0);
@@ -45,6 +46,9 @@ export const GameSettingsContextProvider = ({ children }) => {
             case "game":
                 setIsGame(value);
                 break;
+            case "settings":
+                setIsSettings(value);
+                break;
         }
     }
 
@@ -57,7 +61,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 
     return (
         <GameSettingContext.Provider 
-            value={ { handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>
+            value={ { isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>
                 {children}
         </GameSettingContext.Provider>
     )

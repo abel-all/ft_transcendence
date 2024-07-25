@@ -54,6 +54,8 @@ const ChooseSectionHandler = (name) => {
     const lastClickHandler = () => {
         gameContext.setHandler("last", false);
         gameContext.setHandler("game", true);
+        gameContext.setHandler("map", true);
+        gameContext.setHandler("settings", false);
     }
 
     switch(name) {

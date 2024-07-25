@@ -51,7 +51,8 @@ function App() {
               {/* <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} /> */}
               <Route path="/chat" element={<Chat />} />
               {/* <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} /> */}
-              <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+              {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
+              <Route path="/game" element={<Game />} />
               <Route path="game/play/online" element={<PlayOnline />} />
               <Route path="game/play/tournament" element={<Tournament />} />
               {/* <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} /> */}

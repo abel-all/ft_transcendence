@@ -9,10 +9,10 @@ const playerHeight = 88;
 const playerWidth = 20;
 const canvasWidth = 848;
 const canvasHeight = 533;
-const botLevel = 0;
+const botLevel = 0.9;
 const ballStartSpeed = 0.5;
 const ballDeltaSpeed = .1;
-const paddleSpeed = 30;
+const paddleSpeed = 16;
 
 const paddleOne = {
     x: 0,
@@ -157,11 +157,13 @@ const GamePlay = () => {
                     switch (keyPressed) {
                         case paddle1Up:
                             if (paddleOne.y > 0)
-                                paddleOne.y -= paddleOne.speed;
+                                for (let i = 0; i < paddleOne.speed; i++)
+                                    paddleOne.y -= 2;
                             break;
                         case paddle1Down:
                             if (paddleOne.y < canvasHeight - paddleOne.height)
-                                paddleOne.y += paddleOne.speed;
+                                for (let i = 0; i < paddleOne.speed; i++)
+                                    paddleOne.y += 2;
                             break;
                         case paddle2Up:
                             if (paddleTwo.y > 0)

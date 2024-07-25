@@ -25,16 +25,21 @@ const validateInput = (type, value) => {
 
 function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
 
-    const [focusColor, setFocusColor] = useState("");
+    const [passFocusColor, setPassFocusColor] = useState("focus:border-[#ff0000]");
+    const [focusColor, setFocusColor] = useState("border border-[#ff0000]");
     const [eyeIcon, inputType] = usePasswordToggle();
 
     const handleInputChange = (e) => {
         const type = e.currentTarget.placeholder;
         const value = e.currentTarget.value;
-        if (validateInput(type, value))
+        if (validateInput(type, value)) {
             setFocusColor("border border-[#00FF00]");
-        else
+            setPassFocusColor("focus:border-[#00FF00]");
+        }
+        else {
             setFocusColor("border border-[#FF0000]");
+            setPassFocusColor("focus:border-[#FF0000]");
+        }
 
         handleChange(type, value);
     }
@@ -62,14 +67,14 @@ function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
             {type === 'textarea' ? (
                 <textarea
                     onChange={handleInputChange}
-                    className={"rounded-[15px] bg-transparent outline-[0px] bg-white bg-opacity-[3%] w-full text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border max-h-[200px] " + focusColor}
+                    className={"rounded-[15px] bg-transparent outline-[0px] bg-white bg-opacity-[3%] w-full text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border max-h-[200px] " + passFocusColor}
                     placeholder={placeHolder}
                     required
                 />
             ) : (
                 <input
                     onChange={handleInputChange}
-                    className={"rounded-[15px] m-[0px] outline-[0px] w-full bg-white bg-opacity-[3%] text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border " + focusColor}
+                    className={"rounded-[15px] m-[0px] outline-[0px] w-full bg-white bg-opacity-[3%] text-[#EEEEEE] text-[16px] p-[15px] duration-70 focus:border " + passFocusColor}
                     placeholder={placeHolder}
                     type={type}
                     required

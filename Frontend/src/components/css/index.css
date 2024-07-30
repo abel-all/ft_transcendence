@@ -1,0 +1,9 @@
+
+/* .arrow {
+    position
+} */
+.parent-div:hover .arrow {
+    display: block;
+    animation-delay: 200ms;
+    transform: translate(20px);
+}

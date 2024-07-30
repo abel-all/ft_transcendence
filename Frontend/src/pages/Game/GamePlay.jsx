@@ -12,7 +12,7 @@ const canvasHeight = 533;
 const botLevel = 0.9;
 const ballStartSpeed = 0.5;
 const ballDeltaSpeed = .1;
-const paddleSpeed = 16;
+const paddleSpeed = 20;
 
 const paddleOne = {
     x: 0,
@@ -157,13 +157,11 @@ const GamePlay = () => {
                     switch (keyPressed) {
                         case paddle1Up:
                             if (paddleOne.y > 0)
-                                for (let i = 0; i < paddleOne.speed; i++)
-                                    paddleOne.y -= 2;
+                                paddleOne.y -= paddleOne.speed;
                             break;
                         case paddle1Down:
                             if (paddleOne.y < canvasHeight - paddleOne.height)
-                                for (let i = 0; i < paddleOne.speed; i++)
-                                    paddleOne.y += 2;
+                                paddleOne.y += paddleOne.speed;
                             break;
                         case paddle2Up:
                             if (paddleTwo.y > 0)
@@ -176,10 +174,12 @@ const GamePlay = () => {
                     }
                 }
 
-                canvas.addEventListener("mousemove", (e) => {
+                window.addEventListener("mousemove", (e) => {
                     let rect = canvas.getBoundingClientRect();
 
-                    paddleOne.y = e.clientY - rect.top - (paddleOne.height / 2);
+                    const newY = e.clientY - rect.top - (paddleOne.height / 2);
+                    if (newY < (canvasHeight - paddleOne.height) && newY > 0)
+                        paddleOne.y = newY;
                 });
                 window.addEventListener("keydown", changeDirection);
 
@@ -241,13 +241,13 @@ const GamePlay = () => {
 
     return (
         <div className='sm:h-[calc(100%-105px)] flex flex-col justify-center items-center gap-[24px]'>
-            <div className="score-players-container w-full max-w-[848px] flex justify-between">
+            <div className="score-players-container w-full max-w-[848px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.]">
                 <PlayerScore 
                     username="abel-all"
                     rank="345"
                     userImage="https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"
                 />
-                <div className="score-container flex items-center justify-center flex-1">
+                <div className="score-container w-full flex items-center justify-center flex-1">
                     <div className="player1-score-gradient flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light">{player1Score}</div>
                     <div className="player2-score-gradient flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light">{player2Score}</div>
                 </div>
@@ -258,8 +258,8 @@ const GamePlay = () => {
                     userImage="https://cdn.intra.42.fr/users/d95f55ada2e553d72f377af58e282003/ychahbi.jpg"
                 />
             </div>
-            <div className="canvas-container border border-[#eee] w-fit rounded-[15px]">
-                <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} className="rounded-[20px]"></canvas>
+            <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px]">
+                <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} className="w-full max-w-[848px] rounded-[20px]"></canvas>
             </div>
         </div>
     )

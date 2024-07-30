@@ -30,7 +30,7 @@ const OauthCallBack = () => {
         }
         else {
             const checkCode = async () => {
-                await Axios.post("https://www.fttran.tech/api/GnrToken/",{
+                await Axios.post("https://ftspring.me/api/auth/GnrToken/",{
                     user_id: paramValue,
                 }, // must edited
                 {

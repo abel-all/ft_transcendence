@@ -10,10 +10,11 @@ import Chat from './pages/Chat/Chat.jsx'
 import Game from './pages/Game/Game.jsx'
 import PlayOnline from './pages/Game/PlayOnline.jsx'
 import Tournament from './pages/Game/Tournament.jsx'
+import PlayWithBot from './pages/Game/PlayWithBot.jsx'
+import PlayWithFriend from './pages/Game/PlayWithFriend.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ContextProvider } from './components/Auth.jsx'
 import SetupTwoFa from './pages/2FaAuth/SetupTwoFa.jsx'
-import TwoFaAuthStep3 from './pages/2FaAuth/TwoFaAuthStep3.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DontRequireAuth from './components/DontRequireAuth.jsx'
 import OauthCallBack from './pages/Login/OauthCallBack.jsx'
@@ -56,9 +57,14 @@ function App() {
               {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
               <Route path="/game" element={<Game />} />
               {/* <Route path="game/play/online" element={<PlayOnline />} /> */}
-              <Route path="game/play/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
-              {/* <Route path="game/play/tournament" element={<Tournament />} /> */}
-              <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
+              {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
+              <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
+              <Route path="game/bot" element={<RequireAuth><Tournament /></RequireAuth>} />
+              <Route path="game/friend" element={<RequireAuth><PlayOnline /></RequireAuth>} /> */}
+              <Route path="game/tournament" element={<Tournament />} />
+              <Route path="game/online" element={<PlayOnline />} />
+              <Route path="game/bot" element={<PlayWithBot />} />
+              <Route path="game/friend" element={<PlayWithFriend />} />
               <Route path="*" element={<Page424 />} />
             </Routes>
           </GameSettingsContextProvider>

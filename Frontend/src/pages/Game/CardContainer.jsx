@@ -10,28 +10,28 @@ import { useGameSettings } from './GameSettingsContext'
 
 const cardsData = [
     {
-        route: "play/online",
+        route: "/game/online",
         bgColor: "bg-[#FFCD3E]/90",
         title: "Play Online",
         description: "Play vs a person of similar skill",
         image: imageone,
     },
     {
-        route: "/",
+        route: "/game/bot",
         bgColor: "bg-[#6E9AC9]/90",
         title: "Computer",
         description: "Challenge a bot from Easy to Master",
         image: imagetwo,
     },
     {
-        route: "/",
+        route: "/game/friend",
         bgColor: "bg-[#92C2C8]/90",
         title: "Play a Friend",
         description: "Invite a friend to a game of ping pong",
         image: imagethree,
     },
     {
-        route: "/",
+        route: "/game/tournament",
         bgColor: "bg-[#DC5E61]/90",
         title: "Tournaments",
         description: "Join an Arena where anyone can win",

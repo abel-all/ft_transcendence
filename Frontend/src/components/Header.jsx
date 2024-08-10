@@ -12,7 +12,7 @@ function Header(props) {
     const auth = useAuth();
 
     const handleLogout = async () => {
-        await Axios.post("https://ftspring.me/api/auth/logout/")
+        await Axios.post("https://fttran.tech/api/auth/logout/")
         .then(response => {
             console.log(response);
             auth.setHandler("game", false);

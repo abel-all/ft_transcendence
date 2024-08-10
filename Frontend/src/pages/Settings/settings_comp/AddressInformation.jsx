@@ -35,21 +35,21 @@ function AddressInformation(className) {
                 <div className='CountryCity flex md:justify-between md:flex-row flex-col'>
                     <div className={DivHolder}>
                         <label className={labelFiled}>Country</label>
-                        <input className={placeHolder} type="text" vlaue="Country" placeholder='Morocco'/>
+                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="Country" placeholder='Morocco'/>
                     </div>
                     <div className={DivHolder}>
                         <label className={labelFiled}>City</label>
-                        <input className={placeHolder} type="text" vlaue="City" placeholder='Oued Zem'/>
+                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="City" placeholder='Oued Zem'/>
                     </div>
                 </div>
                 <div className='AddressZip flex md:justify-between md:flex-row flex-col'>
                     <div className={DivHolder}>
                         <label className={labelFiled}>Address</label>
-                        <input className={placeHolder} type="text" vlaue="Address" placeholder='Oued Zem in Oued Zem at Oued Zem'/>
+                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="Address" placeholder='Oued Zem in Oued Zem at Oued Zem'/>
                     </div>
                     <div className={DivHolder}>
                         <label className={labelFiled}>Zip Code</label>
-                        <input className={placeHolder} type="text" vlaue="Phone" placeholder='25350'/>
+                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="Phone" placeholder='25350'/>
                     </div>
                 </div>
             </form>

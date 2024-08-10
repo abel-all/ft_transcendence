@@ -41,7 +41,7 @@ const ResetPassword = () => {
     
     const verifyPassword = async () => {
         setIsLoading(true);
-        const paswdendpoint = "https://ftspring.me/api/auth/passwordreset/" + tokenValue + "/";
+        const paswdendpoint = "https://fttran.tech/api/auth/passwordreset/" + tokenValue + "/";
     
         if (fieldReGex.passwordReGex.test(password) && fieldReGex.passwordReGex.test(passwordConfirm) && password == passwordConfirm) {
             await Axios.post(paswdendpoint, {

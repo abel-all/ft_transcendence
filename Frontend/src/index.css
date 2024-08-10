@@ -55,13 +55,13 @@ body {
     --purple-part: 1;
 }
 
-.StatisticsChart {
+/* .StatisticsChart {
     background: conic-gradient(
         #ffcb61 0% calc(10 / 14 * 100%),
         #A8293F calc(10 / 14 * 100%) calc(13 / 14 * 100%),
         #8374D1 calc(13 / 14 * 100%) 100%
     );
-}
+} */
 
 .trendup-icon::after {
     background: url(/src/assets/imgs/trend-up.svg) 0 0 no-repeat;

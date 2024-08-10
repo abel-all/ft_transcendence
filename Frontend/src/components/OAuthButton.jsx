@@ -6,7 +6,7 @@ function OAuthButton(props) {
     const clickHandler = () => {
 
         if (props.imgTilte === "google")
-            window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=895845289499-jt7kib2t1n5tr6ah3oekfdp6l6i29abm.apps.googleusercontent.com&redirect_uri=https://ftspring.me/api/auth/oauth/google/callback/&response_type=code&scope=email%20profile";
+            window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=895845289499-jt7kib2t1n5tr6ah3oekfdp6l6i29abm.apps.googleusercontent.com&redirect_uri=https://fttran.tech/api/auth/oauth/google/callback/&response_type=code&scope=email%20profile";
         else
             window.location.href = "https://bit.ly/oAuth42";
     }

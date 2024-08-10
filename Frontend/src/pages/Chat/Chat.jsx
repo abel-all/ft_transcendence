@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('ws://localhost:8000');
+    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
@@ -28,12 +28,12 @@ function Chat() {
       });
   
     useEffect(() => {
-        let i = 0;
-      const timer = setInterval(() => {
-        sendMessage("hello " + i++);
-      }, 100);
+    //     let i = 0;
+    //   const timer = setInterval(() => {
+        sendMessage('{"action" : "subscribe","room_name" : "hisoak__-youssef"}');
+    //   }, 100);
   
-      return () => clearInterval(timer);
+    //   return () => clearInterval(timer);
     }, [sendMessage]);
   
     const connectionStatus = {

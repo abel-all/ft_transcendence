@@ -25,7 +25,7 @@ import { GameSettingsContextProvider } from './pages/Game/GameSettingsContext.js
 
 
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 function App() {
 
@@ -48,14 +48,10 @@ function App() {
               <Route path="/signup" element={<SignUp />} /> */}
               <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} />
               <Route path="/oauth/callback" element={<OauthCallBack />} />
-              {/* <Route path="/settings" element={<Settings />} /> */}
-              <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
-              {/* <Route path="/profile" element={<Profile />} /> */}
-              <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
-              {/* <Route path="/chat" element={<Chat />} /> */}
-              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-              {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
-              <Route path="/game" element={<Game />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
               {/* <Route path="game/play/online" element={<PlayOnline />} /> */}
               {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />

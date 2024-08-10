@@ -27,7 +27,7 @@ const TwoFaAuthStep1 = () => {
         setIsLoading(true);
 
         if (/^[0-9]{6,6}$/.test(code)) {
-            await Axios.post("https://ftspring.me/api/auth/2fa/verify/device/", {
+            await Axios.post("https://fttran.tech/api/auth/2fa/verify/device/", {
                 otp_code: code,
             },
             {
@@ -53,7 +53,7 @@ const TwoFaAuthStep1 = () => {
 
     
     const handleEnableButtonClick = async () => {
-        await Axios.get("https://ftspring.me/api/auth/2fa/enable/",
+        await Axios.get("https://fttran.tech/api/auth/2fa/enable/",
         {
             withCredentials:true,
         })

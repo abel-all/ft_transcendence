@@ -3,7 +3,7 @@ import { useEffect , useState} from 'react';
 import UserIcon from '../../../assets/imgs/UserIcon.png'
 import axios from "axios"
 
-// https://fttran.tech/api/profile/
+// https://fttran.tech/api/profile
 
 function Badge() {
     const [data, setData] = useState({});
@@ -15,7 +15,7 @@ function Badge() {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("https://fttran.tech/api/profile");
+                const res = await axios.get("https://random-data-api.com/api/v3/projects/192b979b-436e-471a-b4d3-e69ef2efb3e7?api_key=RdZ1jCVqVPFnsjNvBdwIXA");
                 handelData(res.data);
                 console.log("Res:", res);
             } catch (error) {

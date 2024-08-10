@@ -7,9 +7,8 @@ import "./css/index.css"
 // Game vars:
 const playerHeight = 15;
 const playerWidth = 70;
-const canvasWidth = 400;
-const canvasHeight = 500;
-const botLevel = 0.6;
+let canvasWidth = 450;
+let canvasHeight = 700;
 const ballStartSpeed = 0.7;
 const ballDeltaSpeed = .1;
 const paddleSpeed = 13;
@@ -64,11 +63,12 @@ const PlayerScore = ({ rank, username, userImage, flexDirection="" }) => {
     )
 }
 
-const GamePlay = () => {
+const GamePlay = ({levelOfBot = 0}) => {
 
     const canvasRef = useRef();
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
+    const botLevel = levelOfBot;
 
     useEffect(() => {
 
@@ -117,23 +117,6 @@ const GamePlay = () => {
                     drawBall();
                 };
 
-                // check collision with players :
-                const collision = (p, b) => {
-                    b.top = b.y - b.radius;
-                    b.bottom = b.y + b.radius;
-                    b.left = b.x - b.radius;
-                    b.right = b.x + b.radius;
-
-                    p.top = p.y;
-                    p.bottom = p.y + p.height;
-                    p.left = p.x;
-                    p.right = p.x + p.width;
-
-                    return (
-                        b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom
-                    )
-                }
-
                 // bot y normalization :
                 const botPosNormalization = (currentPos, targetPos) => {
                     return (currentPos + ((targetPos - currentPos) * botLevel))
@@ -168,13 +151,16 @@ const GamePlay = () => {
                     }
                 }
 
-                window.addEventListener("mousemove", (e) => {
+                const handleMouseMove = (e) => {
                     let rect = canvas.getBoundingClientRect();
 
                     const newX = e.clientX - rect.left - (paddleOne.width / 2);
                     if (newX < (canvasWidth - paddleOne.width) && newX > 0)
                         paddleOne.x = newX;
-                });
+
+                }
+
+                window.addEventListener("mousemove", handleMouseMove);
                 window.addEventListener("keydown", changeDirection);
 
                 // reset ball pos :
@@ -191,17 +177,24 @@ const GamePlay = () => {
                     ball.y += ball.velocityY * ball.speed;
 
                     // ball collision with left && right borders:
-                    if ((ball.x + ball.radius) > canvasWidth || (ball.x - ball.radius) < 0)
+                    if ((ball.x + ball.radius) >= canvasWidth || (ball.x - ball.radius) <= 0)
                         ball.velocityX *= -1;
 
                     // ball collision with players:
-                    //wich player?
-                    let selectedPlayer = ball.y < (canvasHeight / 2) ? paddleTwo : paddleOne;
-                    if (collision(selectedPlayer, ball)) {
-                        ball.velocityY *= -1;
+                    if (ball.y + ball.radius >= paddleOne.y) {
+                        if (ball.x > paddleOne.x && ball.x < paddleOne.x + paddleOne.width) {
+                            ball.y = paddleOne.y - ball.radius;
+                            ball.velocityY *= -1;
+                            ball.speed += ballDeltaSpeed;
+                        }
+                    }
 
-                        // every time ball hists a palyer, we increase its speed:
-                        ball.speed += ballDeltaSpeed;
+                    if (ball.y - ball.radius <= paddleTwo.y + paddleTwo.height) {
+                        if (ball.x > paddleTwo.x && ball.x < paddleTwo.x + paddleTwo.width) {
+                            ball.y = paddleTwo.y + paddleTwo.height + ball.radius;
+                            ball.velocityY *= -1;
+                            ball.speed += ballDeltaSpeed;
+                        }
                     }
 
                     // paddle two movement (simple ai):
@@ -210,15 +203,11 @@ const GamePlay = () => {
                     paddleTwo.x = botPosNormalization(currentPos, targetPos);
 
                     // update score :
-                    if (ball.y + ball.radius < 0) {
-                        // paddleTwo.score++;
-                        // const res2 = player2Score + 1;
+                    if (ball.y <= 0) {
                         setPlayer1Score(player1Score + 1);
                         resetBallPos();
                     }
-                    else if (ball.y + ball.radius > canvasHeight) {
-                        // paddleOne.score++;
-                        // const res1 = player1Score + 1;
+                    else if (ball.y >= canvasHeight) {
                         setPlayer2Score(player2Score + 1);
                         resetBallPos();
                     }
@@ -231,12 +220,16 @@ const GamePlay = () => {
 
                 const intervalId = setInterval(gameLoop, 1000 / 60);
 
-                return () => clearInterval(intervalId);
+                return () => {
+                    window.removeEventListener("mousemove", handleMouseMove);
+                    window.removeEventListener("keydown", changeDirection);
+                    clearInterval(intervalId);
+                }
         }
     }, [player1Score, player2Score])
 
     return (
-        <div className='sm:h-[calc(100%-105px)] flex flex-col justify-center items-center gap-[24px]'>
+        <div className='sm:h-[calc(100%-105px)] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0'>
             <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">
                 <PlayerScore
                     username="abel-all"
@@ -254,7 +247,7 @@ const GamePlay = () => {
                     userImage="https://cdn.intra.42.fr/users/d95f55ada2e553d72f377af58e282003/ychahbi.jpg"
                 />
             </div>
-            <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px]">
+            <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px] max-sm:scale-[0.70]">
                 <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} className="rounded-[15px]"></canvas>
             </div>
         </div>

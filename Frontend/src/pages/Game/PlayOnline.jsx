@@ -9,19 +9,19 @@ import GamePlay from "./GamePlay.jsx"
 
 
 const PlayOnline = () => {
-    
+
     const [isLoaded, setIsLoaded] = useState(true);
     const [matchDelay, setMatchDelay] = useState(true);
     const [gameDelay, setGameDelay] = useState(true);
     const gameContext = useGameSettings();
-    
+
     useEffect(() => {
         setTimeout(() => {
             setIsLoaded(false)
         }, 500);
-        
+
     }, [])
-    
+
     useEffect(() => {
         if (!isLoaded)
             setTimeout(() => {
@@ -37,10 +37,10 @@ const PlayOnline = () => {
     return (
             <div className="h-[100vh] container mx-auto px-[10px]">
                 <Header title="Online Game" activeSection="GametableIcon" />
-                {/* {matchDelay && <MatchMaking />}
-                {!gameDelay && !gameContext.isGame && <GameSettings />} */}
-                {/* {gameContext.isGame && <GamePlay />} */}
-                {true && <GamePlay />}
+                {matchDelay && <MatchMaking />}
+                {!gameDelay && !gameContext.isGame && <GameSettings />}
+                {gameContext.isGame && <GamePlay />}
+                {/* {true && <GamePlay />} */}
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         )

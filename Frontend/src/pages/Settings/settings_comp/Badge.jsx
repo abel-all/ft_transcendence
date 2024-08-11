@@ -5,7 +5,14 @@ import upload from '../../../assets/imgs/upload.svg'
 import userbg from "../../../assets/imgs/userbg.png"
 
 
+const CheckPath = (file) => {
 
+    const Exarray = ['jpeg', 'jpg', 'png', 'gif'];
+    const extantion = file.split('.');
+    if (!Exarray.includes(extantion[extantion.length - 1]))
+        console.log("error the extiontion is not allowed ");
+    return (Exarray.includes(extantion[extantion.length - 1]));
+}
 
 function Badge() {
 
@@ -20,12 +27,10 @@ function Badge() {
     const HandelImage = (event) => {
         const imagefile = event.target.files[0];
 
-        if (imagefile) {
-            console.log('the file: ',  imagefile);
+        if (imagefile && CheckPath(imagefile.name)) {
             const readimage = new FileReader();
             readimage.onloadend = () => {
                 setImage(readimage.result);
-                console.log("ok! ", image);
             }
             readimage.readAsDataURL(imagefile);
         }
@@ -34,12 +39,10 @@ function Badge() {
     const HandelBackground = (event) => {
         const backgroundfile = event.target.files[0];
 
-        if (backgroundfile) {
-            console.log('the file: ',  backgroundfile);
+        if (backgroundfile && CheckPath(backgroundfile.name)) {
             const readbackground = new FileReader();
             readbackground.onloadend = () => {
                 setBackground(readbackground.result);
-                console.log("ok! ", background);
             }
             readbackground.readAsDataURL(backgroundfile);
         }

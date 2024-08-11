@@ -1,22 +1,72 @@
 import { useState } from 'react';
-
-
 import Edit from '../../../assets/imgs/edit.svg'
-
+import Inputes from './InputesComp';
 
 
 function AddressInformation(className) {
 
-    const placeHolder = "bg-transparent focus-visible:outline-0  placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]";
+    const [save, setSave] = useState(false);
+    const [errors, setErrors] = useState([]);
+    const [Country, setCountry] = useState("Morocco");
+    const [City, setCity] = useState("OUED zem");
+    const [Address, setAddress] = useState("Oued Zem");
+    const [Zip, setZip] = useState(25350);
+
+    const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`;
+    const Error       = `border-rose-600`;
     const labelFiled = "text-[#FFFFFF] opacity-60 my-[7px]";
     const DivHolder  = "FiledHolder flex flex-col";
 
-    const [save, setSave] = useState(false);
 
     function HandelSave() {
         setSave(!save);
     }
 
+    const handelErrors = (str) => {
+        if (!errors.includes(str))
+            setErrors(prevErrors => [...prevErrors, str]);
+    }
+
+    const removeErrors = (str) => {
+        if (errors.includes(str))
+            setErrors(errors.filter(item => item !== str));
+    }
+    
+    const FNfiled = (e, str) => {
+        e.preventDefault();
+        str == "CN" && setCountry(e.target.value);
+        str == "CT" && setCity(e.target.value);
+        str == "AD" && setAddress(e.target.value);
+        str == "ZP" && setZip(e.target.value);
+    }
+
+    const HandelSubmet = (e) => {
+        e.preventDefault();
+        const NamesRegix = /^[a-zA-Z\s]+$/;
+        const ZipForma = /^[1-9]\d{1,14}$/;
+
+        if (!NamesRegix.test(Country))
+            handelErrors("CN")
+        else {
+            removeErrors("CN");
+            if (!NamesRegix.test(City))
+                handelErrors("CT")
+            else {
+                removeErrors("CT");
+                if (!NamesRegix.test(Address))
+                    handelErrors("AD")
+                else {
+                    removeErrors("AD");
+                    if (!ZipForma.test(Zip))
+                        handelErrors("ZP")
+                    else {
+                        removeErrors("ZP");
+                        console.log("All Is Right Ready To Send ");
+                    }
+                }
+            }
+        }
+    }
 
     return (
         <div className={"border-[#626262] bg-[#15262a] px-[25px] py-[40px] mb-[120px] border-[1px]" + (className.className ? ` ${className.className}` : '')}>
@@ -29,28 +79,24 @@ function AddressInformation(className) {
                         </div> }
 
                         {save && <div className='flex flex-row justify-end  px-[10px] py-[3px] rounded-full border-[1px] border-solid border-[#e0dada]'>
-                            <button type='submit' className='px-[2px] font-[500] font-[Outfit] text-[#d3caca]'>Save</button>
+                            <button onClick={HandelSubmet}  className='px-[2px] font-[500] font-[Outfit] text-[#d3caca]'>Save</button>
                     </div>}
                 </div>
                 <div className='CountryCity flex md:justify-between md:flex-row flex-col'>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>Country</label>
-                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="Country" placeholder='Morocco'/>
-                    </div>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>City</label>
-                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="City" placeholder='Oued Zem'/>
-                    </div>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                        LabelName="Country" save={save} ErrorWord="CN" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="Country" VarLoad={Country} PlaceFeild="Morocco"/>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                        LabelName="City" save={save} ErrorWord="CT" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="City" VarLoad={City} PlaceFeild="Oued Zem"/>
                 </div>
                 <div className='AddressZip flex md:justify-between md:flex-row flex-col'>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>Address</label>
-                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="Address" placeholder='Oued Zem in Oued Zem at Oued Zem'/>
-                    </div>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>Zip Code</label>
-                        <input className={save ? `${placeHolder}` : `pointer-events-none ${placeHolder}`} type="text" vlaue="Phone" placeholder='25350'/>
-                    </div>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                        LabelName="Address" save={save} ErrorWord="AD" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="Address" VarLoad={Address} PlaceFeild="Oued Zem in oued zem"/>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                        LabelName="Zip code" save={save} ErrorWord="ZP" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="Zip code" VarLoad={Zip} PlaceFeild="25350"/>
                 </div>
             </form>
         </div>

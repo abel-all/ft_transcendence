@@ -6,12 +6,12 @@ import { useState } from 'react'
 import userIcon from "../../../assets/imgs/userprofile.svg"
 import close from "../../../assets/imgs/close.svg"
 import invite from "../../../assets/imgs/panding.svg"
-
+import axios from 'axios'
 
 
 function FriendsList({className}) {
     const [toggle, setToggle] = useState(false);
-
+    let TimeToDown;
     function handelToglle() {
         setToggle(!toggle);
     }
@@ -22,6 +22,21 @@ function FriendsList({className}) {
         setProp(prop);
     }
 
+    const HandelSearchRequest = (e) => {
+        if (TimeToDown)
+            clearTimeout(TimeToDown);
+
+        TimeToDown = setTimeout(() => {
+            e.target.value && axios.post('https://fttran.tech/api/profile/search/', {
+                username : e.target.value
+            }).then ((res) => {
+                console.log("message sent : ", res);
+            }).catch((err) => {
+                console.log("there is an error : ", err);
+            });
+            console.log(e.target.value);
+        }, 500);
+    }
     return (
         <>
             {toggle && <div className={"relative w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]"  + (className ? ` ${className}` : '')}>
@@ -46,7 +61,7 @@ function FriendsList({className}) {
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 h-[254px] overflow-auto">
                     {prop == "Search" &&
                         <>
-                            <input className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
+                            <input onKeyUp={HandelSearchRequest}  className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
                             {
                                 friendlist.map( (friend, index) => {
                                     return (

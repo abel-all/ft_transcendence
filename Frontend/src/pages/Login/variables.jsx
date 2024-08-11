@@ -54,7 +54,7 @@ const signUpFieldProps = [
 
 const fieldReGex = {
     nameReGex: /^[a-zA-Z-]{2,16}$/,
-    usernameReGex: /^[a-zA-Z0-9_]{3,16}$/,
+    usernameReGex: /^[a-zA-Z0-9_]{3,9}$/,
     emailReGex: /^[\w-.]+@([\w-]+\.)+[\w-]{2,8}$/,
     passwordReGex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Edit from '../../../assets/imgs/edit.svg'
-
+import Inputes from './InputesComp';
 
 
 function PersonalInformation(className) {
@@ -36,7 +36,7 @@ function PersonalInformation(className) {
 
     const HandelSubmet = (e) => {
         e.preventDefault();
-        const NamesRegix = /^[a-zA-Z]+$/;
+        const NamesRegix = /^[a-zA-Z-]{2,16}$/;
         const EmailRegix = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const PhoneRegix = /^\+?[1-9]\d{1,14}$/;
         if (!NamesRegix.test(Firstname))
@@ -62,7 +62,7 @@ function PersonalInformation(className) {
         }
     }
 
-    const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] border-transparent pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`;
+    const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`;
     const Error       = `border-rose-600`;
     const labelFiled = "text-[#FFFFFF] opacity-60 my-[7px]";
     const DivHolder  = "FiledHolder flex flex-col";
@@ -83,32 +83,20 @@ function PersonalInformation(className) {
 
                 </div>
                 <div className='FullnameHolder flex flex-col  md:justify-between md:flex-row'>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>First Name</label>
-                        <input className={ (save) ? (errors.includes("FN")) ? `${placeHolder} ${Error}` : `${placeHolder}`  : `pointer-events-none ${placeHolder}` }
-                            onChange={(e) => {FNfiled(e, "FN")}}
-                            type="text" name="FirstName" vlaue={Firstname} placeholder='Fisrt Name'/>
-                    </div>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>Last Name</label>
-                        <input className={ (save) ? (errors.includes("LN")) ? `${placeHolder} ${Error}` : `${placeHolder}`  : `pointer-events-none ${placeHolder}` }
-                            onChange={(e) => {FNfiled(e, "LN")}}
-                            type="text" id="LastName" vlaue={Lastname} placeholder='Last name'/>
-                    </div>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                        LabelName="First Name" save={save} ErrorWord="FN" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="FirstName" VarLoad={Firstname} PlaceFeild="Fisrt Name"/>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
+                        LabelName="Last Name" save={save} ErrorWord="LN" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="LastName" VarLoad={Lastname} PlaceFeild="Last name"/>
                 </div>
                 <div className='ContacInfo flex flex-col md:justify-between md:flex-row'>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>Email Address</label>
-                        <input className={ (save) ? (errors.includes("EM")) ? `${placeHolder} ${Error}` : `${placeHolder}`  : `pointer-events-none ${placeHolder}` }
-                            onChange={(e) => {FNfiled(e, "EM")}}
-                            type="text" id="EmailAddress" vlaue={Email} placeholder='Email@email.com'/>
-                    </div>
-                    <div className={DivHolder}>
-                        <label className={labelFiled}>Phone</label>
-                        <input className={ (save) ? (errors.includes("PH")) ? `${placeHolder} ${Error}` : `${placeHolder}`  : `pointer-events-none ${placeHolder}` }
-                            onChange={(e) => {FNfiled(e, "PH")}}
-                            type="text" id="Phone" vlaue={Phone} placeholder='+2120600000000'/>
-                    </div>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
+                        LabelName="Email Address" save={save} ErrorWord="EM" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="EmailAddress" VarLoad={Email} PlaceFeild="Email@email.com"/>
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
+                        LabelName="Phone" save={save} ErrorWord="PH" placeHolder={placeHolder}
+                        Error={Error} FNfiled={FNfiled} FieldName="text" VarLoad={Phone} PlaceFeild="+2120600000000"/>
                 </div>
             </form>
         </div>

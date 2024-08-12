@@ -25,7 +25,7 @@ import { GameSettingsContextProvider } from './pages/Game/GameSettingsContext.js
 
 
 
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = true;
 
 function App() {
 

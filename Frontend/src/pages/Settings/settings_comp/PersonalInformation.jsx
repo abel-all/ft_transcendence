@@ -62,7 +62,7 @@ function PersonalInformation(className) {
         }
     }
 
-    const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] border-solid border-transparent pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`;
+    const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] border-transparent pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`;
     const Error       = `border-rose-600`;
     const labelFiled = "text-[#FFFFFF] opacity-60 my-[7px]";
     const DivHolder  = "FiledHolder flex flex-col";

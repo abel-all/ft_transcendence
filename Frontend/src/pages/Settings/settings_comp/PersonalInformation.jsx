@@ -36,7 +36,7 @@ function PersonalInformation(className) {
 
     const HandelSubmet = (e) => {
         e.preventDefault();
-        const NamesRegix = /^[a-zA-Z]+$/;
+        const NamesRegix = /^[a-zA-Z-]{2,16}$/;
         const EmailRegix = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const PhoneRegix = /^\+?[1-9]\d{1,14}$/;
         if (!NamesRegix.test(Firstname))

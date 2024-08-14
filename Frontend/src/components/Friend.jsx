@@ -8,12 +8,36 @@ import {useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import unblock from "../assets/imgs/unblock.svg"
 import panding from "../assets/imgs/panding.svg"
+import axios from "axios"
 
 
 function Friend(Data) {
 
     const [isTrue, setIsTrue] = useState(false);
 
+    const AcceptRequest = (user) => {
+        if (Data.reason == "Invetations") {
+            console.log(`${user} is accepted`);
+            axios.post('api/profile/handle-friendship-request/', {
+                AcceptRequest : user
+            }).then((respons) => {
+                console.log("user add to friend list");
+            }).catch((error) => {
+                console.log("request not accepted");
+            })
+        }
+    }
+    
+    const SendRequest = (user) => {
+        console.log(`${user} ia requested`);
+        axios.post('api/profile/send-friendship-request/', {
+            SendRequest : user
+        }).then((respons) => {
+            console.log("user add to friend list");
+        }).catch((error) => {
+            console.log("request not accepted");
+        })
+    }
 
     function toggle() {
         setIsTrue(!isTrue);
@@ -23,7 +47,7 @@ function Friend(Data) {
             <>
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
-                        <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={FriendPic} alt="" />
+                        <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={Data.picture ? Data.picture : FriendPic} alt="" />
                         {Data.isFriend && <div className={`${Data.status} absolute bottom-0 right-0`}></div>}
                     </div>
                     <div className="userNrank flex flex-col shrink overflow-hidden">
@@ -39,7 +63,7 @@ function Friend(Data) {
                     <>
                         <button className="btn-frnds deleteFriend">
                             <img className="px-[7px]" onClick={toggle} src={removefriend} alt="" />
-                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to Block" reason="block"/> }
+                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to Block" reason="Block"/> }
                         </button>
                         <button className="btn-frnds chatFriend">
                             <Link to={"/chat?user=" + Data.username} >
@@ -55,7 +79,7 @@ function Friend(Data) {
                 }
                 {Data.reason == "Search" &&
                     <>
-                        <button className="btn-frnds Addfriend">
+                        <button onClick={() => SendRequest(Data.username)} className="btn-frnds Addfriend">
                             <img className="px-[7px]" src={AddUser} alt="" />
                         </button>
                         <button className="btn-frnds chatFriend">
@@ -74,7 +98,7 @@ function Friend(Data) {
                     <>
                         <button className="btn-frnds Unblock">
                             <img className="px-[7px]" onClick={toggle} src={unblock} alt="" />
-                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to UnBlock" reason="unblock"/> }
+                            {isTrue && <Moudel tggl = {toggle} username = {Data.username} message="Are you sure you want to UnBlock" reason="Unblock"/> }
                         </button>
                     </>
                 }
@@ -93,7 +117,7 @@ function Friend(Data) {
                 }
                 {Data.reason == "Invetations" &&
                 <>
-                    <button className="btn-frnds Unblock">
+                    <button onClick={() => AcceptRequest(Data.username)} className="btn-frnds Invite">
                         <img className="px-[7px]" src={AddUser} alt="" />
                     </button>
                     <button className="btn-frnds chatFriend">

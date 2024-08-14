@@ -1,7 +1,7 @@
 
 import UserIcon from '../../../assets/imgs/UserIcon.png'
 
-function Badge({username, picture, rank} = data) {
+function Badge({username, picture, rank}) {
 
     return (
         <div className="Badge bg-[#15262A] text-center h-[182px] w-full border-x-[1px] border-b-[1px] border-[#626262] flex flex-col items-center">

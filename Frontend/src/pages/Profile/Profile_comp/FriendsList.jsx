@@ -68,12 +68,12 @@ function FriendsList({className}) {
                     {prop == "Search" &&
                         <>
                             <input onKeyUp={HandelSearchRequest}  className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
-                            { <List reason="Search" Friend={Friend} EndPoint="search" AlreadyDated={FriendlistFromSearch}/> }
+                            { <List reason="Search" EndPoint="search" AlreadyDated={FriendlistFromSearch}/> }
                         </>
                     }
-                    { prop == "Blocked Users" &&  <List reason="Blocked Users" Friend={Friend} EndPoint="blocked-friends" /> }
-                    { prop == "Panding Requests" && <List reason="Panding Requests" Friend={Friend} EndPoint="requested-friendships" /> }
-                    { prop == "Invetations" && <List reason="Invetations" Friend={Friend} EndPoint="friendship-requests" /> }                       
+                    { prop == "Blocked Users" &&  <List reason="Blocked Users" EndPoint="blocked-friends" /> }
+                    { prop == "Panding Requests" && <List reason="Panding Requests" EndPoint="requested-friendships" /> }
+                    { prop == "Invetations" && <List reason="Invetations" EndPoint="friendship-requests" /> }                       
 
                 </div>
             </div>}
@@ -83,7 +83,7 @@ function FriendsList({className}) {
                     <img className=" top-[20px] right-[18px] absolute w-[25.6px] h-[25.6px]" src={AddUser} alt=''/>
                 </button>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 max-h-[230px] overflow-auto">
-                    { <List reason="Friends list" Friend={Friend} isfriend={true} EndPoint="friends" /> }
+                    { <List reason="Friends list" isfriend={true} EndPoint="friends" /> }
                 </div>
             </div>}
         </>

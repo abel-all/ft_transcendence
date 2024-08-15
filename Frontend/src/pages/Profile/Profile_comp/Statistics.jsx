@@ -17,11 +17,11 @@ function Statistics({className}) {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("https://random-data-api.com/api/v3/projects/d415ba10-ec54-4553-81c6-971fe1cb0791?api_key=jN6feYkT1a1AWYKvl96EkA");
+                const res = await axios.get("http://192.168.43.61:8000/api/profile/statistics/");
                 handelStat(res.data);
-                console.log("statics:", res);
+                console.log("Statistics fetchid data with Success: ");
             } catch (error) {
-                console.log("Static error    -     ", error);
+                console.log("Statistics page Failed");
             }
         }
         fetchmydata();
@@ -33,9 +33,9 @@ function Statistics({className}) {
                 <div className="pl-[35px] basis-1/2">
                     <span className="text-[20px] md:text-[25px] font-[500] font-Outfit">Total : {total ? total : "0"}</span>
                     <ul>
-                        <li className="relative wins text-[20px] md:text-[25px] font-[400] font-Outfit">Wins: {stat.win}</li>
-                        <li className="relative losses text-[20px] md:text-[25px] font-[400] font-Outfit">Losses: {stat.loss}</li>
-                        <li className="relative draws text-[20px] md:text-[25px] font-[400] font-Outfit">Draws: {stat.draw}</li>
+                        <li className="relative wins text-[20px] md:text-[25px] font-[400] font-Outfit">Wins: {stat.win ? stat.win : 0}</li>
+                        <li className="relative losses text-[20px] md:text-[25px] font-[400] font-Outfit">Losses: {stat.loss ? stat.loss : 0}</li>
+                        <li className="relative draws text-[20px] md:text-[25px] font-[400] font-Outfit">Draws: {stat.draw ? stat.draw : 0}</li>
                     </ul>
                 </div>
                 <div className="basis-1/2 flex justify-center">

@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
+    const [socketURL, setSocketURL] = useState('ws://192.168.43.61:8000');
     const [messageHistory, setMessageHistory] = useState([]);
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
@@ -136,7 +136,7 @@ function Chat() {
         <div className="container mx-auto flex justify-center w-full h-full">
             <div className='w-full'>
                 <Header title="Chat" activeSection="ChatIcon" hide={!chatHeader.ChatShown ? "hidden md:flex" : ""}/>
-                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, userFromUrl}}>
+                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl}}>
                     <div className="flex indexchatHolder mt-[101px] flex-row">
                         <ProprtesSide className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
                         <ChatSide className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>

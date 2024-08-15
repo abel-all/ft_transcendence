@@ -6,12 +6,17 @@ import { useState } from 'react'
 import userIcon from "../../../assets/imgs/userprofile.svg"
 import close from "../../../assets/imgs/close.svg"
 import invite from "../../../assets/imgs/panding.svg"
+import axios from 'axios'
+import List from './List'
+
 
 
 
 function FriendsList({className}) {
     const [toggle, setToggle] = useState(false);
+    const [FriendlistFromSearch, setFriendlistFromSearch] = useState({});
 
+    let TimeToDown;
     function handelToglle() {
         setToggle(!toggle);
     }
@@ -22,6 +27,22 @@ function FriendsList({className}) {
         setProp(prop);
     }
 
+    const HandelSearchRequest = (e) => {
+        if (TimeToDown)
+            clearTimeout(TimeToDown);
+
+        TimeToDown = setTimeout(() => {
+            e.target.value && axios.post('https://fttran.tech/api/profile/search/', {
+                username : e.target.value
+            }).then ((res) => {
+                console.log("message sent : ", res);
+                setFriendlistFromSearch(res.data);
+            }).catch((err) => {
+                console.log("there is an error : ", err);
+            });
+            console.log(e.target.value);
+        }, 500);
+    }
     return (
         <>
             {toggle && <div className={"relative w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]"  + (className ? ` ${className}` : '')}>
@@ -46,77 +67,14 @@ function FriendsList({className}) {
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 h-[254px] overflow-auto">
                     {prop == "Search" &&
                         <>
-                            <input className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
-                            {
-                                friendlist.map( (friend, index) => {
-                                    return (
-                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
-                                            <Friend
-                                                username =   {friend.username}
-                                                status =   {friend.status}
-                                                rank =   {friend.rank}
-                                                reason = "Search"
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
+                            <input onKeyUp={HandelSearchRequest}  className='bg-transparent border-b-[1px] w-[60%] focus-visible:outline-none ' placeholder='Search'/>
+                            { <List reason="Search" EndPoint="search" AlreadyDated={FriendlistFromSearch}/> }
                         </>
                     }
-                    {prop == "Blocked Users" &&
-                        <>                            
-                            {
-                                friendlist.map( (friend, index) => {
-                                    return (
-                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
-                                            <Friend
-                                                username =   {friend.username}
-                                                status =   {friend.status}
-                                                rank =   {friend.rank}
-                                                reason = "Blocked Users"
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                        </>
-                    }
-                    {prop == "Panding Requests" &&
-                        <>                            
-                            {
-                                friendlist.map( (friend, index) => {
-                                    return (
-                                        <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
-                                            <Friend
-                                                username =   {friend.username}
-                                                status =   {friend.status}
-                                                rank =   {friend.rank}
-                                                reason = "Panding Requests"
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                        </>
-                    }
-                    {prop == "Invetations" &&
-                    <>                            
-                        {
-                            friendlist.map( (friend, index) => {
-                                return (
-                                    <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
-                                        <Friend
-                                            username =   {friend.username}
-                                            status =   {friend.status}
-                                            rank =   {friend.rank}
-                                            reason = "Invetations"
-                                        />
-                                    </div>
-                                )
-                            })
-                        }
-                    </>
-                }
+                    { prop == "Blocked Users" &&  <List reason="Blocked Users" EndPoint="blocked-friends" /> }
+                    { prop == "Panding Requests" && <List reason="Panding Requests" EndPoint="requested-friendships" /> }
+                    { prop == "Invetations" && <List reason="Invetations" EndPoint="friendship-requests" /> }                       
+
                 </div>
             </div>}
             {!toggle && <div className={"relative w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]"  + (className ? ` ${className}` : '')}>
@@ -125,21 +83,7 @@ function FriendsList({className}) {
                     <img className=" top-[20px] right-[18px] absolute w-[25.6px] h-[25.6px]" src={AddUser} alt=''/>
                 </button>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 max-h-[230px] overflow-auto">
-                {
-                        friendlist.map( (friend, index) => {
-                            return (
-                                <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
-                                    <Friend
-                                        username =   {friend.username}
-                                        status =   {friend.status}
-                                        rank =   {friend.rank}
-                                        reason = "Friends list"
-                                        isFriend = {true}
-                                    />
-                                </div>
-                            )
-                        })
-                    }
+                    { <List reason="Friends list" isfriend={true} EndPoint="friends" /> }
                 </div>
             </div>}
         </>

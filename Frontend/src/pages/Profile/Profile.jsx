@@ -5,17 +5,40 @@ import Statistics from './Profile_comp/Statistics'
 import MatchHistory from './Profile_comp/MatchHistory'
 import FriendsList from './Profile_comp/FriendsList'
 import ProfileNavBottom from './Profile_comp/ProfileNavBottom'
+import {useEffect, useState} from "react"
+import axios from "axios"
 import "./Profile.css"
 
 
 
 function Profile() {
+
+    const [data, setData] = useState({});
+    const [DataFetched, setDataFetched] = useState(false);
+    
+    const handelData = (res) => {
+        const {picture, username, background_picture, rank} = res;
+        setData({picture, username, background_picture, rank});
+    }
+    useEffect(() => {
+        const fetchmydata = async () => {
+            try {
+                const res = await axios.get("http://192.168.43.61:8000/api/profile/data/");
+                handelData(res.data);
+                console.log("Profile Fetched data with success");
+            } catch (error) {
+                console.log("Profile fetchig data Error");
+            }
+        }
+        fetchmydata();
+    }, []);
+
     return (
         <div className="container mx-auto flex justify-center w-full h-full">
             <div className='w-full'>
                 <Header title="Profile" activeSection="UserIcon" />
-                <Userbg/>
-                <Badge/>
+                <Userbg background_picture={data.background_picture}/>
+                <Badge username={data.username} picture={data.picture} rank={data.rank}/>
                 <div className='w-full flex flex-col mt-[0.5rem] lg:flex-row gap-2'>
                     <div className='flex flex-col w-full gap-2'>
                             <Statistics className="w-full" />

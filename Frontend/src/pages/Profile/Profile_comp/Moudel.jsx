@@ -1,34 +1,39 @@
+import axios from "axios";
 
 
 
+function Buttn({toggles, rsn, user, content}) {
 
-
-
-
-
-
-
-
-
-
-function Buttn(Data) {
+    const handelClick = () => {
+        if (rsn == "Block") {
+            console.log(`${user} is blocked`);
+            axios.post('http://192.168.43.61:8000/profile/block-friend/', {
+                block : user,
+            }).then((response) => {
+                console.log("user block sent with suecsses!");
+            }).catch((error) => {
+                console.log("user block failed !");
+            });
+        } else if (rsn == "Unblock") {
+            console.log(`${user} is Unblocked`);
+            axios.post('http://192.168.43.61:8000/profile/unblock-friend/', {
+                unblock : user,
+            }).then((response) => {
+                console.log("user block sent with suecsses!");
+            }).catch((error) => {
+                console.log("user block failed !");
+            });
+        }
+        toggles();
+    } 
     return (
         <>
-            <div className="my-[24px] flex justify-center items-center font-[700] mx-[5px] bg-[#e92828] w-[100px] h-[36px] rounded-sm text-white"  onClick={Data.toggles}>
-                <span>{Data.content}</span>
+            <div className="my-[24px] flex justify-center items-center font-[700] mx-[5px] bg-[#e92828] w-[100px] h-[36px] rounded-sm text-white"  onClick={handelClick}>
+                <span>{content}</span>
             </div>
         </>
     )
 }
-
-
-
-
-
-
-
-
-
 
 function Moudel(Data) {
 
@@ -38,7 +43,7 @@ function Moudel(Data) {
             <div className="content bg-[white] top-[200px] fixed h-[245px] text-black p-[51px] rounded-md">
                 <p className="font-[600] text-[19px] text-[red] mb-[20px]">{Data.message} {Data.username}?</p>
                 <div className="flex flex-row justify-center">
-                    {<Buttn content="Yes" toggles={Data.tggl}/>}
+                    {<Buttn content="Yes" toggles={Data.tggl} rsn={Data.reason} user={Data.username}/>}
                     {<Buttn content="No" toggles={Data.tggl}/>}
                 </div>
             </div>

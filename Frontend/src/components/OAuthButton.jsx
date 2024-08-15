@@ -1,4 +1,4 @@
-
+import arrowRight from "../assets/imgs/arrow-right.svg"
 
 
 function OAuthButton(props) {
@@ -12,12 +12,13 @@ function OAuthButton(props) {
     }
 
     return (
-        <div className="bg-[#019F9F] w-full rounded-[15px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:scale-[1.02] hover:opacity-90 duration-[600ms]">
-            <button onClick={clickHandler} className="py-[8px] w-full flex">
-                <div className="w-full flex justify-center gap-[13px]">
+        <div className="bg-[#019F9F] w-full rounded-[15px] shadow-[5px_5px_5px_rgba(0,0,0,0.4)] hover:opacity-90 duration-[600ms]">
+            <button onClick={clickHandler} className="py-[8px] px-[20px] group w-full flex justify-between items-center gap-[10px]">
+                <div className="w-full flex gap-[13px]">
                     <div className="font-medium text-[18px]">Continue With</div>
                     <img src={props.image} alt={props.imgTilte + " image"} />
                 </div>
+                <img className="transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-[600ms]" src={arrowRight} />
             </button>
         </div>
     )

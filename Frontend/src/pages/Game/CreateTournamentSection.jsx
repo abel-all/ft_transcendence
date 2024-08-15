@@ -7,7 +7,7 @@ import "../2FaAuth/css/index.css"
 
 const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
-    const [focusColor, setFocusColor] = useState("");
+    const [focusColor, setFocusColor] = useState("focus:border focus:border-[#FF0000]");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [name, setName] = useState("");

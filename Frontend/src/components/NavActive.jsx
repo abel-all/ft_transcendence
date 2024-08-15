@@ -11,7 +11,7 @@ const List = ({ to, active, icon}) => {
 
     const [color, setColor] = useState("#eee");
     const [iconComponent, setIconComponent] = useState();
-    
+
     const changeColorHover = () => {
         setColor("#009F9F");
     }
@@ -19,7 +19,7 @@ const List = ({ to, active, icon}) => {
         setColor("#eee");
     }
     useEffect(() => {
-        
+
         switch(icon) {
             case "profile":
                 setIconComponent(<UserIcon who = {active} color={color}/>);
@@ -36,9 +36,13 @@ const List = ({ to, active, icon}) => {
             case "notification":
                 setIconComponent(<BellIcon who = {active} color={color}/>);
                 break;
-        }
-    }, [color, active, icon])
+            }
+        }, [color, active, icon])
 
+    if(icon == "notification")
+        return (
+            <li onMouseMove={changeColorHover} onMouseLeave={changeColorLeave}>{iconComponent} </li>
+        )
     return (
         <li onMouseMove={changeColorHover} onMouseLeave={changeColorLeave}><Link to={to} > {iconComponent} </Link></li>
     )
@@ -56,18 +60,13 @@ function NavActive(Data) {
     return (
             <>
                 {navData.map((item, index) => (
-                    <List 
+                    <List
                         key={index}
                         to={item.to}
                         active={Data.active}
                         icon={item.icon}
                     />
                 ))}
-                {/* <li onMouseMove={changeColorHover} onMouseLeave={changeColorLeave}><Link to="/profile" > <UserIcon who = {Data.active} color={color}/> </Link></li>
-                <li><Link to="/game" > <GameplayIcon who = {Data.active} color={color}/> </Link></li>
-                <li><Link to="/chat" ><ChatIcon who = {Data.active} color={color}/> </Link></li>
-                <li><Link to="/settings" ><SettingsIcon who = {Data.active} color={color}/> </Link></li>
-                <li><Link to="/notification" ><BellIcon  who = {Data.active} color={color}/> </Link></li> */}
             </>
     )
 }

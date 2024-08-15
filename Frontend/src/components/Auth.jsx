@@ -10,6 +10,8 @@ export const ContextProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(false);
     const [isGame, setIsGame] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
+    const [showNotification, setShowNotification] = useState(false);
+
     axios.defaults.headers.common['X-CSRFToken'] = GetCookie("csrftoken");
 
     const setHandler = (key, value) => {
@@ -56,8 +58,13 @@ export const ContextProvider = ({ children }) => {
         })
     }
 
+    const setShowNotificationHandler = () => {
+        console.log("hellololol")
+        setShowNotification(!showNotification);
+    }
+
     return (
-        <Authcontext.Provider value={ { isAuthenticated, setHandler, isAuth, isGame, isLogin } }>
+        <Authcontext.Provider value={ { setShowNotificationHandler, setShowNotification, showNotification, isAuthenticated, setHandler, isAuth, isGame, isLogin } }>
             {children}
         </Authcontext.Provider>
     )

@@ -24,27 +24,35 @@ function Header(props) {
         })
     }
 
+    const handleOverlayClick = () => {
+        auth.setShowNotification(false);
+    }
+
     return (
-        <div className='md:fixed md:top-[15px] md:left-0 md:right-0 md:z-50'>
-            <div className="md:container md:mx-auto md:px-[10px]">
-                <div className={`md:shadow-md md:backdrop-blur-md md:bg-[#161c20]/30 md:rounded-full p-[10px] flex ${props.hide}`}>
-                    <div className="basis-1/3">
-                        <p className="font-medium text-[#eee] text-[30px]">{props.title}</p>
-                    </div>
-                    <div className="basis-1/3">
-                        <ul className="md:flex hidden justify-around gap-5">
-                            <NavActive active={props.activeSection} />
-                        </ul>
-                    </div>
-                    <div className="basis-1/3">
-                        <ul className="flex flex-row-reverse">
-                            <li className="ml-[10px] cursor-pointer" onClick={handleLogout}><img className="w-[40px] h-[40px]" src={logout} alt="" /></li>
-                            <li className=""><Link to="/search" ><img className="w-[40px] h-[40px]" src={search} alt="" /> </Link></li>
-                        </ul>
+        <>
+            {auth.showNotification && <div onClick={handleOverlayClick} className="w-[100vw] h-[100vh] bg-[#FFF9F6] fixed top-0 left-0 opacity-0 max-md:hidden">
+            </div>}
+            <div className='md:fixed md:top-[15px] md:left-0 md:right-0 md:z-50'>
+                <div className="md:container md:mx-auto md:px-[10px]">
+                    <div className={`md:shadow-md md:backdrop-blur-md md:bg-[#161c20]/30 md:rounded-full p-[10px] flex ${props.hide}`}>
+                        <div className="basis-1/3">
+                            <p className="font-medium text-[#eee] text-[30px]">{props.title}</p>
+                        </div>
+                        <div className="basis-1/3">
+                            <ul className="md:flex hidden justify-around gap-5">
+                                <NavActive active={props.activeSection} />
+                            </ul>
+                        </div>
+                        <div className="basis-1/3">
+                            <ul className="flex flex-row-reverse">
+                                <li className="ml-[10px] cursor-pointer" onClick={handleLogout}><img className="w-[40px] h-[40px]" src={logout} alt="" /></li>
+                                <li className=""><Link to="/search" ><img className="w-[40px] h-[40px]" src={search} alt="" /> </Link></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
 
     )
 }

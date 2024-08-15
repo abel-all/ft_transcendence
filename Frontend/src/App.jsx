@@ -25,7 +25,7 @@ import { GameSettingsContextProvider } from './pages/Game/GameSettingsContext.js
 
 
 
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = true;
 
 function App() {
 
@@ -51,12 +51,13 @@ function App() {
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/chat" element={<Chat />} />
-              <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+              {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
               {/* <Route path="game/play/online" element={<PlayOnline />} /> */}
               {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
               <Route path="game/bot" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/friend" element={<RequireAuth><PlayOnline /></RequireAuth>} /> */}
+              <Route path="/game" element={<Game />} />
               <Route path="game/tournament" element={<Tournament />} />
               <Route path="game/online" element={<PlayOnline />} />
               <Route path="game/bot" element={<PlayWithBot />} />

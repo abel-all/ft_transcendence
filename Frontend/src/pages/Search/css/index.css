@@ -1,3 +1,6 @@
+.scrollbar-w {
+    scrollbar-width: none;
+}
 
 .search-res-card {
     /* border-width: 1px;

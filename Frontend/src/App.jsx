@@ -50,7 +50,7 @@ function App() {
               <Route path="/oauth/callback" element={<OauthCallBack />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
               <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
               {/* <Route path="game/play/online" element={<PlayOnline />} /> */}
               {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />

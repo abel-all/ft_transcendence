@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('ws://192.168.43.61:8000');
+    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
@@ -30,7 +30,7 @@ function Chat() {
     useEffect(() => {
     //     let i = 0;
     //   const timer = setInterval(() => {
-        sendMessage('{"action" : "subscribe","room_name" : "hisoak__-youssef"}');
+        //sendMessage('{"action" : "subscribe","room_name" : "hisoak__-youssef"}');
     //   }, 100);
   
     //   return () => clearInterval(timer);
@@ -47,7 +47,7 @@ function Chat() {
 
     useEffect(() => {
         if (lastMessage) {
-          console.log(lastMessage.data.toString()); // Log the last message data
+          console.log(JSON.parse(lastMessage.data)); // Log the last message data
         }
       }, [lastMessage]); // Dependency array includes lastMessage
 
@@ -136,7 +136,7 @@ function Chat() {
         <div className="container mx-auto flex justify-center w-full h-full">
             <div className='w-full'>
                 <Header title="Chat" activeSection="ChatIcon" hide={!chatHeader.ChatShown ? "hidden md:flex" : ""}/>
-                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl}}>
+                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage}}>
                     <div className="flex indexchatHolder mt-[101px] flex-row">
                         <ProprtesSide className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
                         <ChatSide className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>

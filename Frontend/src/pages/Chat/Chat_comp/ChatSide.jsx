@@ -81,7 +81,7 @@ function ChatSide(Data) {
             else if (ChatContext.userFromUrl.user)
                     SetUsername(ChatContext.userFromUrl.user);
             if (username) {
-                axios.get(`http://192.168.43.61:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`http://10.13.5.5:8000/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
@@ -105,12 +105,14 @@ function ChatSide(Data) {
 
     const addMessage = (message) => {
             UpdateCreatedMessage(message, "User2");
-            sendMessageToDataBase(message, "User2", CreateMessages);
+            // sendMessageToDataBase(message, "User2", CreateMessages);
+            ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
+
     }
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
-        axios.post(`http://192.168.43.61:8000/messages/${username}`, {
+        axios.post(`http://10.13.5.5:8000/messages/${username}`, {
             message_id : uuidv4(),
             timestamp :  TimeHM(),
             sender : sender,

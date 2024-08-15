@@ -19,7 +19,7 @@ function Friend(Data) {
         if (Data.reason == "Invetations") {
             console.log(`${user} is accepted`);
             axios.post('api/profile/handle-friendship-request/', {
-                AcceptRequest : user
+                username : user
             }).then((respons) => {
                 console.log("user add to friend list");
             }).catch((error) => {
@@ -31,7 +31,7 @@ function Friend(Data) {
     const SendRequest = (user) => {
         console.log(`${user} ia requested`);
         axios.post('api/profile/send-friendship-request/', {
-            SendRequest : user
+            username : user
         }).then((respons) => {
             console.log("user add to friend list");
         }).catch((error) => {

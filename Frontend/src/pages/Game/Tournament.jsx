@@ -5,6 +5,7 @@ import BottomNaveBar from "../../components/BottomNavBar.jsx"
 import plusIcon from "../../assets/imgs/plusIcon.svg"
 import { useGameSettings } from './GameSettingsContext'
 import SearchEngine from "../Search/SearchEngine.jsx";
+import CreateTournament from "./CreateTournament.jsx";
 import "./css/index.css"
 
 import rankIcon from "../../assets/imgs/rank.svg"
@@ -142,7 +143,8 @@ const Tournament = () => {
         <>
             <div className="container mx-auto px-[10px]">
                 <Header title="Tournament" activeSection="GametableIcon" />
-                {!gameContext.modal ?
+                <CreateTournament />
+                {/* {gameContext.createTournament && !gameContext.modal ?
                     <div>
                         <div className="w-full flex max-lg:gap-[60px] max-xl:gap-[140px] gap-[240px] justify-center my-[200px] max-md:my-[50px]">
                             <div className="quarter-final">
@@ -177,7 +179,7 @@ const Tournament = () => {
                             <SearchEngine gap="my-[70px] gap-[50px]" scroll="h-[350px] overflow-y-scroll scrollbar-w"/>
                         </div>
                     </div>
-                }
+                } */}
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         </>

@@ -12,6 +12,8 @@ export const GameSettingsContextProvider = ({ children }) => {
     const [modal, setModal] = useState(false);
     const [isSettings, setIsSettings] = useState(false);
     const [settingsData, setSettingsData] = useState([]);
+    const [createTour, setCreateTour] = useState(false);
+    const [joinTour, setJoinTour] = useState(false);
 
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
@@ -49,6 +51,12 @@ export const GameSettingsContextProvider = ({ children }) => {
             case "settings":
                 setIsSettings(value);
                 break;
+            case "createtour":
+                setCreateTour(value);
+                break;
+            case "jointour":
+                setJoinTour(value);
+                break;
         }
     }
 
@@ -60,8 +68,8 @@ export const GameSettingsContextProvider = ({ children }) => {
     }
 
     return (
-        <GameSettingContext.Provider 
-            value={ { isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>
+        <GameSettingContext.Provider
+            value={ { createTour, joinTour, isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep} }>
                 {children}
         </GameSettingContext.Provider>
     )

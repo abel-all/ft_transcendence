@@ -26,7 +26,7 @@ const validateInput = (type, value) => {
 function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
 
     const [passFocusColor, setPassFocusColor] = useState("focus:border-[#ff0000]");
-    const [focusColor, setFocusColor] = useState("border border-[#ff0000]");
+    const [focusColor, setFocusColor] = useState("");
     const [eyeIcon, inputType] = usePasswordToggle();
 
     const handleInputChange = (e) => {
@@ -57,7 +57,7 @@ function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
                     onFocus={handleInputChange}
                     required
                 />
-                <div>{eyeIcon}</div>
+                <div className="cursor-pointer" >{eyeIcon}</div>
             </div>
         )
     }
@@ -85,4 +85,3 @@ function FormInput({ height = "h-[58px]", placeHolder, type, handleChange }) {
 }
 
 export default FormInput;
-

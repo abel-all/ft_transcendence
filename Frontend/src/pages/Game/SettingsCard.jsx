@@ -7,6 +7,7 @@ import MapImg from "../../components/MapImg"
 import PaddleImg from "../../components/PaddleImg"
 import { useGameSettings } from "./GameSettingsContext"
 import { useEffect, useState } from "react"
+import { Axios } from 'axios'
 import './css/index.css'
 
 
@@ -34,6 +35,7 @@ const scoreData = [
 const ChooseSectionHandler = (name) => {
 
     const gameContext = useGameSettings();
+    const [message, setMessage] = useState("");
 
     const mapClickHandler = (e) => {
         gameContext.addsettingsData(e.currentTarget.dataset.value)
@@ -50,12 +52,30 @@ const ChooseSectionHandler = (name) => {
         gameContext.setHandler("score", false);
         gameContext.setHandler("last", true);
     }
-    
+
     const lastClickHandler = () => {
-        gameContext.setHandler("last", false);
-        gameContext.setHandler("game", true);
-        gameContext.setHandler("map", true);
-        gameContext.setHandler("settings", false);
+        const postSettingsData = async () => {
+
+            await Axios.post("https://fttran.tech/api/auth/token/",{
+                mapname: gameContext.settingsData[0],
+                ballcolor: gameContext.settingsData[1],
+                score: gameContext.settingsData[2],
+                issetting: true,
+            },
+            {
+                withCredentials:true,
+            }).then(() => {
+                console.log("first request");
+                gameContext.setHandler("last", false);
+                gameContext.setHandler("game", true);
+                gameContext.setHandler("map", true);
+                gameContext.setHandler("settings", false);
+            }).catch(err => {
+                console.log(err);
+                setMessage("Please try again!")
+            })
+        }
+        postSettingsData();
     }
 
     switch(name) {
@@ -82,9 +102,14 @@ const ChooseSectionHandler = (name) => {
             )))
         case "last":
             return (
-                <button onClick={lastClickHandler} className='main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]'>
-                    Continue To Play
-                </button>
+                <div className='flex flex-col justify-center w-full gap-[60px]'>
+                    <button onClick={lastClickHandler} className='main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]'>
+                        Continue To Play
+                    </button>
+                    <div className='font-light text-[22px] max-md:text-[18px] text-white'>
+                        {message}
+                    </div>
+                </div>
             )
     }
 }

@@ -39,19 +39,18 @@ const cardsData = [
     },
 ];
 
-function CardContainer() {
+function CardContainer({ showSettings }) {
 
-    const [showSettings, setShowSettings] = useState(true);
     const gameContext = useGameSettings();
 
     const settingsClickHandler = () => {
         gameContext.setHandler("settings", true);
     }
-    
+
     return (
         <>
             {gameContext.isSettings ? (
-                <GameSettings /> 
+                <GameSettings />
             ) : (
                 <div className={`mx-[50px] ${showSettings ? "my-[300px]": "my-[590px]"} max-md:mx-[0px] max-md:mt-[200px] flex flex-col gap-[250px]`}>
                     {showSettings && <div className="w-full flex justify-end sm:pr-[50px]">

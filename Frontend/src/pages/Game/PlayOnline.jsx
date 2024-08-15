@@ -8,7 +8,7 @@ import { useGameSettings } from './GameSettingsContext'
 import GamePlay from "./GamePlay.jsx"
 
 
-const PlayOnline = () => {
+const PlayOnline = ({isSettings=false}) => {
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [matchDelay, setMatchDelay] = useState(true);
@@ -38,8 +38,8 @@ const PlayOnline = () => {
             <div className="h-[100vh] container mx-auto px-[10px]">
                 <Header title="Online Game" activeSection="GametableIcon" />
                 {matchDelay && <MatchMaking />}
-                {!gameDelay && !gameContext.isGame && <GameSettings />}
-                {gameContext.isGame && <GamePlay />}
+                {!gameDelay && !gameContext.isGame && !isSettings && <GameSettings />}
+                {(gameContext.isGame || isSettings) && <GamePlay />}
                 {/* {true && <GamePlay />} */}
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>

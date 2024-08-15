@@ -50,13 +50,19 @@ function App() {
               <Route path="/oauth/callback" element={<OauthCallBack />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
+<<<<<<< HEAD
               <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
               <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+=======
+              <Route path="/chat" element={<Chat />} />
+              {/* <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} /> */}
+>>>>>>> 1d079aa4ac823a0f243cf75cafd14bb59a7c1196
               {/* <Route path="game/play/online" element={<PlayOnline />} /> */}
               {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
               <Route path="game/bot" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/friend" element={<RequireAuth><PlayOnline /></RequireAuth>} /> */}
+              <Route path="/game" element={<Game />} />
               <Route path="game/tournament" element={<Tournament />} />
               <Route path="game/online" element={<PlayOnline />} />
               <Route path="game/bot" element={<PlayWithBot />} />

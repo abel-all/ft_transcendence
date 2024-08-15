@@ -89,9 +89,9 @@ const TournamentMatch = () => {
                 <div className="flex gap-[20px] items-center">
                     <div className="font-medium text-[25px] text-[#000] bg-[#eee] flex justify-center items-center bg-opacity-60 w-[30px] h-[30px] rounded-full">1</div>
                     <div className="flex flex-col gap-[5px]">
-                        <TournamentMatchCard 
-                            rank="342" 
-                            userImg="https://picsum.photos/200?random=3" 
+                        <TournamentMatchCard
+                            rank="342"
+                            userImg="https://picsum.photos/200?random=3"
                             userName="abel-all"
                             gradeColor="bg-[#eee]"
                         />
@@ -119,9 +119,9 @@ const Tournament = () => {
         setTimeout(() => {
             setIsLoaded(false)
         }, 500);
-        
+
     }, [])
-    
+
     const clickHandler = () => {
         gameContext.handleModalClick();
     }
@@ -174,7 +174,7 @@ const Tournament = () => {
                                 <button onClick={modalClickHandler1} className={`h-[40px] w-[100px] rounded-[15px] duration-[300ms] font-light ${focusOnFrnds ? "bg-[#009f9f]" : "border border-[#000]"}`}>Friends</button>
                                 <button onClick={modalClickHandler2} className={`h-[40px] w-[100px] rounded-[15px] duration-[300ms] font-light ${focusOnSrch ? "bg-[#009f9f]" : "border border-[#000]"}`}>Search</button>
                             </div>
-                            <SearchEngine gap="my-[70px] gap-[50px]" scroll="h-[350px] overflow-y-scroll"/>
+                            <SearchEngine gap="my-[70px] gap-[50px]" scroll="h-[350px] overflow-y-scroll scrollbar-w"/>
                         </div>
                     </div>
                 }

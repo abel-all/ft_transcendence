@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
+    const [socketURL, setSocketURL] = useState('ws://192.168.8.142:8000/');
     const [messageHistory, setMessageHistory] = useState([]);
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
@@ -47,7 +47,7 @@ function Chat() {
 
     useEffect(() => {
         if (lastMessage) {
-          console.log(JSON.parse(lastMessage.data)); // Log the last message data
+          console.log("The message", lastMessage); // Log the last message data
         }
       }, [lastMessage]); // Dependency array includes lastMessage
 

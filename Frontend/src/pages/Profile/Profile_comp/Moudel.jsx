@@ -7,7 +7,7 @@ function Buttn({toggles, rsn, user, content}) {
     const handelClick = () => {
         if (rsn == "Block") {
             console.log(`${user} is blocked`);
-            axios.post('http://10.13.5.5:8000/profile/block-friend/', {
+            axios.post('http://192.168.8.142:8000/profile/block-friend/', {
                 username : user,
             }).then((response) => {
                 console.log("user block sent with suecsses!");
@@ -16,7 +16,7 @@ function Buttn({toggles, rsn, user, content}) {
             });
         } else if (rsn == "Unblock") {
             console.log(`${user} is Unblocked`);
-            axios.post('http://10.13.5.5:8000/profile/unblock-friend/', {
+            axios.post('http://192.168.8.142:8000/profile/unblock-friend/', {
                 username : user,
             }).then((response) => {
                 console.log("user Unblock sent with suecsses!");

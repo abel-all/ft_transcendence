@@ -9,13 +9,11 @@ import {useEffect, useState} from "react"
 import axios from "axios"
 import "./Profile.css"
 
-
-
 function Profile() {
 
     const [data, setData] = useState({});
     const [DataFetched, setDataFetched] = useState(false);
-    
+
     const handelData = (res) => {
         const {picture, username, background_picture, rank} = res;
         setData({picture, username, background_picture, rank});
@@ -23,7 +21,7 @@ function Profile() {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("http://10.13.5.5:8000/api/profile/data/");
+                const res = await axios.get("http://192.168.8.142:8000/api/profile/data/");
                 handelData(res.data);
                 console.log("Profile Fetched data with success");
             } catch (error) {

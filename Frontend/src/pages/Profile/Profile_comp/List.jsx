@@ -12,7 +12,7 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
         if (!AlreadyDated) {
             const fetchmydata = async () => {
                 try {
-                    const res = await axios.get(`http://10.13.5.5:8000/api/profile/${EndPoint}/`);
+                    const res = await axios.get(`http://192.168.8.142:8000/api/profile/${EndPoint}/`);
                     setfriendlist(res.data);
                     console.log(`List of ${EndPoint} Fetched data with success`);
                 } catch (error) {
@@ -27,6 +27,7 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
 
     return (
         <>                            
+                
             {
                 friendlist.map( (friends, index) => {
                     return (

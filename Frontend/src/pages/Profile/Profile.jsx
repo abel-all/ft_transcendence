@@ -21,7 +21,7 @@ function Profile() {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("http://192.168.8.142:8000/api/profile/data/");
+                const res = await axios.get("http://10.12.1.3:8000/api/profile/data/");
                 handelData(res.data);
                 console.log("Profile Fetched data with success");
             } catch (error) {

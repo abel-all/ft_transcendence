@@ -25,10 +25,11 @@ const Alert = ({ message, color }) => {
     }, []);
 
     return (
-        <div className={`Alert ${display} bg-[${color}] top-[88px] p-[6px] z-[100] rounded-md text-center right-[10px] fixed text-${color} w-[304px] h-[41px]`} style={{ opacity: percent / 100 }}>
+        <div className={`Alert ${display} top-[88px] p-[6px] z-[100] rounded-md text-center right-[10px] fixed text-white w-[304px] h-[41px]`} style={{ backgroundColor: color, opacity: percent / 100 }}>
             <p>{message}</p>
         </div>
     );
 };
 
 export default Alert;
+

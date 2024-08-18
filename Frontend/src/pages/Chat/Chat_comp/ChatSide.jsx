@@ -7,6 +7,8 @@ import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
 import { flushSync } from 'react-dom';
 import TimeHM from '../../../components/TimeHM'
+import { ReadyState } from 'react-use-websocket';
+
 
 
 
@@ -81,7 +83,7 @@ function ChatSide(Data) {
             else if (ChatContext.userFromUrl.user)
                     SetUsername(ChatContext.userFromUrl.user);
             if (username) {
-                axios.get(`http://192.168.8.142:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`http://10.12.1.3:8000/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
@@ -105,28 +107,31 @@ function ChatSide(Data) {
 
     const addMessage = (message) => {
             UpdateCreatedMessage(message, "User2");
-            // sendMessageToDataBase(message, "User2", CreateMessages);
-            ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
+            sendMessageToDataBase(message, username, CreateMessages);
+            //ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
+            console.log("Hello how are you? ", username);
 
     }
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
-        axios.post(`http://192.168.8.142:8000/messages/${username}`, {
-            message_id : uuidv4(),
-            timestamp :  TimeHM(),
-            sender : sender,
-            message : message,
-            seen : false,
-        })
-        .then(res => {
+
+
+        if (ChatContext.readyState == ReadyState.OPEN) {
+            ChatContext.sendMessage({
+                    message_id : uuidv4(),
+                    timestamp :  TimeHM(),
+                    sender : sender,
+                    message : message,
+                    seen : false,
+                }
+            );
             UpdateCreatedMessageState(false, "")
             serUserAbleToSendMessage(true);
-        })
-        .catch(err => {
+        } else {
             UpdateCreatedMessageState(false, "failed");
             serUserAbleToSendMessage(false);
-        })
+        }
     };
     
     useEffect(() => {
@@ -166,9 +171,9 @@ function ChatSide(Data) {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
                         {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
-                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages}}>
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username}}>
                             <ChatHeader Data={Data}/>
-                            <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
+                            <Messages setMessages={setMessages} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>
                         </sendMessageContext.Provider>
                     </>

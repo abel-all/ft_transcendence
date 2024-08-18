@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('ws://192.168.8.142:8000/');
+    const [socketURL, setSocketURL] = useState('ws://10.12.1.3:8000/');
     const [messageHistory, setMessageHistory] = useState([]);
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
@@ -27,14 +27,6 @@ function Chat() {
         reconnectInterval: 3000 // Reconnect every 3 seconds
       });
   
-    useEffect(() => {
-    //     let i = 0;
-    //   const timer = setInterval(() => {
-        //sendMessage('{"action" : "subscribe","room_name" : "hisoak__-youssef"}');
-    //   }, 100);
-  
-    //   return () => clearInterval(timer);
-    }, [sendMessage]);
   
     const connectionStatus = {
       [ReadyState.CONNECTING]: 'Connecting',
@@ -44,12 +36,6 @@ function Chat() {
       [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
     
-
-    useEffect(() => {
-        if (lastMessage) {
-          console.log("The message", lastMessage); // Log the last message data
-        }
-      }, [lastMessage]); // Dependency array includes lastMessage
 
     const [chatHeader, setChatHeader] = useState({
         name: "",
@@ -136,7 +122,7 @@ function Chat() {
         <div className="container mx-auto flex justify-center w-full h-full">
             <div className='w-full'>
                 <Header title="Chat" activeSection="ChatIcon" hide={!chatHeader.ChatShown ? "hidden md:flex" : ""}/>
-                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage}}>
+                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage, readyState}}>
                     <div className="flex indexchatHolder mt-[101px] flex-row">
                         <ProprtesSide className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
                         <ChatSide className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>

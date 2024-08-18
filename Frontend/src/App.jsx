@@ -22,7 +22,7 @@ import ResetPassword from './pages/Login/ResetPassword.jsx'
 import Search from './pages/Search/Search.jsx'
 import axios from 'axios';
 import { GameSettingsContextProvider } from './pages/Game/GameSettingsContext.jsx'
-
+import NotifyUser from './components/NotifyUser.jsx'
 
 
 axios.defaults.withCredentials = true;
@@ -31,6 +31,7 @@ function App() {
 
   return (
     <>
+      <NotifyUser/>
       <BrowserRouter>
         <ContextProvider>
           <GameSettingsContextProvider>

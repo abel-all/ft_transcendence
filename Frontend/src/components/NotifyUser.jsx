@@ -20,7 +20,7 @@ const NotifyUser = () => {
         }, 4000);
     }
 
-    const {lastMessage } = useWebSocket('ws://10.12.1.3:8001/', {
+    const {lastMessage } = useWebSocket('wss://fttran.tech/ws/friendship-request/', {
         onError: (error) => console.error('WebSocket error:', error),
         shouldReconnect: () => true,
         reconnectInterval: 3000
@@ -29,7 +29,7 @@ const NotifyUser = () => {
     useEffect(() => {
         if (lastMessage) {
             handelShowingAlert(true);
-            console.log("The message", lastMessage);
+            console.log("The message from webSocket ", lastMessage);
             const { type, from, status } = JSON.parse(lastMessage.data);
 
             if (type == "friendship_request") {

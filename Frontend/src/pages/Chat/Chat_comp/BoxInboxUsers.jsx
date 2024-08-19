@@ -17,23 +17,23 @@ function BoxInboxUsers() {
 
     return (
         <>
-            <div className="OnlineFriends my-[15px]">
+            {/* <div className="OnlineFriends my-[15px]">
                 <div className="FriendHeader flex flex-row">
                     <img className="w-[25px] h-[25px] " src={User} alt=""/>
                     <span className="ml-[7px] text-[white] font-[400] text-[20px] font-[Outfit]">Online Friends</span>
                     <div className="grow"></div>
                     <div className=" text-[#00CEFF] underline">All</div>
                 </div>
-            </div>
-            <div className="OnlineList flex flex-row flex-wrap h-[58px] overflow-hidden">
+            </div> */}
+            {/* <div className="OnlineList flex flex-row flex-wrap h-[58px] overflow-hidden">
                 <Userlist/>
-            </div>
+            </div> */}
             <div className="inboxField mt-[10px] ">
                 <div className="inboxHolder flex flex-row pb-[15px] border-b-[1px] border-white border-opacity-40">
                     <img className="opacity-80" src={inboxIcon} alt="" />
                     <span className="ml-[20px] text-white text-[20px] font-[400] font-[Outfit]"> Inbox </span>
                 </div>
-                <div className="HolderOfusersChat h-[calc(100vh-361px)] overflow-y-scroll">
+                <div className="HolderOfusersChat h-[calc(100vh-240px)] overflow-y-scroll">
                     {
                         chatUsers.map( (users, index) => {
                             return (

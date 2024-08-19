@@ -14,11 +14,12 @@ const CheckPath = (file) => {
     return (Exarray.includes(extantion[extantion.length - 1]));
 }
 
-function Badge() {
+function Badge({SettingsData}) {
 
     const [save, setSave] = useState(false);
     const [image, setImage] = useState(null);
     const [background, setBackground] = useState(null);
+    const {first_name, last_name, background_picture, picture} = SettingsData;
     
     function HandelSave() {
         setSave(!save);
@@ -51,7 +52,7 @@ function Badge() {
     return (
         <form action='' method='POST' >
             <div className=" relative">
-                <img className="rounded-t-lg h-[182px] w-full" src={(background == null) ? userbg : background} alt="" />
+                <img className="rounded-t-lg h-[182px] w-full" src={(background == null) ? background_picture : background} alt="" />
                 <input type='file' id="changeBackground" onChange={HandelBackground} name="changeBackground" className='hidden absolute top-[-6px] left-[11px]'/>
                 <label className={(save ? "flex flex-row" : "hidden") + " bg-white w-[190px] rounded-md absolute top-[10px] left-[11px] cursor-pointer"} htmlFor="changeBackground">
                     <img className='' src={upload} alt=''/>
@@ -60,7 +61,7 @@ function Badge() {
             </div>
             <div className="Badge relative md:static bg-[#15262A] h-[182px] md:h-[73px] w-full border-x-[1px] mb-[10px] border-b-[1px] border-[#626262] flex flex-col md:flex-row items-center">
                 <img className=" rounded-full md:ml-[25px] w-[107.69px] h-[107.69px] top-[-57px] absolute md:relative "
-                    src={(image == null) ? UserIcon : image} alt="">
+                    src={(image == null) ? picture : image} alt="">
                 </img>
                 <div className='relative'>
                     <input type='file' id="changeProfile" onChange={HandelImage} name="changeProfile" className='hidden absolute top-[-6px] left-[11px]'/>
@@ -70,13 +71,13 @@ function Badge() {
                     </label>
                 </div>
                 <div className='InfoHolder flex flex-col md:mt-[30px] relative md:static top-[57px]'>
-                    <span className='text-[25px] ml-[10px] font-normal text-[#d0d4d4] font-Outfit'>Name Name</span>
+                    <span className='text-[25px] ml-[10px] font-normal text-[#d0d4d4] font-Outfit'>{first_name} {last_name}</span>
                     <div className='flex flex-row ml-[10px] justify-center md:justify-normal'>
                         <span className="trendup-icon-white"></span>
                         <span className="Rank text-[12px] text-[#FFFFFF] text-center font-semibold font-Outfit"> Bronze</span>
                     </div>
 
-                    {!save && <div className='flex flex-row lg:right-[-553px] xl:right-[-759px] 2xl:right-[-974px] md:relative md:top-[-220px] md:right-[-341px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'>
+                    {!save && <div className='flex flex-row lg:right-[-463px] xl:right-[-673px] 2xl:right-[-883px] md:relative md:top-[-220px] md:right-[-248px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'>
                             <button onClick={HandelSave} className='px-[2px] font-[500] font-[Outfit] text-[#626262] md:text-white md:opacity-60'>Edit</button>
                             <img className='px-[2px]' src={Edit} alt='' />
                         </div> }

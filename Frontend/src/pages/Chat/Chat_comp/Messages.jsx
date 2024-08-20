@@ -6,9 +6,12 @@ import StoreMessages from '../../../components/StoreMessages'
 import axios from 'axios'
 
 
-function Messages(Data) {
+function Messages({setMessages, username, className}) {
     
     
+
+    console.log("Chat with : ", username);
+
 
     const messageContext = useContext(sendMessageContext);
     const { messages, messagesAdded, messagesRef } = useContext(sendMessageContext);
@@ -16,6 +19,7 @@ function Messages(Data) {
     const [Oldest, setOldest] = useState([]);
     const [Scroll, setScroll] = useState(0);
     const [LoadingMessage, setLoadingMessage] = useState("");
+    const [WhoAmI, setWhoAmI] = useState("");
 
     const Arr = ["Alice", "Charlie", "Dora", "Elmo", "Fiona", "George"];
     const index = useRef(0);
@@ -23,6 +27,22 @@ function Messages(Data) {
     useEffect(() => {
         messageContext.goToButtom("auto");
     }, [messagesAdded]);
+
+
+    useEffect(() => {
+        async function fetchUsername() {
+            await axios.get('http://10.12.1.3:8000/api/WhoAmI/')
+            .then(res => {
+                console.log("Done fetching Data of username");
+                setWhoAmI(res.data.username);
+            })
+            .catch (error => {
+                console.log("Getting username error !");
+            });
+        }
+        fetchUsername();
+    }, []);
+
 
     useEffect(() => {
         const handleScroll = async () => {
@@ -60,27 +80,27 @@ function Messages(Data) {
     }, [Scroll]);
 
     return (
-        <div ref={messagesRef} onScroll={() => {setScroll(messagesRef.current.scrollTop)}} className={"" + (Data.className) ? Data.className : ''}>
+        <div ref={messagesRef} onScroll={() => {setScroll(messagesRef.current.scrollTop)}} className={"" + (className) ? className : ''}>
            <>
            {isLoading && <div className={`Loading text-center text-white text-[20px] p-[17px] `}> {LoadingMessage} </div>}
            {
                 Array.isArray(Oldest) && Oldest.map((chatMessages, index) => {
                     return (
-                        <GetChatFromDataBase chatMessages={chatMessages} key={index}/>
+                        <GetChatFromDataBase WhoAmI={WhoAmI} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }
             {
                 Array.isArray(messages.messages) && messages.messages.map((chatMessages, index) => {
                     return (
-                        <GetChatFromDataBase chatMessages={chatMessages} key={index}/>
+                        <GetChatFromDataBase WhoAmI={WhoAmI} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }
             {
                 Array.isArray(messagesAdded) && messagesAdded.map((chatMessages, index) => {
                     return (
-                        <StoreMessages chatMessages={chatMessages} key={index}/>
+                        <StoreMessages WhoAmI={WhoAmI} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }

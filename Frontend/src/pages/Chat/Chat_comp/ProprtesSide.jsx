@@ -14,12 +14,6 @@ function ProprtesSide(Data) {
         setInput(e.target.value);
     }
 
-    function whichShouldShowen() {
-        if(!input)
-            return <BoxInboxUsers/>;
-        return <BoxSearch data= {input} />;
-    }
-
     const ChatContext = useContext(chatHeaderOnClick);
 
     if (input)
@@ -36,7 +30,7 @@ function ProprtesSide(Data) {
                     type="text" placeholder="Search" />
                 <img src={Search} className="w-[37px] h-[37px] cursor-pointer absolute top-[12px] opacity-50 right-[17px]" alt=""/>
             </div>
-            {whichShouldShowen()}
+            { (!input) ? <BoxInboxUsers lastMessage={ChatContext.lastMessage}/> : <BoxSearch data= {input} />}
         </div>
     )
 }

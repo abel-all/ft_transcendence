@@ -20,7 +20,7 @@ const NotifyUser = () => {
         }, 4000);
     }
 
-    const {lastMessage } = useWebSocket('wss://fttran.tech/ws/friendship-request/', {
+    const {lastMessage } = useWebSocket('ws://10.12.1.3:8001/', {
         onError: (error) => console.error('WebSocket error:', error),
         shouldReconnect: () => true,
         reconnectInterval: 3000

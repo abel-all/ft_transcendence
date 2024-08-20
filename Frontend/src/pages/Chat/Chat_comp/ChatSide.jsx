@@ -150,20 +150,23 @@ function ChatSide(Data) {
 
 
     useEffect(() => {
-        if (ChatContext.lastMessage) {
+
+        if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).user == username) {
             const msg = JSON.parse(ChatContext.lastMessage.data).message;
             msg && setMessagesAdded(prevState => [
                 ...prevState, {
                     message: msg,
-                    message_id: 654,
-                    timestamp: "41:55",
-                    sender: "User1",
+                    message_id: Math.floor(Math.random() * 10000),
+                    timestamp: new Date().toLocaleTimeString(),
+                    sender: "Alice",
                     seen: true,
-                    depands: "Waiting",
+                    depends: "Waiting"
                 }
             ]);
         }
       }, [ChatContext.lastMessage]);
+
+      
     return (
         <div className={" " + (Data.className) ? Data.className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
@@ -173,7 +176,7 @@ function ChatSide(Data) {
                         {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
                         <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username}}>
                             <ChatHeader Data={Data}/>
-                            <Messages setMessages={setMessages} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
+                            <Messages setMessages={setMessages} username={username} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>
                         </sendMessageContext.Provider>
                     </>

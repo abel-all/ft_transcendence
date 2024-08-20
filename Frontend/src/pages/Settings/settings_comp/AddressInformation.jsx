@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Edit from '../../../assets/imgs/edit.svg'
 import Inputes from './InputesComp';
+import { twMerge } from 'tailwind-merge';
 
 
 function AddressInformation({SettingsData, className}) {
@@ -70,7 +71,7 @@ function AddressInformation({SettingsData, className}) {
     }
 
     return (
-        <div className={"border-[#626262] bg-[#15262a] px-[25px] py-[40px] mb-[120px] border-[1px]" + (className.className ? ` ${className.className}` : '')}>
+        <div className={twMerge("border-[#626262] bg-[#15262a] px-[25px] py-[40px] mb-[120px] border-[1px]", className)}>
             <form>
                 <div className="flex flex-row justify-between">
                     <div className='font-[600] font-[Outfit]'>Address</div>

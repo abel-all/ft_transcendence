@@ -5,7 +5,7 @@ import BoxSearch from "./BoxSearch";
 import {useContext} from 'react'
 import {chatHeaderOnClick} from '../Chat'
 
-function ProprtesSide(Data) {
+function ProprtesSide({VoidedUsername, className}) {
 
     let styleSearch;
 
@@ -22,7 +22,7 @@ function ProprtesSide(Data) {
         styleSearch = "SearchInpute p-[18px] focus-visible:outline-0 text-[white] rounded-full w-full blur-none text-[16px] bg-transparent border-[1px] border-[#626262]";
 
     return (
-        <div className={" " + (Data.className) ? Data.className : ``}>
+        <div className={" " + (className) ? className : ``}>
             <div className="SearchInpute relative my-[5px] mt-[15px]">
                 <input 
                     className={styleSearch}
@@ -30,7 +30,7 @@ function ProprtesSide(Data) {
                     type="text" placeholder="Search" />
                 <img src={Search} className="w-[37px] h-[37px] cursor-pointer absolute top-[12px] opacity-50 right-[17px]" alt=""/>
             </div>
-            { (!input) ? <BoxInboxUsers lastMessage={ChatContext.lastMessage}/> : <BoxSearch data= {input} />}
+            { (!input) ? <BoxInboxUsers VoidedUsername={VoidedUsername} lastMessage={ChatContext.lastMessage}/> : <BoxSearch data= {input} />}
         </div>
     )
 }

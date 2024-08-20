@@ -27,7 +27,7 @@ function messagesAddedLoop(msg , add) {
 }
 
 
-function ChatSide(Data) {
+function ChatSide({VoidedUsername, className}) {
     
     const initialState = {
         message: '',
@@ -78,12 +78,16 @@ function ChatSide(Data) {
     useEffect(() => {
         function FetchFullBack() {
             console.log("Data Featched!");
-            if (ChatContext.chatHeader.name)
-                    SetUsername(ChatContext.chatHeader.name);
-            else if (ChatContext.userFromUrl.user)
-                    SetUsername(ChatContext.userFromUrl.user);
+            if (ChatContext.chatHeader.name) {
+                SetUsername(ChatContext.chatHeader.name);
+                VoidedUsername.current = ChatContext.chatHeader.name;
+            }
+            else if (ChatContext.userFromUrl.user) {
+                SetUsername(ChatContext.userFromUrl.user);
+                VoidedUsername.current = ChatContext.userFromUrl.user;
+            }
             if (username) {
-                axios.get(`http://10.12.1.3:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`http://10.12.1.1:8000/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
@@ -168,14 +172,14 @@ function ChatSide(Data) {
 
       
     return (
-        <div className={" " + (Data.className) ? Data.className : ``}>
+        <div className={" " + (className) ? className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
                 {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
                         {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
                         <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username}}>
-                            <ChatHeader Data={Data}/>
+                            <ChatHeader className={className}/>
                             <Messages setMessages={setMessages} username={username} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>
                         </sendMessageContext.Provider>

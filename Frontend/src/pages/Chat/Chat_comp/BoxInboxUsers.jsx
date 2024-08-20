@@ -11,28 +11,34 @@ import {useContext, useState, useEffect} from 'react'
 
 
 
-function BoxInboxUsers({lastMessage}) {
+function BoxInboxUsers({lastMessage, VoidedUsername}) {
 
     const ChatHeader = useContext(chatHeaderOnClick);
-    const [UserList, setUserList] = useState([]);
-
+    const [UserList, setUserList] = useState(chatUsers);
+    const [Sorted, setSorted] = useState([]);
+    
     useEffect(() => {
-        setUserList(chatUsers);
-    }, []);
-
-
-    if (lastMessage) {
-        let i = 0;
-        while (i < UserList.length) {
-            if (UserList[i].nickname == JSON.parse(lastMessage.data).user) {
-                UserList[i].lastMessage = JSON.parse(lastMessage.data).message;
-                UserList[i].unreadMessages++;
-                console.log(UserList.lastMessage);
-            }
-            i++;
+        if (lastMessage) {
+            setUserList(prevUserList => {
+                const updatedUserList = prevUserList.map(user => {
+                    if (user.nickname === JSON.parse(lastMessage.data).user) {
+                        console.log(`-----> header : ${VoidedUsername.current} nick : ${user.nickname}`);
+                        return {
+                            ...user,
+                            lastMessage: JSON.parse(lastMessage.data).message,
+                            total_messages: (VoidedUsername.current == user.nickname) ? 0 : user.total_messages + 1,
+                            lastMessageTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                        };
+                    }
+                    return user;
+                });
+    
+                const sortedList = [...updatedUserList].sort((First, Second) => First.total_messages - Second.total_messages);
+                setSorted(sortedList);
+                return updatedUserList;
+            });
         }
-    }
-
+    }, [lastMessage]);
 
     return (
         <>
@@ -43,21 +49,21 @@ function BoxInboxUsers({lastMessage}) {
                 </div>
                 <div className="HolderOfusersChat h-[calc(100vh-240px)] overflow-y-scroll">
                     {
-                        UserList.map( (users, index) => {
+                        Sorted.map((users, index) => {
                             return (
                                 <div className="cursor-pointer" key={index} onClick={() => ChatHeader.handelChatHeader(users.nickname, 623, users.userProfile)}>
                                     <InboxUsers
-                                        nickname = {users.nickname}  
-                                        socketid = {users.socketid}  
-                                        total_messages = {users.total_messages}  
-                                        userProfile = {users.userProfile}        
-                                        lastMessage = {users.lastMessage}  
-                                        unreadMessages = {users.unreadMessages}  
-                                        lastMessageTime = {users.lastMessageTime}  
-                                        isActive = {users.isActive}  
+                                        nickname={users.nickname}  
+                                        socketid={users.socketid}  
+                                        total_messages={users.total_messages}  
+                                        userProfile={users.userProfile}        
+                                        lastMessage={users.lastMessage}  
+                                        unreadMessages={users.unreadMessages}  
+                                        lastMessageTime={users.lastMessageTime}  
+                                        isActive={users.isActive}  
                                     />
                                 </div>
-                            )
+                            );
                         })
                     }
                 </div>

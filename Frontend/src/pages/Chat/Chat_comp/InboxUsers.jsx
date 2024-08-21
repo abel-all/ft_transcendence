@@ -23,12 +23,12 @@ function InboxUsers(Data){
                     </div>
                 </div>
                 <div className="spaces grow"></div>
-                <div className="TimeCount flex flex-col bottom-2/12 pt-[5px] items-center">
-                    <div className="timeSent font-[Outfit] font-[300] ftext-[12px] text-white opacity-70">
+                <div className="TimeCount flex flex-col bottom-2/12 w-[94px] pt-[5px] items-center ">
+                    <div className="timeSent font-[Outfit] font-[300] ftext-[12px] text-center text-white opacity-70">
                         {Data.lastMessageTime}
                     </div>
-                    <div className="bg-[#00CEFF] text-[12px] flex justify-center items-center font-[600] font-[Outfit] w-[20px] h-[20px] mt-[5px] rounded-full text-center">
-                        {Data.total_messages}
+                    <div className={`${Data.total_messages ? "bg-[#00CEFF] text-[12px] flex justify-center items-center font-[600] font-[Outfit] w-[20px] h-[20px] mt-[5px] rounded-full text-center" : ""}`}>
+                        {Data.total_messages ? Data.total_messages : ""}
                     </div>
                 </div>
             </div>

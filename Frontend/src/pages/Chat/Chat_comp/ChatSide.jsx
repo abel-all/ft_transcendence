@@ -87,7 +87,7 @@ function ChatSide({VoidedUsername, className}) {
                 VoidedUsername.current = ChatContext.userFromUrl.user;
             }
             if (username) {
-                axios.get(`http://10.12.1.1:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`http://10.12.1.3:8000/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {

@@ -22,18 +22,20 @@ function BoxInboxUsers({lastMessage, VoidedUsername}) {
             setUserList(prevUserList => {
                 const updatedUserList = prevUserList.map(user => {
                     if (user.nickname === JSON.parse(lastMessage.data).user) {
-                        console.log(`-----> header : ${VoidedUsername.current} nick : ${user.nickname}`);
+                        console.log(`-----> header : ${VoidedUsername.current} nick : ${user.nickname} time: ${new Date().toISOString()}`);
                         return {
                             ...user,
                             lastMessage: JSON.parse(lastMessage.data).message,
                             total_messages: (VoidedUsername.current == user.nickname) ? 0 : user.total_messages + 1,
-                            lastMessageTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                            lastMessageTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+                            MessageUpdatedAt: new Date().toISOString()
                         };
                     }
                     return user;
                 });
     
-                const sortedList = [...updatedUserList].sort((First, Second) => First.total_messages - Second.total_messages);
+                const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.MessageUpdatedAt) - new Date(First.MessageUpdatedAt);});
+                
                 setSorted(sortedList);
                 return updatedUserList;
             });

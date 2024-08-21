@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('ws://10.12.1.1:8000/');
+    const [socketURL, setSocketURL] = useState('ws://10.12.1.3:8000/');
     const [messageHistory, setMessageHistory] = useState([]);
     const VoidedUsername  = useRef("");
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {

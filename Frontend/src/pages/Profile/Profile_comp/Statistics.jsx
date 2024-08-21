@@ -17,7 +17,7 @@ function Statistics({className}) {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("http://10.12.1.1:8000/api/profile/statistics/");
+                const res = await axios.get("http://10.12.1.3:8000/api/profile/statistics/");
                 handelStat(res.data);
                 console.log("Statistics fetchid data with Success: ");
             } catch (error) {

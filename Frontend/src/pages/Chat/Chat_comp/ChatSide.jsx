@@ -7,6 +7,8 @@ import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
 import { flushSync } from 'react-dom';
 import TimeHM from '../../../components/TimeHM'
+import { ReadyState } from 'react-use-websocket';
+
 
 
 
@@ -25,7 +27,7 @@ function messagesAddedLoop(msg , add) {
 }
 
 
-function ChatSide(Data) {
+function ChatSide({setVoidedUsername, className}) {
     
     const initialState = {
         message: '',
@@ -76,12 +78,16 @@ function ChatSide(Data) {
     useEffect(() => {
         function FetchFullBack() {
             console.log("Data Featched!");
-            if (ChatContext.chatHeader.name)
-                    SetUsername(ChatContext.chatHeader.name);
-            else if (ChatContext.userFromUrl.user)
-                    SetUsername(ChatContext.userFromUrl.user);
+            if (ChatContext.chatHeader.name) {
+                SetUsername(ChatContext.chatHeader.name);
+                setVoidedUsername(ChatContext.chatHeader.name);
+            }
+            else if (ChatContext.userFromUrl.user) {
+                SetUsername(ChatContext.userFromUrl.user);
+                setVoidedUsername(ChatContext.userFromUrl.user);
+            }
             if (username) {
-                axios.get(`http://10.13.5.5:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`http://10.12.9.14:8000/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
@@ -105,28 +111,31 @@ function ChatSide(Data) {
 
     const addMessage = (message) => {
             UpdateCreatedMessage(message, "User2");
-            // sendMessageToDataBase(message, "User2", CreateMessages);
-            ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
+            sendMessageToDataBase(message, username, CreateMessages);
+            //ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
+            console.log("Hello how are you? ", username);
 
     }
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
-        axios.post(`http://10.13.5.5:8000/messages/${username}`, {
-            message_id : uuidv4(),
-            timestamp :  TimeHM(),
-            sender : sender,
-            message : message,
-            seen : false,
-        })
-        .then(res => {
+
+
+        if (ChatContext.readyState == ReadyState.OPEN) {
+            ChatContext.sendMessage({
+                    message_id : uuidv4(),
+                    timestamp :  TimeHM(),
+                    sender : sender,
+                    message : message,
+                    seen : false,
+                }
+            );
             UpdateCreatedMessageState(false, "")
             serUserAbleToSendMessage(true);
-        })
-        .catch(err => {
+        } else {
             UpdateCreatedMessageState(false, "failed");
             serUserAbleToSendMessage(false);
-        })
+        }
     };
     
     useEffect(() => {
@@ -145,30 +154,33 @@ function ChatSide(Data) {
 
 
     useEffect(() => {
-        if (ChatContext.lastMessage) {
+
+        if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).user == username) {
             const msg = JSON.parse(ChatContext.lastMessage.data).message;
             msg && setMessagesAdded(prevState => [
                 ...prevState, {
                     message: msg,
-                    message_id: 654,
-                    timestamp: "41:55",
-                    sender: "User1",
+                    message_id: Math.floor(Math.random() * 10000),
+                    timestamp: new Date().toLocaleTimeString(),
+                    sender: "Alice",
                     seen: true,
-                    depands: "Waiting",
+                    depends: "Waiting"
                 }
             ]);
         }
       }, [ChatContext.lastMessage]);
+
+      
     return (
-        <div className={" " + (Data.className) ? Data.className : ``}>
+        <div className={" " + (className) ? className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
                 {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
                         {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
-                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages}}>
-                            <ChatHeader Data={Data}/>
-                            <Messages className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username}}>
+                            <ChatHeader className={className}/>
+                            <Messages setMessages={setMessages} username={username} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>
                         </sendMessageContext.Provider>
                     </>

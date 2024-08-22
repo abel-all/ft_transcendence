@@ -6,13 +6,13 @@ import axios from "axios";
 
 function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
 
-    const [friendlist, setfriendlist] = useState(friendlistTest);
+    const [friendlist, setfriendlist] = useState([]);
 
     useEffect(() => {
-        if (!AlreadyDated) {
+        if (!AlreadyDated || !Array.isArray(AlreadyDated)) {
             const fetchmydata = async () => {
                 try {
-                    const res = await axios.get(`http://10.13.5.5:8000/api/profile/${EndPoint}/`);
+                    const res = await axios.get(`https://fttran.tech/api/profile/${EndPoint}/`);
                     setfriendlist(res.data);
                     console.log(`List of ${EndPoint} Fetched data with success`);
                 } catch (error) {
@@ -22,13 +22,14 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
             fetchmydata();
         }
         else
-            setfriendlist(friendlistTest);
-    }, []);
+            setfriendlist(AlreadyDated);
+    }, [AlreadyDated]);
 
     return (
         <>                            
+                
             {
-                friendlist.map( (friends, index) => {
+                (friendlist.length > 0) ? friendlist.map( (friends, index) => {
                     return (
                         <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
                             <Friend
@@ -42,6 +43,7 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
                         </div>
                     )
                 })
+                : <div className="NoData flex items-center h-full text[20px] font[oblique] font[500] justify-center text-white">No Data To Fetch !</div>
             }
         </>
     );

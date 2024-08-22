@@ -3,7 +3,7 @@ import Edit from '../../../assets/imgs/edit.svg'
 import Inputes from './InputesComp';
 
 
-function PersonalInformation(className) {
+function PersonalInformation({SettingsData, className}) {
 
     const [save, setSave] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -11,6 +11,8 @@ function PersonalInformation(className) {
     const [Lastname, setLastname] = useState("Last Name");
     const [Email, setEmail] = useState("Email Address");
     const [Phone, setPhone] = useState("Phone");
+    const {first_name, last_name, phone_number, email} = SettingsData;
+
 
     function HandelSave() {
         setSave(!save);
@@ -85,18 +87,18 @@ function PersonalInformation(className) {
                 <div className='FullnameHolder flex flex-col  md:justify-between md:flex-row'>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
                         LabelName="First Name" save={save} ErrorWord="FN" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="FirstName" VarLoad={Firstname} PlaceFeild="Fisrt Name"/>
+                        Error={Error} FNfiled={FNfiled} FieldName="FirstName" VarLoad={first_name} PlaceFeild={first_name}/>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Last Name" save={save} ErrorWord="LN" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="LastName" VarLoad={Lastname} PlaceFeild="Last name"/>
+                        Error={Error} FNfiled={FNfiled} FieldName="LastName" VarLoad={last_name} PlaceFeild={last_name}/>
                 </div>
                 <div className='ContacInfo flex flex-col md:justify-between md:flex-row'>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Email Address" save={save} ErrorWord="EM" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="EmailAddress" VarLoad={Email} PlaceFeild="Email@email.com"/>
+                        Error={Error} FNfiled={FNfiled} FieldName="EmailAddress" VarLoad={email} PlaceFeild={email}/>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Phone" save={save} ErrorWord="PH" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="text" VarLoad={Phone} PlaceFeild="+2120600000000"/>
+                        Error={Error} FNfiled={FNfiled} FieldName="text" VarLoad={phone_number} PlaceFeild={phone_number}/>
                 </div>
             </form>
         </div>

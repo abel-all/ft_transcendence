@@ -2,14 +2,13 @@ import Friend from '../../../components/Friend'
 import AddUser from "../../../assets/imgs/AddUser.svg"
 import friendlist from "../../../assets/friendlist.json"
 import removefriend from "../../../assets/imgs/remove_friend.svg"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import userIcon from "../../../assets/imgs/userprofile.svg"
 import close from "../../../assets/imgs/close.svg"
 import invite from "../../../assets/imgs/panding.svg"
 import axios from 'axios'
 import List from './List'
-
-
+import NotifyUser from '../../../components/NotifyUser'
 
 
 function FriendsList({className}) {
@@ -36,7 +35,7 @@ function FriendsList({className}) {
                 username : e.target.value
             }).then ((res) => {
                 console.log("message sent : ", res);
-                setFriendlistFromSearch(res.data);
+                setFriendlistFromSearch(res.data.profiles);
             }).catch((err) => {
                 console.log("there is an error : ", err);
             });
@@ -82,7 +81,7 @@ function FriendsList({className}) {
                 <button onClick={handelToglle}>
                     <img className=" top-[20px] right-[18px] absolute w-[25.6px] h-[25.6px]" src={AddUser} alt=''/>
                 </button>
-                <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 max-h-[230px] overflow-auto">
+                <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 h-[230px] overflow-auto">
                     { <List reason="Friends list" isfriend={true} EndPoint="friends" /> }
                 </div>
             </div>}

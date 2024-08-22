@@ -27,7 +27,7 @@ function messagesAddedLoop(msg , add) {
 }
 
 
-function ChatSide({VoidedUsername, className}) {
+function ChatSide({setVoidedUsername, className}) {
     
     const initialState = {
         message: '',
@@ -80,14 +80,14 @@ function ChatSide({VoidedUsername, className}) {
             console.log("Data Featched!");
             if (ChatContext.chatHeader.name) {
                 SetUsername(ChatContext.chatHeader.name);
-                VoidedUsername.current = ChatContext.chatHeader.name;
+                setVoidedUsername(ChatContext.chatHeader.name);
             }
             else if (ChatContext.userFromUrl.user) {
                 SetUsername(ChatContext.userFromUrl.user);
-                VoidedUsername.current = ChatContext.userFromUrl.user;
+                setVoidedUsername(ChatContext.userFromUrl.user);
             }
             if (username) {
-                axios.get(`http://10.12.1.3:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`http://10.12.9.14:8000/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {

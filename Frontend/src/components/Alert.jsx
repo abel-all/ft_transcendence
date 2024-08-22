@@ -18,7 +18,7 @@ const Alert = ({ message, color }) => {
                 });
             }, 100);
         }, 3000);
-
+        
         return () => {
             clearTimeout(startHideTimeout);
         };

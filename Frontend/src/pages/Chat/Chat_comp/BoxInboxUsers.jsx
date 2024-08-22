@@ -22,25 +22,41 @@ function BoxInboxUsers({lastMessage, VoidedUsername}) {
             setUserList(prevUserList => {
                 const updatedUserList = prevUserList.map(user => {
                     if (user.nickname === JSON.parse(lastMessage.data).user) {
-                        console.log(`-----> header : ${VoidedUsername.current} nick : ${user.nickname} time: ${new Date().toISOString()}`);
                         return {
                             ...user,
                             lastMessage: JSON.parse(lastMessage.data).message,
-                            total_messages: (VoidedUsername.current == user.nickname) ? 0 : user.total_messages + 1,
+                            total_messages: (VoidedUsername == user.nickname) ? 0 : user.total_messages + 1,
                             lastMessageTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
                             MessageUpdatedAt: new Date().toISOString()
                         };
                     }
                     return user;
                 });
-    
                 const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.MessageUpdatedAt) - new Date(First.MessageUpdatedAt);});
-                
                 setSorted(sortedList);
                 return updatedUserList;
             });
         }
     }, [lastMessage]);
+    
+    useEffect(() => {
+        if (VoidedUsername) {
+            setUserList(prevUserList => {
+                const updatedUserList = prevUserList.map(user => {
+                    if (user.nickname == VoidedUsername) {
+                    return {
+                        ...user,
+                        total_messages: 0
+                    };
+                }
+                return user;
+                })
+                const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.MessageUpdatedAt) - new Date(First.MessageUpdatedAt);});
+                setSorted(sortedList);
+                return updatedUserList;
+            });
+        }
+    }, [VoidedUsername]);
 
     return (
         <>

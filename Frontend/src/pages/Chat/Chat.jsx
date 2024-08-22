@@ -14,9 +14,9 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('ws://10.12.1.3:8000/');
+    const [socketURL, setSocketURL] = useState('ws://10.12.9.14:8000/');
     const [messageHistory, setMessageHistory] = useState([]);
-    const VoidedUsername  = useRef("");
+    const [VoidedUsername, setVoidedUsername]  = useState("");
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
         onClose: () => console.log('WebSocket connection closed.'),
@@ -47,7 +47,9 @@ function Chat() {
         ChatShown:true
     }); 
     
-    
+    useEffect(() => {
+        console.log(`VoidedUsername : 1 : ${VoidedUsername}`);
+    }, [VoidedUsername]);
     
     function handelSetingUser(username, userurl, userrank) {
         setUserFromUrl(prevState => ({
@@ -125,8 +127,8 @@ function Chat() {
                 <Header title="Chat" activeSection="ChatIcon" hide={!chatHeader.ChatShown ? "hidden md:flex" : ""}/>
                 <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage, readyState}}>
                     <div className="flex indexchatHolder mt-[101px] flex-row">
-                        <ProprtesSide VoidedUsername={VoidedUsername} className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
-                        <ChatSide VoidedUsername={VoidedUsername} className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>
+                        <ProprtesSide VoidedUsername={VoidedUsername}className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
+                        <ChatSide setVoidedUsername={setVoidedUsername} className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>
                     </div>
                 </chatHeaderOnClick.Provider>
                 <ChatNavBottom hide={!chatHeader.ChatShown ? "hidden " : ""}/>

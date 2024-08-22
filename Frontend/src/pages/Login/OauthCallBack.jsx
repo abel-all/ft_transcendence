@@ -5,17 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../components/Auth.jsx';
 
 const OauthCallBack = () => {
-    
+
     const navigate = useNavigate();
     const auth = useAuth();
-    
+
     useEffect(() => {
         let isMounted = true;
-        
+
         // const urlSearchString = "param=1";
         // // const urlSearchString = window.location.search;
         // const params = new URLSearchParams(urlSearchString);
-        
+
         // setCode(params.get("param"));
         // console.log("uuuu");
         // console.log(params.get("param"));
@@ -30,7 +30,7 @@ const OauthCallBack = () => {
         }
         else {
             const checkCode = async () => {
-                await Axios.post("https://fttran.tech/api/auth/GnrToken/",{
+                await Axios.post("http://10.12.9.12:8800/api/auth/GnrToken/",{
                     user_id: paramValue,
                 }, // must edited
                 {

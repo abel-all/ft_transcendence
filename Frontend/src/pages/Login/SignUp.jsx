@@ -24,13 +24,13 @@ function SignUp() {
     }, [])
 
     const checkFieldInput = async () => {
-        
+
         if (fieldReGex.nameReGex.test(formValues["First Name"]) &&
             fieldReGex.nameReGex.test(formValues["Last Name"]) &&
             fieldReGex.usernameReGex.test(formValues["Username"]) &&
             fieldReGex.emailReGex.test(formValues["Email"]) &&
             fieldReGex.passwordReGex.test(formValues["Password"])) {
-                await Axios.post("https://fttran.tech/api/auth/signup/", {
+                await Axios.post("http://10.12.9.12:8800/api/auth/signup/", {
                     first_name: formValues["First Name"],
                     last_name: formValues["Last Name"],
                     username: formValues.Username,
@@ -50,12 +50,22 @@ function SignUp() {
             setMessage("Invalid Information")
     }
     const handleUserClick = () => {
+        console.log("hello from click");
         checkFieldInput();
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("hello from submit");
         checkFieldInput();
+    }
+
+    const handleUserAgreementClick = () => {
+        navigate("/useragreement");
+    }
+
+    const handlePrivacyClick = () => {
+        navigate("/privacypolicy");
     }
 
     if (isloaded)
@@ -64,7 +74,10 @@ function SignUp() {
     return (
         <div className='container max-sm:scale-[0.8] flex flex-col justify-center items-center mx-auto relative'>
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] rounded-[15px] mt-[120px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] max-sm:px-[0px] max-sm:mt-[20px] max-sm:mb-[0px]">
-                <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
+                <img className="w-[97px] m-auto pb-[20px]" src={LogoImage} alt="PING! image" />
+                <div className="text-[#fff6f9]/90 mb-[20px] text-[14px] w-full text-center font-normal">
+                    By continuing, you agree to our <span onClick={handleUserAgreementClick} className="cursor-pointer text-[#00CEFF]">User Agreement</span> and acknowledge that you understand the <span onClick={handlePrivacyClick} className="cursor-pointer text-[#00CEFF]">Privacy Policy</span>.
+                </div>
                 <form onSubmit={handleSubmit} className="inputs flex items-center flex-col gap-3 pb-[48px]">
                     {signUpFieldProps.map((item, index) => (
                         <FormInput
@@ -74,6 +87,7 @@ function SignUp() {
                             handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
                         />
                     ))}
+                    <button className="hidden" type='submit'></button>
                 </form>
                 <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 <div onClick={handleUserClick}>

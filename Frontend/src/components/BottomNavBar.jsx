@@ -9,7 +9,7 @@ function BottomNaveBar(props) {
 
     return (
         <>
-            <div className="md:hidden">
+            <div className="md:hidden fixed z-[50]">
                 {notification.showNotification && <Notification/>}
             </div>
             <div className='fixed bottom-[15px] left-0 right-0 z-50'>

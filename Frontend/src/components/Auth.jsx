@@ -27,7 +27,7 @@ export const ContextProvider = ({ children }) => {
     }
 
     const isAuthenticated = async () => {
-        await Axios.get("https://fttran.tech/api/auth/token/", {
+        await Axios.get("http://10.12.9.12:8800/api/auth/token/", {
             withCredentials:true
         })
         .then(() => {
@@ -39,7 +39,7 @@ export const ContextProvider = ({ children }) => {
                 setIsAuth(false);
             if (err.response?.status == 403) {
                 const refrechToken = async () => {
-                    await Axios.get("https://fttran.tech/api/auth/token/refresh/", {
+                    await Axios.get("http://10.12.9.12:8800/api/auth/token/refresh/", {
                         withCredentials:true
                     })
                     .then(() => {

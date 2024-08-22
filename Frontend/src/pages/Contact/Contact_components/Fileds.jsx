@@ -40,7 +40,7 @@ function Fileds() {
     }
 
     return (
-        <div className="px-[40px] mx-auto w-full max-w-[460px] rounded-[15px] mt-[120px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] flex flex-col justify-between items-center max-sm:px-[0px] max-sm:mt-[20px]">
+        <div className="px-[40px] mx-auto w-full max-w-[460px] rounded-[15px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] mb-[200px] flex flex-col justify-between items-center max-sm:px-[0px] max-sm:mt-[20px]">
             <Link to="/"><img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" /></Link>
             <div className="text-white font-bold text-[36px] mb-[65px]" >Contact Us</div>
             <form onSubmit={handleSubmit} className="w-full inputs flex items-center flex-col gap-3 pb-[48px]">
@@ -53,7 +53,7 @@ function Fileds() {
                         handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
                     />
                 ))}
-                <input className="hidden" type="submit" />
+                <button className="hidden" type='submit'></button>
             </form>
             <div className=" mb-[20px] w-full" onClick={handleUserClick}>
                 <Button bgColor=" bg-[#019F9F]" title="Send Message" formValues={formValues} />

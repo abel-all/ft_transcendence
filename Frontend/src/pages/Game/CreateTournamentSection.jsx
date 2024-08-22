@@ -45,7 +45,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
         setIsLoading(true);
 
         if (nameReGex.test(name) && nameReGex.test(tour)) {
-            await Axios.post("https://fttran.tech/api/auth/2fa/verify/", {
+            await Axios.post("http://10.12.9.12:8800/api/auth/2fa/verify/", {
                 display_name: name,
                 tournament_name: tour,
             },
@@ -102,6 +102,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
                             type="text"
                             required
                         />
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 </div>

@@ -22,12 +22,12 @@ const TwoFaAuthStep1 = () => {
         else
             setFocusColor("focus:border-[#FF0000]");
     }
-    
+
     const verifyOtpCode = async () => {
         setIsLoading(true);
 
         if (/^[0-9]{6,6}$/.test(code)) {
-            await Axios.post("https://fttran.tech/api/auth/2fa/verify/device/", {
+            await Axios.post("http://10.12.9.12:8800/api/auth/2fa/verify/device/", {
                 otp_code: code,
             },
             {
@@ -51,9 +51,9 @@ const TwoFaAuthStep1 = () => {
     if (isLoading)
         return <LoaderOnTop />
 
-    
+
     const handleEnableButtonClick = async () => {
-        await Axios.get("https://fttran.tech/api/auth/2fa/enable/",
+        await Axios.get("http://10.12.9.12:8800/api/auth/2fa/enable/",
         {
             withCredentials:true,
         })
@@ -70,7 +70,7 @@ const TwoFaAuthStep1 = () => {
     const handleButtonClick = () => {
         verifyOtpCode();
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         verifyOtpCode();
@@ -102,6 +102,7 @@ const TwoFaAuthStep1 = () => {
                     <img className="w-[200px]" src={image} alt="" />
                     <form onSubmit={handleSubmit} className="w-full bg-[#eee] rounded-[15px] bg-opacity-20">
                         <input onChange={handleInputChange} name="digitcode" className={`rounded-[15px] bg-transparent text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`} placeholder="6-Digit Verification Code" type="text" required/>
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 </div>

@@ -14,7 +14,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
+    const [socketURL, setSocketURL] = useState('wss://10.12.9.12:8800/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
         onOpen: () => console.log('WebSocket connection opened.'),
@@ -26,16 +26,16 @@ function Chat() {
         shouldReconnect: () => true, // Always attempt to reconnect
         reconnectInterval: 3000 // Reconnect every 3 seconds
       });
-  
+
     useEffect(() => {
     //     let i = 0;
     //   const timer = setInterval(() => {
         //sendMessage('{"action" : "subscribe","room_name" : "hisoak__-youssef"}');
     //   }, 100);
-  
+
     //   return () => clearInterval(timer);
     }, [sendMessage]);
-  
+
     const connectionStatus = {
       [ReadyState.CONNECTING]: 'Connecting',
       [ReadyState.OPEN]: 'Open',
@@ -43,7 +43,7 @@ function Chat() {
       [ReadyState.CLOSED]: 'Closed',
       [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
-    
+
 
     useEffect(() => {
         if (lastMessage) {
@@ -58,10 +58,10 @@ function Chat() {
         windowSize:"",
         clicked: false,
         ChatShown:true
-    }); 
-    
-    
-    
+    });
+
+
+
     function handelSetingUser(username, userurl, userrank) {
         setUserFromUrl(prevState => ({
             ...prevState,
@@ -70,16 +70,16 @@ function Chat() {
             rank: (userrank) ? userrank : prevState.rank,
         }));
     }
-    
+
     const [userFromUrl, setUserFromUrl] = useState({
         user:"",
         url:"",
         rank:""
     });
-    
 
-    
-    
+
+
+
     const handelChatHeader = (names, ranks, userProfiles) => {
         setChatHeader(prevState => ({
             ...prevState,
@@ -91,7 +91,7 @@ function Chat() {
             windowSize: (window.innerWidth < 768) ? "Mobile" : "Desktop"
         }));
     }
-    
+
     const handelChatShown = (state) => {
         setChatHeader(prevState => ({
             ...prevState,
@@ -112,15 +112,15 @@ function Chat() {
             })
         }
     }
-    
+
     useEffect (() => {
         SetFrom();
     }, []);
-    
+
     useEffect (() => {
         handelSetingUser("","","");
     }, []);
-    
+
     const handelChatClick = (state) => {
         setChatHeader(prevState => ({
             ...prevState,
@@ -146,7 +146,7 @@ function Chat() {
             </div>
         </div>
     )
-} 
+}
 
 export {chatHeaderOnClick}
 export default Chat

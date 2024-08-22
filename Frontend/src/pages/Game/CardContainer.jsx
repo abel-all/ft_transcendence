@@ -53,7 +53,7 @@ function CardContainer({ showSettings }) {
                 <GameSettings />
             ) : (
                 <div className={`mx-[50px] ${showSettings ? "my-[300px]": "my-[590px]"} max-md:mx-[0px] max-md:mt-[200px] flex flex-col gap-[250px]`}>
-                    {showSettings && <div className="w-full flex justify-end sm:pr-[50px]">
+                    {true && <div className="w-full flex justify-end sm:pr-[50px]">
                         <button onClick={settingsClickHandler} className='flex gap-[5px] items-center'>
                             <img className="w-[40px] h-[40px]" src={gameSettings} />
                             <div className='text-[20px] text-[#eee] font-light'>Settings</div>

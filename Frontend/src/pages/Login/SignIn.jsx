@@ -14,7 +14,7 @@ import "./css/index.css"
 
 
 function SignIn() {
-    
+
     const [formValues, setFormValues] = useState({});
     const [message, setMessage] = useState("");
     const [userId, setUserId] = useState("");
@@ -34,8 +34,8 @@ function SignIn() {
     }, [])
 
     const checkFieldInput = async () => {
-        
-        await Axios.post("https://fttran.tech/api/auth/token/", {
+
+        await Axios.post("http://10.12.9.12:8800/api/auth/token/", {
             username: formValues.Username,
             password: formValues.Password,
         },
@@ -68,14 +68,14 @@ function SignIn() {
     if (isVerify)
         return <TwoFaAuthVerify userId={userId}/>
 
-    
+
     const handleForgetPassword = () => {
         setIsForgetPassword(true);
     }
-    
+
     const handleInputChange = (e) => {
         setEmail(e.currentTarget.value);
-        
+
         if (fieldReGex.emailReGex.test(e.currentTarget.value))
             setFocusColor("focus:border focus:border-[#00FF00]");
         else
@@ -84,9 +84,9 @@ function SignIn() {
 
 const resetPassword = async () => {
     setIsloaded(true);
-    
+
     if (fieldReGex.emailReGex.test(email)) {
-        await Axios.post("https://fttran.tech/api/auth/passwordrecovery/", {
+        await Axios.post("http://10.12.9.12:8800/api/auth/passwordrecovery/", {
             email: email,
         },
         {
@@ -116,16 +116,24 @@ const handlePassSubmit = (e) => {
     resetPassword();
 }
 
+const handleUserAgreementClick = () => {
+    navigate("/useragreement");
+}
+
+const handlePrivacyClick = () => {
+    navigate("/privacypolicy");
+}
+
 if (isloaded)
     return <LoaderOntop />
 
 return (
     <div className='container max-sm:scale-[0.8] flex flex-col justify-center items-center mx-auto relative'>
             <div className="px-[40px] mb-[200px] w-full max-w-[460px] rounded-[15px]  mt-[120px] max-sm:px-[0px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] max-sm:mt-[20px] max-sm:mb-[0px]">
-                <img className="w-[97px] m-auto pb-[41px]" src={LogoImage} alt="PING! image" />
+                <img className="w-[97px] m-auto pb-[21px]" src={LogoImage} alt="PING! image" />
                 {isForgetPassword ?
                 <div className="w-full h-[460px] flex flex-col justify-between">
-                    {emailSent ? 
+                    {emailSent ?
                     <div className="text-input-container flex flex-col gap-[7px]">
                         <div className="title-container text-[23px] font-medium text-[#eee]">
                             Check your inbox
@@ -145,6 +153,7 @@ return (
                             </div>
                             <form onSubmit={handlePassSubmit} className="w-full bg-[#eee] rounded-[15px] bg-opacity-20">
                                 <input onChange={handleInputChange} className={`rounded-[15px] bg-transparent text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`} placeholder="Email address" type="email" required/>
+                                <button className="hidden" type='submit'></button>
                             </form>
                             <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                         </div>
@@ -156,6 +165,9 @@ return (
                 </div>
                 :
                 <>
+                    <div className="text-[#fff6f9]/90 mb-[20px] text-[14px] w-full text-center font-normal">
+                        By continuing, you agree to our <span onClick={handleUserAgreementClick} className="cursor-pointer text-[#00CEFF]">User Agreement</span> and acknowledge that you understand the <span onClick={handlePrivacyClick} className="cursor-pointer text-[#00CEFF]">Privacy Policy</span>.
+                    </div>
                     <form onSubmit={handleSubmit} className="flex items-center flex-col gap-3 pb-[16px]">
                         {signInFieldProps.map((item, index) => (
                             <FormInput
@@ -165,6 +177,7 @@ return (
                                 handleChange={(type, value) => { setFormValues(prevState => { return ({ ...prevState, ...{ [type]: value } }) }); }}
                             />
                         ))}
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <button onClick={handleForgetPassword} className="w-full flex justify-end underline text-[#EEEEEE] font-normal text-[12px] pb-[34px]">Forget Password?</button>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>

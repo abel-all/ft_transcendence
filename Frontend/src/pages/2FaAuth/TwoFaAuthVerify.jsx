@@ -28,7 +28,7 @@ const TwoFaAuthVerify = ({userId}) => {
         setIsLoading(true);
 
         if (/^[a-f0-9]{6,8}$/.test(code)) {
-            await Axios.post("https://fttran.tech/api/auth/2fa/verify/", {
+            await Axios.post("http://10.12.9.12:8800/api/auth/2fa/verify/", {
                 otp_code: code,
                 user_id: userId,
             },
@@ -56,7 +56,7 @@ const TwoFaAuthVerify = ({userId}) => {
     const handleButtonClick = () => {
         verify2FaCode();
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         verify2FaCode();
@@ -64,7 +64,7 @@ const TwoFaAuthVerify = ({userId}) => {
 
     if (isLoading)
         return <LoaderOntop />
-    
+
     return (
         <div className="container mx-auto p-[10px] sm:mt-[300px] max-sm:scale-[0.8] flex justify-center items-center">
             <div className="input-gradient px-[60px] w-full max-w-[500px] h-[600px] bg-[#7b9d18] rounded-[15px] flex flex-col justify-between">
@@ -78,6 +78,7 @@ const TwoFaAuthVerify = ({userId}) => {
                     </div>
                     <form onSubmit={handleSubmit} className="w-full bg-[#eee] rounded-[15px] bg-opacity-20">
                         <input onChange={handleInputChange} name="code" className={`rounded-[15px] bg-transparent text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`} placeholder="Verification code" type="text" required/>
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 </div>

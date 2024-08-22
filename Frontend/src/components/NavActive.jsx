@@ -4,6 +4,7 @@ import SettingsIcon from "../assets/icons/settings"
 import GameplayIcon from "../assets/icons/gametable"
 import BellIcon from "../assets/icons/bell"
 import { Link } from 'react-router-dom'
+import { useAuth } from "./Auth";
 import { useEffect, useState } from "react"
 
 
@@ -11,6 +12,11 @@ const List = ({ to, active, icon}) => {
 
     const [color, setColor] = useState("#eee");
     const [iconComponent, setIconComponent] = useState();
+    const auth = useAuth();
+
+    const handleIconClick = () => {
+        auth.setShowNotification(false);
+    }
 
     const changeColorHover = () => {
         setColor("#009F9F");
@@ -44,7 +50,7 @@ const List = ({ to, active, icon}) => {
             <li onMouseMove={changeColorHover} onMouseLeave={changeColorLeave}>{iconComponent} </li>
         )
     return (
-        <li onMouseMove={changeColorHover} onMouseLeave={changeColorLeave}><Link to={to} > {iconComponent} </Link></li>
+        <li onClick={handleIconClick} onMouseMove={changeColorHover} onMouseLeave={changeColorLeave}><Link to={to} > {iconComponent} </Link></li>
     )
 }
 

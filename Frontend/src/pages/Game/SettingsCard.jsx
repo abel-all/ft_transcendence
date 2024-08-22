@@ -5,6 +5,10 @@ import elevenImg from "../../assets/imgs/eleven.svg"
 import fifteenImg from "../../assets/imgs/fifteen.svg"
 import MapImg from "../../components/MapImg"
 import PaddleImg from "../../components/PaddleImg"
+import BotImg from "../../assets/imgs/botImg.svg"
+import BotImgOne from "../../assets/imgs/botImgOne.svg"
+import BotImgTwo from "../../assets/imgs/botLevelTwo.svg"
+import BotImgThree from "../../assets/imgs/botLevelThree.svg"
 import { useGameSettings } from "./GameSettingsContext"
 import { useEffect, useState } from "react"
 import { Axios } from 'axios'
@@ -32,6 +36,13 @@ const scoreData = [
     {title: "Fifteen", image: fifteenImg, value: "Fifteen"},
 ]
 
+const botLevelData = [
+    {title: "Beginner", image: BotImgOne, value: 0.1},
+    {title: "Intermediate", image: BotImgTwo, value: 0.2},
+    {title: "Advanced", image: BotImgThree, value: 0.5},
+    {title: "Expert", image: BotImg, value: 0.8},
+]
+
 const ChooseSectionHandler = (name) => {
 
     const gameContext = useGameSettings();
@@ -45,18 +56,26 @@ const ChooseSectionHandler = (name) => {
     const paddleClickHandler = (e) => {
         gameContext.addsettingsData(e.currentTarget.dataset.value)
         gameContext.setHandler("paddle", false);
-        gameContext.setHandler("score", true);
+        if (gameContext.isOnlineGame)
+            gameContext.setHandler("last", true);
+        else
+            gameContext.setHandler("score", true);
     }
     const scoreClickHandler = (e) => {
         gameContext.addsettingsData(e.currentTarget.dataset.value)
         gameContext.setHandler("score", false);
+        gameContext.setHandler("botLevel", true);
+    }
+    const botLevelClickHandler = (e) => {
+        gameContext.addsettingsData(e.currentTarget.dataset.value)
         gameContext.setHandler("last", true);
+        gameContext.setHandler("botLevel", false);
     }
 
     const lastClickHandler = () => {
         const postSettingsData = async () => {
 
-            await Axios.post("https://fttran.tech/api/auth/token/",{
+            await Axios.post("http://10.12.9.12:8800/api/auth/token/",{
                 mapname: gameContext.settingsData[0],
                 ballcolor: gameContext.settingsData[1],
                 score: gameContext.settingsData[2],
@@ -96,6 +115,13 @@ const ChooseSectionHandler = (name) => {
         case "score":
             return (scoreData.map((card, index) => (
                 <div key={index} data-value={card.value} onClick={scoreClickHandler} className='main-color-gradient cursor-pointer p-[5px] w-full max-w-[195px] h-[250px] overflow-hidden rounded-[5px]'>
+                    <div className='font-medium text-[20px] text-[#eee]'>{card.title}</div>
+                    <img className="mt-[65px] ml-[70px]" src={card.image} />
+                </div>
+            )))
+        case "botLevel":
+            return (botLevelData.map((card, index) => (
+                <div key={index} data-value={card.value} onClick={botLevelClickHandler} className='main-color-gradient cursor-pointer p-[5px] w-full max-w-[195px] h-[250px] overflow-hidden rounded-[5px]'>
                     <div className='font-medium text-[20px] text-[#eee]'>{card.title}</div>
                     <img className="mt-[65px] ml-[70px]" src={card.image} />
                 </div>

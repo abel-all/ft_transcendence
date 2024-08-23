@@ -11,17 +11,35 @@ import "./Profile.css"
 
 function Profile() {
 
+
+
+    const [User, setUser] = useState("");
     const [data, setData] = useState({});
     const [DataFetched, setDataFetched] = useState(false);
+
+    useEffect(() => {
+        let url = window.location.href;
+
+        if (url.split('').includes('?')) {
+            const part = url.split('?')[1];
+
+            if (url.split('?').length == 2 && part[0] == "username")
+                var user = part.split('=')[1];
+            setUser(user);
+        }
+    }, []);
+
+    console.log(User);
 
     const handelData = (res) => {
         const {picture, username, background_picture, rank} = res;
         setData({picture, username, background_picture, rank});
     }
+
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("http://10.12.9.14:8000/api/profile/data/");
+                const res = await axios.get("http://10.11.2.3:8000/api/profile/data/");
                 handelData(res.data);
                 console.log("Profile Fetched data with success");
             } catch (error) {

@@ -9,7 +9,7 @@ import invite from "../../../assets/imgs/panding.svg"
 import axios from 'axios'
 import List from './List'
 import NotifyUser from '../../../components/NotifyUser'
-
+import Buttons from './buttons'
 
 function FriendsList({className}) {
     const [toggle, setToggle] = useState(false);
@@ -42,6 +42,7 @@ function FriendsList({className}) {
             console.log(e.target.value);
         }, 500);
     }
+
     return (
         <>
             {toggle && <div className={"relative w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]"  + (className ? ` ${className}` : '')}>
@@ -50,18 +51,10 @@ function FriendsList({className}) {
                     <button onClick={handelToglle}>
                             <img className=" top-[20px] right-[18px] absolute w-[25.6px] h-[25.6px]" src={close} alt=''/>
                     </button>
-                    <button onClick={() => HandelProp("Search")}>
-                            <img className=" top-[20px] right-[58px] absolute w-[25.6px] h-[25.6px]" src={AddUser} alt=''/>
-                    </button>
-                    <button onClick={() => HandelProp("Blocked Users")}>
-                        <img className=" top-[20px] right-[98px] absolute w-[25.6px] h-[25.6px]" src={removefriend} alt=''/>
-                    </button>
-                    <button onClick={() => HandelProp("Panding Requests")}>
-                        <img className=" top-[20px] right-[138px] absolute w-[25.6px] h-[25.6px]" src={userIcon} alt=''/>
-                    </button>
-                    <button onClick={() => HandelProp("Invetations")}>
-                        <img className=" top-[20px] right-[178px] absolute w-[25.6px] h-[25.6px]" src={invite} alt=''/>
-                    </button>
+                    <Buttons fun={HandelProp} styleR="58px" icon={AddUser} type="Search"/>
+                    <Buttons fun={HandelProp} styleR="98px" icon={removefriend} type="Blocked Users"/>
+                    <Buttons fun={HandelProp} styleR="138px" icon={userIcon} type="Panding Requests"/>
+                    <Buttons fun={HandelProp} styleR="178px" icon={invite} type="Invetations"/>
                 </div>
                 <div className="friends-list text-[white] friendsHolder flex flex-col gap-5 h-[254px] overflow-auto">
                     {prop == "Search" &&

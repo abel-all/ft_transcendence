@@ -15,7 +15,7 @@ function ProfileSettings(className) {
 
 
     useEffect(() => {
-        axios.get('http://10.12.9.14:8000/personal-data/')
+        axios.get('http://10.11.2.3:8000/personal-data/')
         .then((res) => {
             setSettingsData(res.data);
             console.log("Data for settings : ", res);

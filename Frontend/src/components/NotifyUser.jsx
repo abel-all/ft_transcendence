@@ -20,7 +20,7 @@ const NotifyUser = () => {
         }, 4000);
     }
 
-    const {lastMessage } = useWebSocket('ws://10.12.9.14:8001/', {
+    const {lastMessage } = useWebSocket('ws://10.11.2.3:8001/', {
         onError: (error) => console.error('WebSocket error:', error),
         shouldReconnect: () => true,
         reconnectInterval: 3000

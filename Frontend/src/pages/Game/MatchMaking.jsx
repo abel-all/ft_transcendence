@@ -12,12 +12,12 @@ const MatchMaking = () => {
     useEffect(() => {
         const fetchPlayerData = async () => {
 
-            await Axios.post("https://fttran.tech/api/auth/token/",
+            await Axios.post("http://10.12.9.12:8800/api/game/join/",
             {
                 withCredentials:true,
             }).then((response) => {
                 console.log("first request");
-                setUserData(response.data);
+                setUserData(response?.data);
                 setAvatar(false)
             }).catch(err => {
                 console.log(err);

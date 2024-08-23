@@ -31,8 +31,8 @@ function FriendsList({className}) {
             clearTimeout(TimeToDown);
 
         TimeToDown = setTimeout(() => {
-            e.target.value && axios.post('https://fttran.tech/api/profile/search/', {
-                prefix : e.target.value
+            e.target.value && axios.post('http://10.12.9.12:8800/api/profile/search/', {
+                username : e.target.value
             }).then ((res) => {
                 console.log("message sent : ", res);
                 setFriendlistFromSearch(res.data.profiles);
@@ -65,7 +65,7 @@ function FriendsList({className}) {
                     }
                     { prop == "Blocked Users" &&  <List reason="Blocked Users" EndPoint="blocked-friends" /> }
                     { prop == "Panding Requests" && <List reason="Panding Requests" EndPoint="requested-friendships" /> }
-                    { prop == "Invetations" && <List reason="Invetations" EndPoint="friendship-requests" /> }                       
+                    { prop == "Invetations" && <List reason="Invetations" EndPoint="friendship-requests" /> }
 
                 </div>
             </div>}

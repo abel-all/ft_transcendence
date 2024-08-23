@@ -8,7 +8,7 @@ import usePasswordToggle from "../../hooks/usePasswordToggle.jsx";
 
 
 const TwoFaAuthPassStep = () => {
-    
+
     const [focusColor, setFocusColor] = useState("");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +36,7 @@ const TwoFaAuthPassStep = () => {
         setIsLoading(true);
 
         if (passwordReGex.test(password)) {
-            await Axios.post("https://fttran.tech/api/auth/passwd/verify/", {
+            await Axios.post("http://10.12.9.12:8800/api/auth/passwd/verify/", {
                 password: password,
             },
             {
@@ -60,7 +60,7 @@ const TwoFaAuthPassStep = () => {
     const handleButtonClick = () => {
         verifyPassword();
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         verifyPassword();
@@ -93,6 +93,7 @@ const TwoFaAuthPassStep = () => {
                             />
                             <div>{eyeIcon}</div>
                         </div>
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 </div>

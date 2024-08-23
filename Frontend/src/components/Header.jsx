@@ -12,7 +12,7 @@ function Header(props) {
     const auth = useAuth();
 
     const handleLogout = async () => {
-        await Axios.post("https://fttran.tech/api/auth/logout/")
+        await Axios.post("http://10.12.9.12:8800/api/auth/logout/")
         .then(response => {
             console.log(response);
             auth.setHandler("game", false);
@@ -30,23 +30,23 @@ function Header(props) {
 
     return (
         <>
-            {auth.showNotification && <div onClick={handleOverlayClick} className="w-[100vw] h-[100vh] bg-[#FFF9F6] fixed top-0 left-0 opacity-0 max-md:hidden">
+            {auth.showNotification && <div onClick={handleOverlayClick} className="w-[100vw] h-[100vh] bg-[#FFF9F6] fixed z-[50] top-0 left-0 opacity-0 max-md:hidden">
             </div>}
-            <div className='md:fixed md:top-[15px] md:left-0 md:right-0 md:z-50'>
-                <div className="md:container md:mx-auto md:px-[10px]">
-                    <div className={`md:shadow-md md:backdrop-blur-md md:bg-[#161c20]/30 md:rounded-full p-[10px] flex ${props.hide}`}>
+            <div className='fixed top-[15px] left-0 right-0 z-50'>
+                <div className="container mx-auto px-[10px]">
+                    <div className={`shadow-md backdrop-blur-md bg-[#161c20]/30 rounded-full p-[10px] flex ${props.hide}`}>
                         <div className="basis-1/3">
                             <p className="font-medium text-[#eee] text-[30px]">{props.title}</p>
                         </div>
                         <div className="basis-1/3">
-                            <ul className="md:flex hidden justify-around gap-5">
+                            <ul className="flex max-md:hidden justify-around gap-5">
                                 <NavActive active={props.activeSection} />
                             </ul>
                         </div>
                         <div className="basis-1/3">
                             <ul className="flex flex-row-reverse">
                                 <li className="ml-[10px] cursor-pointer" onClick={handleLogout}><img className="w-[40px] h-[40px]" src={logout} alt="" /></li>
-                                <li className=""><Link to="/search" ><img className="w-[40px] h-[40px]" src={search} alt="" /> </Link></li>
+                                <li onClick={handleOverlayClick} className=""><Link to="/search" ><img className="w-[40px] h-[40px]" src={search} alt="" /> </Link></li>
                             </ul>
                         </div>
                     </div>

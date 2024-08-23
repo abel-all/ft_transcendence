@@ -44,18 +44,18 @@ function ProfileSecurity(className) {
         (name == "New") && setNewPassword(e.target.value);
         (name == "Confirm") && setConfirmPassword(e.target.value);
     }
-    
+
     const HandelSetingErrors = (Err) => {
         (!Errors.includes(Err)) && setErrors(prevErrors => [...prevErrors, Err]);
     }
-    
+
     const CleanErros = (Err) => {
         if (Errors.includes(Err)) {
             const Cleaned = Errors.filter(item => item !== Err);
             setErrors(Cleaned);
         }
     }
-    
+
     useEffect(() => {
         (NewPassword != ConfirmPassword) ? HandelSetingErrors(CheckConfirm) : CleanErros(CheckConfirm);
     }, [NewPassword, ConfirmPassword]);
@@ -76,7 +76,7 @@ function ProfileSecurity(className) {
         else {
             setShowErrors(false);
             console.log("Axios Ready");
-            axios.post('https://fttran.tech/api/auth/passwordchange/', {
+            axios.post('http://10.12.9.12:8800/api/auth/passwordchange/', {
                 old_password : OldPassword,
                 new_password : NewPassword,
                 cur_password : CurrentPass,
@@ -148,7 +148,7 @@ function ProfileSecurity(className) {
                                 }
                             </ul>
                                 <h1 className="text-[18px] py-[10px]">
-                                {!DeleteConfirmed ? 
+                                {!DeleteConfirmed ?
                                     "Are you sure you want to delete your account?"
                                     : "Six digit sent to your email !"
                                 }
@@ -165,7 +165,7 @@ function ProfileSecurity(className) {
                                 if (!DeleteConfirmed) {
                                     e.preventDefault();
                                     setDeleteConfirmed(true)
-                                    axios.get('https://fttran.tech/api/auth/delete-account/send-code')
+                                    axios.get('http://10.12.9.12:8800/api/auth/delete-account/send-code')
                                         .then((res) => {
                                             console.log("succses : ", res);
                                         })
@@ -176,7 +176,7 @@ function ProfileSecurity(className) {
                                 else {
                                     setShowErrors(true);
                                     e.preventDefault();
-                                    axios.post('https://fttran.tech/api/auth/delete-account/check-code', {
+                                    axios.post('http://10.12.9.12:8800/api/auth/delete-account/check-code', {
                                         code : SixDigit,
                                     })
                                     .then((res) => {
@@ -192,7 +192,7 @@ function ProfileSecurity(className) {
                                     .catch((ers) => {
                                         HandelSetingErrors(PinError);
                                         console.log("Reciving : ", ers);
-                                    }); 
+                                    });
                                 }
                             }}>
                             <Button title="Confirm Delete" type="submit" bgColor=" bg-[#ff0000]"/></div>

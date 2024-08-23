@@ -5,7 +5,8 @@ import LoaderOntop from "../../components/LoaderOntop.jsx";
 import Header from "../../components/Header.jsx"
 import BottomNaveBar from "../../components/BottomNavBar.jsx"
 import { useGameSettings } from './GameSettingsContext'
-import GamePlay from "./GamePlay.jsx"
+import GamePlayOnline from "./GamePlayOnline.jsx"
+// import HowToPlay from "./HowToPlay.jsx"
 
 
 const PlayOnline = ({isSettings=false}) => {
@@ -19,7 +20,6 @@ const PlayOnline = ({isSettings=false}) => {
         setTimeout(() => {
             setIsLoaded(false)
         }, 500);
-
     }, [])
 
     useEffect(() => {
@@ -37,10 +37,10 @@ const PlayOnline = ({isSettings=false}) => {
     return (
             <div className="h-[100vh] container mx-auto px-[10px]">
                 <Header title="Online Game" activeSection="GametableIcon" />
-                {matchDelay && <MatchMaking />}
-                {!gameDelay && !gameContext.isGame && !isSettings && <GameSettings />}
-                {(gameContext.isGame || isSettings) && <GamePlay />}
-                {/* {true && <GamePlay />} */}
+                {/* {matchDelay && <MatchMaking />} */}
+                {/* {!gameDelay && !gameContext.isGame && !isSettings && <GameSettings isOnlineGame={true}/>} */}
+                {/* {(gameContext.isGame || isSettings) && <GamePlayOnline />} */}
+                {true && <GamePlayOnline />}
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         )

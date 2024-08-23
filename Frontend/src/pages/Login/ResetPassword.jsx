@@ -24,7 +24,7 @@ const ResetPassword = () => {
 
     const handleInputChange1 = (e) => {
         setPassword(e.currentTarget.value);
-    
+
         if (fieldReGex.passwordReGex.test(e.currentTarget.value))
             setFocusColor1("focus:border focus:border-[#00FF00]");
         else
@@ -32,20 +32,21 @@ const ResetPassword = () => {
     }
     const handleInputChange2 = (e) => {
         setPasswordConfirm(e.currentTarget.value);
-    
+
         if (fieldReGex.passwordReGex.test(e.currentTarget.value))
             setFocusColor2("focus:border focus:border-[#00FF00]");
         else
             setFocusColor2("focus:border focus:border-[#FF0000]");
     }
-    
+
     const verifyPassword = async () => {
         setIsLoading(true);
-        const paswdendpoint = "https://fttran.tech/api/auth/passwordreset/" + tokenValue + "/";
-    
+        const paswdendpoint = "http://10.12.9.12:8800/api/auth/passwordreset/" + tokenValue + "/";
+
         if (fieldReGex.passwordReGex.test(password) && fieldReGex.passwordReGex.test(passwordConfirm) && password == passwordConfirm) {
             await Axios.post(paswdendpoint, {
-                password: password,
+                password1: password,
+                password2: password,
             },
             {
                 withCredentials:true,
@@ -55,8 +56,8 @@ const ResetPassword = () => {
                 navigate("/signin", { replace: true });
             })
             .catch(() => {
-                setIsLoading(false);
                 setMessage("Incorrect password")
+                setIsLoading(false);
             })
         }
         else {
@@ -64,11 +65,11 @@ const ResetPassword = () => {
             setIsLoading(false);
         }
     }
-    
+
     const handleButtonClick = () => {
         verifyPassword();
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         verifyPassword();
@@ -87,9 +88,11 @@ const ResetPassword = () => {
                     </div>
                     <form onSubmit={handleSubmit} className="w-full bg-[#eee] rounded-[15px] bg-opacity-20">
                         <input onChange={handleInputChange1} className={`rounded-[15px] bg-transparent text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor1}`} placeholder="New Password" type="password" required/>
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <form onSubmit={handleSubmit} className="w-full bg-[#eee] rounded-[15px] bg-opacity-20">
                         <input onChange={handleInputChange2} className={`rounded-[15px] bg-transparent text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor2}`} placeholder="Confirm the new password" type="password" required/>
+                        <button className="hidden" type='submit'></button>
                     </form>
                     <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 </div>

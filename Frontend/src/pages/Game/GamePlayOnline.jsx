@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import rankIcon from "../../assets/imgs/rank.svg"
 import tryImg from "../../assets/imgs/tryImg.svg"
+import useWebSocket from "react-use-websocket"
 import "./css/index.css"
 // import { useGameSettings } from "./GameSettingsContext";
 
@@ -64,7 +65,7 @@ const PlayerScore = ({ rank, username, userImage, flexDirection="" }) => {
     )
 }
 
-const GamePlay = ({levelOfBot = 0}) => {
+const GamePlay = () => {
 
     const canvasRef = useRef();
     const [player1Score, setPlayer1Score] = useState(0);
@@ -73,7 +74,23 @@ const GamePlay = ({levelOfBot = 0}) => {
     const [isGameStart, setIsGameStart] = useState(false);
     const [gameFinished, setGameFinished] = useState(false);
     const [isMobileVersion, setIsMobileVersion] = useState(false);
-    const botLevel = levelOfBot;
+
+    // setup websocket
+    const { sendMessage, lastMessage, readyState} = useWebSocket("ws://aennaki.me");
+
+    useEffect(() => {
+        if (lastMessage) {
+            const data = JSON.parse(lastMessage.data);
+            // update ball and player 2 pos
+            ball.x = data.x;
+            ball.y = data.y;
+
+            paddleTwo.x = data.playerX;
+            // update score
+            setPlayer1Score(data.player1Score);
+            setPlayer2Score(data.player2Score);
+        }
+    }, [lastMessage])
 
     useEffect(() => {
 
@@ -132,35 +149,20 @@ const GamePlay = ({levelOfBot = 0}) => {
                     drawBall();
                 };
 
-                // bot y normalization :
-                const botPosNormalization = (currentPos, targetPos) => {
-                    return (currentPos + ((targetPos - currentPos) * botLevel))
-                }
-
                 // paddleone movement :
                 const changeDirection = (e) => {
                     const keyPressed = e.keyCode;
 
-                    const paddle2Left = 65;
-                    const paddle2Right = 68;
-                    const paddle1Left = 37;
-                    const paddle1Right = 39;
+                    const paddle2Left = 37;
+                    const paddle2Right = 39;
                     switch (keyPressed) {
-                        case paddle1Left:
+                        case paddle2Left:
                             if (paddleOne.x > 0)
                                 paddleOne.x -= paddleSpeed;
                             break;
-                        case paddle1Right:
+                        case paddle2Right:
                             if (paddleOne.x < canvasWidth - paddleOne.width)
                                 paddleOne.x += paddleSpeed;
-                            break;
-                        case paddle2Left:
-                            if (paddleTwo.x > 0 && !botLevel)
-                                paddleTwo.x -= paddleSpeed;
-                            break;
-                        case paddle2Right:
-                            if (paddleTwo.x < canvasWidth - paddleTwo.width && !botLevel)
-                                paddleTwo.x += paddleSpeed;
                             break;
                     }
                 }
@@ -172,66 +174,64 @@ const GamePlay = ({levelOfBot = 0}) => {
                     if (isMobileVersion)
                         newX = (e.clientX - rect.left - (paddleOne.width / 2)) * 1.7;
 
-                    if (newX < (canvasWidth - paddleOne.width) && newX > 0)
-                            paddleOne.x = newX;
+                    if (newX < (canvasWidth - paddleOne.width) && newX > 0) {
+                        paddleOne.x = newX;
+                        // send paddle pos to server
+                        sendMessage(JSON.stringify({ playerX: newX }));
+                    }
                 }
-                if (botLevel)
-                    window.addEventListener("mousemove", handleMouseMove);
+
+                window.addEventListener("mousemove", handleMouseMove);
                 window.addEventListener("keydown", changeDirection);
 
                 // reset ball pos :
-                const resetBallPos = () => {
-                    ball.x = canvasWidth / 2;
-                    ball.y = canvasHeight / 2;
-                    ball.speed = ballStartSpeed;
-                    ball.velocityY *= -1;
-                }
+                // const resetBallPos = () => {
+                //     ball.x = canvasWidth / 2;
+                //     ball.y = canvasHeight / 2;
+                //     ball.speed = ballStartSpeed;
+                //     ball.velocityY *= -1;
+                // }
                 //update: pos, move score:
-                const update = () => {
-                    // ball mov:
-                    ball.x += ball.velocityX * ball.speed;
-                    ball.y += ball.velocityY * ball.speed;
+                // const update = () => {
+                //     // ball mov:
+                //     ball.x += ball.velocityX * ball.speed;
+                //     ball.y += ball.velocityY * ball.speed;
 
-                    // ball collision with left && right borders:
-                    if ((ball.x + ball.radius) >= canvasWidth || (ball.x - ball.radius) <= 0)
-                        ball.velocityX *= -1;
+                //     // ball collision with left && right borders:
+                //     if ((ball.x + ball.radius) >= canvasWidth || (ball.x - ball.radius) <= 0)
+                //         ball.velocityX *= -1;
 
-                    // ball collision with players:
-                    if (ball.y + ball.radius >= paddleOne.y) {
-                        if (ball.x > paddleOne.x && ball.x < paddleOne.x + paddleOne.width) {
-                            ball.y = paddleOne.y - ball.radius;
-                            ball.velocityY *= -1;
-                            ball.speed += ballDeltaSpeed;
-                        }
-                    }
+                //     // ball collision with players:
+                //     if (ball.y + ball.radius >= paddleOne.y) {
+                //         if (ball.x > paddleOne.x && ball.x < paddleOne.x + paddleOne.width) {
+                //             ball.y = paddleOne.y - ball.radius;
+                //             ball.velocityY *= -1;
+                //             ball.speed += ballDeltaSpeed;
+                //         }
+                //     }
 
-                    if (ball.y - ball.radius <= paddleTwo.y + paddleTwo.height) {
-                        if (ball.x > paddleTwo.x && ball.x < paddleTwo.x + paddleTwo.width) {
-                            ball.y = paddleTwo.y + paddleTwo.height + ball.radius;
-                            ball.velocityY *= -1;
-                            ball.speed += ballDeltaSpeed;
-                        }
-                    }
+                //     if (ball.y - ball.radius <= paddleTwo.y + paddleTwo.height) {
+                //         if (ball.x > paddleTwo.x && ball.x < paddleTwo.x + paddleTwo.width) {
+                //             ball.y = paddleTwo.y + paddleTwo.height + ball.radius;
+                //             ball.velocityY *= -1;
+                //             ball.speed += ballDeltaSpeed;
+                //         }
+                //     }
 
-                    // paddle two movement (simple ai):
-                    let targetPos = ball.x - (paddleTwo.width / 2);
-                    let currentPos = paddleTwo.x;
-                    paddleTwo.x = botPosNormalization(currentPos, targetPos);
-
-                    // update score :
-                    if (ball.y <= 0) {
-                        setPlayer1Score(player1Score + 1);
-                        resetBallPos();
-                        if (player1Score === 5)
-                            return;
-                    }
-                    else if (ball.y >= canvasHeight) {
-                        setPlayer2Score(player2Score + 1);
-                        resetBallPos();
-                        if (player2Score === 5)
-                            return;
-                    }
-                }
+                //     // update score :
+                //     if (ball.y <= 0) {
+                //         setPlayer1Score(player1Score + 1);
+                //         resetBallPos();
+                //         if (player1Score === 5)
+                //             return;
+                //     }
+                //     else if (ball.y >= canvasHeight) {
+                //         setPlayer2Score(player2Score + 1);
+                //         resetBallPos();
+                //         if (player2Score === 5)
+                //             return;
+                //     }
+                // }
 
                 const gameLoop = () => {
 
@@ -242,7 +242,7 @@ const GamePlay = ({levelOfBot = 0}) => {
                         setIsMobileVersion(false);
 
                     render();
-                    update();
+                    // update();
                     if (player1Score === 5 || player2Score === 5)
                         return setGameFinished(true);
                 };
@@ -255,7 +255,7 @@ const GamePlay = ({levelOfBot = 0}) => {
                     clearInterval(intervalId);
                 }
             }
-    }, [player1Score, player2Score, isGameStart, counter, gameFinished, isMobileVersion])
+    }, [player1Score, player2Score, isGameStart, counter, gameFinished, isMobileVersion, sendMessage])
 
     const handleTryAgainClick = () => {
         ball.x = canvasWidth / 2;

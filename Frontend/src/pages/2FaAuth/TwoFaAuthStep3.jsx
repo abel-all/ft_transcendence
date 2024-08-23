@@ -8,38 +8,35 @@ const TwoFaAuthStep3 = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [oneTime, setOneTime] = useState(false);
+    const [message, setMessage] = useState("");
     const [backupCodes, setBackupCodes] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        let isMounted = true;
         setIsLoading(true);
         const fetchBackUpCodes = async () => {
-            await Axios.get("https://fttran.tech/api/auth/2fa/backup-codes/",
+            await Axios.get("http://10.12.9.12:8800/api/auth/2fa/backup-codes/",
             {
                 withCredentials:true,
             })
             .then(response => {
                 setBackupCodes(response.data.backup_codes);
                 setIsLoading(false);
+                setOneTime(true);
             })
             .catch(() => {
                 setIsLoading(false);
-                console.log("Invalid request, please try again");
+                setMessage("Invalid request, please try again");
             })
-            setOneTime(true);
         }
-        if (isMounted && !oneTime)
+        if (!oneTime)
             fetchBackUpCodes();
 
-        return () => {
-            isMounted = false;
-        }
     }, [oneTime]);
 
     if (isLoading)
         return <LoaderOnTop />
-    
+
     const handleButtonClick = () => {
         navigate("/profile", {replace: true});
     }
@@ -64,6 +61,7 @@ const TwoFaAuthStep3 = () => {
                         ))}
                     </div>
                 </div>
+                <div className="text-[#ff0000] flex justify-center mb-[20px]">{message}</div>
                 <button className="w-full bg-[#009f9f] mb-[15px] rounded-[15px] py-[8px] font-medium text-[18px]" onClick={handleButtonClick}>
                     Back To Home
                 </button>

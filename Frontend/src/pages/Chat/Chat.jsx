@@ -27,8 +27,8 @@ function Chat() {
         shouldReconnect: () => true, // Always attempt to reconnect
         reconnectInterval: 3000 // Reconnect every 3 seconds
       });
-  
-  
+
+
     const connectionStatus = {
       [ReadyState.CONNECTING]: 'Connecting',
       [ReadyState.OPEN]: 'Open',
@@ -36,7 +36,7 @@ function Chat() {
       [ReadyState.CLOSED]: 'Closed',
       [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
-    
+
 
     const [chatHeader, setChatHeader] = useState({
         name: "",
@@ -45,12 +45,12 @@ function Chat() {
         windowSize:"",
         clicked: false,
         ChatShown:true
-    }); 
-    
+    });
+
     useEffect(() => {
         console.log(`VoidedUsername : 1 : ${VoidedUsername}`);
     }, [VoidedUsername]);
-    
+
     function handelSetingUser(username, userurl, userrank) {
         setUserFromUrl(prevState => ({
             ...prevState,
@@ -59,16 +59,16 @@ function Chat() {
             rank: (userrank) ? userrank : prevState.rank,
         }));
     }
-    
+
     const [userFromUrl, setUserFromUrl] = useState({
         user:"",
         url:"",
         rank:""
     });
-    
 
-    
-    
+
+
+
     const handelChatHeader = (names, ranks, userProfiles) => {
         setChatHeader(prevState => ({
             ...prevState,
@@ -80,7 +80,7 @@ function Chat() {
             windowSize: (window.innerWidth < 768) ? "Mobile" : "Desktop"
         }));
     }
-    
+
     const handelChatShown = (state) => {
         setChatHeader(prevState => ({
             ...prevState,
@@ -101,15 +101,15 @@ function Chat() {
             })
         }
     }
-    
+
     useEffect (() => {
         SetFrom();
     }, []);
-    
+
     useEffect (() => {
         handelSetingUser("","","");
     }, []);
-    
+
     const handelChatClick = (state) => {
         setChatHeader(prevState => ({
             ...prevState,
@@ -135,7 +135,7 @@ function Chat() {
             </div>
         </div>
     )
-} 
+}
 
 export {chatHeaderOnClick}
 export default Chat

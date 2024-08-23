@@ -18,8 +18,8 @@ function Contact() {
 
     return (
         <div className="container mx-auto px-[10px]">
-            <Fileds></Fileds>
-            <OurContact></OurContact>
+            <OurContact/>
+            <Fileds/>
         </div>
     )
 }

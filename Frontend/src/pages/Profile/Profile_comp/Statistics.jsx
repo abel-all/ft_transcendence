@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function Statistics({className}) {
+function Statistics({className, UrlUsername}) {
 
     const [Status, setStatus] = useState({});
     const [total, setTotal] = useState(0);
@@ -15,7 +15,7 @@ function Statistics({className}) {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("http://10.11.2.3:8000/api/profile/statistics/");
+                const res = await axios.get("http://10.12.1.3:8000/api/profile/statistics/", {username : UrlUsername});
                 handelStat(res.data);
                 console.log("Statistics fetchid data with Success: ");
             } catch (error) {

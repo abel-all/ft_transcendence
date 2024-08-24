@@ -31,7 +31,7 @@ function Messages({setMessages, username, className}) {
 
     useEffect(() => {
         async function fetchUsername() {
-            await axios.get('http://10.11.2.3:8000/api/WhoAmI/')
+            await axios.get('http://10.12.1.3:8000/api/WhoAmI/')
             .then(res => {
                 console.log("Done fetching Data of username");
                 setWhoAmI(res.data.username);
@@ -53,7 +53,7 @@ function Messages({setMessages, username, className}) {
                 const oldScrollHeight = messagesRef.current.scrollHeight;
 
                 try {
-                    const res = await axios.get(`http://10.11.2.3:8000/messages/${Arr[index.current]}`, { withCredentials: true });
+                    const res = await axios.get(`http://10.12.1.3:8000/messages/${Arr[index.current]}`, { withCredentials: true });
                     index.current++;
                     const newMessages = Array.isArray(res.data.messages) ? res.data.messages : [];
                     

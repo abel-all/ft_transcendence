@@ -35,7 +35,7 @@ function SignIn() {
 
     const checkFieldInput = async () => {
 
-        await Axios.post("http://10.12.9.12:8800/api/auth/token/", {
+        await Axios.post("https://fttran.tech/api/auth/token/", {
             username: formValues.Username,
             password: formValues.Password,
         },
@@ -86,7 +86,7 @@ const resetPassword = async () => {
     setIsloaded(true);
 
     if (fieldReGex.emailReGex.test(email)) {
-        await Axios.post("http://10.12.9.12:8800/api/auth/passwordrecovery/", {
+        await Axios.post("https://fttran.tech/api/auth/passwordrecovery/", {
             email: email,
         },
         {

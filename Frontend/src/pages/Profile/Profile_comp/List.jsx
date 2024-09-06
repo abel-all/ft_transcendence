@@ -13,7 +13,7 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
             const fetchmydata = async () => {
                 try {
                     const res = await axios.get(`https://fttran.tech/api/profile/${EndPoint}/`);
-                    setfriendlist(res.data);
+                    setfriendlist(res.data.friends);
                     console.log(`List of ${EndPoint} Fetched data with success`);
                 } catch (error) {
                     console.log(`List of ${EndPoint} fetchig data Error`);
@@ -35,10 +35,10 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
                             <Friend
                                 username =   {friends.username}
                                 picture =   {friends.picture}
-                                status =   {friends.status}
+                                status =   {friends.is_online}
                                 rank =   {friends.rank}
                                 reason = {reason}
-                                isFriend = {isfriend}
+                                isFriend = {true}
                             />
                         </div>
                     )

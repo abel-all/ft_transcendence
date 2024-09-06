@@ -75,7 +75,7 @@ const ChooseSectionHandler = (name) => {
     const lastClickHandler = () => {
         const postSettingsData = async () => {
 
-            await Axios.post("http://10.12.9.12:8800/api/auth/token/",{
+            await Axios.post("https://fttran.tech/api/auth/token/",{
                 mapname: gameContext.settingsData[0],
                 ballcolor: gameContext.settingsData[1],
                 score: gameContext.settingsData[2],

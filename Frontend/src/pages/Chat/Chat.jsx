@@ -6,15 +6,16 @@ import "./Chat.css"
 import { useState, createContext, useEffect, useRef } from 'react'
 import chatUsers from "../../assets/ChatUsers.json"
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import axios from 'axios'
 
 
 
 const chatHeaderOnClick = createContext();
 
 function Chat() {
-
+    
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('ws://10.12.1.3:8000/');
+    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const [VoidedUsername, setVoidedUsername]  = useState("");
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
@@ -22,11 +23,16 @@ function Chat() {
         onClose: () => console.log('WebSocket connection closed.'),
         onError: (error) => console.error('WebSocket error:', error),
         onMessage: (message) => {
-          setMessageHistory(prev => [...prev, message.data.toString()]); // Ensure message is a string
+            setMessageHistory(prev => [...prev, message.data.toString()]);
         },
-        shouldReconnect: () => true, // Always attempt to reconnect
-        reconnectInterval: 3000 // Reconnect every 3 seconds
-      });
+        shouldReconnect: () => true,
+        reconnectInterval: 3000
+    });
+    const [userFromUrl, setUserFromUrl] = useState({
+        user:"",
+        url:"",
+        rank:""
+    });
 
 
     const connectionStatus = {
@@ -48,7 +54,6 @@ function Chat() {
     });
 
     useEffect(() => {
-        console.log(`VoidedUsername : 1 : ${VoidedUsername}`);
     }, [VoidedUsername]);
 
     function handelSetingUser(username, userurl, userrank) {
@@ -60,11 +65,6 @@ function Chat() {
         }));
     }
 
-    const [userFromUrl, setUserFromUrl] = useState({
-        user:"",
-        url:"",
-        rank:""
-    });
 
 
 
@@ -92,22 +92,23 @@ function Chat() {
         let windo = window.location.href;
         if (windo.lastIndexOf("user=") != -1) {
             let FromUser = windo.substring(windo.lastIndexOf("user=") + 5);
-            chatUsers.map( users => {
-                if (users.nickname == FromUser) {
-                    setIsFrom(true);
-                    handelSetingUser(users.nickname ,users.userProfile ,56662);
-                    handelChatShown(false);
-               }
-            })
+                axios.post('https://fttran.tech/api/chat/user/', {
+                    username : FromUser
+                }).then(res => {
+                    if (res.status == 200) {
+                        setIsFrom(true);
+                        handelSetingUser(FromUser ,res.data.picture ,res.data.rank);
+                        handelChatShown(false);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
         }
     }
-
+        
     useEffect (() => {
+        // handelSetingUser("","","");
         SetFrom();
-    }, []);
-
-    useEffect (() => {
-        handelSetingUser("","","");
     }, []);
 
     const handelChatClick = (state) => {

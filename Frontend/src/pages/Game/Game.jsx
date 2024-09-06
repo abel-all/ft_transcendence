@@ -15,7 +15,7 @@ function Game() {
         const fetchUserData = async () => {
 
             setIsLoaded(false)
-            await Axios.get("http://10.12.9.12:8800/api/profile/data/",
+            await Axios.get("https://fttran.tech/api/profile/data/",
             {
                 withCredentials:true,
             }).then((response) => {

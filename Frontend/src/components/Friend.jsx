@@ -42,13 +42,14 @@ function Friend(Data) {
     function toggle() {
         setIsTrue(!isTrue);
     }
-
+    
+    console.log(`${Data.status} `);
     return (
             <>
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
                         <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={Data.picture ? Data.picture : FriendPic} alt="" />
-                        {Data.isFriend && <div className={`${Data.status} absolute bottom-0 right-0`}></div>}
+                        {Data.isFriend && Data.status && <div className={`bg-[lime] size-[10px] rounded-full right-[10px] bottom-[8px] absolute`}></div>}
                     </div>
                     <div className="userNrank flex flex-col shrink overflow-hidden">
                         <span className=" text-[20px] px-[7px] font-[400] font-[Outfit] overflow-hidden text-ellipsis whitespace-nowrap">{Data.username}</span>

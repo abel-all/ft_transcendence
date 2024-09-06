@@ -12,7 +12,7 @@ const MatchMaking = () => {
     useEffect(() => {
         const fetchPlayerData = async () => {
 
-            await Axios.post("http://10.12.9.12:8800/api/game/join/",
+            await Axios.post("https://fttran.tech/api/game/join/",
             {
                 withCredentials:true,
             }).then((response) => {

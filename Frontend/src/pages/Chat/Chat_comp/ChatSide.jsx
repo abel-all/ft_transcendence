@@ -28,7 +28,10 @@ function messagesAddedLoop(msg , add) {
 
 
 function ChatSide({setVoidedUsername, className}) {
-    
+    const messagesRef = useRef(null);
+    const ChatContext = useContext(chatHeaderOnClick);
+
+
     const initialState = {
         message: '',
         message_id: uuidv4(),
@@ -41,7 +44,7 @@ function ChatSide({setVoidedUsername, className}) {
     const [messages, setMessages] = useState([]);
     const [messagesAdded, setMessagesAdded] = useState([]);
     const [username, SetUsername] = useState("");
-    const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(false);
+    const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(true);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
     const [CreateMessages, setCreateMessages] = useState(initialState);
     
@@ -65,8 +68,6 @@ function ChatSide({setVoidedUsername, className}) {
         );
     }
     
-    const messagesRef = useRef(null);
-    const ChatContext = useContext(chatHeaderOnClick);
     
     const goToButtom = (scrollBehavior) => {
         messagesRef.current.scrollTo({
@@ -77,7 +78,6 @@ function ChatSide({setVoidedUsername, className}) {
 
     useEffect(() => {
         function FetchFullBack() {
-            console.log("Data Featched!");
             if (ChatContext.chatHeader.name) {
                 SetUsername(ChatContext.chatHeader.name);
                 setVoidedUsername(ChatContext.chatHeader.name);
@@ -87,7 +87,7 @@ function ChatSide({setVoidedUsername, className}) {
                 setVoidedUsername(ChatContext.userFromUrl.user);
             }
             if (username) {
-                axios.get(`http://10.12.1.3:8000/messages/${username}`, {withCredentials:true})
+                axios.get(`https://fttran.tech/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
@@ -123,13 +123,17 @@ function ChatSide({setVoidedUsername, className}) {
 
         if (ChatContext.readyState == ReadyState.OPEN) {
             ChatContext.sendMessage({
-                    message_id : uuidv4(),
-                    timestamp :  TimeHM(),
-                    sender : sender,
-                    message : message,
-                    seen : false,
+                action: "chat_message",
+                message: message,
+                username: sender,
+                    // message_id : uuidv4(),
+                    // timestamp :  TimeHM(),
+                    // sender : sender,
+                    // message : message,
+                    // seen : false,
                 }
             );
+            console.log("Message just sent to Database");
             UpdateCreatedMessageState(false, "")
             serUserAbleToSendMessage(true);
         } else {
@@ -162,7 +166,7 @@ function ChatSide({setVoidedUsername, className}) {
                     message: msg,
                     message_id: Math.floor(Math.random() * 10000),
                     timestamp: new Date().toLocaleTimeString(),
-                    sender: "Alice",
+                    sender: "hisoka",
                     seen: true,
                     depends: "Waiting"
                 }
@@ -170,7 +174,6 @@ function ChatSide({setVoidedUsername, className}) {
         }
       }, [ChatContext.lastMessage]);
 
-      
     return (
         <div className={" " + (className) ? className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>

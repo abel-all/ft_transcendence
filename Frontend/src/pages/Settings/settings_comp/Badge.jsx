@@ -82,7 +82,7 @@ function Badge({SettingsData}) {
                             <img className='px-[2px]' src={Edit} alt='' />
                         </div> }
 
-                        {save && <div className='flex flex-row lg:right-[-553px] xl:right-[-759px] 2xl:right-[-974px] md:relative md:top-[-220px] md:right-[-341px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'>
+                        {save && <div className='flex flex-row lg:right-[-463px] xl:right-[-673px] 2xl:right-[-883px] md:relative md:top-[-220px] md:right-[-248px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'>
                             <button type='submit' className='px-[2px] font-[500] font-[Outfit] text-[#626262] md:text-white md:opacity-90'>Save</button>
                         </div>}
                 </div>

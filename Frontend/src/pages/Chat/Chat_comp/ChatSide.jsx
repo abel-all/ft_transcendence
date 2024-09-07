@@ -30,6 +30,7 @@ function messagesAddedLoop(msg , add) {
 function ChatSide({setVoidedUsername, className}) {
     const messagesRef = useRef(null);
     const ChatContext = useContext(chatHeaderOnClick);
+    const [ToUser, setToUser] = useState("");
 
 
     const initialState = {
@@ -110,7 +111,7 @@ function ChatSide({setVoidedUsername, className}) {
 
 
     const addMessage = (message) => {
-            UpdateCreatedMessage(message, "User2");
+            UpdateCreatedMessage(message, ToUser);
             sendMessageToDataBase(message, username, CreateMessages);
             //ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
             console.log("Hello how are you? ", username);
@@ -122,18 +123,17 @@ function ChatSide({setVoidedUsername, className}) {
 
 
         if (ChatContext.readyState == ReadyState.OPEN) {
-            ChatContext.sendMessage({
+            ChatContext.sendMessage(JSON.stringify({
+                action: "read_receipt",
+                username: sender,
+                })
+            );
+            ChatContext.sendMessage(JSON.stringify({
                 action: "chat_message",
                 message: message,
                 username: sender,
-                    // message_id : uuidv4(),
-                    // timestamp :  TimeHM(),
-                    // sender : sender,
-                    // message : message,
-                    // seen : false,
-                }
+                })
             );
-            console.log("Message just sent to Database");
             UpdateCreatedMessageState(false, "")
             serUserAbleToSendMessage(true);
         } else {
@@ -158,22 +158,35 @@ function ChatSide({setVoidedUsername, className}) {
 
 
     useEffect(() => {
-
-        if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).user == username) {
-            const msg = JSON.parse(ChatContext.lastMessage.data).message;
-            msg && setMessagesAdded(prevState => [
-                ...prevState, {
-                    message: msg,
-                    message_id: Math.floor(Math.random() * 10000),
-                    timestamp: new Date().toLocaleTimeString(),
-                    sender: "hisoka",
-                    seen: true,
-                    depends: "Waiting"
+        // console.log("Messages are ", ChatContext.lastMessage);
+        // const dataJson = ChatContext.lastMessage ? JSON.parse(ChatContext.lastMessage.data) : null;
+        if (ChatContext.lastMessage) {
+            console.log("Hello from lastMessage ", JSON.parse(ChatContext.lastMessage.data));
+            setToUser(JSON.parse(ChatContext.lastMessage.data).to);
+            if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "chat_message") {
+                const msg = JSON.parse(ChatContext.lastMessage.data).message;
+                msg && setMessagesAdded(prevState => [
+                    ...prevState, {
+                        message: msg,
+                        message_id: Math.floor(Math.random() * 10000),
+                        // timestamp: new Date().toLocaleTimeString(),
+                        timestamp: JSON.parse(ChatContext.lastMessage.data).created_at,
+                        sender: JSON.parse(ChatContext.lastMessage.data).from,
+                        seen: false,
+                        depends: "Waiting"
+                    }
+                ]);
+            }
+            if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt") {
+                console.log(ChatContext.lastMessage);
+                let arrs = messagesAdded;
+                for (let i = 0; i < messagesAdded.length; i++) {
+                    arrs[i].seen = true;
                 }
-            ]);
+                setMessagesAdded(arrs);
+            }
         }
       }, [ChatContext.lastMessage]);
-
     return (
         <div className={" " + (className) ? className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>
@@ -181,9 +194,9 @@ function ChatSide({setVoidedUsername, className}) {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
                         {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
-                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username}}>
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username, }}>
                             <ChatHeader className={className}/>
-                            <Messages setMessages={setMessages} username={username} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
+                            <Messages setMessages={setMessages} toUser={ToUser} username={username} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>
                         </sendMessageContext.Provider>
                     </>

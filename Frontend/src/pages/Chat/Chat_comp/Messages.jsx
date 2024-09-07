@@ -6,7 +6,7 @@ import StoreMessages from '../../../components/StoreMessages'
 import axios from 'axios'
 
 
-function Messages({setMessages, username, className}) {
+function Messages({setMessages, username, className, toUser}) {
     
     
 
@@ -14,7 +14,7 @@ function Messages({setMessages, username, className}) {
 
 
     const messageContext = useContext(sendMessageContext);
-    const { messages, messagesAdded, messagesRef } = useContext(sendMessageContext);
+    const { messages, messagesAdded, messagesRef} = useContext(sendMessageContext);
     const [isLoading, setIsLoading] = useState(false);
     const [Oldest, setOldest] = useState([]);
     const [Scroll, setScroll] = useState(0);
@@ -86,21 +86,21 @@ function Messages({setMessages, username, className}) {
            {
                 Array.isArray(Oldest) && Oldest.map((chatMessages, index) => {
                     return (
-                        <GetChatFromDataBase WhoAmI={"hisoka"} username={username} chatMessages={chatMessages} key={index}/>
+                        <GetChatFromDataBase WhoAmI={toUser} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }
             {
                 Array.isArray(messages.messages) && messages.messages.map((chatMessages, index) => {
                     return (
-                        <GetChatFromDataBase WhoAmI={"hisoka"} username={username} chatMessages={chatMessages} key={index}/>
+                        <GetChatFromDataBase WhoAmI={toUser} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }
             {
                 Array.isArray(messagesAdded) && messagesAdded.map((chatMessages, index) => {
                     return (
-                        <StoreMessages WhoAmI={"hisoka"} username={username} chatMessages={chatMessages} key={index}/>
+                        <StoreMessages WhoAmI={toUser} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }

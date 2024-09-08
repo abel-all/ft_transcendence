@@ -9,11 +9,19 @@ import { Link } from "react-router-dom"
 import unblock from "../assets/imgs/unblock.svg"
 import panding from "../assets/imgs/panding.svg"
 import axios from "axios"
+import Alert from "./Alert"
 
 
 function Friend(Data) {
 
     const [isTrue, setIsTrue] = useState(false);
+    const [render, setRender] = useState("");
+
+    const handelRender = (str) => {
+        setRender(() => {
+            return str;
+        });
+    }
 
     const AcceptRequest = (user) => {
         if (Data.reason == "Invetations") {
@@ -33,19 +41,25 @@ function Friend(Data) {
         axios.post('https://fttran.tech/api/profile/send-friendship-request/', {
             username : user
         }).then((respons) => {
-            console.log("user add to friend list");
+            console.log(respons.data.message);
+            handelRender(respons.data.message);
         }).catch((error) => {
-            console.log("request not accepted");
+            console.log(`request not accepted the Error ${error}`);
         })
     }
-
+    
     function toggle() {
         setIsTrue(!isTrue);
     }
-    
+
+    const reurtnRef = (render) => {
+        let newWord = render;
+        return newWord;
+    }
     console.log(`${Data.status} `);
     return (
-            <>
+        <>
+                {render && <Alert message={reurtnRef(render)} color={"red"}/>}
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
                         <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={Data.picture ? Data.picture : FriendPic} alt="" />

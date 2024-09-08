@@ -113,9 +113,6 @@ function ChatSide({setVoidedUsername, className}) {
     const addMessage = (message) => {
             UpdateCreatedMessage(message, ToUser);
             sendMessageToDataBase(message, username, CreateMessages);
-            //ChatContext.sendMessage(JSON.stringify({ username: 'hello', message: 'Hello!' }));
-            console.log("Hello how are you? ", username);
-
     }
     
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
@@ -123,11 +120,6 @@ function ChatSide({setVoidedUsername, className}) {
 
 
         if (ChatContext.readyState == ReadyState.OPEN) {
-            ChatContext.sendMessage(JSON.stringify({
-                action: "read_receipt",
-                username: sender,
-                })
-            );
             ChatContext.sendMessage(JSON.stringify({
                 action: "chat_message",
                 message: message,
@@ -156,7 +148,6 @@ function ChatSide({setVoidedUsername, className}) {
             CreateMessages.depands != "waiting" && setCreateMessages(initialState);
       }, [CreateMessages]);
 
-
     useEffect(() => {
         // console.log("Messages are ", ChatContext.lastMessage);
         // const dataJson = ChatContext.lastMessage ? JSON.parse(ChatContext.lastMessage.data) : null;
@@ -176,17 +167,28 @@ function ChatSide({setVoidedUsername, className}) {
                         depends: "Waiting"
                     }
                 ]);
-            }
-            if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt") {
-                console.log(ChatContext.lastMessage);
-                let arrs = messagesAdded;
-                for (let i = 0; i < messagesAdded.length; i++) {
-                    arrs[i].seen = true;
+                if (ChatContext.readyState == ReadyState.OPEN) { 
+                    ChatContext.sendMessage(JSON.stringify({
+                        action: "read_receipt",
+                        username: JSON.parse(ChatContext.lastMessage.data).from,
+                        })
+                    );
                 }
-                setMessagesAdded(arrs);
             }
         }
-      }, [ChatContext.lastMessage]);
+    }, [ChatContext.lastMessage]);
+    
+    useEffect(() => {        
+        if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt") {
+            console.log(ChatContext.lastMessage);
+            let arrs = messagesAdded;
+            for (let i = 0; i < messagesAdded.length; i++) {
+                arrs[i].seen = true;
+            }
+            setMessagesAdded(arrs);
+        }
+    }, [messagesAdded]);
+
     return (
         <div className={" " + (className) ? className : ``}>
             <div className={"ChatWithUser w-full p-[7px] "}>

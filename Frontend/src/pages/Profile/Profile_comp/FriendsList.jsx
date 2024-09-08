@@ -27,7 +27,7 @@ function FriendsList({className, UrlUsername}) {
 
         TimeToDown = setTimeout(() => {
             e.target.value && axios.post('https://fttran.tech/api/profile/search/', {
-                username : e.target.value
+                prefix : e.target.value
             }).then ((res) => {
                 console.log("message sent : ", res);
                 setFriendlistFromSearch(res.data.profiles);

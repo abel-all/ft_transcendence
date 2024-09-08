@@ -22,7 +22,7 @@ const Alert = ({ message, color }) => {
     const percent = useRef(100);
     const [messageArray, setMessageArray] = useState(["hello 1", "hello 2", "hello 3"]);
 
-    useEffect(async () => {
+    useEffect(() => {
         for (let i = 0; i < messageArray.length; i++) {
             console.log(`i=${i}  messageArray.length=${messageArray.length}`);
             const startHideTimeout = setTimeout(() => {

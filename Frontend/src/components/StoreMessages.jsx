@@ -16,11 +16,12 @@ function StoreMessages({chatMessages, username, WhoAmI}) {
                 <p className='pb-[15px] break-all'>{chatMessages.message}</p>
                 {(chatMessages.sender == WhoAmI) ?
                     <>
+                        {console.log("is Seen? ", chatMessages.seen )}
                         <span className='absolute right-[45px] bottom-[5px]'>{chatMessages.timestamp}</span>
                         <img
                             src={
                                 chatMessages.seen ? seen : (chatMessages.depands ? ((chatMessages.depands == "failed") ? failed : waithing) : notseen)}
-                            alt='' className='absolute right-[15px] bottom-[5px]'/>
+                                alt='' className='absolute right-[15px] bottom-[5px]'/>
                     </>
                     : 
                         <span className='absolute right-[15px] bottom-[5px]'>{chatMessages.timestamp}</span>

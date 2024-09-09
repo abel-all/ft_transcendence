@@ -3,23 +3,37 @@ import playfriend from "../assets/imgs/paly_friend.svg"
 import chatfreind from "../assets/imgs/chat_friend.svg"
 import AddUser from "../assets/imgs/AddUser.svg"
 import removefriend from "../assets/imgs/remove_friend.svg"
+import remove_friendBig from "../assets/imgs/remove_friendBig.svg"
 import Moudel from "../pages/Profile/Profile_comp/Moudel"
 import {useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import unblock from "../assets/imgs/unblock.svg"
 import panding from "../assets/imgs/panding.svg"
 import axios from "axios"
+import Alert from "./Alert"
 
 
 function Friend(Data) {
 
     const [isTrue, setIsTrue] = useState(false);
+    const [render, setRender] = useState("");
+    const [color, setColor] = useState("grren");
 
-    const AcceptRequest = (user) => {
+    const handelRender = (str , col = "green") => {
+        setRender(() => {
+            return str;
+        });
+        setColor(() => {
+            return col;
+        });
+    }
+
+    const AcceptRequest = (user, statusOfReq) => {
         if (Data.reason == "Invetations") {
             console.log(`${user} is accepted`);
-            axios.post('https://aennaki.me/api/profile/handle-friendship-request/', {
-                username : user
+            axios.post('https://fttran.tech/api/profile/handle-friendship-request/', {
+                username : user,
+                status: statusOfReq
             }).then((respons) => {
                 console.log("user add to friend list");
             }).catch((error) => {
@@ -29,13 +43,18 @@ function Friend(Data) {
     }
 
     const SendRequest = (user) => {
-        console.log(`${user} ia requested`);
-        axios.post('https://aennaki.me/api/profile/send-friendship-request/', {
+        axios.post('https://fttran.tech/api/profile/send-friendship-request/', {
             username : user
         }).then((respons) => {
-            console.log("user add to friend list");
+            handelRender(respons.data.message);
         }).catch((error) => {
-            console.log("request not accepted");
+            if (error.response) {
+                if (error.response.status == 403) {
+                    console.log(`${error.response.data.message}  The message`);
+                    handelRender(error.response.data.message, "red");
+                }
+            }
+            console.log(`request not accepted the Error ${error}`);
         })
     }
 
@@ -43,12 +62,18 @@ function Friend(Data) {
         setIsTrue(!isTrue);
     }
 
+    const reurtnRef = (render) => {
+        let newWord = render;
+        return newWord;
+    }
+
     return (
-            <>
+        <>
+                {render && <Alert message={reurtnRef(render)} color={reurtnRef(color)}/>}
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
                         <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={Data.picture ? Data.picture : FriendPic} alt="" />
-                        {Data.isFriend && <div className={`${Data.status} absolute bottom-0 right-0`}></div>}
+                        {Data.isFriend && Data.status && <div className={`bg-[lime] size-[10px] rounded-full right-[10px] bottom-[8px] absolute`}></div>}
                     </div>
                     <div className="userNrank flex flex-col shrink overflow-hidden">
                         <span className=" text-[20px] px-[7px] font-[400] font-[Outfit] overflow-hidden text-ellipsis whitespace-nowrap">{Data.username}</span>
@@ -117,7 +142,10 @@ function Friend(Data) {
                 }
                 {Data.reason == "Invetations" &&
                 <>
-                    <button onClick={() => AcceptRequest(Data.username)} className="btn-frnds Invite">
+                    <button onClick={() => AcceptRequest(Data.username, "rejected")}  className="btn-frnds deleteFriend">
+                        <img className="px-[7px]" src={remove_friendBig} alt="" />
+                    </button>
+                    <button onClick={() => AcceptRequest(Data.username, "accepted")} className="btn-frnds Invite">
                         <img className="px-[7px]" src={AddUser} alt="" />
                     </button>
                     <button className="btn-frnds chatFriend">

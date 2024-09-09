@@ -1,7 +1,7 @@
 import Home from './pages/Home/Home.jsx'
 import Contact from './pages/Contact/Contact.jsx'
 import About from './pages/About/About.jsx'
-import Page424 from './pages/Page424/Page424.jsx'
+import Page404 from './pages/Page404/Page404.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'
@@ -51,25 +51,30 @@ function App() {
               <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
               {/* <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} /> */}
-              <Route path="/search" element={<Search />} />
-              {/* <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} /> */}
+              {/* <Route path="/search" element={<Search />} /> */}
+              <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} />
               <Route path="/oauth/callback" element={<OauthCallBack />} />
               <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
+
+              {/* <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/chat" element={<Chat />} /> */}
+
+
               <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
-              <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
+              <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
               <Route path="game/bot" element={<RequireAuth><Tournament /></RequireAuth>} />
               <Route path="game/friend" element={<RequireAuth><PlayOnline /></RequireAuth>} />
-              {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} /> */}
-              <Route path="game/tournament" element={<Tournament />} />
-              {/* <Route path="/game" element={<Game />} />
+
+              {/* <Route path="game/tournament" element={<Tournament />} />
+              <Route path="/game" element={<Game />} />
               <Route path="game/online" element={<PlayOnline />} />
               <Route path="game/bot" element={<PlayWithBot />} />
               <Route path="game/friend" element={<PlayWithFriend />} /> */}
-              <Route path="*" element={<Page424 />} />
+              <Route path="*" element={<Page404 />} />
             </Routes>
           </GameSettingsContextProvider>
         </ContextProvider>

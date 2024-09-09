@@ -85,7 +85,7 @@ const ChooseSectionHandler = (name) => {
                 botLevel = gameContext.settingsData[3];
             }
 
-            await Axios.post("https://aennaki.me/api/game/setting/",{
+            await Axios.post("https://fttran.tech/api/game/setting/",{
                 mapname: mapName,
                 ballcolor: ballColor,
                 score: winningScore,

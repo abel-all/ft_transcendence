@@ -6,7 +6,7 @@ import StoreMessages from '../../../components/StoreMessages'
 import axios from 'axios'
 
 
-function Messages({setMessages, username, className}) {
+function Messages({setMessages, username, className, toUser}) {
     
     
 
@@ -14,12 +14,12 @@ function Messages({setMessages, username, className}) {
 
 
     const messageContext = useContext(sendMessageContext);
-    const { messages, messagesAdded, messagesRef } = useContext(sendMessageContext);
+    const { messages, messagesAdded, messagesRef} = useContext(sendMessageContext);
     const [isLoading, setIsLoading] = useState(false);
     const [Oldest, setOldest] = useState([]);
     const [Scroll, setScroll] = useState(0);
     const [LoadingMessage, setLoadingMessage] = useState("");
-    const [WhoAmI, setWhoAmI] = useState("");
+    // const [WhoAmI, setWhoAmI] = useState("hisoka");
 
     const Arr = ["Alice", "Charlie", "Dora", "Elmo", "Fiona", "George"];
     const index = useRef(0);
@@ -29,19 +29,19 @@ function Messages({setMessages, username, className}) {
     }, [messagesAdded]);
 
 
-    useEffect(() => {
-        async function fetchUsername() {
-            await axios.get('http://10.12.9.14:8000/api/WhoAmI/')
-            .then(res => {
-                console.log("Done fetching Data of username");
-                setWhoAmI(res.data.username);
-            })
-            .catch (error => {
-                console.log("Getting username error !");
-            });
-        }
-        fetchUsername();
-    }, []);
+    // useEffect(() => {
+    //     async function fetchUsername() {
+    //         await axios.get('https://fttran.tech/api/WhoAmI/')
+    //         .then(res => {
+    //             console.log("Done fetching Data of username");
+    //             setWhoAmI(res.data.username);
+    //         })
+    //         .catch (error => {
+    //             console.log("Getting username error !");
+    //         });
+    //     }
+    //     fetchUsername();
+    // }, []);
 
 
     useEffect(() => {
@@ -53,7 +53,7 @@ function Messages({setMessages, username, className}) {
                 const oldScrollHeight = messagesRef.current.scrollHeight;
 
                 try {
-                    const res = await axios.get(`http://10.12.9.14:8000/messages/${Arr[index.current]}`, { withCredentials: true });
+                    const res = await axios.get(`https://fttran.tech/messages/${Arr[index.current]}`, { withCredentials: true });
                     index.current++;
                     const newMessages = Array.isArray(res.data.messages) ? res.data.messages : [];
                     
@@ -86,21 +86,21 @@ function Messages({setMessages, username, className}) {
            {
                 Array.isArray(Oldest) && Oldest.map((chatMessages, index) => {
                     return (
-                        <GetChatFromDataBase WhoAmI={WhoAmI} username={username} chatMessages={chatMessages} key={index}/>
+                        <GetChatFromDataBase WhoAmI={toUser} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }
             {
                 Array.isArray(messages.messages) && messages.messages.map((chatMessages, index) => {
                     return (
-                        <GetChatFromDataBase WhoAmI={WhoAmI} username={username} chatMessages={chatMessages} key={index}/>
+                        <GetChatFromDataBase WhoAmI={toUser} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }
             {
                 Array.isArray(messagesAdded) && messagesAdded.map((chatMessages, index) => {
                     return (
-                        <StoreMessages WhoAmI={WhoAmI} username={username} chatMessages={chatMessages} key={index}/>
+                        <StoreMessages WhoAmI={toUser} username={username} chatMessages={chatMessages} key={index}/>
                     );
                 })
             }

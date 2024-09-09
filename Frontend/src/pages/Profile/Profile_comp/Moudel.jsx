@@ -23,6 +23,15 @@ function Buttn({toggles, rsn, user, content}) {
             }).catch((error) => {
                 console.log("user Unblock failed !");
             });
+        } else if (rsn == "undo") {
+            console.log(`${user} is undo`);
+            axios.post('https://fttran.tech/api/profile/eliminate-friendship-request/', {
+                username : user,
+            }).then((response) => {
+                console.log("user undo sent with suecsses!");
+            }).catch((error) => {
+                console.log("user undo failed !");
+            });
         }
         toggles();
     }

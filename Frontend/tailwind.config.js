@@ -18,6 +18,15 @@ module.exports = {
   },
   theme: {
     extend: {
+      keyframes: {
+        'conic-effect': {
+          '0%': { transform: 'rotate(-1deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        'conic-effect': 'conic-effect 2s ease-in-out',
+      },
       backgroundImage: {
         'home-bg': "url('src/assets/imgs/home_background.jpg')",
         'liner-filed': 'linear-gradient(to bottom, #002a43, #022e48 50%, #002a43)',

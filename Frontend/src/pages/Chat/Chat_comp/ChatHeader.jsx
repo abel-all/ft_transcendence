@@ -10,7 +10,6 @@ import { useContext, useEffect } from "react"
 import {chatHeaderOnClick} from '../Chat'
 
 function ChatHeader() {
-
     const [display, setDisplay] = useState(false);
     const ChatContext = useContext(chatHeaderOnClick);
 

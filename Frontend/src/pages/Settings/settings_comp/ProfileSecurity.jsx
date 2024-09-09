@@ -76,7 +76,7 @@ function ProfileSecurity(className) {
         else {
             setShowErrors(false);
             console.log("Axios Ready");
-            axios.post('https://aennaki.me/api/auth/passwordchange/', {
+            axios.post('https://fttran.tech/api/auth/passwordchange/', {
                 old_password : OldPassword,
                 new_password : NewPassword,
                 cur_password : CurrentPass,
@@ -165,7 +165,7 @@ function ProfileSecurity(className) {
                                 if (!DeleteConfirmed) {
                                     e.preventDefault();
                                     setDeleteConfirmed(true)
-                                    axios.get('https://aennaki.me/api/auth/delete-account/send-code')
+                                    axios.get('https://fttran.tech/api/auth/delete-account/send-code')
                                         .then((res) => {
                                             console.log("succses : ", res);
                                         })
@@ -176,7 +176,7 @@ function ProfileSecurity(className) {
                                 else {
                                     setShowErrors(true);
                                     e.preventDefault();
-                                    axios.post('https://aennaki.me/api/auth/delete-account/check-code', {
+                                    axios.post('https://fttran.tech/api/auth/delete-account/check-code', {
                                         code : SixDigit,
                                     })
                                     .then((res) => {

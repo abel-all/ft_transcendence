@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 
 
 
-
+/*
 
 
 const Alert = ({ message, color }) => {
@@ -61,7 +61,58 @@ const Alert = ({ message, color }) => {
     return (
         messageArray && <div className={`Alert ${display.current} top-[88px] p-[6px] z-[100] rounded-md text-center right-[10px] fixed text-white w-[304px] h-[41px]`} style={{ backgroundColor: color, opacity: percent.current / 100 }}> <p>{messageArray ? messageArray[0] : ""}</p> </div>
     );
+};*/
+
+const Alert = ({ message, color }) => {
+    const display = useRef("block");
+    const [percent, setPercent] = useState(100);
+    const [messageArray, setMessageArray] = useState(["hello 1", "hello 2", "hello 3"]);
+
+    useEffect(() => {
+        if (messageArray.length > 0) {
+            const startHideTimeout = setTimeout(() => {
+                display.current = "block";
+                const percentInterval = setInterval(() => {
+                    setPercent((prevPercent) => {
+                        if (prevPercent > 0) {
+                            return prevPercent - 10;
+                        } else {
+                            clearInterval(percentInterval);
+                            setPercent(100);
+                            setMessageArray((prev) => prev.slice(1));
+                            return 100;
+                        }
+                    });
+                }, 100);
+            }, 3000);
+            
+            return () => {
+                clearTimeout(startHideTimeout);
+            };
+        }
+        else
+            display.current = "hidden";
+    }, [messageArray]);
+
+    useEffect(() => {
+        if (message) {
+            setMessageArray((prev) => [...prev, message]);
+            console.log(`${message} is updated! `);
+        }
+    }, [message]);
+
+    return (
+        messageArray.length > 0 && (
+            <div
+                className={`Alert ${display.current} top-[88px] p-[6px] z-[100] rounded-md text-center right-[10px] fixed text-white w-[304px] h-[41px]`}
+                style={{ backgroundColor: color, opacity: percent / 100 }}
+            >
+                <p>{messageArray[0]}</p>
+            </div>
+        )
+    );
 };
+
 
 export default Alert;
 

@@ -8,6 +8,7 @@ import ProfileNavBottom from './Profile_comp/ProfileNavBottom'
 import {useEffect, useState} from "react"
 import axios from "axios"
 import "./Profile.css"
+import Alert from '../../components/Alert'
 
 
 

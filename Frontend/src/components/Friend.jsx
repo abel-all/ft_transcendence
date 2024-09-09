@@ -3,6 +3,7 @@ import playfriend from "../assets/imgs/paly_friend.svg"
 import chatfreind from "../assets/imgs/chat_friend.svg"
 import AddUser from "../assets/imgs/AddUser.svg"
 import removefriend from "../assets/imgs/remove_friend.svg"
+import remove_friendBig from "../assets/imgs/remove_friendBig.svg"
 import Moudel from "../pages/Profile/Profile_comp/Moudel"
 import {useEffect, useState } from "react"
 import { Link } from "react-router-dom"
@@ -16,18 +17,23 @@ function Friend(Data) {
 
     const [isTrue, setIsTrue] = useState(false);
     const [render, setRender] = useState("");
+    const [color, setColor] = useState("grren");
 
-    const handelRender = (str) => {
+    const handelRender = (str , col = "green") => {
         setRender(() => {
             return str;
         });
+        setColor(() => {
+            return col;
+        });
     }
 
-    const AcceptRequest = (user) => {
+    const AcceptRequest = (user, statusOfReq) => {
         if (Data.reason == "Invetations") {
             console.log(`${user} is accepted`);
             axios.post('https://fttran.tech/api/profile/handle-friendship-request/', {
-                username : user
+                username : user,
+                status: statusOfReq
             }).then((respons) => {
                 console.log("user add to friend list");
             }).catch((error) => {
@@ -37,13 +43,17 @@ function Friend(Data) {
     }
     
     const SendRequest = (user) => {
-        console.log(`${user} ia requested`);
         axios.post('https://fttran.tech/api/profile/send-friendship-request/', {
             username : user
         }).then((respons) => {
-            console.log(respons.data.message);
             handelRender(respons.data.message);
         }).catch((error) => {
+            if (error.response) {
+                if (error.response.status == 403) {
+                    console.log(`${error.response.data.message}  The message`);
+                    handelRender(error.response.data.message, "red");
+                }
+            }
             console.log(`request not accepted the Error ${error}`);
         })
     }
@@ -56,10 +66,10 @@ function Friend(Data) {
         let newWord = render;
         return newWord;
     }
-    console.log(`${Data.status} `);
+
     return (
         <>
-                {render && <Alert message={reurtnRef(render)} color={"red"}/>}
+                {render && <Alert message={reurtnRef(render)} color={reurtnRef(color)}/>}
                 <div className="flex items-center shrink overflow-hidden">
                     <div className="relative shrink-0 overflow-hidden">
                         <img className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]" src={Data.picture ? Data.picture : FriendPic} alt="" />
@@ -132,7 +142,10 @@ function Friend(Data) {
                 }
                 {Data.reason == "Invetations" &&
                 <>
-                    <button onClick={() => AcceptRequest(Data.username)} className="btn-frnds Invite">
+                    <button onClick={() => AcceptRequest(Data.username, "rejected")}  className="btn-frnds deleteFriend">
+                        <img className="px-[7px]" src={remove_friendBig} alt="" />
+                    </button>
+                    <button onClick={() => AcceptRequest(Data.username, "accepted")} className="btn-frnds Invite">
                         <img className="px-[7px]" src={AddUser} alt="" />
                     </button>
                     <button className="btn-frnds chatFriend">

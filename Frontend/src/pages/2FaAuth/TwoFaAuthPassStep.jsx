@@ -36,7 +36,7 @@ const TwoFaAuthPassStep = () => {
         setIsLoading(true);
 
         if (passwordReGex.test(password)) {
-            await Axios.post("http://10.12.9.12:8800/api/auth/passwd/verify/", {
+            await Axios.post("https://aennaki.me/api/auth/passwd/verify/", {
                 password: password,
             },
             {

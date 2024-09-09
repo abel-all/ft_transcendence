@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import rankIcon from "../../assets/imgs/rank.svg"
 import tryImg from "../../assets/imgs/tryImg.svg"
+import avatarIcon from "../../assets/imgs/avatar.svg"
+import BotImgOne from "../../assets/imgs/botImgOne.svg"
+// import { useGameSettings } from './GameSettingsContext'
 import "./css/index.css"
-// import { useGameSettings } from "./GameSettingsContext";
 
 
 // Game vars:
@@ -48,11 +50,17 @@ const ball = {
 };
 
 
-const PlayerScore = ({ rank, username, userImage, flexDirection="" }) => {
+const PlayerScore = ({ rank, username, userImage, flexDirection="", isBot=false }) => {
 
     return (
         <div className={`user-info-container flex gap-[20px] ${flexDirection}`}>
-            <img className="w-full max-w-[70px] h-[70px] rounded-full" src={userImage} />
+            {isBot ?
+                <div className="bg-[#fff6f9] w-[70px] h-[70px] flex justify-center items-center rounded-full">
+                    <img className="w-[60px]" src={userImage} />
+                </div>
+            :
+                <img className="w-full max-w-[70px] h-[70px] rounded-full" src={userImage} />
+            }
             <div className="flex flex-col justify-center items-center">
                 <div className="font-normal text-[23px] text-[#f0f0f1] w-full text-center">{username}</div>
                 <div className="w-full font-light opacity-80 text-[#f0f0f1] flex gap-[15px]">
@@ -73,7 +81,14 @@ const GamePlay = ({levelOfBot = 0}) => {
     const [isGameStart, setIsGameStart] = useState(false);
     const [gameFinished, setGameFinished] = useState(false);
     const [isMobileVersion, setIsMobileVersion] = useState(false);
+
+    const [keyApressed, setKeyApressed] = useState(false);
+    const [keyDpressed, setKeyDpressed] = useState(false);
+    const [keyLeftpressed, setKeyLeftpressed] = useState(false);
+    const [keyRightpressed, setKeyRightpressed] = useState(false);
+
     const botLevel = levelOfBot;
+    // const gameContext = useGameSettings();
 
     useEffect(() => {
 
@@ -138,29 +153,38 @@ const GamePlay = ({levelOfBot = 0}) => {
                 }
 
                 // paddleone movement :
-                const changeDirection = (e) => {
-                    const keyPressed = e.keyCode;
+                const handleKeyDown = (e) => {
 
-                    const paddle2Left = 65;
-                    const paddle2Right = 68;
-                    const paddle1Left = 37;
-                    const paddle1Right = 39;
-                    switch (keyPressed) {
-                        case paddle1Left:
-                            if (paddleOne.x > 0)
-                                paddleOne.x -= paddleSpeed;
+                    switch (e.keyCode) {
+                        case 37:
+                            setKeyLeftpressed(true);
                             break;
-                        case paddle1Right:
-                            if (paddleOne.x < canvasWidth - paddleOne.width)
-                                paddleOne.x += paddleSpeed;
+                        case 39:
+                            setKeyRightpressed(true);
                             break;
-                        case paddle2Left:
-                            if (paddleTwo.x > 0 && !botLevel)
-                                paddleTwo.x -= paddleSpeed;
+                        case 65:
+                            setKeyApressed(true);
                             break;
-                        case paddle2Right:
-                            if (paddleTwo.x < canvasWidth - paddleTwo.width && !botLevel)
-                                paddleTwo.x += paddleSpeed;
+                        case 68:
+                            setKeyDpressed(true);
+                            break;
+                    }
+                }
+
+                const handleKeyUp = (e) => {
+
+                    switch (e.keyCode) {
+                        case 37:
+                            setKeyLeftpressed(false);
+                            break;
+                        case 39:
+                            setKeyRightpressed(false);
+                            break;
+                        case 65:
+                            setKeyApressed(false);
+                            break;
+                        case 68:
+                            setKeyDpressed(false);
                             break;
                     }
                 }
@@ -173,11 +197,12 @@ const GamePlay = ({levelOfBot = 0}) => {
                         newX = (e.clientX - rect.left - (paddleOne.width / 2)) * 1.7;
 
                     if (newX < (canvasWidth - paddleOne.width) && newX > 0)
-                            paddleOne.x = newX;
+                        paddleOne.x = newX;
                 }
                 if (botLevel)
                     window.addEventListener("mousemove", handleMouseMove);
-                window.addEventListener("keydown", changeDirection);
+                window.addEventListener("keydown", handleKeyDown);
+                window.addEventListener("keyup", handleKeyUp);
 
                 // reset ball pos :
                 const resetBallPos = () => {
@@ -188,6 +213,16 @@ const GamePlay = ({levelOfBot = 0}) => {
                 }
                 //update: pos, move score:
                 const update = () => {
+                    // paddles movements :
+                    if (keyLeftpressed && paddleOne.x > 0)
+                        paddleOne.x -= paddleSpeed;
+                    else if (keyRightpressed && paddleOne.x < canvasWidth - paddleOne.width)
+                        paddleOne.x += paddleSpeed;
+                    if (keyApressed && paddleTwo.x > 0 && !botLevel)
+                        paddleTwo.x -= paddleSpeed;
+                    else if (keyDpressed && paddleTwo.x < canvasWidth - paddleTwo.width && !botLevel)
+                        paddleTwo.x += paddleSpeed;
+
                     // ball mov:
                     ball.x += ball.velocityX * ball.speed;
                     ball.y += ball.velocityY * ball.speed;
@@ -251,11 +286,12 @@ const GamePlay = ({levelOfBot = 0}) => {
 
                 return () => {
                     window.removeEventListener("mousemove", handleMouseMove);
-                    window.removeEventListener("keydown", changeDirection);
+                    window.removeEventListener("keydown", handleKeyDown);
+                    window.removeEventListener("keyup", handleKeyUp);
                     clearInterval(intervalId);
                 }
             }
-    }, [player1Score, player2Score, isGameStart, counter, gameFinished, isMobileVersion])
+    }, [player1Score, player2Score, isGameStart, counter, gameFinished, isMobileVersion, keyDpressed, keyApressed, keyRightpressed, keyLeftpressed])
 
     const handleTryAgainClick = () => {
         ball.x = canvasWidth / 2;
@@ -291,9 +327,10 @@ const GamePlay = ({levelOfBot = 0}) => {
                     </div>
                     <PlayerScore
                         flexDirection="flex-row-reverse"
-                        username="ychahbi"
-                        rank="3435"
-                        userImage="https://cdn.intra.42.fr/users/d95f55ada2e553d72f377af58e282003/ychahbi.jpg"
+                        username={botLevel ? "Bot" : "Player2"}
+                        rank={botLevel ? "300" : "0"}
+                        userImage={botLevel ? BotImgOne : avatarIcon}
+                        isBot={true}
                     />
                 </div>
                 <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px] max-sm:scale-[0.70]">

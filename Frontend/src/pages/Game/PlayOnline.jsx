@@ -6,13 +6,11 @@ import Header from "../../components/Header.jsx"
 import BottomNaveBar from "../../components/BottomNavBar.jsx"
 import { useGameSettings } from './GameSettingsContext'
 import GamePlayOnline from "./GamePlayOnline.jsx"
-// import HowToPlay from "./HowToPlay.jsx"
 
 
-const PlayOnline = ({isSettings=false}) => {
+const PlayOnline = () => {
 
     const [isLoaded, setIsLoaded] = useState(true);
-    const [matchDelay, setMatchDelay] = useState(true);
     const [gameDelay, setGameDelay] = useState(true);
     const gameContext = useGameSettings();
 
@@ -23,24 +21,22 @@ const PlayOnline = ({isSettings=false}) => {
     }, [])
 
     useEffect(() => {
-        if (!isLoaded)
+        if (!gameContext.matchDelay)
             setTimeout(() => {
-                setMatchDelay(false);
                 setGameDelay(false)
-            }, 7000);
-    }, [isLoaded])
+            }, 6000);
+    }, [gameContext.matchDelay])
 
     if (isLoaded)
         return <LoaderOntop />
 
-
     return (
             <div className="h-[100vh] container mx-auto px-[10px]">
                 <Header title="Online Game" activeSection="GametableIcon" />
-                {/* {matchDelay && <MatchMaking />} */}
-                {/* {!gameDelay && !gameContext.isGame && !isSettings && <GameSettings isOnlineGame={true}/>} */}
-                {/* {(gameContext.isGame || isSettings) && <GamePlayOnline />} */}
-                {true && <GamePlayOnline />}
+                {/* {(gameContext.matchDelay || gameDelay) && <MatchMaking />} */}
+                {/* {!gameDelay && !gameContext.isGame && !gameContext.selfData.isSettings && <GameSettings isOnlineGame={true}/>} */}
+                {/* {(gameContext.isGame || gameContext.selfData.isSettings) && <GamePlayOnline />} */}
+                <GamePlayOnline />
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         )

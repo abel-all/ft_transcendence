@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import Axios from 'axios'
 import axios from 'axios';
 import GetCookie from "../hooks/GetCookie"
+import { useGameSettings } from "../pages/Game/GameSettingsContext"
 
 export const Authcontext = createContext(null);
 
@@ -11,6 +12,7 @@ export const ContextProvider = ({ children }) => {
     const [isGame, setIsGame] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
+    const gameContext = useGameSettings();
 
     axios.defaults.headers.common['X-CSRFToken'] = GetCookie("csrftoken");
 
@@ -27,11 +29,23 @@ export const ContextProvider = ({ children }) => {
     }
 
     const isAuthenticated = async () => {
-        await Axios.get("http://10.12.9.12:8800/api/auth/token/", {
+        await Axios.get("https://aennaki.me/api/auth/token/", {
             withCredentials:true
         })
         .then(() => {
-            console.log("first request");
+            const fetchUserData = async () => {
+
+                await Axios.get("https://aennaki.me/api/profile/data/",
+                {
+                    withCredentials:true,
+                }).then((response) => {
+                    gameContext.setHandler("selfData", response.data);
+                }).catch(err => {
+                    console.log(err);
+                    console.log("Please try again!")
+                })
+            }
+            fetchUserData();
             setIsAuth(true);
         })
         .catch((err) => {
@@ -39,7 +53,7 @@ export const ContextProvider = ({ children }) => {
                 setIsAuth(false);
             if (err.response?.status == 403) {
                 const refrechToken = async () => {
-                    await Axios.get("http://10.12.9.12:8800/api/auth/token/refresh/", {
+                    await Axios.get("https://aennaki.me/api/auth/token/refresh/", {
                         withCredentials:true
                     })
                     .then(() => {
@@ -59,7 +73,6 @@ export const ContextProvider = ({ children }) => {
     }
 
     const setShowNotificationHandler = () => {
-        console.log("hellololol")
         setShowNotification(!showNotification);
     }
 

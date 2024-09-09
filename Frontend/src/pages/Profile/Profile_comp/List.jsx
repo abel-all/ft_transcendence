@@ -12,7 +12,7 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
         if (!AlreadyDated || !Array.isArray(AlreadyDated)) {
             const fetchmydata = async () => {
                 try {
-                    const res = await axios.get(`https://fttran.tech/api/profile/${EndPoint}/`);
+                    const res = await axios.get(`https://aennaki.me/api/profile/${EndPoint}/`);
                     setfriendlist(res.data);
                     console.log(`List of ${EndPoint} Fetched data with success`);
                 } catch (error) {
@@ -26,8 +26,8 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
     }, [AlreadyDated]);
 
     return (
-        <>                            
-                
+        <>
+
             {
                 (friendlist.length > 0) ? friendlist.map( (friends, index) => {
                     return (

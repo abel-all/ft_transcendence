@@ -18,7 +18,7 @@ function Friend(Data) {
     const AcceptRequest = (user) => {
         if (Data.reason == "Invetations") {
             console.log(`${user} is accepted`);
-            axios.post('https://fttran.tech/api/profile/handle-friendship-request/', {
+            axios.post('https://aennaki.me/api/profile/handle-friendship-request/', {
                 username : user
             }).then((respons) => {
                 console.log("user add to friend list");
@@ -27,10 +27,10 @@ function Friend(Data) {
             })
         }
     }
-    
+
     const SendRequest = (user) => {
         console.log(`${user} ia requested`);
-        axios.post('https://fttran.tech/api/profile/send-friendship-request/', {
+        axios.post('https://aennaki.me/api/profile/send-friendship-request/', {
             username : user
         }).then((respons) => {
             console.log("user add to friend list");

@@ -12,7 +12,7 @@ function Header(props) {
     const auth = useAuth();
 
     const handleLogout = async () => {
-        await Axios.post("http://10.12.9.12:8800/api/auth/logout/")
+        await Axios.post("https://aennaki.me/api/auth/logout/")
         .then(response => {
             console.log(response);
             auth.setHandler("game", false);

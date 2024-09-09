@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../components/Auth";
 import Notification from "../../components/Notification.jsx";
 import "./css/index.css"
@@ -6,6 +7,7 @@ import "./css/index.css"
 function BellIcon({who, color="#eee", isNotification=true}) {
 
     const notification = useAuth();
+
 
     let opacity = 1;
     if (who == "BellIcon")

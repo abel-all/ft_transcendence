@@ -12,6 +12,7 @@ import BotImgThree from "../../assets/imgs/botLevelThree.svg"
 import { useGameSettings } from "./GameSettingsContext"
 import { useEffect, useState } from "react"
 import { Axios } from 'axios'
+import Spiner from "./Spiner"
 import './css/index.css'
 
 
@@ -75,20 +76,33 @@ const ChooseSectionHandler = (name) => {
     const lastClickHandler = () => {
         const postSettingsData = async () => {
 
-            await Axios.post("http://10.12.9.12:8800/api/auth/token/",{
-                mapname: gameContext.settingsData[0],
-                ballcolor: gameContext.settingsData[1],
-                score: gameContext.settingsData[2],
-                issetting: true,
+            const mapName = gameContext.settingsData[0];
+            const ballColor = gameContext.settingsData[1];
+            let winningScore = "Five";
+            let botLevel = 0.1;
+            if (gameContext.settingsData.length > 2) {
+                winningScore = gameContext.settingsData[2];
+                botLevel = gameContext.settingsData[3];
+            }
+
+            await Axios.post("https://aennaki.me/api/game/setting/",{
+                mapname: mapName,
+                ballcolor: ballColor,
+                score: winningScore,
+                botlevel: botLevel,
             },
             {
                 withCredentials:true,
             }).then(() => {
                 console.log("first request");
                 gameContext.setHandler("last", false);
-                gameContext.setHandler("game", true);
-                gameContext.setHandler("map", true);
-                gameContext.setHandler("settings", false);
+                if (gameContext.issetting) {
+                    gameContext.setHandler("game", true);
+                    gameContext.setHandler("map", true);
+                    gameContext.setHandler("settings", false);
+                }
+                else
+                    gameContext.setHandler("isHowToPlay", true);
             }).catch(err => {
                 console.log(err);
                 setMessage("Please try again!")
@@ -128,11 +142,11 @@ const ChooseSectionHandler = (name) => {
             )))
         case "last":
             return (
-                <div className='flex flex-col justify-center w-full gap-[60px]'>
-                    <button onClick={lastClickHandler} className='main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]'>
+                <div className='flex flex-col items-center w-full gap-[30px]'>
+                    <div onClick={lastClickHandler} className='main-color-gradient cursor-pointer p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]'>
                         Continue To Play
-                    </button>
-                    <div className='font-light text-[22px] max-md:text-[18px] text-white'>
+                    </div>
+                    <div className='font-light text-[18px] max-md:text-[18px] text-[#ff0000]'>
                         {message}
                     </div>
                 </div>
@@ -153,11 +167,7 @@ const SettingsCard = ({ name, title, description="", buttonHidden="" }) => {
     }, [])
 
     if (isLoaded)
-        return (
-            <div className="w-full max-w-[1000px] flex justify-center items-center">
-                <div className="spiner-settings w-[50px] h-[50px] rounded-full"></div>
-            </div>
-        )
+        return <Spiner />
 
     return (
             <div className="sm:border-l-[3px] sm:border-l-[#525455] w-full max-w-[1000px] flex flex-col mb-[150px] pl-[20px] gap-[100px]">

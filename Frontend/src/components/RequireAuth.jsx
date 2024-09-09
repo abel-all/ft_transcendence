@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./Auth";
 import { useEffect, useState } from "react";
-import Loader from "./Loader";
+import LoaderOntop from "./LoaderOntop";
+// import { useGameSettings } from "../pages/Game/GameSettingsContext"
+
 
 const RequireAuth = ({ children }) => {
 
@@ -10,6 +12,7 @@ const RequireAuth = ({ children }) => {
     // const [isGame, setIsGame] = useState(false);
     const auth = useAuth();
     const navigate = useNavigate();
+    // const gameContext = useGameSettings();
 
     useEffect(() => {
         let isMounted = true;
@@ -23,21 +26,21 @@ const RequireAuth = ({ children }) => {
         if (isMounted && !oneTime && !auth.isGame) {
             authIsChecked();
         }
-        
+
         return () => {
             isMounted = false;
         }
     }, [auth, oneTime])
-    
+
     useEffect(() => {
         if (!loading && !auth.isAuth) {
             navigate("/signin", { replace: true });
         }
 
     }, [loading, auth.isAuth, navigate])
-    
+
     if (loading && !auth.isGame) {
-        return <Loader />
+        return <LoaderOntop />
     }
 
     return children;

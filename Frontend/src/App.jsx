@@ -56,13 +56,13 @@ function App() {
 
 
 
-              <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+              {/* <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
-              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
+              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} /> */}
  
-              {/* <Route path="/settings" element={<Settings />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/chat" element={<Chat />} /> */}
+              <Route path="/chat" element={<Chat />} />
 
 
               {/* <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />

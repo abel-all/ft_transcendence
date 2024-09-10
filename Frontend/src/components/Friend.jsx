@@ -41,7 +41,7 @@ function Friend(Data) {
             })
         }
     }
-    
+
     const SendRequest = (user) => {
         axios.post('https://fttran.tech/api/profile/send-friendship-request/', {
             username : user
@@ -57,7 +57,7 @@ function Friend(Data) {
             console.log(`request not accepted the Error ${error}`);
         })
     }
-    
+
     function toggle() {
         setIsTrue(!isTrue);
     }

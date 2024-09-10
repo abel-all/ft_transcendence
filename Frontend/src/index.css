@@ -11,7 +11,6 @@ body {
     background-color: var(--bg-color);
 }
 
-
 .wins::before {
     content: "";
     width: 20px;
@@ -144,6 +143,3 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-  
-
-

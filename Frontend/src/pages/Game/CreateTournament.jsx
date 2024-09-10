@@ -3,22 +3,26 @@ import plusIconWhite from "../../assets/imgs/plusIconWhite.svg"
 import tourCreate from "../../assets/imgs/tourCreate.svg"
 import { useGameSettings } from './GameSettingsContext'
 import CreateTournamentSection from './CreateTournamentSection'
+import LoaderOntop from "../../components/LoaderOntop";
+import Spiner from "./Spiner";
 
 const TournamentCard = ({image, bgColor, iconColor, title, description, hoverColor}) => {
 
     const gameContext = useGameSettings();
 
     const createNewTournament = () => {
+        gameContext.setHandler("loading", true);
         gameContext.setHandler("createtour", true);
         gameContext.setHandler("jointour", false);
     }
     const joinATournament = () => {
+        gameContext.setHandler("loading", true);
         gameContext.setHandler("jointour", true);
         gameContext.setHandler("createtour", false);
     }
 
     const clickHandler = () => {
-            title === "Create new Tournament" ? createNewTournament() : joinATournament();
+        title === "Create new Tournament" ? createNewTournament() : joinATournament();
     }
 
     return (
@@ -64,9 +68,15 @@ const CreateTournament = () => {
     const [joinTour, setJoinTour] = useState(false);
 
     useEffect(() => {
+        if (gameContext.loading) {
+            setTimeout(() => {
+                gameContext.setHandler("loading", false);
+            }, 300);
+        }
         setCreateTour(gameContext.createTour);
         setJoinTour(gameContext.joinTour);
-    }, [gameContext.createTour, gameContext.joinTour])
+    }, [gameContext, gameContext.loading, gameContext.createTour, gameContext.joinTour])
+
 
     return (
         <div className="h-[calc(100vh-65px)] min-h-[600px] w-full flex max-md:flex-col max-md:pb-[60px] justify-center items-center gap-[10px]">
@@ -85,14 +95,15 @@ const CreateTournament = () => {
                     ))}
                 </>
             }
-            {createTour &&
+            {gameContext.loading && <Spiner height="h-full"/>}
+            {createTour && !gameContext.loading &&
                 <CreateTournamentSection
                     title="Create new Tournament"
                     callToAction="Create"
                     buttonColor="bg-[#0f8ce9]"
                 />
             }
-            {joinTour &&
+            {joinTour && !gameContext.loading &&
                 <CreateTournamentSection
                     title="Join a Tournament"
                     callToAction="Join"

@@ -33,46 +33,72 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
     const handleNameChange = (e) => {
         setName(e.currentTarget.value);
         checkInput(e.currentTarget.value);
-        console.log(name);
     }
     const handleTourChange = (e) => {
         setTour(e.currentTarget.value);
         checkInput(e.currentTarget.value);
-        console.log(tour);
     }
 
-    const verify2FaCode = async () => {
+    const createTournament = async () => {
         setIsLoading(true);
 
-        if (nameReGex.test(name) && nameReGex.test(tour)) {
-            await Axios.post("https://fttran.tech/api/auth/2fa/verify/", {
-                display_name: name,
-                tournament_name: tour,
-            },
-            {
-                withCredentials:true,
-            })
-            .then(() => {
-                console.log("first request");
-            })
-            .catch(() => {
-                setIsLoading(false);
-                setMessage("Incorrect code, try again")
-            })
-        }
-        else {
-            setIsLoading(false);
-            setMessage("Invalid code, try again")
-        }
+        gameContext.setHandler("isTournament", true);
+        // if (nameReGex.test(name) && nameReGex.test(tour)) {
+        //     await Axios.post("https://aennaki.me/api/auth/createTournament/", {
+        //         display_name: name,
+        //         tournament_name: tour,
+        //     },
+        //     {
+        //         withCredentials:true,
+        //     })
+        //     .then(() => {
+        //         console.log("create tournament");
+        //         gameContext.setHandler("isTournament", true);
+        //     })
+        //     .catch(() => {
+        //         setIsLoading(false);
+        //         setMessage("Incorrect code, try again")
+        //     })
+        // }
+        // else {
+        //     setIsLoading(false);
+        //     setMessage("Invalid code, try again")
+        // }
+    }
+    const joinTournament = async () => {
+        setIsLoading(true);
+
+        gameContext.setHandler("isTournament", true);
+        // if (nameReGex.test(name) && nameReGex.test(tour)) {
+        //     await Axios.post("https://aennaki.me/api/auth/joinTournament/", {
+        //         display_name: name,
+        //         tournament_name: tour,
+        //     },
+        //     {
+        //         withCredentials:true,
+        //     })
+        //     .then(() => {
+        //         console.log("join tournament");
+        //         gameContext.setHandler("isTournament", true);
+        //     })
+        //     .catch(() => {
+        //         setIsLoading(false);
+        //         setMessage("Incorrect code, try again")
+        //     })
+        // }
+        // else {
+        //     setIsLoading(false);
+        //     setMessage("Invalid code, try again")
+        // }
     }
 
     const handleButtonClick = () => {
-        verify2FaCode();
+        title === "Create new Tournament" ? createTournament() : joinTournament();
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        verify2FaCode();
+        title === "Create new Tournament" ? createTournament() : joinTournament();
     }
 
     if (isLoading)

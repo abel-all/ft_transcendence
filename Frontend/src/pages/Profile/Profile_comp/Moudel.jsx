@@ -7,7 +7,7 @@ function Buttn({toggles, rsn, user, content}) {
     const handelClick = () => {
         if (rsn == "Block") {
             console.log(`${user} is blocked`);
-            axios.post('https://fttran.tech/api/profile/block-friend/', {
+            axios.post('https://aennaki.me/api/profile/block-friend/', {
                 username : user,
             }).then((response) => {
                 console.log("user block sent with suecsses!");
@@ -16,7 +16,7 @@ function Buttn({toggles, rsn, user, content}) {
             });
         } else if (rsn == "Unblock") {
             console.log(`${user} is Unblocked`);
-            axios.post('https://fttran.tech/api/profile/unblock-friend/', {
+            axios.post('https://aennaki.me/api/profile/unblock-friend/', {
                 username : user,
             }).then((response) => {
                 console.log("user Unblock sent with suecsses!");
@@ -34,7 +34,7 @@ function Buttn({toggles, rsn, user, content}) {
             });
         }
         toggles();
-    } 
+    }
     return (
         <>
             <div className="my-[24px] flex justify-center items-center font-[700] mx-[5px] bg-[#e92828] w-[100px] h-[36px] rounded-sm text-white"  onClick={handelClick}>

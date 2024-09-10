@@ -4,6 +4,7 @@ import LoaderOntop from "../../components/LoaderOntop.jsx";
 import Header from "../../components/Header.jsx"
 import BottomNaveBar from "../../components/BottomNavBar.jsx"
 import { useGameSettings } from './GameSettingsContext'
+import HowToPlay from "./HowToPlay.jsx";
 import GamePlay from "./GamePlay.jsx"
 
 
@@ -28,7 +29,8 @@ const PlayWithBot = () => {
                 <Header title="Bot Game" activeSection="GametableIcon" />
                 {/* {!gameContext.isGame && <GameSettings />} */}
                 {/* {gameContext.isGame && <GamePlay />} */}
-                {true && <GamePlay levelOfBot={0.4}/>}
+                {gameContext.isHowToPlay && <HowToPlay />}
+                {true && !gameContext.isHowToPlay && <GamePlay levelOfBot={0.4}/>}
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         )

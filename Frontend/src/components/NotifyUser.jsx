@@ -6,7 +6,7 @@ const NotifyUser = () => {
     const [ShowAlert, setShowAlert] = useState(false);
     const [message, setMessage] = useState("");
     const [color, setColor] = useState("");
-    
+
     useEffect(() => {
 
     }, [message, color]);
@@ -36,7 +36,7 @@ const NotifyUser = () => {
                 setMessage(`${from} sent you a friend request`);
                 setColor("green");
             }
-            
+
             if (type == "handle_friendship_request") {
                 if (status == "rejected") {
                     setMessage(`${from} has rejected your friend request`);

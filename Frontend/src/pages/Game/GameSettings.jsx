@@ -1,6 +1,7 @@
 import SettingsCard from "./SettingsCard"
 import {useGameSettings} from "./GameSettingsContext"
 import { useEffect } from "react";
+import HowToPlay from "./HowToPlay";
 
 
 const GameSettings = ({ isOnlineGame=false }) => {
@@ -12,7 +13,7 @@ const GameSettings = ({ isOnlineGame=false }) => {
     }, [isOnlineGame, gameContext]);
 
     return (
-        <div className='sm:h-[calc(100vh-105px)] sm:min-h-[900px] flex justify-center items-center'>
+        <div className='h-[calc(100vh-105px)] min-h-[900px] flex justify-center items-center'>
             {gameContext.isMapSection && <SettingsCard
                 name="map"
                 title="Do you want to change the map?"
@@ -39,6 +40,7 @@ const GameSettings = ({ isOnlineGame=false }) => {
                 title="Congratulations, you set up settings successfully."
                 buttonHidden="hidden"
             />}
+            {gameContext.isHowToPlay && <HowToPlay />}
         </div>
     )
 }

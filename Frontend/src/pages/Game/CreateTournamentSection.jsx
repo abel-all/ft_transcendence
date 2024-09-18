@@ -44,7 +44,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
         gameContext.setHandler("isTournament", true);
         // if (nameReGex.test(name) && nameReGex.test(tour)) {
-        //     await Axios.post("https://aennaki.me/api/auth/createTournament/", {
+        //     await Axios.post("https://fttran.tech/api/auth/createTournament/", {
         //         display_name: name,
         //         tournament_name: tour,
         //     },
@@ -70,7 +70,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
         gameContext.setHandler("isTournament", true);
         // if (nameReGex.test(name) && nameReGex.test(tour)) {
-        //     await Axios.post("https://aennaki.me/api/auth/joinTournament/", {
+        //     await Axios.post("https://fttran.tech/api/auth/joinTournament/", {
         //         display_name: name,
         //         tournament_name: tour,
         //     },

@@ -96,7 +96,7 @@ const GamePlay = () => {
     // const gameContext = useGameSettings();
     const oneTime = useRef(false);
 
-    const { sendMessage, lastMessage, readyState } = useWebSocket("wss://aennaki.me/ws/game/");
+    const { sendMessage, lastMessage, readyState } = useWebSocket("wss://fttran.tech/ws/game/");
 
     useEffect(() => {
         if (readyState === 1) {

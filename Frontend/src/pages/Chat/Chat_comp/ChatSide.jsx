@@ -88,7 +88,7 @@ function ChatSide({setVoidedUsername, className}) {
                 setVoidedUsername(ChatContext.userFromUrl.user);
             }
             if (username) {
-                axios.get(`https://aennaki.me/messages/${username}`, {withCredentials:true})
+                axios.get(`https://fttran.tech/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {

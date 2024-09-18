@@ -20,7 +20,7 @@ const NotifyUser = () => {
     //     }, 4000);
     // }
 
-    // const {lastMessage } = useWebSocket('wss://aennaki.me/ws/notifications/', {
+    // const {lastMessage } = useWebSocket('wss://fttran.tech/ws/notifications/', {
     //     onError: (error) => console.error('WebSocket error:', error),
     //     shouldReconnect: () => true,
     //     reconnectInterval: 3000

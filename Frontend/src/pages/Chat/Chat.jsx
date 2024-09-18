@@ -15,7 +15,7 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('wss://aennaki.me/ws/chat/');
+    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const [VoidedUsername, setVoidedUsername]  = useState("");
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
@@ -92,7 +92,7 @@ function Chat() {
         let windo = window.location.href;
         if (windo.lastIndexOf("user=") != -1) {
             let FromUser = windo.substring(windo.lastIndexOf("user=") + 5);
-                axios.post('https://aennaki.me/api/chat/user/', {
+                axios.post('https://fttran.tech/api/chat/user/', {
                     username : FromUser
                 }).then(res => {
                     if (res.status == 200) {

@@ -29,13 +29,13 @@ export const ContextProvider = ({ children }) => {
     }
 
     const isAuthenticated = async () => {
-        await Axios.get("https://aennaki.me/api/auth/token/", {
+        await Axios.get("https://fttran.tech/api/auth/token/", {
             withCredentials:true
         })
         .then(() => {
             const fetchUserData = async () => {
 
-                await Axios.get("https://aennaki.me/api/profile/data/",
+                await Axios.get("https://fttran.tech/api/profile/data/",
                 {
                     withCredentials:true,
                 }).then((response) => {
@@ -53,7 +53,7 @@ export const ContextProvider = ({ children }) => {
                 setIsAuth(false);
             if (err.response?.status == 403) {
                 const refrechToken = async () => {
-                    await Axios.get("https://aennaki.me/api/auth/token/refresh/", {
+                    await Axios.get("https://fttran.tech/api/auth/token/refresh/", {
                         withCredentials:true
                     })
                     .then(() => {

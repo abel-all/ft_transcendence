@@ -17,7 +17,7 @@ const Notification = () => {
         const fetchUserData = async () => {
             // onetime = true;
 
-            await Axios.post("https://aennaki.me/api/notifications/", {
+            await Axios.post("https://fttran.tech/api/notifications/", {
                 offset: (10 * isBottomCounter)
             }, {
                 withCredentials:true,

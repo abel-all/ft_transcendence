@@ -22,7 +22,7 @@ const SearchModal = () => {
     const targetRef = useRef(null);
 
     const fetchUsersData = async () => {
-        await Axios.post("https://aennaki.me/api/profile/search/",{
+        await Axios.post("https://fttran.tech/api/profile/search/",{
             limit: 20,
             prefix: searchResult
         },
@@ -37,7 +37,7 @@ const SearchModal = () => {
         })
     }
     const fetchFriendsData = async () => {
-        await Axios.post("https://aennaki.me/api/profile/search/",{
+        await Axios.post("https://fttran.tech/api/profile/search/",{
             limit: 20,
             prefix: searchResult
         },
@@ -78,7 +78,7 @@ const SearchModal = () => {
         // const fetchUserData = async () => {
             // onetime = true;
 
-            // await Axios.post("https://aennaki.me/api/notifications/", {
+            // await Axios.post("https://fttran.tech/api/notifications/", {
             //     offset: 10
             // }, {
             //     withCredentials:true,

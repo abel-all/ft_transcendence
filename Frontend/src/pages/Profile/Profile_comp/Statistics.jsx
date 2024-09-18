@@ -12,11 +12,11 @@ function Statistics({className, UrlUsername}) {
         setTotal(wins + loses);
         setStatus({wins, loses});
     }
-    
+
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("https://fttran.tech/api/profile/statistics/", {username : UrlUsername});
+                const res = await axios.get("https://aennaki.me/api/profile/statistics/", {username : UrlUsername});
                 handelStat(res.data);
                 console.log("Statistics fetchid data with Success: ");
             } catch (error) {

@@ -41,16 +41,16 @@ function ChatSide({setVoidedUsername, className}) {
         seen: false,
         depands: "waiting"
       };
-    
+
     const [messages, setMessages] = useState([]);
     const [messagesAdded, setMessagesAdded] = useState([]);
     const [username, SetUsername] = useState("");
     const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(true);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
     const [CreateMessages, setCreateMessages] = useState(initialState);
-    
+
     const  UpdateCreatedMessage = (msg, send) => {
-        setCreateMessages( prevState => ({ 
+        setCreateMessages( prevState => ({
             ...prevState,
             message : msg,
             timestamp :  TimeHM(),
@@ -58,9 +58,9 @@ function ChatSide({setVoidedUsername, className}) {
         })
     );
     }
-    
+
     const  UpdateCreatedMessageState = (seen, state) => {
-        setCreateMessages( prevState => ({ 
+        setCreateMessages( prevState => ({
             ...prevState,
             seen : seen,
             timestamp :  TimeHM(),
@@ -68,8 +68,8 @@ function ChatSide({setVoidedUsername, className}) {
             })
         );
     }
-    
-    
+
+
     const goToButtom = (scrollBehavior) => {
         messagesRef.current.scrollTo({
             top: messagesRef.current.scrollHeight,
@@ -88,7 +88,7 @@ function ChatSide({setVoidedUsername, className}) {
                 setVoidedUsername(ChatContext.userFromUrl.user);
             }
             if (username) {
-                axios.get(`https://fttran.tech/messages/${username}`, {withCredentials:true})
+                axios.get(`https://aennaki.me/messages/${username}`, {withCredentials:true})
                 .then(res => {
                     setMessages(res.data);
                     setGetMessagesFromDataBase((prevState) => {
@@ -100,11 +100,11 @@ function ChatSide({setVoidedUsername, className}) {
                 });
             }
         }
-        
+
         FetchFullBack();
     }, [ChatContext.chatHeader.name, ChatContext.userFromUrl.user, username]);
-    
-    
+
+
     useEffect(() => {
         setMessagesAdded([]);
     }, [ChatContext.chatHeader]);
@@ -114,7 +114,7 @@ function ChatSide({setVoidedUsername, className}) {
             UpdateCreatedMessage(message, ToUser);
             sendMessageToDataBase(message, username, CreateMessages);
     }
-    
+
     const sendMessageToDataBase = (message, sender ,CreateMessages) => {
         serUserAbleToSendMessage(false);
 
@@ -133,7 +133,7 @@ function ChatSide({setVoidedUsername, className}) {
             serUserAbleToSendMessage(false);
         }
     };
-    
+
     useEffect(() => {
             CreateMessages.message && messagesAddedLoop(messagesAdded, CreateMessages) && setMessagesAdded(prevState => [
                 ...prevState, {
@@ -167,7 +167,7 @@ function ChatSide({setVoidedUsername, className}) {
                         depends: "Waiting"
                     }
                 ]);
-                if (ChatContext.readyState == ReadyState.OPEN) { 
+                if (ChatContext.readyState == ReadyState.OPEN) {
                     ChatContext.sendMessage(JSON.stringify({
                         action: "read_receipt",
                         username: JSON.parse(ChatContext.lastMessage.data).from,
@@ -177,8 +177,8 @@ function ChatSide({setVoidedUsername, className}) {
             }
         }
     }, [ChatContext.lastMessage]);
-    
-    useEffect(() => {        
+
+    useEffect(() => {
         if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt") {
             console.log(ChatContext.lastMessage);
             let arrs = messagesAdded;

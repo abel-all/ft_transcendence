@@ -40,7 +40,7 @@ function Profile() {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("https://fttran.tech/api/profile/data/", {username : UrlUsername});
+                const res = await axios.get("https://aennaki.me/api/profile/data/", {username : UrlUsername});
                 handelData(res.data);
                 console.log("Profile Fetched data with success");
             } catch (error) {
@@ -67,6 +67,6 @@ function Profile() {
             </div>
         </div>
     )
-} 
+}
 
 export default Profile

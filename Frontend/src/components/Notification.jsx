@@ -3,7 +3,7 @@ import Spiner from "../pages/Game/Spiner"
 import Axios from "axios";
 import "../assets/icons/css/index.css"
 
-let onetime = false;
+// let onetime = false;
 
 const Notification = () => {
 
@@ -15,28 +15,28 @@ const Notification = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            onetime = true;
+            // onetime = true;
 
-            // await Axios.post("https://aennaki.me/api/notifications/", {
-            //     offset: 10
-            // }, {
-            //     withCredentials:true,
-            // }).then((response) => {
-            //     setNotiData(response.data.message)
-            // }).catch(err => {
-            //         console.log(err);
-            //         console.log("Please try again!")
-            // })
+            await Axios.post("https://aennaki.me/api/notifications/", {
+                offset: (10 * isBottomCounter)
+            }, {
+                withCredentials:true,
+            }).then((response) => {
+                setNotiData(response.data.message)
+            }).catch(err => {
+                    console.log(err);
+                    console.log("Please try again!")
+            })
             setTimeout(() => {
                 setNotiData(prev => [...prev, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter]);
                 setIsLoaded(false);
                 setIsLoading(false);
             }, 2000);
         }
-        if (!onetime)
+        // if (!onetime)
             fetchUserData();
 
-        return () => { onetime =false }
+        // return () => { onetime =false }
     } ,[isBottomCounter])
 
     useEffect(() => {

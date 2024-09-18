@@ -5,7 +5,7 @@ import useWebSocket from "react-use-websocket"
 import "./css/index.css"
 import MatchMakingCard from "./MatchMakingCard.jsx";
 import { useGameSettings } from './GameSettingsContext'
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 
 
 // Game vars:
@@ -67,7 +67,8 @@ const PlayerScore = ({ rank, username, userImage, flexDirection="" }) => {
     )
 }
 
-let oneTime = false;
+// let oneTime = false;
+let waitingTimeout;
 
 const GamePlay = () => {
 
@@ -76,16 +77,24 @@ const GamePlay = () => {
     const [player2Score, setPlayer2Score] = useState(0);
     // const [counter, setCounter] = useState(0);
     // const [isGameStart, setIsGameStart] = useState(false);
-    const [gameFinished, setGameFinished] = useState(false);
+    // const [gameFinished, setGameFinished] = useState(false);
     const [isMobileVersion, setIsMobileVersion] = useState(false);
+    const [isWaiting, setIsWaiting] = useState(true);
     const [playerData, setPlayerData] = useState({"player" : {"username" : "", "picture" : "", "badge": "", "rank": ""}});
 
     const [keyLeftpressed, setKeyLeftpressed] = useState(false);
     const [keyRightpressed, setKeyRightpressed] = useState(false);
+    const [matchId, setMatchId] = useState(-1);
     const [isGame, setIsGame] = useState(false);
     const [avatar, setAvatar] = useState(true);
+    const [isGameEnd, isIsGameEnd] = useState(false);
+    const [endMatchData, setEndMatchData] = useState({});
+    const [playerNumber, setPlayerNumber] = useState(0);
+    const [ballCor, setBallCor] = useState({x : (canvasWidth / 2), y : (canvasHeight / 2)});
+    const [paddleCor, setPaddleCor] = useState((canvasWidth / 2) - (playerWidth / 2));
     const [message, setMessage] = useState("");
-    const gameContext = useGameSettings();
+    // const gameContext = useGameSettings();
+    const oneTime = useRef(false);
 
     const { sendMessage, lastMessage, readyState } = useWebSocket("wss://aennaki.me/ws/game/");
 
@@ -93,46 +102,85 @@ const GamePlay = () => {
         if (readyState === 1) {
             sendMessage(JSON.stringify({ action: 'join_queue' }));
             console.log("WebSocket connection is open");
+            waitingTimeout = setTimeout(() => {
+                setIsWaiting(false);
+            }, 200000);
         }
+        // if (oneTime.current === false) {
+        //     sendMessage(JSON.stringify({ action: 'disconnect' }));
+        //     setMessage("No one wants to play right now. Please try again!");
+        // }
         else {
             console.log("WebSocket connection is not open");
             console.log(readyState);
         }
+
+        return () => {
+            oneTime.current = false
+            clearTimeout(waitingTimeout)
+        }
+
     }, [readyState, sendMessage]);
+
+    useEffect(() => {
+        if (!isWaiting) {
+            sendMessage(JSON.stringify({action: 'disconnect'}));
+            setMessage("No one wants to play right now. Please try again!");
+        }
+    }, [isWaiting, sendMessage]);
 
     const handleLastMessage = useCallback(() => {
         if (lastMessage) {
             const data = JSON.parse(lastMessage.data);
-            if (data.status === "match_found" && !oneTime) {
-                oneTime = true;
+            // console.log("data ---- ", data);
+            if (data?.type === "match_found" && !oneTime.current) {
+                clearTimeout(waitingTimeout);
+                oneTime.current = true;
                 setPlayerData(data);
-                sendMessage(JSON.stringify({action: 'start_game'}));
+                setMatchId(data?.match_id);
+                setPlayerNumber(data?.player_number);
+                console.log("player number is : ", data?.player_number);
+                sendMessage(JSON.stringify({action: 'start_game', match_id: data?.match_id}));
+                console.log(">>>>>>> send start game action", data?.match_id);
                 setIsGame(true);
                 setAvatar(false);
-            } else if (data.status === "no match found") {
-                setMessage("No one wants to play right now. Please try again!");
             }
-            else if (data.status != "Waiting") {
-                console.log("data" , data);
-                // const data = JSON.parse(lastMessage.data);
-                // // update ball and player 2 pos
-                // ball.x = data.x;
-                // ball.y = data.y;
-
-                // paddleTwo.x = data.playerX;
-                // // update score
-                // setPlayer1Score(data.player1Score);
-                // setPlayer2Score(data.player2Score);
-
+            // else if (data?.type === "no_match_found") {
+            //     sendMessage(JSON.stringify({ action: 'disconnect' }));
+            //     setMessage("No one wants to play right now. Please try again!");
+            // }
+            else if (data?.type === "game_update") {
+                // console.log("ball cor : ", data);
+                setBallCor({x: data.ball?.x, y: data.ball?.y});
+            }
+            else if (data?.type === "score_update") {
+                sendMessage(JSON.stringify({action: 'score_update', player1_score: data?.player1_score, player2_score: data?.player2_score}));
+                console.log("score ---- ", data.player1_score, data.player2_score);
+                setPlayer1Score(data.player1_score);
+                setPlayer2Score(data.player2_score);
+            }
+            else if (data?.type === "paddle_update") {
+                // console.log("paddle y is : ", data?.y);
+                setPaddleCor(data?.y);
+                sendMessage(JSON.stringify({ action: 'update_paddle', y: data?.y, player_number: data?.player_number }));
+                // paddleTwo.x = data?.paddle;
+            }
+            else if (data?.type == "end_game") {
+                setEndMatchData(data);
+                // if (data?.status === "disconnected" && data?.winner === playerNumber)
+                isIsGameEnd(true);
+                sendMessage(JSON.stringify({ action: 'disconnect' }));
+            }
+            else if (data?.type == "already_connected") {
+                setMessage("User already connected from another tab");
             }
         }
-
-        // return () => { oneTime = false }
 
     }, [lastMessage, sendMessage]);
 
     useEffect(() => {
         handleLastMessage();
+
     }, [handleLastMessage]);
 
     useEffect(() => {
@@ -143,21 +191,9 @@ const GamePlay = () => {
         let handleKeyUp;
 
         const canvas = canvasRef.current;
-        console.log("don't enter");
         const startGame = () => {
-            console.log("enter");
-        // const counterTimeout = setTimeout(() => {
-            // }, 4000);
-
-        // setIsGameStart(true);
-        // setCounter(counter + 1);
-        // const counterInterval = setInterval(() => {
-        // }, 1000);
-
 
         if (canvas) {
-            // clearTimeout(counterTimeout);
-            // clearInterval(counterInterval);
             const ctx = canvas.getContext("2d");
               // draw functions
             const drawRect = (x, y, width, height, color) => {
@@ -224,11 +260,11 @@ const GamePlay = () => {
                     newX = (e.clientX - rect.left - (paddleOne.width / 2)) * 1.7;
                 if (newX < (canvasWidth - paddleOne.width) && newX > 0) {
                     paddleOne.x = newX;
+                    sendMessage(JSON.stringify({action: 'move_paddle', y: newX, match_id: matchId, player_number: playerNumber }));
                     // send paddle pos to server
-                    sendMessage(JSON.stringify({action: 'update_game_state'}));
-                    sendMessage(JSON.stringify({ playerY: newX }));
                 }
             }
+
             window.addEventListener("mousemove", handleMouseMove);
             window.addEventListener("keydown", handleKeyDown);
             window.addEventListener("keyup", handleKeyUp);
@@ -243,16 +279,23 @@ const GamePlay = () => {
                 // paddles movements :
                 if (keyLeftpressed && paddleOne.x > 0) {
                     paddleOne.x -= paddleSpeed;
-                    sendMessage(JSON.stringify({action: 'update_game_state'}));
-                    sendMessage(JSON.stringify({ playerY: paddleOne.x }));
+                    sendMessage(JSON.stringify({action: 'move_paddle', y: paddleOne.x, match_id: matchId, player_number: playerNumber }));
                 }
                 else if (keyRightpressed && paddleOne.x < canvasWidth - paddleOne.width) {
                     paddleOne.x += paddleSpeed;
-                    sendMessage(JSON.stringify({action: 'update_game_state'}));
-                    sendMessage(JSON.stringify({ playerY: paddleOne.x }));
+                    sendMessage(JSON.stringify({action: 'move_paddle', y: paddleOne.x, match_id: matchId, player_number: playerNumber }));
                 }
-                if (player1Score === 5 || player2Score === 5)
-                    return setGameFinished(true);
+
+                ball.x = ballCor.y;
+                if (playerNumber === 2)
+                    ball.y = canvasHeight - ballCor.x;
+                else
+                    ball.y = ballCor.x;
+
+                paddleTwo.x = paddleCor;
+
+                // if (player1Score === 10 || player2Score === 10)
+                //     return setGameFinished(true);
             };
 
             intervalId = setInterval(gameLoop, 1000 / 60);
@@ -261,7 +304,6 @@ const GamePlay = () => {
     }
 
         if (isGame) {
-            console.log("gamelooooopppppp!!!@@@@@@##########");
             startGame();
         }
 
@@ -272,20 +314,35 @@ const GamePlay = () => {
             clearInterval(intervalId);
         }
 
-    }, [player1Score, player2Score, gameFinished, isMobileVersion, sendMessage, isGame, keyLeftpressed, keyRightpressed])
+    }, [player1Score, player2Score, isMobileVersion, sendMessage, isGame, keyLeftpressed, keyRightpressed, ballCor, playerNumber, paddleCor, matchId])
 
-    const handleTryAgainClick = () => {
-        // ball.x = canvasWidth / 2;
-        // ball.y = canvasHeight / 2;
-        // ball.speed = ballStartSpeed;
-        // ball.velocityY *= -1;
-        // setPlayer1Score(0);
-        // setPlayer2Score(0);
-        // setGameFinished(false);
+    // const handleTryAgainClick = () => {
+    //     // ball.x = canvasWidth / 2;
+    //     // ball.y = canvasHeight / 2;
+    //     // ball.speed = ballStartSpeed;
+    //     // ball.velocityY *= -1;
+    //     // setPlayer1Score(0);
+    //     // setPlayer2Score(0);
+    //     // setGameFinished(false);
 
-    }
+    // }
 
     console.log("this is isGame", isGame);
+
+    // useEffect(() => {
+
+    //     let waitingTimeout;
+
+    //     if (isGame) {
+    //         waitingTimeout = setTimeout(() => {
+    //             setIsWaiting(false);
+    //         }, 3000);
+    //     }
+
+    //     return () => {
+    //         clearTimeout(waitingTimeout);
+    //     }
+    // }, [isGame])
 
     return (
         <>
@@ -314,15 +371,22 @@ const GamePlay = () => {
                 </div>
             :
             <>
-                {/* {!isGameStart && <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center text-[#fff6f9] font-bold text-[80px] max-sm:text-[30px]">
-                    {counter}
-                </div>} */}
-                {gameFinished && <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center">
+                {isGameEnd && <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center text-[#fff6f9] font-bold text-[80px] max-sm:text-[30px]">
+                    <div className="flex flex-col gap-[30px] justify-center items-center">
+                        <div className={`font-semibold text-[#fff0f9] text-[50px] max-sm:text[35px] ${endMatchData?.winner === playerNumber ? "text-[#00ff00]" : "text-[red]"}`}>
+                            {endMatchData?.winner === playerNumber ? "You Win" : "You Lose"}
+                        </div>
+                        <div className="font-normal text-[#fff0f9] text-[38px] max-sm:text[22px]">
+                            {endMatchData?.score}
+                        </div>
+                    </div>
+                </div>}
+                {/* {gameFinished && <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center">
                     <div className="text-[#fff6f9] items-center flex flex-col gap-[20px]">
                         <div className="font-medium text-[50px] max-sm:text-[30px]">Game Finished</div>
                         <img onClick={handleTryAgainClick} className="cursor-pointer w-[40px] max-sm:w-[30px] hover:opacity-80" src={tryImg} />
                     </div>
-                </div>}
+                </div>} */}
                 <div className='h-full flex flex-col justify-center items-center gap-[24px] max-sm:gap-0'>
                     <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">
                         <PlayerScore

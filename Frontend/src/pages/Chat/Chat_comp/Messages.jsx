@@ -7,8 +7,8 @@ import axios from 'axios'
 
 
 function Messages({setMessages, username, className, toUser}) {
-    
-    
+
+
 
     console.log("Chat with : ", username);
 
@@ -31,7 +31,7 @@ function Messages({setMessages, username, className, toUser}) {
 
     // useEffect(() => {
     //     async function fetchUsername() {
-    //         await axios.get('https://fttran.tech/api/WhoAmI/')
+    //         await axios.get('https://aennaki.me/api/WhoAmI/')
     //         .then(res => {
     //             console.log("Done fetching Data of username");
     //             setWhoAmI(res.data.username);
@@ -53,10 +53,10 @@ function Messages({setMessages, username, className, toUser}) {
                 const oldScrollHeight = messagesRef.current.scrollHeight;
 
                 try {
-                    const res = await axios.get(`https://fttran.tech/messages/${Arr[index.current]}`, { withCredentials: true });
+                    const res = await axios.get(`https://aennaki.me/messages/${Arr[index.current]}`, { withCredentials: true });
                     index.current++;
                     const newMessages = Array.isArray(res.data.messages) ? res.data.messages : [];
-                    
+
                     setOldest(prevStat => [
                         ...newMessages,
                         ...prevStat

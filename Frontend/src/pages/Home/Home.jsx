@@ -11,6 +11,17 @@ function Home() {
         setTimeout(() => {
             setIsloaded(false)
         }, 300);
+
+        const handleReload = (e) => {
+            e.preventDefault(); // Cancel the event
+            // e.returnValue = ''; // Chrome requires returnValue to be set
+            console.log("Are you sure you want to refresh? Your changes may be lost.");
+        };
+
+        window.addEventListener("beforeunload", handleReload);
+
+        return () => { window.removeEventListener("beforeunload", handleReload) }
+
     }, [])
 
     if (isloaded)

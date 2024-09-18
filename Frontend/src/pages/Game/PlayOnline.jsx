@@ -34,8 +34,8 @@ const PlayOnline = () => {
             <div className="h-[100vh] container mx-auto px-[10px]">
                 <Header title="Online Game" activeSection="GametableIcon" />
                 {/* {(gameContext.matchDelay || gameDelay) && <MatchMaking />} */}
-                {/* {!gameDelay && !gameContext.isGame && !gameContext.selfData.isSettings && <GameSettings isOnlineGame={true}/>} */}
-                {/* {(gameContext.isGame || gameContext.selfData.isSettings) && <GamePlayOnline />} */}
+                {/* {!gameContext.selfData.isSettings && <GameSettings isOnlineGame={true}/>}
+                {(gameContext.isGame || gameContext.selfData.isSettings) && <GamePlayOnline />} */}
                 <GamePlayOnline />
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>

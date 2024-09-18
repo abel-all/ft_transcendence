@@ -11,7 +11,7 @@ import BotImgTwo from "../../assets/imgs/botLevelTwo.svg"
 import BotImgThree from "../../assets/imgs/botLevelThree.svg"
 import { useGameSettings } from "./GameSettingsContext"
 import { useEffect, useState } from "react"
-import { Axios } from 'axios'
+import Axios from 'axios'
 import Spiner from "./Spiner"
 import './css/index.css'
 
@@ -75,7 +75,7 @@ const ChooseSectionHandler = (name) => {
 
     const lastClickHandler = () => {
         const postSettingsData = async () => {
-
+            console.log("hhhhhh")
             const mapName = gameContext.settingsData[0];
             const ballColor = gameContext.settingsData[1];
             let winningScore = "Five";
@@ -85,7 +85,7 @@ const ChooseSectionHandler = (name) => {
                 botLevel = gameContext.settingsData[3];
             }
 
-            await Axios.post("https://fttran.tech/api/game/setting/",{
+            await Axios.post("https://aennaki.me/api/game/setting/", {
                 mapname: mapName,
                 ballcolor: ballColor,
                 score: winningScore,
@@ -94,7 +94,7 @@ const ChooseSectionHandler = (name) => {
             {
                 withCredentials:true,
             }).then(() => {
-                console.log("first request");
+                console.log("setting is updated seccesfully");
                 gameContext.setHandler("last", false);
                 if (gameContext.issetting) {
                     gameContext.setHandler("game", true);

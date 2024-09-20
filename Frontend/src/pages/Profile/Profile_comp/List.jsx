@@ -6,10 +6,10 @@ import axios from "axios";
 
 function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
 
-    const [friendlist, setfriendlist] = useState([]);
+    const [friendlist, setfriendlist] = useState(AlreadyDated);
 
     useEffect(() => {
-        if (!AlreadyDated || !Array.isArray(AlreadyDated)) {
+        if ((!friendlist)) {
             const fetchmydata = async () => {
                 try {
                     const res = await axios.get(`https://fttran.tech/api/profile/${EndPoint}/`);
@@ -29,7 +29,7 @@ function List({reason, EndPoint, AlreadyDated, isfriend} = data) {
         <>
 
             {
-                friendlist ? friendlist.map( (friends, index) => {
+                Array.isArray(friendlist) ? friendlist.map( (friends, index) => {
                     console.log(`fetched data ${friendlist}`);
                     return (
                         <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">

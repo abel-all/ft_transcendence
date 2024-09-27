@@ -30,7 +30,6 @@ function Profile() {
     const [UrlUsername, setUrlUsername] = useState(GetUserFromUrl());
     const [DataFetched, setDataFetched] = useState(false);
 
-    console.log(UrlUsername);
 
     const handelData = (res) => {
         const {picture, username, background_picture, rank} = res;
@@ -38,13 +37,12 @@ function Profile() {
     }
 
     useEffect(() => {
+        let url = UrlUsername ? `https://www.fttran.tech/api/profile/data/${UrlUsername}/`: "https://www.fttran.tech/api/profile/data/";
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("https://fttran.tech/api/profile/data/", {username : UrlUsername});
+                const res = await axios.get(`${url}`);
                 handelData(res.data);
-                console.log("Profile Fetched data with success");
             } catch (error) {
-                console.log("Profile fetchig data Error");
             }
         }
         fetchmydata();

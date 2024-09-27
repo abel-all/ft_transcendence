@@ -17,13 +17,15 @@ function ChatBottom() {
         if (messageContext.userAbleToSendMessage && textValue && textValue.trim(" ") && (textValue.length < 20000)){
             flushSync(() => {
                 messageContext.addMessage(textValue);
+                messageContext.setlastMessageUserSend(textValue);
                 if (textAreaRef.current) {
                     textAreaRef.current.value = "";
                     setTextValue("");
                 }
             });
-            setTimeout(() => {
+            const times = setTimeout(() => {
                 messageContext.goToButtom("smooth");
+                clearTimeout(times);
             }, 0)
         }
     }

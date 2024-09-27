@@ -8,7 +8,7 @@ const MatchMaking = () => {
     const [avatar, setAvatar] = useState(true);
     const [message, setMessage] = useState("");
     const gameContext = useGameSettings();
-    const { sendMessage, lastMessage, readyState } = useWebSocket("wss://fttran.tech/ws/game/");
+    const { sendMessage, lastMessage, readyState } = useWebSocket("wss://www.fttran.tech/ws/game/'");
 
     useEffect(() => {
         if (readyState === 1) {
@@ -44,7 +44,7 @@ const MatchMaking = () => {
     // useEffect(() => {
     //     // const fetchPlayerData = async () => {
     //     //     if (oneTime === false) {
-    //     //         await Axios.post("https://fttran.tech/api/game/join/",
+    //     //         await Axios.post("https://www.fttran.tech/api/game/join/",
     //     //         {
     //     //             withCredentials:true,
     //     //         }).then((response) => {

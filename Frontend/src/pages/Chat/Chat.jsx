@@ -7,6 +7,7 @@ import { useState, createContext, useEffect, useRef } from 'react'
 import chatUsers from "../../assets/ChatUsers.json"
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import axios from 'axios'
+import testUser from '../../assets/users/user (9).png'
 
 
 
@@ -15,7 +16,8 @@ const chatHeaderOnClick = createContext();
 function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
-    const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/');
+    const [lastMessageUserSend, setlastMessageUserSend] = useState("");
+    const [socketURL, setSocketURL] = useState('wss://www.fttran.tech/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const [VoidedUsername, setVoidedUsername]  = useState("");
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
@@ -28,6 +30,7 @@ function Chat() {
         shouldReconnect: () => true,
         reconnectInterval: 3000
     });
+
     const [userFromUrl, setUserFromUrl] = useState({
         user:"",
         url:"",
@@ -46,8 +49,8 @@ function Chat() {
 
     const [chatHeader, setChatHeader] = useState({
         name: "",
-        rank: -999,
-        userProfile: "x",
+        rank: 9,
+        userProfile: null,
         windowSize:"",
         clicked: false,
         ChatShown:true
@@ -64,10 +67,6 @@ function Chat() {
             rank: (userrank) ? userrank : prevState.rank,
         }));
     }
-
-
-
-
 
     const handelChatHeader = (names, ranks, userProfiles) => {
         setChatHeader(prevState => ({
@@ -92,7 +91,8 @@ function Chat() {
         let windo = window.location.href;
         if (windo.lastIndexOf("user=") != -1) {
             let FromUser = windo.substring(windo.lastIndexOf("user=") + 5);
-                axios.post('https://fttran.tech/api/chat/user/', {
+                sendMessage(JSON.stringify({ action: 'create_room', username : FromUser}));
+                axios.post('https://www.fttran.tech/api/chat/user/', {
                     username : FromUser
                 }).then(res => {
                     if (res.status == 200) {
@@ -126,7 +126,7 @@ function Chat() {
         <div className="container mx-auto flex justify-center w-full h-full">
             <div className='w-full'>
                 <Header title="Chat" activeSection="ChatIcon" hide={!chatHeader.ChatShown ? "hidden md:flex" : ""}/>
-                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage, readyState}}>
+                <chatHeaderOnClick.Provider value={{chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage, readyState, lastMessageUserSend, setlastMessageUserSend}}>
                     <div className="flex indexchatHolder mt-[101px] flex-row">
                         <ProprtesSide VoidedUsername={VoidedUsername}className={`ProprtesSide basis-full ${chatHeader.ChatShown == false ? " hidden md:flex" : "flex"} md:basis-4/12 flex flex-col`}/>
                         <ChatSide setVoidedUsername={setVoidedUsername} className={`ChatSide ${chatHeader.ChatShown == true ? " hidden " : ""} md:flex md:basis-8/12`}/>

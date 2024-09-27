@@ -17,7 +17,7 @@ const SearchEngine = () => {
     // useEffect(() => {
     //     const fetchPlayerData = async () => {
     //         oneTime = true;
-    //         await Axios.post("https://fttran.tech/api/game/join/",
+    //         await Axios.post("https://www.fttran.tech/api/game/join/",
     //         {
     //             withCredentials:true,
     //         }).then((response) => {

@@ -1,8 +1,9 @@
 import useWebSocket from "react-use-websocket";
 import Alert from "./Alert";
-import { useEffect , useState} from "react";
+import { useContext, useEffect , useState} from "react";
 
 const NotifyUser = () => {
+
     const [ShowAlert, setShowAlert] = useState(false);
     const [message, setMessage] = useState("");
     const [color, setColor] = useState("");
@@ -20,7 +21,7 @@ const NotifyUser = () => {
         }, 4000);
     }
 
-    const {lastMessage } = useWebSocket('wss://fttran.tech/ws/notifications/', {
+    const {lastMessage } = useWebSocket('wss://www.fttran.tech/ws/notifications/', {
         onError: (error) => console.error('WebSocket error:', error),
         shouldReconnect: () => true,
         reconnectInterval: 3000

@@ -30,31 +30,26 @@ function Friend(Data) {
 
     const AcceptRequest = (user, statusOfReq) => {
         if (Data.reason == "Invetations") {
-            console.log(`${user} is accepted`);
-            axios.post('https://fttran.tech/api/profile/handle-friendship-request/', {
+            axios.post('https://www.fttran.tech/api/profile/handle-friendship-request/', {
                 username : user,
                 status: statusOfReq
             }).then((respons) => {
-                console.log("user add to friend list");
             }).catch((error) => {
-                console.log("request not accepted");
             })
         }
     }
 
     const SendRequest = (user) => {
-        axios.post('https://fttran.tech/api/profile/send-friendship-request/', {
+        axios.post('https://www.fttran.tech/api/profile/send-friendship-request/', {
             username : user
         }).then((respons) => {
             handelRender(respons.data.message);
         }).catch((error) => {
             if (error.response) {
                 if (error.response.status == 403) {
-                    console.log(`${error.response.data.message}  The message`);
                     handelRender(error.response.data.message, "red");
                 }
             }
-            console.log(`request not accepted the Error ${error}`);
         })
     }
 

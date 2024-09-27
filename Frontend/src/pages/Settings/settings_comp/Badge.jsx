@@ -3,7 +3,7 @@ import Edit from '../../../assets/imgs/edit.svg'
 import { useState } from 'react';
 import upload from '../../../assets/imgs/upload.svg'
 import userbg from "../../../assets/imgs/userbg.png"
-
+import axios from 'axios';
 
 const CheckPath = (file) => {
 
@@ -18,6 +18,7 @@ function Badge({SettingsData}) {
 
     const [save, setSave] = useState(false);
     const [image, setImage] = useState(null);
+    const [imagefile, setimagefile] = useState(null);
     const [background, setBackground] = useState(null);
     const {first_name, last_name, background_picture, picture} = SettingsData;
     
@@ -32,8 +33,41 @@ function Badge({SettingsData}) {
             const readimage = new FileReader();
             readimage.onloadend = () => {
                 setImage(readimage.result);
+                handelUpload(imagefile, "picture");
             }
             readimage.readAsDataURL(imagefile);
+        }
+    }
+
+    const handelUpload = async (file, endPoint) => {
+
+        if (file) {
+
+            const formData = new FormData();
+
+            formData.append(endPoint, file);
+
+            try {
+
+                const sendFile = await axios.post(`https://www.fttran.tech/api/profile/upload-${endPoint}/`, formData, {
+
+                        headers: {
+
+                            'Content-Type': 'multipart/form-data'
+                            
+                        }
+                    }
+                )
+
+                const res = await sendFile.data;
+
+                console.log("Done uploading res : ", res);
+
+            } catch (Error) {
+
+                console.log("FileUpload Error ", Error);
+
+            }
         }
     }
 
@@ -44,6 +78,7 @@ function Badge({SettingsData}) {
             const readbackground = new FileReader();
             readbackground.onloadend = () => {
                 setBackground(readbackground.result);
+                handelUpload(backgroundfile, "background_picture");
             }
             readbackground.readAsDataURL(backgroundfile);
         }
@@ -52,7 +87,7 @@ function Badge({SettingsData}) {
     return (
         <form action='' method='POST' >
             <div className=" relative">
-                <img className="rounded-t-lg h-[182px] w-full" src={(background == null) ? background_picture : background} alt="" />
+                <img className="rounded-t-lg h-[182px] w-full" src={(background == null) ? (background_picture ? background_picture : userbg) : background} alt="" />
                 <input type='file' id="changeBackground" onChange={HandelBackground} name="changeBackground" className='hidden absolute top-[-6px] left-[11px]'/>
                 <label className={(save ? "flex flex-row" : "hidden") + " bg-white w-[190px] rounded-md absolute top-[10px] left-[11px] cursor-pointer"} htmlFor="changeBackground">
                     <img className='' src={upload} alt=''/>
@@ -61,7 +96,7 @@ function Badge({SettingsData}) {
             </div>
             <div className="Badge relative md:static bg-[#15262A] h-[182px] md:h-[73px] w-full border-x-[1px] mb-[10px] border-b-[1px] border-[#626262] flex flex-col md:flex-row items-center">
                 <img className=" rounded-full md:ml-[25px] w-[107.69px] h-[107.69px] top-[-57px] absolute md:relative "
-                    src={(image == null) ? picture : image} alt="">
+                    src={(image == null) ? (picture ? picture : UserIcon)  : image} alt="">
                 </img>
                 <div className='relative'>
                     <input type='file' id="changeProfile" onChange={HandelImage} name="changeProfile" className='hidden absolute top-[-6px] left-[11px]'/>

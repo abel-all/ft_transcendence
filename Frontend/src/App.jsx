@@ -33,47 +33,46 @@ function App() {
 
   return (
     <>
-      <NotifyUser/>
-      <BrowserRouter>
-        <ContextProvider>
-          <GameSettingsContextProvider>
-            <Routes>
-              <Route index element={<Home />} />
-              {/* <Route path="/test" element={<ResetPassword />} /> */}
-              <Route path="/useragreement" element={<UserAgreement />} />
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route path="/resetpassword/*" element={<ResetPassword />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/2fa/setup" element={<RequireAuth><SetupTwoFa /></RequireAuth>} />
-              {/* <Route path="/2fa/setup" element={<SetupTwoFa />} /> */}
-              <Route path="/about" element={<About />} />
-              <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
-              <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
-              {/* <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} /> */}
-              <Route path="/search" element={<Search />} />
-              {/* <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} /> */}
-              <Route path="/oauth/callback" element={<OauthCallBack />} />
-              <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
-              <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
-              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-              <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
-              <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
-              <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
-              <Route path="game/bot" element={<RequireAuth><PlayWithBot /></RequireAuth>} />
-              <Route path="game/friend" element={<RequireAuth><PlayWithFriend /></RequireAuth>} />
-              {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} /> */}
-              <Route path="game/tournament" element={<Tournament />} />
-              {/* <Route path="/game" element={<Game />} />
-              <Route path="game/online" element={<PlayOnline />} />
-              <Route path="game/bot" element={<PlayWithBot />} />
-              <Route path="game/friend" element={<PlayWithFriend />} /> */}
-              <Route path="*" element={<Page404 />} />
-            </Routes>
-          </GameSettingsContextProvider>
-        </ContextProvider>
-      </BrowserRouter>
+        <BrowserRouter>
+            <ContextProvider>
+                <NotifyUser/>
+                <GameSettingsContextProvider>
+                    <Routes>
+                        <Route index element={<Home />} />
+                        {/* <Route path="/test" element={<ResetPassword />} /> */}
+                        <Route path="/useragreement" element={<UserAgreement />} />
+                        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                        <Route path="/resetpassword/*" element={<ResetPassword />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/2fa/setup" element={<RequireAuth><SetupTwoFa /></RequireAuth>} />
+                        {/* <Route path="/2fa/setup" element={<SetupTwoFa />} /> */}
+                        <Route path="/about" element={<About />} />
+                        <Route path="/signin" element={<DontRequireAuth><SignIn /></DontRequireAuth>} />
+                        <Route path="/signup" element={<DontRequireAuth><SignUp /></DontRequireAuth>} />
+                        {/* <Route path="/signin" element={<SignIn />} />
+                        <Route path="/signup" element={<SignUp />} /> */}
+                        <Route path="/search" element={<Search />} />
+                        {/* <Route path="/search" element={<RequireAuth><Search /></RequireAuth>} /> */}
+                        <Route path="/oauth/callback" element={<OauthCallBack />} />
+                        <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+                        <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+                        <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
+                        <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
+                        <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
+                        <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
+                        <Route path="game/bot" element={<RequireAuth><PlayWithBot /></RequireAuth>} />
+                        <Route path="game/friend" element={<RequireAuth><PlayWithFriend /></RequireAuth>} />
+                        {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} /> */}
+                        <Route path="game/tournament" element={<Tournament />} />
+                        {/* <Route path="/game" element={<Game />} />
+                        <Route path="game/online" element={<PlayOnline />} />
+                        <Route path="game/bot" element={<PlayWithBot />} />
+                        <Route path="game/friend" element={<PlayWithFriend />} /> */}
+                        <Route path="*" element={<Page404 />} />
+                    </Routes>
+                </GameSettingsContextProvider>
+            </ContextProvider>
+        </BrowserRouter>
     </>
   )
 }

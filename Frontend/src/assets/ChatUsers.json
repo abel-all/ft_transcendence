@@ -193,5 +193,59 @@
     "lastMessageTime": "3H ago",
     "isActive": true,
     "MessageUpdatedAt": "2024-08-21T09:35:00.000Z"
-  }
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    {
+        "is_online": false,
+        "last_message_content": "hello second 2",
+        "last_message_time": "2024-09-21T12:47:50.248Z",
+        "last_message_time_diff": "21:20:10.761523",
+        "picture": null,
+        "unread_messages": 1,
+        "username": "chahbi"
+    },
+    {
+        "is_online": false,
+        "last_message_content": "hello third 3",
+        "last_message_time": "2024-09-21T01:47:50.248Z",
+        "last_message_time_diff": "1 day, 8:20:10.770092",
+        "picture": null,
+        "unread_messages": 0,
+        "username": "hisoka"
+    },
+    {
+        "is_online": true,
+        "last_message_content": "hello fourth 4",
+        "last_message_time": "2024-09-21T11:47:50.248Z",
+        "last_message_time_diff": "22:20:10.779205",
+        "picture": null,
+        "unread_messages": 1,
+        "username": "ella"
+    },
+    {
+        "is_online": false,
+        "last_message_content": null,
+        "last_message_time": "2024-09-21T11:47:50.248Z",
+        "last_message_time_diff": null,
+        "picture": null,
+        "unread_messages": 0,
+        "username": "chahbiii"
+    }
 ]

@@ -48,6 +48,7 @@ function ChatSide({setVoidedUsername, className}) {
     const [getMessagesFromDataBase, setGetMessagesFromDataBase] = useState(true);
     const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true);
     const [CreateMessages, setCreateMessages] = useState(initialState);
+    const lastUserFetched = useRef(null);
 
     const  UpdateCreatedMessage = (msg, send) => {
         setCreateMessages( prevState => ({
@@ -87,16 +88,27 @@ function ChatSide({setVoidedUsername, className}) {
                 SetUsername(ChatContext.userFromUrl.user);
                 setVoidedUsername(ChatContext.userFromUrl.user);
             }
-            if (username) {
-                axios.get(`https://fttran.tech/messages/${username}`, {withCredentials:true})
+            if (username && username != lastUserFetched.current) {
+                if (ChatContext.readyState == ReadyState.OPEN) {
+                    console.log("set seen for user : ", username);
+                    ChatContext.sendMessage(JSON.stringify({
+                        action: "read_receipt",
+                        username: username,
+                        })
+                    );
+                }
+                axios.post(`https://www.fttran.tech/api/chat/messages/history/`, {
+                    username : username,
+                    start    : 0,
+                })
                 .then(res => {
-                    setMessages(res.data);
+                    lastUserFetched.current = username;
+                    setMessages((prevState) => { return res.data});
                     setGetMessagesFromDataBase((prevState) => {
                         return true;
                     });
                 })
                 .catch(error => {
-                    console.log('Error fetching messages:', error);
                 });
             }
         }
@@ -149,10 +161,7 @@ function ChatSide({setVoidedUsername, className}) {
       }, [CreateMessages]);
 
     useEffect(() => {
-        // console.log("Messages are ", ChatContext.lastMessage);
-        // const dataJson = ChatContext.lastMessage ? JSON.parse(ChatContext.lastMessage.data) : null;
         if (ChatContext.lastMessage) {
-            console.log("Hello from lastMessage ", JSON.parse(ChatContext.lastMessage.data));
             setToUser(JSON.parse(ChatContext.lastMessage.data).to);
             if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "chat_message") {
                 const msg = JSON.parse(ChatContext.lastMessage.data).message;
@@ -160,7 +169,6 @@ function ChatSide({setVoidedUsername, className}) {
                     ...prevState, {
                         message: msg,
                         message_id: Math.floor(Math.random() * 10000),
-                        // timestamp: new Date().toLocaleTimeString(),
                         timestamp: JSON.parse(ChatContext.lastMessage.data).created_at,
                         sender: JSON.parse(ChatContext.lastMessage.data).from,
                         seen: false,
@@ -179,15 +187,21 @@ function ChatSide({setVoidedUsername, className}) {
     }, [ChatContext.lastMessage]);
 
     useEffect(() => {
-        if (ChatContext.lastMessage && JSON.parse(ChatContext.lastMessage.data).from == username && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt") {
-            console.log(ChatContext.lastMessage);
+        if (ChatContext.lastMessage 
+            && JSON.parse(ChatContext.lastMessage.data).from == username
+            && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt")
+        {
+            console.log(username, "before Seen your message Array : ", messagesAdded);
             let arrs = messagesAdded;
             for (let i = 0; i < messagesAdded.length; i++) {
                 arrs[i].seen = true;
             }
-            setMessagesAdded(arrs);
+            console.log(username, "after Seen your message Array : ", arrs);
+            setMessagesAdded(prevState => [...arrs]);
         }
-    }, [messagesAdded]);
+    }, [ChatContext.lastMessage]);
+
+    const {setlastMessageUserSend} = useContext(chatHeaderOnClick);
 
     return (
         <div className={" " + (className) ? className : ``}>
@@ -195,8 +209,7 @@ function ChatSide({setVoidedUsername, className}) {
                 {
                     (ChatContext.chatHeader.name || ChatContext.userFromUrl.user) && getMessagesFromDataBase &&
                     <>
-                        {/* {console.log("Entered users are ", ChatContext.chatHeader.name, " And ",ChatContext.userFromUrl.user,"|")} */}
-                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username, }}>
+                        <sendMessageContext.Provider value={{addMessage,messages, messagesAdded, messagesRef, goToButtom, userAbleToSendMessage, CreateMessages, username, setlastMessageUserSend}}>
                             <ChatHeader className={className}/>
                             <Messages setMessages={setMessages} toUser={ToUser} username={username} className={`ChatBody bg-[#161c20] ${ChatContext.ChatShown ? "h-[calc(100vh-276px)]": "h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]"} overflow-y-scroll flex flex-col`}/>
                             <ChatBottom/>

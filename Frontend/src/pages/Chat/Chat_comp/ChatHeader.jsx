@@ -20,7 +20,13 @@ function ChatHeader() {
     return (
         <div className="ChatHeader flex flex-row items-center border-b-[1px] py-[10px] border-[#626262] bg-[#161c20]">
             <div className="flex md:hidden cursor-pointer" onClick={() => {ChatContext.handelChatShown(true)}}> <img src={chevron} alt=""/></div>
-            <img className=" w-[40px] h-[40px] rounded-full" src={(ChatContext.userFromUrl.url && !ChatContext.chatHeader.clicked) ? ChatContext.userFromUrl.url : ChatContext.chatHeader.userProfile} alt=""/>
+            <img className=" w-[40px] h-[40px] rounded-full"
+                src={
+                    (ChatContext.userFromUrl.url && !ChatContext.chatHeader.clicked)
+                    ? (ChatContext.userFromUrl.url ? ChatContext.userFromUrl.url : testUser)
+                    : (ChatContext.chatHeader.userProfile ? ChatContext.chatHeader.userProfile : testUser)}
+                alt=""
+            />
             <div className="UserHolder flex basis-3/12 mx-[10px] flex-col pt-[5px]">
                 <span className="UserUserName text-white font-[500] font-[Outfit] text-[14px]"> {ChatContext.userFromUrl.user && !ChatContext.chatHeader.clicked ? ChatContext.userFromUrl.user : ChatContext.chatHeader.name} </span>
                 <div className="rankHolder flex flex-row">

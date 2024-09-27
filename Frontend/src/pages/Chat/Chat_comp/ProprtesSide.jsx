@@ -30,7 +30,7 @@ function ProprtesSide({VoidedUsername, className}) {
                     type="text" placeholder="Search" />
                 <img src={Search} className="w-[37px] h-[37px] cursor-pointer absolute top-[12px] opacity-50 right-[17px]" alt=""/>
             </div>
-            { (!input) ? <BoxInboxUsers VoidedUsername={VoidedUsername} lastMessage={ChatContext.lastMessage}/> : <BoxSearch data= {input} />}
+            { (!input) ? <BoxInboxUsers VoidedUsername={VoidedUsername} lastMessage={ChatContext.lastMessage} lMUS={ChatContext.lastMessageUserSend}/> : <BoxSearch data= {input} />}
         </div>
     )
 }

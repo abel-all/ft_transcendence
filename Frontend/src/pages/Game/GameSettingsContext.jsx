@@ -20,9 +20,13 @@ export const GameSettingsContextProvider = ({ children }) => {
     const [matchDelay, setMatchDelay] = useState(true);
     const [issetting, setIssetting] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [isCreateTour, setIsCreateTour] = useState(false);
     const [isTournament, setIsTournament] = useState(false);
     const [userData, setUserData] = useState({});
     const [selfData, setSelfData] = useState({});
+    const [tournamentInfo, setTournamentInfo] = useState({});
+    const [participants, setParticipants] = useState([]);
+    const [endGameData, setEndGameData] = useState({});
 
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
@@ -45,9 +49,11 @@ export const GameSettingsContextProvider = ({ children }) => {
         setIssetting(true);
         setLoading(false);
         setIsTournament(false);
+        setIsCreateTour(false);
         setUserData({});
         setPlayer1Score(0);
         setPlayer2Score(0);
+        setEndGameData({});
     }
 
     const handleModalClick = () => {
@@ -105,16 +111,28 @@ export const GameSettingsContextProvider = ({ children }) => {
                 setMatchDelay(value);
                 break;
             case "userData":
-                setUserData(value);
+                setUserData(prev => ({ ...prev, ...value }));
                 break;
             case "selfData":
-                setSelfData(value);
+                setSelfData(prev => ({ ...prev, ...value }));
                 break;
             case "loading":
                 setLoading(value);
                 break;
             case "isTournament":
                 setIsTournament(value);
+                break;
+            case "isCreateTour":
+                setIsCreateTour(value);
+                break;
+            case "tournamentInfo":
+                setTournamentInfo(value);
+                break;
+            case "participants":
+                setParticipants(value);
+                break;
+            case "endgame":
+                setEndGameData(value);
                 break;
         }
     }
@@ -128,7 +146,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 
     return (
         <GameSettingContext.Provider
-            value={ { createTour, joinTour, isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep, isBotLevelSection, isOnlineGame, isHowToPlay, matchDelay, userData, resetStates, issetting, selfData, loading, isTournament} }>
+            value={ { endGameData, participants, tournamentInfo, isCreateTour, createTour, joinTour, isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep, isBotLevelSection, isOnlineGame, isHowToPlay, matchDelay, userData, resetStates, issetting, selfData, loading, isTournament} }>
                 {children}
         </GameSettingContext.Provider>
     )

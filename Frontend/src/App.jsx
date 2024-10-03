@@ -35,8 +35,8 @@ function App() {
     <>
       <NotifyUser/>
       <BrowserRouter>
-        <ContextProvider>
-          <GameSettingsContextProvider>
+        <GameSettingsContextProvider>
+          <ContextProvider>
             <Routes>
               <Route index element={<Home />} />
               {/* <Route path="/test" element={<ResetPassword />} /> */}
@@ -63,16 +63,16 @@ function App() {
               <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
               <Route path="game/bot" element={<RequireAuth><PlayWithBot /></RequireAuth>} />
               <Route path="game/friend" element={<RequireAuth><PlayWithFriend /></RequireAuth>} />
-              {/* <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} /> */}
-              <Route path="game/tournament" element={<Tournament />} />
+              <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
+              {/* <Route path="game/tournament" element={<Tournament />} /> */}
               {/* <Route path="/game" element={<Game />} />
-              <Route path="game/online" element={<PlayOnline />} />
-              <Route path="game/bot" element={<PlayWithBot />} />
+              <Route path="game/online" element={<PlayOnline />} /> */}
+              {/* <Route path="game/bot" element={<PlayWithBot />} />
               <Route path="game/friend" element={<PlayWithFriend />} /> */}
               {/* <Route path="*" element={<Page424 />} /> */}
             </Routes>
-          </GameSettingsContextProvider>
-        </ContextProvider>
+          </ContextProvider>
+        </GameSettingsContextProvider>
       </BrowserRouter>
     </>
   )

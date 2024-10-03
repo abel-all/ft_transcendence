@@ -1,12 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import useWebSocket from 'react-use-websocket'
-import './css/index.css'
-import MatchMakingCard from './MatchMakingCard.jsx'
+import plusIcon from '../../assets/imgs/plusIcon.svg'
+import SearchModal from './SearchModal.jsx'
+import TournamentMatch from './TournamentMatch.jsx'
+import { Final, SemiFinal } from './TournamentStages.jsx'
 import { useGameSettings } from './GameSettingsContext'
+import useWebSocket from 'react-use-websocket'
+import { useCallback, useEffect, useState, useRef } from 'react'
+import Spiner from './Spiner'
 import PlayerScore from './PlayerScore'
-// import { useNavigate } from "react-router-dom"
+import Axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import './css/index.css'
 
-// Game vars:
 const playerHeight = 15
 const playerWidth = 70
 let canvasWidth = 450
@@ -43,24 +47,16 @@ const ball = {
   color: '#FFFFFF',
 }
 
-let waitingTimeout
-
-const GamePlay = () => {
+const TournamentStart = () => {
   const canvasRef = useRef(null)
   const [player1Score, setPlayer1Score] = useState(0)
   const [player2Score, setPlayer2Score] = useState(0)
-  // const [counter, setCounter] = useState(0);
-  // const [isGameStart, setIsGameStart] = useState(false);
-  // const [gameFinished, setGameFinished] = useState(false);
   const [isMobileVersion, setIsMobileVersion] = useState(false)
-  const [isWaiting, setIsWaiting] = useState(true)
   const [playerData, setPlayerData] = useState({})
-
+  const [selfData, setSelfData] = useState({})
   const [keyLeftpressed, setKeyLeftpressed] = useState(false)
   const [keyRightpressed, setKeyRightpressed] = useState(false)
   const [matchId, setMatchId] = useState(-1)
-  const [isGame, setIsGame] = useState(false)
-  const [avatar, setAvatar] = useState(true)
   const [isGameEnd, isIsGameEnd] = useState(false)
   const [endMatchData, setEndMatchData] = useState({})
   const [playerNumber, setPlayerNumber] = useState(0)
@@ -69,46 +65,79 @@ const GamePlay = () => {
     y: canvasHeight / 2,
   })
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2)
-  const [message, setMessage] = useState('')
+
+  const [isTimeToPlay, setIsTimeToPlay] = useState(false)
+  const [isGame, setIsGame] = useState(false)
   const gameContext = useGameSettings()
-  const oneTime = useRef(false)
+  const navigate = useNavigate()
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://www.fttran.tech/ws/game/'
+    'wss://www.fttran.tech/ws/tournament/'
   )
 
   useEffect(() => {
     if (readyState === 1) {
-      sendMessage(JSON.stringify({ action: 'join_queue' }))
+      console.log('tournament infos : ', gameContext.tournamentInfo)
+      gameContext.isCreateTour
+        ? sendMessage(
+            JSON.stringify({
+              action: 'create_tournament',
+              tournament_name: gameContext.tournamentInfo.name,
+              alias: gameContext.tournamentInfo.alias,
+            })
+          )
+        : sendMessage(
+            JSON.stringify({
+              action: 'join_tournament',
+              tournament_name: gameContext.tournamentInfo.name,
+              alias: gameContext.tournamentInfo.alias,
+            })
+          )
       console.log('WebSocket connection is open')
-      waitingTimeout = setTimeout(() => {
-        setIsWaiting(false)
-      }, 200000)
     } else {
       console.log('WebSocket connection is not open')
       console.log(readyState)
     }
-
-    return () => {
-      oneTime.current = false
-      clearTimeout(waitingTimeout)
-    }
-  }, [readyState, sendMessage])
-
-  useEffect(() => {
-    if (!isWaiting) {
-      sendMessage(JSON.stringify({ action: 'disconnect' }))
-      setMessage('No one wants to play right now. Please try again!')
-    }
-  }, [isWaiting, sendMessage])
+  }, [
+    readyState,
+    sendMessage,
+    gameContext.isCreateTour,
+    gameContext.tournamentInfo,
+  ])
 
   const handleLastMessage = useCallback(() => {
     if (!lastMessage) return
 
     const data = JSON.parse(lastMessage.data)
     switch (data?.type) {
-      case 'match_found':
-        if (!oneTime.current) handleMatchFound(data)
+      case 'tournament_created':
+        gameContext.setHandler('participants', data?.tournament?.participants)
+        break
+      case 'participants_update':
+        console.log('parts update : ', data?.participants)
+        gameContext.setHandler('participants', data?.participants)
+        break
+      case 'match_detail':
+        console.log('match details <<< : ', data)
+        setMatchId(data?.match?.id)
+        if (data?.player_number === 1) {
+          setPlayerData(data?.match?.player2?.profile)
+          setSelfData(data?.match?.player1?.profile)
+        } else {
+          setPlayerData(data?.match?.player1?.profile)
+          setSelfData(data?.match?.player2?.profile)
+        }
+        setPlayerNumber(data?.player_number)
+        setIsTimeToPlay(true)
+        console.log('isTimeToPlay is : true')
+        console.log('ready to send start Game')
+        setTimeout(() => {
+          sendMessage(
+            JSON.stringify({ action: 'start_game', match_id: matchId })
+          )
+          console.log('start game is sent')
+          setIsGame(true)
+        }, 5000)
         break
       case 'game_update':
         setBallCor({ x: data.ball?.x, y: data.ball?.y })
@@ -124,7 +153,10 @@ const GamePlay = () => {
         handleEndGame(data)
         break
       case 'already_connected':
-        setMessage('User already connected from another tab')
+        console.log('User already connected from another tab')
+        break
+      case 'update_winner':
+        console.log('winner array : ', data)
         break
     }
   }, [lastMessage])
@@ -132,6 +164,22 @@ const GamePlay = () => {
   useEffect(() => {
     handleLastMessage()
   }, [handleLastMessage])
+
+  // useEffect(() => {
+
+  //     if (!isTimeToPlay) return;
+  //     console.log("ready to send start Game");
+  //     const TimeoutId = setTimeout(() => {
+  //         sendMessage(JSON.stringify({ action: 'start_game', match_id: matchId }))
+  //         console.log("start game is sent", );
+  //         setIsGame(true);
+  //     }, 5000)
+
+  //     return () => {
+  //         clearTimeout(TimeoutId);
+  //     }
+
+  // }, [isTimeToPlay]);
 
   useEffect(() => {
     if (!isGame) return
@@ -215,6 +263,7 @@ const GamePlay = () => {
     }
   }, [
     sendMessage,
+    isMobileVersion,
     isGame,
     keyLeftpressed,
     keyRightpressed,
@@ -222,21 +271,18 @@ const GamePlay = () => {
     playerNumber,
     paddleCor,
     matchId,
-    isMobileVersion,
   ])
 
-  const handleMatchFound = (data) => {
-    clearTimeout(waitingTimeout)
-    oneTime.current = true
-    setPlayerData(data)
-    setMatchId(data?.match_id)
-    setPlayerNumber(data?.player_number)
-    sendMessage(
-      JSON.stringify({ action: 'start_game', match_id: data?.match_id })
-    )
-    setIsGame(true)
-    setAvatar(false)
-  }
+  // const handleMatchFound = (data) => {
+  //     clearTimeout(waitingTimeout);
+  //     oneTime.current = true;
+  //     setPlayerData(data);
+  //     setMatchId(data?.match_id);
+  //     setPlayerNumber(data?.player_number);
+  //     sendMessage(JSON.stringify({action: 'start_game', match_id: data?.match_id}));
+  //     setIsGame(true);
+  //     setAvatar(false);
+  // }
 
   const handleScoreUpdate = (data) => {
     sendMessage(
@@ -262,9 +308,54 @@ const GamePlay = () => {
   }
 
   const handleEndGame = (data) => {
-    setEndMatchData(data)
+    const fetchSettings = async () => {
+      await Axios.post(
+        `https://www.fttran.tech/api/tournament/matches/update/${matchId}/`,
+        {
+          completed: true,
+          winner: data?.winner_profile?.id,
+          score_player1: data?.player1_score,
+          score_player2: data?.player2_score,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+        .then((response) => {
+          console.log('update match api res : ', response)
+          setMatchId(-1)
+        })
+        .catch((err) => {
+          console.log(err)
+          console.log('Please try again!')
+        })
+    }
     isIsGameEnd(true)
-    sendMessage(JSON.stringify({ action: 'disconnect' }))
+    if (data?.loser === playerNumber) {
+      sendMessage(JSON.stringify({ action: 'disconnect' }))
+      setTimeout(() => {
+        setPlayer1Score(0)
+        setPlayer2Score(0)
+        setMatchId(-1)
+        isIsGameEnd(false)
+        setPlayerNumber(0)
+        setIsTimeToPlay(false)
+        setIsGame(false)
+        navigate('/game', { replace: true })
+      }, 5000)
+    } else {
+      fetchSettings()
+      setEndMatchData(data)
+      gameContext.setHandler('endgame', data)
+      setTimeout(() => {
+        setPlayer1Score(0)
+        setPlayer2Score(0)
+        isIsGameEnd(false)
+        setPlayerNumber(0)
+        setIsTimeToPlay(false)
+        setIsGame(false)
+      }, 5000)
+    }
   }
 
   // draw functions
@@ -321,44 +412,13 @@ const GamePlay = () => {
     }
   }
 
+  const clickHandler = () => {
+    gameContext.handleModalClick()
+  }
+
   return (
     <>
-      {!isGame ? (
-        <div className="h-[calc(100vh-105px)] min-h-[1000px] pb-[200px] flex flex-col justify-center items-center gap-[200px] max-md:gap-[120px]">
-          <div className=" flex justify-center items-center max-md:flex-col gap-[100px] max-md:gap-[30px]">
-            <MatchMakingCard
-              avatar={false}
-              bgColor={
-                gameContext.selfData.badge === 'BRONZE'
-                  ? 'bg-[#CD7F32]'
-                  : 'bg-[#fff6f9]'
-              }
-              image={
-                gameContext.selfData?.picture ||
-                'https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg'
-              }
-              username={gameContext.selfData?.username}
-              rank={gameContext.selfData?.rank}
-            />
-            <div className="font-bold text-[50px] text-white">VS</div>
-            <MatchMakingCard
-              avatar={avatar}
-              bgColor={
-                playerData?.player?.badge === 'BRONZE' ? '#CD7F32' : '#fff6f9'
-              }
-              image={
-                playerData?.player?.picture ||
-                'https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg'
-              }
-              username={playerData?.player?.username}
-              rank={playerData?.player?.rank}
-            />
-          </div>
-          <div className="font-light text-[18px] max-md:text-[15px] text-[#ff0000]">
-            {message}
-          </div>
-        </div>
-      ) : (
+      {isGame ? (
         <>
           {isGameEnd && (
             <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center text-[#fff6f9] font-bold text-[80px] max-sm:text-[30px]">
@@ -366,7 +426,7 @@ const GamePlay = () => {
                 <div
                   className={`font-semibold text-[#fff0f9] text-[50px] max-sm:text[35px] ${
                     endMatchData?.winner === playerNumber
-                      ? 'text-[#00ff00]'
+                      ? 'text-[green]'
                       : 'text-[red]'
                   }`}
                 >
@@ -383,10 +443,10 @@ const GamePlay = () => {
           <div className="h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0">
             <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">
               <PlayerScore
-                username={gameContext.selfData?.username}
-                rank={gameContext.selfData?.rank}
+                username={selfData?.username}
+                rank={selfData?.rank}
                 userImage={
-                  gameContext.selfData?.picture ||
+                  selfData?.picture ||
                   'https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg'
                 }
               />
@@ -400,10 +460,10 @@ const GamePlay = () => {
               </div>
               <PlayerScore
                 flexDirection="flex-row-reverse"
-                username={playerData?.player?.username}
-                rank={playerData?.player?.rank}
+                username={playerData?.username}
+                rank={playerData?.rank}
                 userImage={
-                  playerData?.player?.picture ||
+                  playerData?.picture ||
                   'https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg'
                 }
               />
@@ -418,9 +478,55 @@ const GamePlay = () => {
             </div>
           </div>
         </>
+      ) : (
+        <>
+          {!gameContext.modal ? (
+            <>
+              <div className="w-full flex max-lg:gap-[60px] max-xl:gap-[140px] gap-[240px] justify-center my-[200px] max-md:my-[50px]">
+                <div className="quarter-final">
+                  <div className="font-light text-[#eee] text-[20px] mb-[30px]">
+                    Quarter-final
+                  </div>
+                  <TournamentMatch />
+                </div>
+                <div className="max-md:hidden Semi-final">
+                  <div className="font-light text-[#eee] text-[20px] mb-[30px]">
+                    Semi-final
+                  </div>
+                  <SemiFinal />
+                </div>
+                <div className="max-md:hidden Final">
+                  <div className="font-light text-[#eee] text-[20px] mb-[30px]">
+                    Final
+                  </div>
+                  <Final />
+                </div>
+              </div>
+              <div className="button flex justify-center">
+                <button
+                  onClick={clickHandler}
+                  className="bg-[#009f9f] h-[53px] w-full max-w-[140px] rounded-[15px] flex justify-center items-center gap-[10px]"
+                >
+                  {isTimeToPlay ? (
+                    <Spiner height="h-[18px]" />
+                  ) : (
+                    <>
+                      <div className="text-[#000] font-medium sm:text-[20px]">
+                        Add one
+                      </div>
+                      <img className="w-[26px] h-[26px]" src={plusIcon} />
+                    </>
+                  )}
+                </button>
+              </div>
+            </>
+          ) : (
+            <SearchModal />
+          )}
+        </>
       )}
     </>
   )
 }
 
-export default GamePlay
+export default TournamentStart

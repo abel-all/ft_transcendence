@@ -1,53 +1,60 @@
-
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import FriendListCurrent from './FriendListCurrent';
-import FriendListHost from './FriendListHost';
+import FriendListCurrent from './FriendListCurrent'
+import FriendListHost from './FriendListHost'
 
+function FriendsList({ className, UrlUsername }) {
+  const [toggle, setToggle] = useState(false)
+  const [FriendlistFromSearch, setFriendlistFromSearch] = useState({})
 
+  let TimeToDown
+  function handelToglle() {
+    setToggle(!toggle)
+  }
 
-function FriendsList({className, UrlUsername}) {
-    const [toggle, setToggle] = useState(false);
-    const [FriendlistFromSearch, setFriendlistFromSearch] = useState({});
+  const [prop, setProp] = useState('Search')
 
-    let TimeToDown;
-    function handelToglle() {
-        setToggle(!toggle);
-    }
+  function HandelProp(prop) {
+    setProp(prop)
+  }
 
-    const [prop, setProp] = useState("Search");
+  const HandelSearchRequest = (e) => {
+    if (TimeToDown) clearTimeout(TimeToDown)
 
-    function HandelProp(prop) {
-        setProp(prop);
-    }
+    TimeToDown = setTimeout(() => {
+      e.target.value &&
+        axios
+          .post('https://www.fttran.tech/api/profile/search/', {
+            prefix: e.target.value,
+          })
+          .then((res) => {
+            console.log('message sent : ', res)
+            setFriendlistFromSearch(res.data.profiles)
+          })
+          .catch((err) => {
+            console.log('there is an error : ', err)
+          })
+      console.log(e.target.value)
+    }, 500)
+  }
 
-    const HandelSearchRequest = (e) => {
-        if (TimeToDown)
-            clearTimeout(TimeToDown);
-
-        TimeToDown = setTimeout(() => {
-            e.target.value && axios.post('https://fttran.tech/api/profile/search/', {
-                prefix : e.target.value
-            }).then ((res) => {
-                console.log("message sent : ", res);
-                setFriendlistFromSearch(res.data.profiles);
-            }).catch((err) => {
-                console.log("there is an error : ", err);
-            });
-            console.log(e.target.value);
-        }, 500);
-    }
-
-    return (
-        <>
-            {
-                !UrlUsername ? <FriendListCurrent toggle={toggle} className={className} prop={prop}
-                    HandelProp={HandelProp} handelToglle={handelToglle} HandelSearchRequest={HandelSearchRequest}
-                        FriendlistFromSearch={FriendlistFromSearch} />
-                : <FriendListHost className={className} UrlUsername={UrlUsername}/>
-            }
-        </>
-    )
+  return (
+    <>
+      {!UrlUsername ? (
+        <FriendListCurrent
+          toggle={toggle}
+          className={className}
+          prop={prop}
+          HandelProp={HandelProp}
+          handelToglle={handelToglle}
+          HandelSearchRequest={HandelSearchRequest}
+          FriendlistFromSearch={FriendlistFromSearch}
+        />
+      ) : (
+        <FriendListHost className={className} UrlUsername={UrlUsername} />
+      )}
+    </>
+  )
 }
 
 export default FriendsList

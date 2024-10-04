@@ -1,7 +1,7 @@
 import Home from './pages/Home/Home.jsx'
 import Contact from './pages/Contact/Contact.jsx'
 import About from './pages/About/About.jsx'
-// import Page424 from './pages/Page424/Page424.jsx'
+import Page404 from './pages/Page404/Page404.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import SignIn from './pages/Login/SignIn.jsx'
 import SignUp from './pages/Login/SignUp.jsx'

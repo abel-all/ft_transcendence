@@ -9,21 +9,25 @@ import React from "react";
 function GetChatFromDataBase({chatMessages, username, WhoAmI}) {
     
     let userStyle;
-
+    
     (chatMessages.sender == username) ? userStyle = "text-white bg-[#0A0C0E] rounded-tr-lg " : userStyle = "text-black bg-white self-end rounded-tl-lg ";
     return (
             <div className={`${userStyle} + 'break-all relative flex rounded-b-lg w-[70%] lg:w-[450px] m-[10px] p-[20px]`}>
-                <p className='pb-[15px] break-all'>{chatMessages.message}</p>
+                <p className='pb-[15px] break-all'>{chatMessages.content}</p>
                 {(chatMessages.sender == WhoAmI) ?
                     <>
-                        <span className='absolute right-[45px] bottom-[5px]'>{chatMessages.timestamp}</span>
+                        <span className='absolute right-[45px] bottom-[5px]'>
+                            {new Date(chatMessages.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                        </span>
                         <img
                             src={
-                                chatMessages.seen ? seen : (chatMessages.depands ? ((chatMessages.depands == "failed") ? failed : waithing) : notseen)}
+                                chatMessages.is_read ? seen : (chatMessages.depands ? ((chatMessages.depands == "failed") ? failed : waithing) : notseen)}
                             alt='' className='absolute right-[15px] bottom-[5px]'/>
                     </>
                     : 
-                        <span className='absolute right-[15px] bottom-[5px]'>{chatMessages.timestamp}</span>
+                    <span className='absolute right-[15px] bottom-[5px]'>
+                        {new Date(chatMessages.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </span>
                 }
             </div>
     )

@@ -7,32 +7,43 @@ import { Link } from "react-router-dom"
 import chatUsers from "../../../assets/ChatUsers.json"
 import {chatHeaderOnClick} from '../Chat'
 import {useContext, useState, useEffect} from 'react'
+import axios from "axios"
 
 
 
 
-function BoxInboxUsers({lastMessage, VoidedUsername}) {
-
+function BoxInboxUsers({lastMessage, VoidedUsername, lMUS}) {
     const ChatHeader = useContext(chatHeaderOnClick);
-    const [UserList, setUserList] = useState(chatUsers);
+    const [UserList, setUserList] = useState([]);
     const [Sorted, setSorted] = useState([]);
     
+    useEffect(() => {
+        const times = setTimeout(() => {
+            axios.get('https://www.fttran.tech/api/chat/chats/')
+            .then(res => {
+                setUserList(res.data);
+                setSorted(res.data);
+            })
+            clearTimeout(times);
+        }, 300)
+    }, []);
+
     useEffect(() => {
         if (lastMessage) {
             setUserList(prevUserList => {
                 const updatedUserList = prevUserList.map(user => {
-                    if (user.nickname === JSON.parse(lastMessage.data).user) {
+                    if (user.username === JSON.parse(lastMessage.data).from) {
                         return {
                             ...user,
-                            lastMessage: JSON.parse(lastMessage.data).message,
-                            total_messages: (VoidedUsername == user.nickname) ? 0 : user.total_messages + 1,
-                            lastMessageTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
-                            MessageUpdatedAt: new Date().toISOString()
+                            last_message_content: JSON.parse(lastMessage.data).message ? JSON.parse(lastMessage.data).message : (lMUS ? `you: ${lMUS}` : ""),
+                            unread_messages: (VoidedUsername == user.username) ? 0 : user.unread_messages + 1,
+                            last_message_time_diff: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+                            last_message_time: new Date().toISOString()
                         };
                     }
                     return user;
                 });
-                const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.MessageUpdatedAt) - new Date(First.MessageUpdatedAt);});
+                const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.last_message_time) - new Date(First.last_message_time);});
                 setSorted(sortedList);
                 return updatedUserList;
             });
@@ -43,7 +54,7 @@ function BoxInboxUsers({lastMessage, VoidedUsername}) {
         if (VoidedUsername) {
             setUserList(prevUserList => {
                 const updatedUserList = prevUserList.map(user => {
-                    if (user.nickname == VoidedUsername) {
+                    if (user.username == VoidedUsername) {
                     return {
                         ...user,
                         total_messages: 0
@@ -51,7 +62,7 @@ function BoxInboxUsers({lastMessage, VoidedUsername}) {
                 }
                 return user;
                 })
-                const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.MessageUpdatedAt) - new Date(First.MessageUpdatedAt);});
+                const sortedList = [...updatedUserList].sort((First, Second) => {return new Date(Second.last_message_time) - new Date(First.last_message_time);});
                 setSorted(sortedList);
                 return updatedUserList;
             });
@@ -69,16 +80,14 @@ function BoxInboxUsers({lastMessage, VoidedUsername}) {
                     {
                         Sorted.map((users, index) => {
                             return (
-                                <div className="cursor-pointer" key={index} onClick={() => ChatHeader.handelChatHeader(users.nickname, 623, users.userProfile)}>
+                                <div className="cursor-pointer" key={index} onClick={() => ChatHeader.handelChatHeader(users.username, users.rank, users.picture)}>
                                     <InboxUsers
-                                        nickname={users.nickname}  
-                                        socketid={users.socketid}  
-                                        total_messages={users.total_messages}  
-                                        userProfile={users.userProfile}        
-                                        lastMessage={users.lastMessage}  
-                                        unreadMessages={users.unreadMessages}  
-                                        lastMessageTime={users.lastMessageTime}  
-                                        isActive={users.isActive}  
+                                        nickname={users.username}  
+                                        total_messages={users.unread_messages}  
+                                        userProfile={users.picture}        
+                                        lastMessage={users.last_message_content}  
+                                        lastMessageTime={new Date(users.last_message_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}  
+                                        isActive={users.is_online}  
                                     />
                                 </div>
                             );

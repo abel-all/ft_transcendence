@@ -1,7 +1,32 @@
 import MatchHistoryfiled from '../../../components/MatchHistoryfiled'
 import MatchHistor from "../../../assets/MatchHistory.json"
+import { useEffect } from 'react'
+import axios from 'axios';
 
 function MatchHistory({className}) {
+
+    // useEffect(() => {
+    //     axios.get('https://www.fttran.tech/api/game/match-history/ahennaki', {
+    //         headers: {
+    //         'Accept': 'application/json'
+    //       }})
+    //     .then((res) => {
+    //       console.log("Data from ahmed", res.data);
+    //     }).catch(err => {
+    //         console.log("Data from ahmed", err);
+    //     })
+
+    //     axios.get('https://www.fttran.tech/api/game/player/4/', {
+    //         headers: {
+    //             'Accept': 'application/json'
+    //           }})
+    //         .then((res) => {
+    //           console.log("Data from ahmed 2 ", res.data);
+    //         }).catch(err => {
+    //             console.log("Data from ahmed 2 ", err);
+    //         })
+    // }, []);
+    
     return (
         <div className={"MatchHistor max-h-[685px] mb-[82px] w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]" + (className ? ` ${className}` : '')}>
             <div className="Title text-[20px] md:text-[30px] font-[500] font-Outfit  text-[#FFFFFF] opacity-80 block mb-[25px]"> Match History</div>

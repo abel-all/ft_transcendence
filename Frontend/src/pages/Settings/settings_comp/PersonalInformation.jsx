@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import Edit from '../../../assets/imgs/edit.svg'
 import Inputes from './InputesComp';
-
+import axios from 'axios';
 
 function PersonalInformation({SettingsData, className}) {
 
     const [save, setSave] = useState(false);
     const [errors, setErrors] = useState([]);
-    const [Firstname, setFirstname] = useState("First Name");
-    const [Lastname, setLastname] = useState("Last Name");
-    const [Email, setEmail] = useState("Email Address");
-    const [Phone, setPhone] = useState("Phone");
-    const {first_name, last_name, phone_number, email} = SettingsData;
+    const {first_name, last_name, email} = SettingsData;
+    const [Firstname, setFirstname] = useState(first_name);
+    const [Lastname, setLastname] = useState(last_name);
+    const [Email, setEmail] = useState(email);
 
 
     function HandelSave() {
@@ -19,8 +18,9 @@ function PersonalInformation({SettingsData, className}) {
     }
 
     const handelErrors = (str) => {
-        if (!errors.includes(str))
+        if (!errors.includes(str)) {
             setErrors(prevErrors => [...prevErrors, str]);
+        }
     }
 
     const removeErrors = (str) => {
@@ -33,14 +33,12 @@ function PersonalInformation({SettingsData, className}) {
         str == "FN" && setFirstname(e.target.value);
         str == "LN" && setLastname(e.target.value);
         str == "EM" && setEmail(e.target.value);
-        str == "PH" && setPhone(e.target.value);
     }
 
     const HandelSubmet = (e) => {
         e.preventDefault();
         const NamesRegix = /^[a-zA-Z-]{2,16}$/;
         const EmailRegix = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const PhoneRegix = /^\+?[1-9]\d{1,14}$/;
         if (!NamesRegix.test(Firstname))
             handelErrors("FN")
         else {
@@ -53,13 +51,15 @@ function PersonalInformation({SettingsData, className}) {
                     handelErrors("EM")
                 else {
                     removeErrors("EM");
-                    if (!PhoneRegix.test(Phone))
-                        handelErrors("PH")
-                    else {
-                        removeErrors("PH");
-                        console.log("All Is Right Ready To Send ");
+                        axios.post('https://www.fttran.tech/api/profile/edit/personal-data/', {
+                            firstName : first_name != Firstname ? Firstname : "None",
+                            lastName : last_name != Lastname ? Lastname : "None",
+                        }).then((res) => {
+                            console.log(res);
+                        }).catch(err => {
+                            console.log(err);
+                        });
                     }
-                }
             }
         }
     }
@@ -87,18 +87,15 @@ function PersonalInformation({SettingsData, className}) {
                 <div className='FullnameHolder flex flex-col  md:justify-between md:flex-row'>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
                         LabelName="First Name" save={save} ErrorWord="FN" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="FirstName" VarLoad={first_name} PlaceFeild={first_name}/>
+                        Error={Error} FNfiled={FNfiled} FieldName="FirstName" VarLoad={Firstname} PlaceFeild={first_name}/>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Last Name" save={save} ErrorWord="LN" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="LastName" VarLoad={last_name} PlaceFeild={last_name}/>
+                        Error={Error} FNfiled={FNfiled} FieldName="LastName" VarLoad={Lastname} PlaceFeild={last_name}/>
                 </div>
                 <div className='ContacInfo flex flex-col md:justify-between md:flex-row'>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Email Address" save={save} ErrorWord="EM" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="EmailAddress" VarLoad={email} PlaceFeild={email}/>
-                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
-                        LabelName="Phone" save={save} ErrorWord="PH" placeHolder={placeHolder}
-                        Error={Error} FNfiled={FNfiled} FieldName="text" VarLoad={phone_number} PlaceFeild={phone_number}/>
+                        Error={Error} FNfiled={FNfiled} FieldName="EmailAddress" VarLoad={Email} PlaceFeild={email}/>
                 </div>
             </form>
         </div>

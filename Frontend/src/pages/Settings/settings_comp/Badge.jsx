@@ -49,7 +49,7 @@ function Badge({SettingsData}) {
 
             try {
 
-                const sendFile = await axios.post(`https://www.fttran.tech/api/profile/upload-${endPoint}/`, formData, {
+                const sendFile = await axios.post(`https://aennaki.me/api/profile/upload-${endPoint}/`, formData, {
 
                         headers: {
 

@@ -36,7 +36,7 @@ function Messages({setMessages, username, className, toUser}) {
 
     useEffect(() => {
         async function fetchUsername() {
-            await axios.get('https://www.fttran.tech/api/profile/WhoAmI/')
+            await axios.get('https://aennaki.me/api/profile/WhoAmI/')
             .then(res => {
                 setWhoAmI(res.data.username);
             })
@@ -60,7 +60,7 @@ function Messages({setMessages, username, className, toUser}) {
                 const oldScrollHeight = messagesRef.current.scrollHeight;
 
                 try {
-                    const res = await axios.post(`https://www.fttran.tech/api/chat/messages/history/`, {
+                    const res = await axios.post(`https://aennaki.me/api/chat/messages/history/`, {
                         username : username,
                         start    : index.current,
                     });

@@ -14,7 +14,7 @@ function Game() {
     const fetchSettings = async () => {
       const userId = gameContext.selfData.id
 
-      await Axios.get(`https://www.fttran.tech/api/game/settings/${userId}/`, {
+      await Axios.get(`https://aennaki.me/api/game/settings/${userId}/`, {
         withCredentials: true,
       })
         .then((response) => {

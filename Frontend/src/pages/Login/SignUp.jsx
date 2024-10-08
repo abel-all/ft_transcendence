@@ -35,7 +35,7 @@ function SignUp() {
       fieldReGex.passwordReGex.test(formValues['Password'])
     ) {
       await Axios.post(
-        'https://www.fttran.tech/api/auth/signup/',
+        'https://aennaki.me/api/auth/signup/',
         {
           first_name: formValues['First Name'],
           last_name: formValues['Last Name'],

@@ -6,7 +6,7 @@ import axios from 'axios';
 function MatchHistory({className}) {
 
     // useEffect(() => {
-    //     axios.get('https://www.fttran.tech/api/game/match-history/ahennaki', {
+    //     axios.get('https://aennaki.me/api/game/match-history/ahennaki', {
     //         headers: {
     //         'Accept': 'application/json'
     //       }})
@@ -16,7 +16,7 @@ function MatchHistory({className}) {
     //         console.log("Data from ahmed", err);
     //     })
 
-    //     axios.get('https://www.fttran.tech/api/game/player/4/', {
+    //     axios.get('https://aennaki.me/api/game/player/4/', {
     //         headers: {
     //             'Accept': 'application/json'
     //           }})

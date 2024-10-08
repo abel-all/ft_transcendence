@@ -11,7 +11,7 @@ const FriendListHost = ({className, UrlUsername}) => {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get(`https://www.fttran.tech/api/profile/friends/`, {username : UrlUsername});
+                const res = await axios.get(`https://aennaki.me/api/profile/friends/`, {username : UrlUsername});
                 setAlreadyDated(res.data);
                 console.log(`List of FRIENDS Fetched data with success for user ${UrlUsername}`);
             } catch (error) {

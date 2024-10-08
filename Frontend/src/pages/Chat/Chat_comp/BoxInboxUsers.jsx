@@ -19,7 +19,7 @@ function BoxInboxUsers({lastMessage, VoidedUsername, lMUS}) {
     
     useEffect(() => {
         const times = setTimeout(() => {
-            axios.get('https://www.fttran.tech/api/chat/chats/')
+            axios.get('https://aennaki.me/api/chat/chats/')
             .then(res => {
                 setUserList(res.data);
                 setSorted(res.data);

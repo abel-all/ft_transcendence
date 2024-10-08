@@ -19,7 +19,7 @@ const SearchEngine = () => {
   const fetchPlayerData = async () => {
     // oneTime = true;
     await Axios.post(
-      'https://www.fttran.tech/api/profile/search/',
+      'https://aennaki.me/api/profile/search/',
       {
         prefix: searchResult,
       },

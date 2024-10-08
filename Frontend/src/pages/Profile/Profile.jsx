@@ -37,7 +37,7 @@ function Profile() {
     }
 
     useEffect(() => {
-        let url = UrlUsername ? `https://www.fttran.tech/api/profile/data/${UrlUsername}/`: "https://www.fttran.tech/api/profile/data/";
+        let url = UrlUsername ? `https://aennaki.me/api/profile/data/${UrlUsername}/`: "https://aennaki.me/api/profile/data/";
         const fetchmydata = async () => {
             try {
                 const res = await axios.get(`${url}`);

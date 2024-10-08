@@ -57,19 +57,18 @@ function App() {
               <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
-              <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
               <Route path="/game" element={<RequireAuth><Game /></RequireAuth>} />
               <Route path="game/play/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
               <Route path="game/online" element={<RequireAuth><PlayOnline /></RequireAuth>} />
               <Route path="game/bot" element={<RequireAuth><PlayWithBot /></RequireAuth>} />
               <Route path="game/friend" element={<RequireAuth><PlayWithFriend /></RequireAuth>} />
               <Route path="game/tournament" element={<RequireAuth><Tournament /></RequireAuth>} />
+              <Route path="*" element={<Page404 />} />
               {/* <Route path="game/tournament" element={<Tournament />} /> */}
               {/* <Route path="/game" element={<Game />} />
               <Route path="game/online" element={<PlayOnline />} /> */}
               {/* <Route path="game/bot" element={<PlayWithBot />} />
               <Route path="game/friend" element={<PlayWithFriend />} /> */}
-              {/* <Route path="*" element={<Page424 />} /> */}
             </Routes>
           </ContextProvider>
         </GameSettingsContextProvider>

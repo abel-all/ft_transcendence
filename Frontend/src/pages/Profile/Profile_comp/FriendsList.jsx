@@ -26,7 +26,7 @@ function FriendsList({className, UrlUsername}) {
             clearTimeout(TimeToDown);
 
         TimeToDown = setTimeout(() => {
-            e.target.value && axios.post('https://www.fttran.tech/api/profile/search/', {
+            e.target.value && axios.post('https://aennaki.me/api/profile/search/', {
                 prefix : e.target.value
             }).then ((res) => {
                 console.log("message sent : ", res);

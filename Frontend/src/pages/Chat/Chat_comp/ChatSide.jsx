@@ -97,7 +97,7 @@ function ChatSide({setVoidedUsername, className}) {
                         })
                     );
                 }
-                axios.post(`https://www.fttran.tech/api/chat/messages/history/`, {
+                axios.post(`https://aennaki.me/api/chat/messages/history/`, {
                     username : username,
                     start    : 0,
                 })

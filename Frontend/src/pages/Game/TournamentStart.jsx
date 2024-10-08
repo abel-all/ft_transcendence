@@ -72,7 +72,7 @@ const TournamentStart = () => {
   const navigate = useNavigate()
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://www.fttran.tech/ws/tournament/'
+    'wss://aennaki.me/ws/tournament/'
   )
 
   useEffect(() => {
@@ -310,7 +310,7 @@ const TournamentStart = () => {
   const handleEndGame = (data) => {
     const fetchSettings = async () => {
       await Axios.post(
-        `https://www.fttran.tech/api/tournament/matches/update/${matchId}/`,
+        `https://aennaki.me/api/tournament/matches/update/${matchId}/`,
         {
           completed: true,
           winner: data?.winner_profile?.id,

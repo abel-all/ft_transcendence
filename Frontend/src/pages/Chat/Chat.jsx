@@ -17,7 +17,7 @@ function Chat() {
 
     const [isFrom, setIsFrom] = useState(false);
     const [lastMessageUserSend, setlastMessageUserSend] = useState("");
-    const [socketURL, setSocketURL] = useState('wss://www.fttran.tech/ws/chat/');
+    const [socketURL, setSocketURL] = useState('wss://aennaki.me/ws/chat/');
     const [messageHistory, setMessageHistory] = useState([]);
     const [VoidedUsername, setVoidedUsername]  = useState("");
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
@@ -92,7 +92,7 @@ function Chat() {
         if (windo.lastIndexOf("user=") != -1) {
             let FromUser = windo.substring(windo.lastIndexOf("user=") + 5);
                 sendMessage(JSON.stringify({ action: 'create_room', username : FromUser}));
-                axios.post('https://www.fttran.tech/api/chat/user/', {
+                axios.post('https://aennaki.me/api/chat/user/', {
                     username : FromUser
                 }).then(res => {
                     if (res.status == 200) {

@@ -12,7 +12,7 @@ function ProfileSettings(className) {
 
 
     useEffect(() => {
-        axios.get('https://www.fttran.tech/api/profile/personal-data/')
+        axios.get('https://aennaki.me/api/profile/personal-data/')
         .then((res) => {
             setSettingsData(res.data);
             console.log("Data for settings : ", res);

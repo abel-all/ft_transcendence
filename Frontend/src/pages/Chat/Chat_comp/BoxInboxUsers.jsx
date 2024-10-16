@@ -16,10 +16,10 @@ function BoxInboxUsers({lastMessage, VoidedUsername, lMUS}) {
     const ChatHeader = useContext(chatHeaderOnClick);
     const [UserList, setUserList] = useState([]);
     const [Sorted, setSorted] = useState([]);
-    
+
     useEffect(() => {
         const times = setTimeout(() => {
-            axios.get('https://www.fttran.tech/api/chat/chats/')
+            axios.get('https://aennaki.me/api/chat/chats/')
             .then(res => {
                 setUserList(res.data);
                 setSorted(res.data);
@@ -49,7 +49,7 @@ function BoxInboxUsers({lastMessage, VoidedUsername, lMUS}) {
             });
         }
     }, [lastMessage]);
-    
+
     useEffect(() => {
         if (VoidedUsername) {
             setUserList(prevUserList => {
@@ -82,12 +82,12 @@ function BoxInboxUsers({lastMessage, VoidedUsername, lMUS}) {
                             return (
                                 <div className="cursor-pointer" key={index} onClick={() => ChatHeader.handelChatHeader(users.username, users.rank, users.picture)}>
                                     <InboxUsers
-                                        nickname={users.username}  
-                                        total_messages={users.unread_messages}  
-                                        userProfile={users.picture}        
-                                        lastMessage={users.last_message_content}  
-                                        lastMessageTime={new Date(users.last_message_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}  
-                                        isActive={users.is_online}  
+                                        nickname={users.username}
+                                        total_messages={users.unread_messages}
+                                        userProfile={users.picture}
+                                        lastMessage={users.last_message_content}
+                                        lastMessageTime={new Date(users.last_message_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        isActive={users.is_online}
                                     />
                                 </div>
                             );

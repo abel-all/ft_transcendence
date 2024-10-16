@@ -60,7 +60,7 @@ function ProfileSecurity({className, token, setShown}) {
 
     useEffect(() => {
         if (token) {
-            axios.get(`https://www.fttran.tech/api/auth/deleteaccount/check/${token}/`,)
+            axios.get(`https://aennaki.me/api/auth/deleteaccount/check/${token}/`,)
             .then((res) => {
             window.location = '/';
         })
@@ -101,7 +101,7 @@ function ProfileSecurity({className, token, setShown}) {
             setShowErrors(true)
         else {
             setShowErrors(false);
-            axios.post('https://www.fttran.tech/api/auth/passwordchange/', {
+            axios.post('https://aennaki.me/api/auth/passwordchange/', {
                 old_password : OldPassword,
                 new_password : NewPassword,
             }).then((res) => {
@@ -200,7 +200,7 @@ function ProfileSecurity({className, token, setShown}) {
                                 if (!DeleteConfirmed) {
                                     e.preventDefault();
                                     setDeleteConfirmed(true)
-                                    axios.get('https://www.fttran.tech/api/auth/deleteaccount/',)
+                                    axios.get('https://aennaki.me/api/auth/deleteaccount/',)
                                         .then((res) => {
                                         })
                                         .catch((ers) => {

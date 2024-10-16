@@ -21,7 +21,7 @@ function Badge({SettingsData}) {
     const [imagefile, setimagefile] = useState(null);
     const [background, setBackground] = useState(null);
     const {first_name, last_name, background_picture, picture} = SettingsData;
-    
+
     function HandelSave() {
         setSave(!save);
     }
@@ -49,12 +49,12 @@ function Badge({SettingsData}) {
 
             try {
 
-                const sendFile = await axios.post(`https://www.fttran.tech/api/profile/upload-${endPoint}/`, formData, {
+                const sendFile = await axios.post(`https://aennaki.me/api/profile/upload-${endPoint}/`, formData, {
 
                         headers: {
 
                             'Content-Type': 'multipart/form-data'
-                            
+
                         }
                     }
                 )

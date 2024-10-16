@@ -97,7 +97,7 @@ function ChatSide({setVoidedUsername, className}) {
                         })
                     );
                 }
-                axios.post(`https://www.fttran.tech/api/chat/messages/history/`, {
+                axios.post(`https://aennaki.me/api/chat/messages/history/`, {
                     username : username,
                     start    : 0,
                 })
@@ -187,7 +187,7 @@ function ChatSide({setVoidedUsername, className}) {
     }, [ChatContext.lastMessage]);
 
     useEffect(() => {
-        if (ChatContext.lastMessage 
+        if (ChatContext.lastMessage
             && JSON.parse(ChatContext.lastMessage.data).from == username
             && JSON.parse(ChatContext.lastMessage.data).type == "read_receipt")
         {

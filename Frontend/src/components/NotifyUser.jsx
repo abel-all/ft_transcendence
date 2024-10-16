@@ -21,7 +21,7 @@ const NotifyUser = () => {
         }, 4000);
     }
 
-    const {lastMessage } = useWebSocket('wss://www.fttran.tech/ws/notifications/', {
+    const {lastMessage } = useWebSocket('wss://aennaki.me/ws/notifications/', {
         onError: (error) => console.error('WebSocket error:', error),
         shouldReconnect: () => true,
         reconnectInterval: 3000

@@ -26,6 +26,8 @@ export const GameSettingsContextProvider = ({ children }) => {
     const [selfData, setSelfData] = useState({});
     const [tournamentInfo, setTournamentInfo] = useState({});
     const [participants, setParticipants] = useState([]);
+    const [winners, setWinners] = useState([]);
+    const [winnersFinal, setWinnersFinal] = useState([]);
     const [endGameData, setEndGameData] = useState({});
 
     const [player1Score, setPlayer1Score] = useState(0);
@@ -134,6 +136,12 @@ export const GameSettingsContextProvider = ({ children }) => {
             case "endgame":
                 setEndGameData(value);
                 break;
+            case "winners":
+                setWinners(value);
+                break;
+            case "winnersFinal":
+                setWinnersFinal(value);
+                break;
         }
     }
 
@@ -146,7 +154,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 
     return (
         <GameSettingContext.Provider
-            value={ { endGameData, participants, tournamentInfo, isCreateTour, createTour, joinTour, isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep, isBotLevelSection, isOnlineGame, isHowToPlay, matchDelay, userData, resetStates, issetting, selfData, loading, isTournament} }>
+            value={ { winnersFinal, winners, endGameData, participants, tournamentInfo, isCreateTour, createTour, joinTour, isSettings, handleModalClick, modal, isMapSection, setHandler, player1Score, player2Score, setPlayerScore, isGame, isPaddleSection, isScoreSection, settingsData,  addsettingsData, isLastStep, isBotLevelSection, isOnlineGame, isHowToPlay, matchDelay, userData, resetStates, issetting, selfData, loading, isTournament} }>
                 {children}
         </GameSettingContext.Provider>
     )

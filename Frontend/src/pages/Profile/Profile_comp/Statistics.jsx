@@ -16,7 +16,7 @@ function Statistics({className, UrlUsername}) {
     useEffect(() => {
         const fetchmydata = async () => {
             try {
-                const res = await axios.get("https://www.fttran.tech/api/profile/statistics/", {username : UrlUsername});
+                const res = await axios.get("https://aennaki.me/api/profile/statistics/", {username : UrlUsername});
                 handelStat(res.data);
             } catch (error) {
                 console.log("Statistics page Failed");

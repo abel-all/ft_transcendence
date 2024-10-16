@@ -63,8 +63,42 @@ const TournamentMatch = () => {
                 {/* <Match nbr={2}/> */}
             </div>
             <div className="flex flex-col gap-[30px]">
-                <Match nbr={3}/>
-                <Match nbr={4}/>
+                {/* <Match nbr={3}/>
+                <Match nbr={4}/> */}
+                <div className="flex gap-[20px] items-center">
+                    <div className="font-medium text-[25px] text-[#000] bg-[#eee] flex justify-center items-center bg-opacity-60 w-[30px] h-[30px] rounded-full">3</div>
+                    <div className="flex flex-col gap-[5px]">
+                        {gameContext?.participants.length > 4 ? <TournamentMatchCard
+                            rank={gameContext?.participants[4]?.profile?.rank}
+                            userImg={gameContext?.participants[4]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userName={gameContext?.participants[4]?.alias}
+                            gradeColor={gameContext?.participants[4]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                        /> : <EmptyMatchCard />}
+                        {gameContext?.participants.length > 5 ? <TournamentMatchCard
+                            rank={gameContext?.participants[5]?.profile?.rank}
+                            userImg={gameContext?.participants[5]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userName={gameContext?.participants[5]?.alias}
+                            gradeColor={gameContext?.participants[5]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                        /> : <EmptyMatchCard />}
+                    </div>
+                </div>
+                <div className="flex gap-[20px] items-center">
+                    <div className="font-medium text-[25px] text-[#000] bg-[#eee] flex justify-center items-center bg-opacity-60 w-[30px] h-[30px] rounded-full">3</div>
+                    <div className="flex flex-col gap-[5px]">
+                        {gameContext?.participants.length > 6 ? <TournamentMatchCard
+                            rank={gameContext?.participants[6]?.profile?.rank}
+                            userImg={gameContext?.participants[6]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userName={gameContext?.participants[6]?.alias}
+                            gradeColor={gameContext?.participants[6]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                        /> : <EmptyMatchCard />}
+                        {gameContext?.participants.length > 7 ? <TournamentMatchCard
+                            rank={gameContext?.participants[7]?.profile?.rank}
+                            userImg={gameContext?.participants[7]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userName={gameContext?.participants[7]?.alias}
+                            gradeColor={gameContext?.participants[7]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                        /> : <EmptyMatchCard />}
+                    </div>
+                </div>
             </div>
         </div>
     )

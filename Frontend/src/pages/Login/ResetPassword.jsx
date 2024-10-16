@@ -42,7 +42,7 @@ const ResetPassword = () => {
   const verifyPassword = async () => {
     setIsLoading(true)
     const paswdendpoint =
-      'https://www.fttran.tech/api/auth/passwordreset/' + tokenValue + '/'
+      'https://aennaki.me/api/auth/passwordreset/' + tokenValue + '/'
 
     if (
       fieldReGex.passwordReGex.test(password) &&

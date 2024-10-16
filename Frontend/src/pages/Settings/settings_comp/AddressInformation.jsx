@@ -33,7 +33,7 @@ function AddressInformation({SettingsData, className}) {
         if (errors.includes(str))
             setErrors(errors.filter(item => item !== str));
     }
-    
+
     const FNfiled = (e, str) => {
         e.preventDefault();
         str == "CN" && setCountry(e.target.value);
@@ -63,7 +63,7 @@ function AddressInformation({SettingsData, className}) {
                         handelErrors("ZP")
                     else {
                         removeErrors("ZP");
-                        axios.post('https://www.fttran.tech/api/profile/edit/address/', {
+                        axios.post('https://aennaki.me/api/profile/edit/address/', {
                             country : country != Country ? Country : "None",
                             city : city != City ? City : "None",
                             address : address != Address ? Address : "None",
@@ -95,18 +95,18 @@ function AddressInformation({SettingsData, className}) {
                     </div>}
                 </div>
                 <div className='CountryCity flex md:justify-between md:flex-row flex-col'>
-                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Country" save={save} ErrorWord="CN" placeHolder={placeHolder}
                         Error={Error} FNfiled={FNfiled} FieldName="Country" VarLoad={Country} PlaceFeild={country}/>
-                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="City" save={save} ErrorWord="CT" placeHolder={placeHolder}
                         Error={Error} FNfiled={FNfiled} FieldName="City" VarLoad={City} PlaceFeild={city}/>
                 </div>
                 <div className='AddressZip flex md:justify-between md:flex-row flex-col'>
-                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Address" save={save} ErrorWord="AD" placeHolder={placeHolder}
                         Error={Error} FNfiled={FNfiled} FieldName="Address" VarLoad={Address} PlaceFeild={address}/>
-                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="Zip code" save={save} ErrorWord="ZP" placeHolder={placeHolder}
                         Error={Error} FNfiled={FNfiled} FieldName="Zip code" VarLoad={Zip} PlaceFeild={zip_code}/>
                 </div>

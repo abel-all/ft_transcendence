@@ -27,7 +27,7 @@ function PersonalInformation({SettingsData, className}) {
         if (errors.includes(str))
             setErrors(errors.filter(item => item !== str));
     }
-    
+
     const FNfiled = (e, str) => {
         e.preventDefault();
         str == "FN" && setFirstname(e.target.value);
@@ -51,7 +51,7 @@ function PersonalInformation({SettingsData, className}) {
                     handelErrors("EM")
                 else {
                     removeErrors("EM");
-                        axios.post('https://www.fttran.tech/api/profile/edit/personal-data/', {
+                        axios.post('https://aennaki.me/api/profile/edit/personal-data/', {
                             firstName : first_name != Firstname ? Firstname : "None",
                             lastName : last_name != Lastname ? Lastname : "None",
                         }).then((res) => {
@@ -85,7 +85,7 @@ function PersonalInformation({SettingsData, className}) {
 
                 </div>
                 <div className='FullnameHolder flex flex-col  md:justify-between md:flex-row'>
-                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled} 
+                    <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}
                         LabelName="First Name" save={save} ErrorWord="FN" placeHolder={placeHolder}
                         Error={Error} FNfiled={FNfiled} FieldName="FirstName" VarLoad={Firstname} PlaceFeild={first_name}/>
                     <Inputes DivHolder={DivHolder} errors={errors} labelFiled={labelFiled}

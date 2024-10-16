@@ -74,7 +74,7 @@ const GamePlay = () => {
   const oneTime = useRef(false)
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://www.fttran.tech/ws/game/'
+    'wss://aennaki.me/ws/game/'
   )
 
   useEffect(() => {

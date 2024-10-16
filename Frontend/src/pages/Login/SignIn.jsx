@@ -42,7 +42,7 @@ function SignIn() {
 
   const checkFieldInput = async () => {
     await Axios.post(
-      'https://www.fttran.tech/api/auth/token/',
+      'https://aennaki.me/api/auth/token/',
       {
         username: formValues.Username,
         password: formValues.Password,
@@ -54,7 +54,7 @@ function SignIn() {
       .then((response) => {
         console.log('first request')
         const fetchUserData = async () => {
-          await Axios.get('https://www.fttran.tech/api/profile/data/', {
+          await Axios.get('https://aennaki.me/api/profile/data/', {
             withCredentials: true,
           })
             .then((response) => {
@@ -110,7 +110,7 @@ function SignIn() {
 
     if (fieldReGex.emailReGex.test(email)) {
       await Axios.post(
-        'https://www.fttran.tech/api/auth/passwordrecovery/',
+        'https://aennaki.me/api/auth/passwordrecovery/',
         {
           email: email,
         },

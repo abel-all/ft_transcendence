@@ -47,6 +47,9 @@ const ball = {
   color: '#FFFFFF',
 }
 
+let PlayerNbr = 0;
+let isGameStart = false;
+
 const TournamentStart = () => {
   const canvasRef = useRef(null)
   const [player1Score, setPlayer1Score] = useState(0)
@@ -72,7 +75,7 @@ const TournamentStart = () => {
   const navigate = useNavigate()
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://www.fttran.tech/ws/tournament/'
+    'wss://aennaki.me/ws/tournament/'
   )
 
   useEffect(() => {
@@ -119,6 +122,11 @@ const TournamentStart = () => {
         break
       case 'match_detail':
         console.log('match details <<< : ', data)
+        sendMessage(
+            JSON.stringify({ action: 'match_received', match_id: data?.match?.id })
+          )
+        PlayerNbr = data?.player_number;
+        setPlayerNumber(data?.player_number);
         setMatchId(data?.match?.id)
         if (data?.player_number === 1) {
           setPlayerData(data?.match?.player2?.profile)
@@ -127,22 +135,25 @@ const TournamentStart = () => {
           setPlayerData(data?.match?.player1?.profile)
           setSelfData(data?.match?.player2?.profile)
         }
-        setPlayerNumber(data?.player_number)
         setIsTimeToPlay(true)
         console.log('isTimeToPlay is : true')
         console.log('ready to send start Game')
         setTimeout(() => {
-          sendMessage(
-            JSON.stringify({ action: 'start_game', match_id: matchId })
-          )
-          console.log('start game is sent')
+          if (!isGameStart) {
+            sendMessage(
+              JSON.stringify({ action: 'start_game', match_id: data?.match?.id })
+            )
+            console.log('start game is sent');
+          }
           setIsGame(true)
         }, 5000)
         break
       case 'game_update':
-        setBallCor({ x: data.ball?.x, y: data.ball?.y })
+        // console.log("ball corr : ", data);
+        setBallCor({ x: data?.ball?.x, y: data?.ball?.y })
         break
       case 'score_update':
+        console.log("score update : ", data);
         handleScoreUpdate(data)
         break
       case 'paddle_update':
@@ -150,13 +161,51 @@ const TournamentStart = () => {
         break
       case 'end_game':
         console.log('end game >> ', data)
-        handleEndGame(data)
+        console.log("Player NUmber : ????? ", playerNumber)
+        sendMessage(JSON.stringify({ action: 'stop_game' }))
+        isIsGameEnd(true)
+        isGameStart = true;
+        setPlayer1Score(0)
+        setPlayer2Score(0)
+        setPaddleCor(canvasWidth / 2 - playerWidth / 2)
+        if (data?.loser === playerNumber) {
+          sendMessage(JSON.stringify({ action: 'disconnect' }))
+          setTimeout(() => {
+            // setPlayer1Score(0)
+            // setPlayer2Score(0)
+            setMatchId(-1)
+            isIsGameEnd(false)
+            // setPlayerNumber(0)
+            setIsTimeToPlay(false)
+            setIsGame(false)
+            navigate('/game', { replace: true })
+          }, 5000)
+        } else {
+          fetchSettings(data)
+          setEndMatchData(data)
+          gameContext.setHandler('endgame', data)
+          setTimeout(() => {
+            // setPlayer1Score(0)
+            // setPlayer2Score(0)
+            isIsGameEnd(false)
+            isGameStart = false;
+            // setPlayerNumber(0)
+            setIsTimeToPlay(false)
+            setIsGame(false)
+          }, 5000)
+        }
+        // handleEndGame(data)
         break
       case 'already_connected':
         console.log('User already connected from another tab')
         break
       case 'update_winner':
         console.log('winner array : ', data)
+        if (data?.round === "completed") {
+          sendMessage(JSON.stringify({ action: 'disconnect' }))
+          navigate("/game");
+        }
+        data?.round && !isGameStart === "final" ? gameContext.setHandler('winnersFinal', data?.winners) : gameContext.setHandler('winners', data?.winners);
         break
     }
   }, [lastMessage])
@@ -292,8 +341,8 @@ const TournamentStart = () => {
         player2_score: data?.player2_score,
       })
     )
-    setPlayer1Score(data.player1_score)
-    setPlayer2Score(data.player2_score)
+    setPlayer1Score(data?.player1_score)
+    setPlayer2Score(data?.player2_score)
   }
 
   const handlePaddleUpdate = (data) => {
@@ -307,56 +356,78 @@ const TournamentStart = () => {
     )
   }
 
-  const handleEndGame = (data) => {
-    const fetchSettings = async () => {
-      await Axios.post(
-        `https://www.fttran.tech/api/tournament/matches/update/${matchId}/`,
-        {
-          completed: true,
-          winner: data?.winner_profile?.id,
-          score_player1: data?.player1_score,
-          score_player2: data?.player2_score,
-        },
-        {
-          withCredentials: true,
+  const fetchSettings = async (data) => {
+          await Axios.post(
+            `https://aennaki.me/api/tournament/matches/update/${data?.match_id}/`,
+            {
+              completed: true,
+              winner: data?.winner_participant?.id,
+              score_player1: data?.player1_score,
+              score_player2: data?.player2_score,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+            .then((response) => {
+              console.log('update match api res : ', response)
+              setMatchId(-1)
+            })
+            .catch((err) => {
+              console.log(err)
+              console.log('Please try again!')
+            })
         }
-      )
-        .then((response) => {
-          console.log('update match api res : ', response)
-          setMatchId(-1)
-        })
-        .catch((err) => {
-          console.log(err)
-          console.log('Please try again!')
-        })
-    }
-    isIsGameEnd(true)
-    if (data?.loser === playerNumber) {
-      sendMessage(JSON.stringify({ action: 'disconnect' }))
-      setTimeout(() => {
-        setPlayer1Score(0)
-        setPlayer2Score(0)
-        setMatchId(-1)
-        isIsGameEnd(false)
-        setPlayerNumber(0)
-        setIsTimeToPlay(false)
-        setIsGame(false)
-        navigate('/game', { replace: true })
-      }, 5000)
-    } else {
-      fetchSettings()
-      setEndMatchData(data)
-      gameContext.setHandler('endgame', data)
-      setTimeout(() => {
-        setPlayer1Score(0)
-        setPlayer2Score(0)
-        isIsGameEnd(false)
-        setPlayerNumber(0)
-        setIsTimeToPlay(false)
-        setIsGame(false)
-      }, 5000)
-    }
-  }
+  // const handleEndGame = (data) => {
+    // const fetchSettings = async () => {
+    //   await Axios.post(
+    //     `https://aennaki.me/api/tournament/matches/update/${data?.match_id}/`,
+    //     {
+    //       completed: true,
+    //       winner: data?.winner_profile?.id,
+    //       score_player1: data?.player1_score,
+    //       score_player2: data?.player2_score,
+    //     },
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    //     .then((response) => {
+    //       console.log('update match api res : ', response)
+    //       setMatchId(-1)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //       console.log('Please try again!')
+    //     })
+    // }
+    // isIsGameEnd(true)
+    // if (data?.loser === playerNumber) {
+    //   sendMessage(JSON.stringify({ action: 'disconnect' }))
+    //   setTimeout(() => {
+    //     setPlayer1Score(0)
+    //     setPlayer2Score(0)
+    //     setMatchId(-1)
+    //     isIsGameEnd(false)
+    //     // setPlayerNumber(0)
+    //     setIsTimeToPlay(false)
+    //     setIsGame(false)
+    //     navigate('/game', { replace: true })
+    //   }, 5000)
+    // } else {
+    //   fetchSettings()
+    //   setEndMatchData(data)
+    //   gameContext.setHandler('endgame', data)
+    //   setTimeout(() => {
+    //     setPlayer1Score(0)
+    //     setPlayer2Score(0)
+    //     isIsGameEnd(false)
+    //     // setPlayerNumber(0)
+    //     setIsTimeToPlay(false)
+    //     setIsGame(false)
+    //   }, 5000)
+    // }
+  // }
 
   // draw functions
   const drawRect = (x, y, width, height, color, ctx) => {
@@ -425,14 +496,14 @@ const TournamentStart = () => {
               <div className="flex flex-col gap-[30px] justify-center items-center">
                 <div
                   className={`font-semibold text-[#fff0f9] text-[50px] max-sm:text[35px] ${
-                    endMatchData?.winner === playerNumber
+                    endMatchData?.winner === PlayerNbr
                       ? 'text-[green]'
                       : 'text-[red]'
                   }`}
                 >
-                  {endMatchData?.winner === playerNumber
-                    ? 'You Win'
-                    : 'You Lose'}
+                  {endMatchData?.winner === PlayerNbr
+                    ? 'You Win  '
+                    : 'You Lose  '}{PlayerNbr}
                 </div>
                 <div className="font-normal text-[#fff0f9] text-[38px] max-sm:text[22px]">
                   {endMatchData?.score}

@@ -30,7 +30,7 @@ function Friend(Data) {
 
     const AcceptRequest = (user, statusOfReq) => {
         if (Data.reason == "Invetations") {
-            axios.post('https://www.fttran.tech/api/profile/handle-friendship-request/', {
+            axios.post('https://aennaki.me/api/profile/handle-friendship-request/', {
                 username : user,
                 status: statusOfReq
             }).then((respons) => {
@@ -40,7 +40,7 @@ function Friend(Data) {
     }
 
     const SendRequest = (user) => {
-        axios.post('https://www.fttran.tech/api/profile/send-friendship-request/', {
+        axios.post('https://aennaki.me/api/profile/send-friendship-request/', {
             username : user
         }).then((respons) => {
             handelRender(respons.data.message);

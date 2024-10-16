@@ -7,7 +7,7 @@ function Buttn({toggles, rsn, user, content}) {
     const handelClick = () => {
         if (rsn == "Block") {
             console.log(`${user} is blocked`);
-            axios.post('https://www.fttran.tech/api/profile/block-friend/', {
+            axios.post('https://aennaki.me/api/profile/block-friend/', {
                 username : user,
             }).then((response) => {
                 console.log("user block sent with suecsses!");
@@ -16,7 +16,7 @@ function Buttn({toggles, rsn, user, content}) {
             });
         } else if (rsn == "Unblock") {
             console.log(`${user} is Unblocked`);
-            axios.post('https://www.fttran.tech/api/profile/unblock-friend/', {
+            axios.post('https://aennaki.me/api/profile/unblock-friend/', {
                 username : user,
             }).then((response) => {
                 console.log("user Unblock sent with suecsses!");
@@ -25,7 +25,7 @@ function Buttn({toggles, rsn, user, content}) {
             });
         } else if (rsn == "undo") {
             console.log(`${user} is undo`);
-            axios.post('https://www.fttran.tech/api/profile/eliminate-friendship-request/', {
+            axios.post('https://aennaki.me/api/profile/eliminate-friendship-request/', {
                 username : user,
             }).then((response) => {
                 console.log("user undo sent with suecsses!");

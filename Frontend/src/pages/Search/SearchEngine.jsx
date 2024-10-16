@@ -19,7 +19,7 @@ const SearchEngine = () => {
   const fetchPlayerData = async () => {
     // oneTime = true;
     await Axios.post(
-      'https://aennaki.me/api/profile/search/',
+      'https://fttran.tech/api/profile/search/',
       {
         prefix: searchResult,
       },
@@ -83,7 +83,7 @@ const SearchEngine = () => {
                 key={index}
                 rank={rank}
                 userImage={picture || 'https://picsum.photos/100/100'}
-                username={username}
+                userName={username}
                 bgColor={badge || 'bg-[#CB3401]'}
               />
             )

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import xIcon from '../../assets/imgs/xIcon.svg'
 import search from '../../assets/imgs/search.svg'
 import { useGameSettings } from './GameSettingsContext'
-// import SearchResultCard from "../Search/SearchResultCard"
+import SearchResultCardTour from '../Search/SearchResultCardTour'
 import Spiner from './Spiner'
 import Axios from 'axios'
 
@@ -21,7 +21,7 @@ const SearchModal = () => {
 
   const fetchUsersData = async () => {
     await Axios.post(
-      'https://aennaki.me/api/profile/search/',
+      'https://fttran.tech/api/profile/search/',
       {
         prefix: searchResult,
       },
@@ -44,7 +44,7 @@ const SearchModal = () => {
   const fetchFriendsData = async () => {
     console.log('searchrs : ', searchResult)
     await Axios.post(
-      'https://aennaki.me/api/profile/search/friends/',
+      'https://fttran.tech/api/profile/search/friends/',
       {
         prefix: searchResult,
       },
@@ -87,7 +87,7 @@ const SearchModal = () => {
   // const fetchUserData = async () => {
   // onetime = true;
 
-  // await Axios.post("https://aennaki.me/api/notifications/", {
+  // await Axios.post("https://fttran.tech/api/notifications/", {
   //     offset: 10
   // }, {
   //     withCredentials:true,
@@ -242,18 +242,20 @@ const SearchModal = () => {
                       )
                     )}
                     {/* {isLoaded && <Spiner/>} */}
-                    {/* <SearchResultCard
-                                        rank="5343"
-                                        userImage="https://picsum.photos/100/100"
-                                        username="abel-all"
-                                        bgColor="bg-[#CB3401]"
-                                    />
-                                    <SearchResultCard
-                                        rank="5343"
-                                        userImage="https://picsum.photos/100/100"
-                                        username="abel-all"
-                                        bgColor="bg-[#CB3401]"
-                                    /> */}
+                    <SearchResultCardTour
+                      rank="5343"
+                      userImage="https://picsum.photos/100/100"
+                      userName="abel-all"
+                      bgColor="bg-[#CB3401]"
+                      type="tournament"
+                    />
+                    <SearchResultCardTour
+                      rank="5343"
+                      userImage="https://picsum.photos/100/100"
+                      userName="abel-all"
+                      bgColor="bg-[#CB3401]"
+                      type="tournament"
+                    />
                   </div>
                 )}
               </>

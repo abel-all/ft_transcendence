@@ -10,7 +10,7 @@ import { useGameSettings } from './GameSettingsContext'
 
 const cardsData = [
     {
-        route: "/game/online",
+        route: "/game/onlineGame",
         bgColor: "bg-[#FFCD3E]/90",
         title: "Play Online",
         description: "Play vs a person of similar skill",

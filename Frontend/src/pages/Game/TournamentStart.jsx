@@ -47,8 +47,8 @@ const ball = {
   color: '#FFFFFF',
 }
 
-let PlayerNbr = 0;
-let isGameStart = false;
+let PlayerNbr = 0
+let isGameStart = false
 
 const TournamentStart = () => {
   const canvasRef = useRef(null)
@@ -75,7 +75,7 @@ const TournamentStart = () => {
   const navigate = useNavigate()
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://aennaki.me/ws/tournament/'
+    'wss://fttran.tech/ws/tournament/'
   )
 
   useEffect(() => {
@@ -119,14 +119,19 @@ const TournamentStart = () => {
       case 'participants_update':
         console.log('parts update : ', data?.participants)
         gameContext.setHandler('participants', data?.participants)
+        gameContext.setHandler('participantsData', data?.participants)
         break
       case 'match_detail':
         console.log('match details <<< : ', data)
+        sendNotification()
         sendMessage(
-            JSON.stringify({ action: 'match_received', match_id: data?.match?.id })
-          )
-        PlayerNbr = data?.player_number;
-        setPlayerNumber(data?.player_number);
+          JSON.stringify({
+            action: 'match_received',
+            match_id: data?.match?.id,
+          })
+        )
+        PlayerNbr = data?.player_number
+        setPlayerNumber(data?.player_number)
         setMatchId(data?.match?.id)
         if (data?.player_number === 1) {
           setPlayerData(data?.match?.player2?.profile)
@@ -141,9 +146,12 @@ const TournamentStart = () => {
         setTimeout(() => {
           if (!isGameStart) {
             sendMessage(
-              JSON.stringify({ action: 'start_game', match_id: data?.match?.id })
+              JSON.stringify({
+                action: 'start_game',
+                match_id: data?.match?.id,
+              })
             )
-            console.log('start game is sent');
+            console.log('start game is sent')
           }
           setIsGame(true)
         }, 5000)
@@ -153,7 +161,7 @@ const TournamentStart = () => {
         setBallCor({ x: data?.ball?.x, y: data?.ball?.y })
         break
       case 'score_update':
-        console.log("score update : ", data);
+        console.log('score update : ', data)
         handleScoreUpdate(data)
         break
       case 'paddle_update':
@@ -161,10 +169,10 @@ const TournamentStart = () => {
         break
       case 'end_game':
         console.log('end game >> ', data)
-        console.log("Player NUmber : ????? ", playerNumber)
+        console.log('Player NUmber : ????? ', playerNumber)
         sendMessage(JSON.stringify({ action: 'stop_game' }))
         isIsGameEnd(true)
-        isGameStart = true;
+        isGameStart = true
         setPlayer1Score(0)
         setPlayer2Score(0)
         setPaddleCor(canvasWidth / 2 - playerWidth / 2)
@@ -188,7 +196,7 @@ const TournamentStart = () => {
             // setPlayer1Score(0)
             // setPlayer2Score(0)
             isIsGameEnd(false)
-            isGameStart = false;
+            isGameStart = false
             // setPlayerNumber(0)
             setIsTimeToPlay(false)
             setIsGame(false)
@@ -201,11 +209,14 @@ const TournamentStart = () => {
         break
       case 'update_winner':
         console.log('winner array : ', data)
-        if (data?.round === "completed") {
+        gameContext.setHandler('participantsData', data?.winners)
+        if (data?.round === 'completed') {
           sendMessage(JSON.stringify({ action: 'disconnect' }))
-          navigate("/game");
+          navigate('/game')
         }
-        data?.round && !isGameStart === "final" ? gameContext.setHandler('winnersFinal', data?.winners) : gameContext.setHandler('winners', data?.winners);
+        data?.round && !isGameStart === 'final'
+          ? gameContext.setHandler('winnersFinal', data?.winners)
+          : gameContext.setHandler('winners', data?.winners)
         break
     }
   }, [lastMessage])
@@ -357,76 +368,101 @@ const TournamentStart = () => {
   }
 
   const fetchSettings = async (data) => {
-          await Axios.post(
-            `https://aennaki.me/api/tournament/matches/update/${data?.match_id}/`,
-            {
-              completed: true,
-              winner: data?.winner_participant?.id,
-              score_player1: data?.player1_score,
-              score_player2: data?.player2_score,
-            },
-            {
-              withCredentials: true,
-            }
-          )
-            .then((response) => {
-              console.log('update match api res : ', response)
-              setMatchId(-1)
-            })
-            .catch((err) => {
-              console.log(err)
-              console.log('Please try again!')
-            })
-        }
+    await Axios.post(
+      `https://fttran.tech/api/tournament/matches/update/${data?.match_id}/`,
+      {
+        completed: true,
+        winner: data?.winner_participant?.id,
+        score_player1: data?.player1_score,
+        score_player2: data?.player2_score,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+      .then((response) => {
+        console.log('update match api res : ', response)
+        setMatchId(-1)
+      })
+      .catch((err) => {
+        console.log(err)
+        console.log('Please try again!')
+      })
+  }
+  const sendNotification = async () => {
+    let participantsNames = []
+    for (let i = 0; i < gameContext.participantsData.length; i++) {
+      participantsNames.push(
+        gameContext?.participantsData[i]?.profile?.username
+      )
+    }
+
+    await Axios.post(
+      'https://fttran.tech/api/profile/notification/tournament-reminder/',
+      {
+        // tournament_name: gameContext.tournamentInfo?.tournament_name,
+        users: participantsNames,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+      .then((response) => {
+        console.log('data of friends is ', response?.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   // const handleEndGame = (data) => {
-    // const fetchSettings = async () => {
-    //   await Axios.post(
-    //     `https://aennaki.me/api/tournament/matches/update/${data?.match_id}/`,
-    //     {
-    //       completed: true,
-    //       winner: data?.winner_profile?.id,
-    //       score_player1: data?.player1_score,
-    //       score_player2: data?.player2_score,
-    //     },
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   )
-    //     .then((response) => {
-    //       console.log('update match api res : ', response)
-    //       setMatchId(-1)
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //       console.log('Please try again!')
-    //     })
-    // }
-    // isIsGameEnd(true)
-    // if (data?.loser === playerNumber) {
-    //   sendMessage(JSON.stringify({ action: 'disconnect' }))
-    //   setTimeout(() => {
-    //     setPlayer1Score(0)
-    //     setPlayer2Score(0)
-    //     setMatchId(-1)
-    //     isIsGameEnd(false)
-    //     // setPlayerNumber(0)
-    //     setIsTimeToPlay(false)
-    //     setIsGame(false)
-    //     navigate('/game', { replace: true })
-    //   }, 5000)
-    // } else {
-    //   fetchSettings()
-    //   setEndMatchData(data)
-    //   gameContext.setHandler('endgame', data)
-    //   setTimeout(() => {
-    //     setPlayer1Score(0)
-    //     setPlayer2Score(0)
-    //     isIsGameEnd(false)
-    //     // setPlayerNumber(0)
-    //     setIsTimeToPlay(false)
-    //     setIsGame(false)
-    //   }, 5000)
-    // }
+  // const fetchSettings = async () => {
+  //   await Axios.post(
+  //     `https://fttran.tech/api/tournament/matches/update/${data?.match_id}/`,
+  //     {
+  //       completed: true,
+  //       winner: data?.winner_profile?.id,
+  //       score_player1: data?.player1_score,
+  //       score_player2: data?.player2_score,
+  //     },
+  //     {
+  //       withCredentials: true,
+  //     }
+  //   )
+  //     .then((response) => {
+  //       console.log('update match api res : ', response)
+  //       setMatchId(-1)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //       console.log('Please try again!')
+  //     })
+  // }
+  // isIsGameEnd(true)
+  // if (data?.loser === playerNumber) {
+  //   sendMessage(JSON.stringify({ action: 'disconnect' }))
+  //   setTimeout(() => {
+  //     setPlayer1Score(0)
+  //     setPlayer2Score(0)
+  //     setMatchId(-1)
+  //     isIsGameEnd(false)
+  //     // setPlayerNumber(0)
+  //     setIsTimeToPlay(false)
+  //     setIsGame(false)
+  //     navigate('/game', { replace: true })
+  //   }, 5000)
+  // } else {
+  //   fetchSettings()
+  //   setEndMatchData(data)
+  //   gameContext.setHandler('endgame', data)
+  //   setTimeout(() => {
+  //     setPlayer1Score(0)
+  //     setPlayer2Score(0)
+  //     isIsGameEnd(false)
+  //     // setPlayerNumber(0)
+  //     setIsTimeToPlay(false)
+  //     setIsGame(false)
+  //   }, 5000)
+  // }
   // }
 
   // draw functions
@@ -503,7 +539,8 @@ const TournamentStart = () => {
                 >
                   {endMatchData?.winner === PlayerNbr
                     ? 'You Win  '
-                    : 'You Lose  '}{PlayerNbr}
+                    : 'You Lose  '}
+                  {PlayerNbr}
                 </div>
                 <div className="font-normal text-[#fff0f9] text-[38px] max-sm:text[22px]">
                   {endMatchData?.score}

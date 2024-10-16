@@ -1,7 +1,5 @@
 import rankImg from '../../assets/imgs/rank.svg'
 import playImg from '../../assets/imgs/paly_friend.svg'
-import addUserImg from '../../assets/imgs/AddUser.svg'
-import chatImg from '../../assets/imgs/chat_friend.svg'
 import { useGameSettings } from '../Game/GameSettingsContext'
 import { Axios } from 'axios'
 import { useState } from 'react'
@@ -14,9 +12,10 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
     console.log(userName)
     setIsIconCliced(true)
     await Axios.post(
-      'https://fttran.tech/api/profile/send-palywithme-request/',
+      'https://fttran.tech/api/profile/notification/join-tournament/',
       {
-        id: 4,
+        username: userName,
+        tournament_name: 'test',
         // tournament_name: gameContext?.tournamentInfo?.tournament_name,
       },
       {
@@ -49,17 +48,12 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         ></div>
         <div
           onClick={handlePlayWithMeClick}
-          className="icons-link flex gap-[20px]"
+          className="cursor-pointer icons-link flex gap-[20px]"
         >
           <img
-            onClick={handlePlayWithMeClick}
-            className={`${
-              isIconCliced ? 'hidden' : ''
-            } duration-500 cursor-pointer`}
+            className={`${isIconCliced ? 'hidden' : ''} duration-500`}
             src={playImg}
           />
-          <img src={addUserImg} />
-          <img src={chatImg} />
         </div>
       </div>
     </div>

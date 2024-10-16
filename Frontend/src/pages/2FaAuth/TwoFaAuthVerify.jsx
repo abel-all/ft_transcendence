@@ -29,7 +29,7 @@ const TwoFaAuthVerify = ({ userId }) => {
 
     if (/^[a-f0-9]{6,8}$/.test(code)) {
       await Axios.post(
-        'https://aennaki.me/api/auth/2fa/verify/',
+        'https://fttran.tech/api/auth/2fa/verify/',
         {
           otp_code: code,
           user_id: userId,

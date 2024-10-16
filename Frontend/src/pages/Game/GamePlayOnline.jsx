@@ -74,12 +74,14 @@ const GamePlay = () => {
   const oneTime = useRef(false)
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://aennaki.me/ws/game/'
+    'wss://fttran.tech/ws/game/'
   )
 
   useEffect(() => {
     if (readyState === 1) {
-      sendMessage(JSON.stringify({ action: 'join_queue' }))
+      gameContext.isRandomGame === true
+        ? sendMessage(JSON.stringify({ action: 'join_queue' }))
+        : sendMessage(JSON.stringify({ action: 'invitation' }))
       console.log('WebSocket connection is open')
       waitingTimeout = setTimeout(() => {
         setIsWaiting(false)

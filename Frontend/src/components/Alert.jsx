@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { IoIosNotifications } from "react-icons/io";
 
 
 
@@ -67,6 +68,7 @@ const Alert = ({ message, color }) => {
     const display = useRef("block");
     const [percent, setPercent] = useState(100);
     const [messageArray, setMessageArray] = useState([message]);
+    const [ColorArray, setColorArray] = useState([color ? color : "green"]);
 
     useEffect(() => {
         if (messageArray.length > 0) {
@@ -80,6 +82,7 @@ const Alert = ({ message, color }) => {
                             clearInterval(percentInterval);
                             setPercent(100);
                             setMessageArray((prev) => prev.slice(1));
+                            setColorArray((prev) => prev.slice(1));
                             return 100;
                         }
                     });
@@ -97,15 +100,18 @@ const Alert = ({ message, color }) => {
     useEffect(() => {
         if (message) {
             setMessageArray((prev) => [...prev, message]);
+            setColorArray((prev) => [...prev, color]);
         }
     }, [message]);
 
     return (
         messageArray.length > 0 && (
-            <div
-                className={`Alert ${display.current} top-[120px] p-[6px] z-[100] rounded-md text-center fixed text-white h-[41px]`}
-                style={{ backgroundColor: color, opacity: percent / 100 }}>
-                <p>{messageArray[0]}</p>
+            <div className="flex w-full justify-center">
+                <div
+                    className={`Alert ${display.current} top-[120px] p-[6px] z-[100] rounded-md text-center fixed text-white h-[41px]`}
+                    style={{ backgroundColor: color, opacity: percent / 100 }}>
+                    <p className="flex justify-between items-center"> {<IoIosNotifications style={{marginRight : "10px", color: "black"}} size={'25px'}/>}  {messageArray[0]}</p>
+                </div>
             </div>
         )
     );

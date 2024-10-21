@@ -4,6 +4,7 @@ import './css/index.css'
 import MatchMakingCard from './MatchMakingCard.jsx'
 import { useGameSettings } from './GameSettingsContext'
 import PlayerScore from './PlayerScore'
+import GameEndScreen from './GameEndScreen'
 // import { useNavigate } from "react-router-dom"
 
 // Game vars:
@@ -55,6 +56,8 @@ const GamePlay = () => {
   const [isMobileVersion, setIsMobileVersion] = useState(false)
   const [isWaiting, setIsWaiting] = useState(true)
   const [playerData, setPlayerData] = useState({})
+  const [endMatchWinner, setEndMatchWinner] = useState(0)
+  const [endMatchScore, setEndMatchScore] = useState('')
 
   const [keyLeftpressed, setKeyLeftpressed] = useState(false)
   const [keyRightpressed, setKeyRightpressed] = useState(false)
@@ -62,7 +65,7 @@ const GamePlay = () => {
   const [isGame, setIsGame] = useState(false)
   const [avatar, setAvatar] = useState(true)
   const [isGameEnd, isIsGameEnd] = useState(false)
-  const [endMatchData, setEndMatchData] = useState({})
+  // const [endMatchData, setEndMatchData] = useState({})
   const [playerNumber, setPlayerNumber] = useState(0)
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
@@ -264,7 +267,9 @@ const GamePlay = () => {
   }
 
   const handleEndGame = (data) => {
-    setEndMatchData(data)
+    // setEndMatchData(data)
+    setEndMatchWinner(data?.winner)
+    setEndMatchScore(data?.score)
     isIsGameEnd(true)
     sendMessage(JSON.stringify({ action: 'disconnect' }))
   }
@@ -363,24 +368,11 @@ const GamePlay = () => {
       ) : (
         <>
           {isGameEnd && (
-            <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center text-[#fff6f9] font-bold text-[80px] max-sm:text-[30px]">
-              <div className="flex flex-col gap-[30px] justify-center items-center">
-                <div
-                  className={`font-semibold text-[#fff0f9] text-[50px] max-sm:text[35px] ${
-                    endMatchData?.winner === playerNumber
-                      ? 'text-[#00ff00]'
-                      : 'text-[red]'
-                  }`}
-                >
-                  {endMatchData?.winner === playerNumber
-                    ? 'You Win'
-                    : 'You Lose'}
-                </div>
-                <div className="font-normal text-[#fff0f9] text-[38px] max-sm:text[22px]">
-                  {endMatchData?.score}
-                </div>
-              </div>
-            </div>
+            <GameEndScreen
+              winner={endMatchWinner}
+              score={endMatchScore}
+              playerNumber={playerNumber}
+            />
           )}
           <div className="h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0">
             <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">

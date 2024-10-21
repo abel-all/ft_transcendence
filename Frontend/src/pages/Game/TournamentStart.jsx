@@ -9,6 +9,7 @@ import Spiner from './Spiner'
 import PlayerScore from './PlayerScore'
 import Axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import GameEndScreen from './GameEndScreen'
 import './css/index.css'
 
 const playerHeight = 15
@@ -47,7 +48,7 @@ const ball = {
   color: '#FFFFFF',
 }
 
-let PlayerNbr = 0
+// let PlayerNbr = 0
 let isGameStart = false
 
 const TournamentStart = () => {
@@ -61,7 +62,8 @@ const TournamentStart = () => {
   const [keyRightpressed, setKeyRightpressed] = useState(false)
   const [matchId, setMatchId] = useState(-1)
   const [isGameEnd, isIsGameEnd] = useState(false)
-  const [endMatchData, setEndMatchData] = useState({})
+  const [endMatchWinner, setEndMatchWinner] = useState(0)
+  const [endMatchScore, setEndMatchScore] = useState('')
   const [playerNumber, setPlayerNumber] = useState(0)
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
@@ -123,6 +125,7 @@ const TournamentStart = () => {
         break
       case 'match_detail':
         console.log('match details <<< : ', data)
+        setPlayerNumber(data?.player_number)
         sendNotification()
         sendMessage(
           JSON.stringify({
@@ -130,8 +133,7 @@ const TournamentStart = () => {
             match_id: data?.match?.id,
           })
         )
-        PlayerNbr = data?.player_number
-        setPlayerNumber(data?.player_number)
+        // PlayerNbr = data?.player_number
         setMatchId(data?.match?.id)
         if (data?.player_number === 1) {
           setPlayerData(data?.match?.player2?.profile)
@@ -154,7 +156,7 @@ const TournamentStart = () => {
             console.log('start game is sent')
           }
           setIsGame(true)
-        }, 5000)
+        }, 15000)
         break
       case 'game_update':
         // console.log("ball corr : ", data);
@@ -170,6 +172,8 @@ const TournamentStart = () => {
       case 'end_game':
         console.log('end game >> ', data)
         console.log('Player NUmber : ????? ', playerNumber)
+        setEndMatchWinner(data?.winner)
+        setEndMatchScore(data?.score)
         sendMessage(JSON.stringify({ action: 'stop_game' }))
         isIsGameEnd(true)
         isGameStart = true
@@ -190,7 +194,6 @@ const TournamentStart = () => {
           }, 5000)
         } else {
           fetchSettings(data)
-          setEndMatchData(data)
           gameContext.setHandler('endgame', data)
           setTimeout(() => {
             // setPlayer1Score(0)
@@ -528,25 +531,11 @@ const TournamentStart = () => {
       {isGame ? (
         <>
           {isGameEnd && (
-            <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center text-[#fff6f9] font-bold text-[80px] max-sm:text-[30px]">
-              <div className="flex flex-col gap-[30px] justify-center items-center">
-                <div
-                  className={`font-semibold text-[#fff0f9] text-[50px] max-sm:text[35px] ${
-                    endMatchData?.winner === PlayerNbr
-                      ? 'text-[green]'
-                      : 'text-[red]'
-                  }`}
-                >
-                  {endMatchData?.winner === PlayerNbr
-                    ? 'You Win  '
-                    : 'You Lose  '}
-                  {PlayerNbr}
-                </div>
-                <div className="font-normal text-[#fff0f9] text-[38px] max-sm:text[22px]">
-                  {endMatchData?.score}
-                </div>
-              </div>
-            </div>
+            <GameEndScreen
+              winner={endMatchWinner}
+              score={endMatchScore}
+              playerNumber={playerNumber}
+            />
           )}
           <div className="h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0">
             <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">
@@ -590,20 +579,20 @@ const TournamentStart = () => {
         <>
           {!gameContext.modal ? (
             <>
-              <div className="w-full flex max-lg:gap-[60px] max-xl:gap-[140px] gap-[240px] justify-center my-[200px] max-md:my-[50px]">
+              <div className="w-full flex max-lg:gap-[60px] max-xl:gap-[140px] gap-[240px] md:justify-center my-[200px] max-md:my-[150px] overflow-x-auto max-md:p-5">
                 <div className="quarter-final">
                   <div className="font-light text-[#eee] text-[20px] mb-[30px]">
                     Quarter-final
                   </div>
                   <TournamentMatch />
                 </div>
-                <div className="max-md:hidden Semi-final">
+                <div className="Semi-final">
                   <div className="font-light text-[#eee] text-[20px] mb-[30px]">
                     Semi-final
                   </div>
                   <SemiFinal />
                 </div>
-                <div className="max-md:hidden Final">
+                <div className="Final">
                   <div className="font-light text-[#eee] text-[20px] mb-[30px]">
                     Final
                   </div>

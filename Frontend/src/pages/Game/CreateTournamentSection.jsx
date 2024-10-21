@@ -178,7 +178,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
                 {activeTournament.map(({ name }, index) => (
                   <div
                     key={index}
-                    className="shrink-0 h-[40px] bg-[#ff0000] w-full flex justify-center items-center rounded-[10px]"
+                    className="shrink-0 h-[60px] bg-[#919191] w-full flex justify-center items-center rounded-[10px] text-lg"
                   >
                     {name}
                   </div>

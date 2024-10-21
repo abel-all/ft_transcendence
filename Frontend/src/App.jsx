@@ -97,13 +97,13 @@ function App() {
                 path="/game/onlineGame"
                 element={<OnlineGameMiddleware />}
               />
-              {/* <Route path="/game" element={<Game />} />
+              <Route path="/game" element={<Game />} />
               <Route path="game/play/online" element={<PlayOnline />} />
               <Route path="game/online" element={<PlayOnline />} />
               <Route path="game/bot" element={<PlayWithBot />} />
               <Route path="game/friend" element={<PlayWithFriend />} />
-              <Route path="game/tournament" element={<Tournament />} /> */}
-              <Route
+              <Route path="game/tournament" element={<Tournament />} />
+              {/* <Route
                 path="/game"
                 element={
                   <RequireAuth>
@@ -150,7 +150,7 @@ function App() {
                     <Tournament />
                   </RequireAuth>
                 }
-              />
+              /> */}
               <Route path="*" element={<Page404 />} />
             </Routes>
           </ContextProvider>

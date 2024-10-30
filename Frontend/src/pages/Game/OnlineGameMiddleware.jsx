@@ -9,11 +9,11 @@ const OnlineGameMiddleware = () => {
 
   const handleInvitationClick = () => {
     gameContext.setHandler('isRandomGame', false)
-    navigate('/game/play/online')
+    navigate('/game/online')
   }
   const handleRandomClick = () => {
     gameContext.setHandler('isRandomGame', true)
-    navigate('/game/play/online')
+    navigate('/game/online')
   }
 
   return (

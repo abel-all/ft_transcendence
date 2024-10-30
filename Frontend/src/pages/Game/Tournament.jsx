@@ -27,8 +27,8 @@ const Tournament = () => {
       ) : (
         <div className="container mx-auto px-[10px]">
           <Header title="Tournament" activeSection="GametableIcon" />
-          {<TournamentStart />}
-          {/* {!gameContext.isTournament ? <CreateTournament /> : <TournamentStart />} */}
+          {/* {<TournamentStart />} */}
+          {!gameContext.isTournament ? <CreateTournament /> : <TournamentStart />}
           <BottomNaveBar activeSection="GametableIcon" />
         </div>
       )}

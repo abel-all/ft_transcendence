@@ -2,20 +2,20 @@
 
 module.exports = {
   mode: 'jit',
-  purge: {
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx}",
-    ],
-    options: {
-      safelist: [
-        'bg-[#7DAA48]',
-        'bg-[#8374D1]',
-        'bg-[#E04154]',
-        'bg-[#D9D9D9]',
-      ],
-    },
-  },
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  // purge: {
+  //   options: {
+  //     safelist: [
+  //       'bg-[#7DAA48]',
+  //       'bg-[#8374D1]',
+  //       'bg-[#E04154]',
+  //       'bg-[#D9D9D9]',
+  //     ],
+  //   },
+  // },
   theme: {
     extend: {
       keyframes: {

@@ -93,17 +93,16 @@ function App() {
                   </RequireAuth>
                 }
               />
-              <Route
+              {/* <Route
                 path="/game/onlineGame"
                 element={<OnlineGameMiddleware />}
               />
               <Route path="/game" element={<Game />} />
-              <Route path="game/play/online" element={<PlayOnline />} />
               <Route path="game/online" element={<PlayOnline />} />
               <Route path="game/bot" element={<PlayWithBot />} />
               <Route path="game/friend" element={<PlayWithFriend />} />
-              <Route path="game/tournament" element={<Tournament />} />
-              {/* <Route
+              <Route path="game/tournament" element={<Tournament />} /> */}
+              <Route
                 path="/game"
                 element={
                   <RequireAuth>
@@ -111,14 +110,14 @@ function App() {
                   </RequireAuth>
                 }
               />
-              <Route
-                path="game/play/online"
+                <Route
+                path="/game/onlineGame"
                 element={
                   <RequireAuth>
-                    <PlayOnline />
+                    <OnlineGameMiddleware />
                   </RequireAuth>
                 }
-              />
+                />
               <Route
                 path="game/online"
                 element={
@@ -150,7 +149,7 @@ function App() {
                     <Tournament />
                   </RequireAuth>
                 }
-              /> */}
+              />
               <Route path="*" element={<Page404 />} />
             </Routes>
           </ContextProvider>

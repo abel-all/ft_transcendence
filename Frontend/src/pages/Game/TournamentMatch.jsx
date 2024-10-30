@@ -62,9 +62,7 @@ const TournamentMatch = () => {
                 </div>
                 {/* <Match nbr={2}/> */}
             </div>
-            <div className="flex flex-col gap-[30px]">
-                {/* <Match nbr={3}/>
-                <Match nbr={4}/> */}
+            {/* <div className="flex flex-col gap-[30px]">
                 <div className="flex gap-[20px] items-center">
                     <div className="font-medium text-[25px] text-[#000] bg-[#eee] flex justify-center items-center bg-opacity-60 w-[30px] h-[30px] rounded-full">3</div>
                     <div className="flex flex-col gap-[5px]">
@@ -99,7 +97,7 @@ const TournamentMatch = () => {
                         /> : <EmptyMatchCard />}
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
@@ -138,10 +136,10 @@ const TournamentMatchCard = ({rank, userImg, userName, gradeColor}) => {
 
 const EmptyMatchCard = () => {
 
-  return (
-    <div className="bg-[#4a515b] h-[44px] w-[160px] rounded-[20px] flex justify-center items-center gap-[10px] animated-bg">
-    </div>
-  )
+    return (
+        <div className="bg-[#4a515b] h-[44px] w-[160px] rounded-[20px] flex justify-center items-center gap-[10px] animated-bg">
+        </div>
+    )
 }
 
 export { Match, TournamentMatchCard, EmptyMatchCard }

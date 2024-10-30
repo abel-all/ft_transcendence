@@ -1,4 +1,4 @@
-import SettingsNavButtom from "./settings_comp/SettingsNavBottom"
+import BottomNaveBar from '../../components/BottomNavBar.jsx'
 import MenuBar from "./settings_comp/MenuBar"
 import ProfileSettings from "./settings_comp/ProfileSettings"
 import ProfileSecurity from "./settings_comp/ProfileSecurity"
@@ -28,7 +28,7 @@ function Settings() {
                     {Shown == "Profile" && <ProfileSettings className="basis-full md:border-l-[1px] border-[#626262]  md:p-[20px] md:basis-10/12" setShown={setShown}/>}
                     {Shown == "Security" &&  <ProfileSecurity className="basis-full md:border-l-[1px] border-[#626262]  md:p-[20px] md:basis-10/12" token={Token} setShown={setShown}/>}
                 </div>
-                <SettingsNavButtom/>
+                <BottomNaveBar activeSection="SettingsIcon" />
             </div>
         </div>
     )

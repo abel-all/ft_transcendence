@@ -586,18 +586,18 @@ const TournamentStart = () => {
                   </div>
                   <TournamentMatch />
                 </div>
-                <div className="Semi-final">
-                  <div className="font-light text-[#eee] text-[20px] mb-[30px]">
-                    Semi-final
-                  </div>
-                  <SemiFinal />
-                </div>
                 <div className="Final">
                   <div className="font-light text-[#eee] text-[20px] mb-[30px]">
                     Final
                   </div>
-                  <Final />
+                  <SemiFinal />
                 </div>
+                {/* <div className="Final">
+                  <div className="font-light text-[#eee] text-[20px] mb-[30px]">
+                    Final
+                  </div>
+                  <Final />
+                </div> */}
               </div>
               <div className="button flex justify-center">
                 <button

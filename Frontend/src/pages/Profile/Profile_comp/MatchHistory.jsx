@@ -1,55 +1,24 @@
 import MatchHistoryfiled from '../../../components/MatchHistoryfiled'
-// import MatchHistor from '../../../assets/MatchHistory.json'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-function MatchHistory({ className , UrlUsername}) {
+function MatchHistory({ username, className , UrlUsername}) {
 
     const [MatchHistor, setMatchHistory] = useState([]);
-
     useEffect(() => {
-        axios.get(`https://fttran.tech/api/game/match-history/${UrlUsername ? UrlUsername : ""}/`, {
-            headers: {
-            'Accept': 'application/json'
-            }})
-        .then((res) => {
-            setMatchHistory(res.data);
-            console.log("Data from ahmed", res.data);
-        }).catch(err => {
-            console.log("Data from ahmed", err);
-        })
+        if (username || UrlUsername) {
 
-    //     axios.get('https://fttran.tech/api/game/player/4/', {
-    //         headers: {
-    //             'Accept': 'application/json'
-    //           }})
-    //         .then((res) => {
-    //           console.log("Data from ahmed 2 ", res.data);
-    //         }).catch(err => {
-    //             console.log("Data from ahmed 2 ", err);
-    //         })
-    }, []);
-
-
-    // ended_at
-    // : 
-    // "2024-10-28T09:05:16.571256Z"
-    // loser
-    // : 
-    // {id: 2, username: 'ennaki', picture: null, rank: 100, badge: 'BRONZE', …}
-    // loser_score
-    // : 
-    // 9
-    // match
-    // : 
-    // {player1: {…}, player2: {…}, start_time: '2024-10-28T09:03:53.694760Z', status: 'finished'}
-    // winner
-    // : 
-    // {id: 1, username: 'ahmed', picture: null, rank: 150, badge: 'BRONZE', …}
-    // winner_score
-    // : 
-    // 10
-
+            axios.get(`https://fttran.tech/api/game/match-history/${username ? username : UrlUsername}/`, {
+                headers: {
+                    'Accept': 'application/json'
+                }})
+                .then((res) => {
+                    setMatchHistory(res.data);
+                }).catch(err => {
+                    console.log(err);
+                })
+        }
+    }, [username, UrlUsername]);
     
   return (
     <div

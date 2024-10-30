@@ -11,7 +11,7 @@ import UserIcon from '../../../assets/imgs/UserIcon.png'
 // Grand Master (1201 -) -> (#FF0000)
 
 
-function Badge({username, picture, rank, badge}) {
+const Badge = ({username, picture, rank, badge}) => {
 
     const Colors = new Map([
         ["BRONZE", "#CD7F32"],
@@ -23,9 +23,12 @@ function Badge({username, picture, rank, badge}) {
         ["GRAND MASTER", "#FF0000"],
     ]);
 
+    console.log("The badge is : ", badge);
     return (
         <div className="Badge bg-[#15262A] text-center h-[182px] w-full border-x-[1px] border-b-[1px] border-[#626262] flex flex-col items-center">
-            <div className={twMerge(`BadgeRank w-[100px] h-[110px] flex flex-col`, `bg-[${Colors.get(badge) ? Colors.get(badge) : "#CD7F32"}]`)}>
+            <div
+                style={{backgroundColor: Colors.get(badge) ? Colors.get(badge) : "#CD7F32"}} 
+                className={twMerge(`BadgeRank w-[100px] h-[110px] flex flex-col`)}>
                 <div className='profileImgaeHolder relative top-[-57px] h-[53px]'>
                     <img className="rounded-full w-[107.69px] h-[107.69px] absolute" src={picture ? picture : UserIcon} alt=""></img>
                 </div>
@@ -35,8 +38,13 @@ function Badge({username, picture, rank, badge}) {
                     <span className="trendup-icon-profile"></span>
                 </div>
             </div>
-                <div className='tranglr realative w-[100px] h-[122px] border-x-[49px] border-x-[#00000000] border-t-[27px]  flex flex-col border-[#cd7f32]'>
-                </div>
+                <div
+                    style={{
+                        borderLeftColor: "#00000000",
+                        borderRightColor: "#00000000",
+                        borderTopColor: Colors.get(badge) ? Colors.get(badge) : "#CD7F32"
+                    }}
+                    className={twMerge(`tranglr realative w-[100px] h-[122px] border-x-[49px] border-t-[27px]  flex flex-col`)}></div>
             <span className='text-[25px] font-normal text-[#d0d4d4] font-Outfit'>{username}</span>
         </div>
     )

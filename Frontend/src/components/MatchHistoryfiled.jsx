@@ -20,7 +20,7 @@ function MatchHistoryfiled(Data) {
                 <Player
                     rank = {Data.rankone}
                     username = {Data.userone}
-                    profile = {FriendPic}
+                    profile = {Data.Picone ? Data.Picone : FriendPic}
                 />
             </div>
             <div className="detailes flex flex-col items-center">
@@ -35,7 +35,7 @@ function MatchHistoryfiled(Data) {
                 <Player
                         rank = {Data.ranktwo}
                         username = {Data.usertwo}
-                        profile = {FriendPic}
+                        profile = {Data.Pictow ? Data.Pictow : FriendPic}
                     />
             </div>
         </>

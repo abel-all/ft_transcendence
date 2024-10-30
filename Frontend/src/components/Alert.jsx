@@ -67,7 +67,7 @@ const Alert = ({ message, color }) => {
 const Alert = ({ message, color }) => {
     const display = useRef("block");
     const [percent, setPercent] = useState(100);
-    const [messageArray, setMessageArray] = useState([message]);
+    const [messageArray, setMessageArray] = useState("");
     const [ColorArray, setColorArray] = useState([color ? color : "green"]);
 
     useEffect(() => {

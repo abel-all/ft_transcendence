@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './Profile.css'
 import Alert from '../../components/Alert'
+import BottomNaveBar from '../../components/BottomNavBar.jsx'
 
 const GetUserFromUrl = () => {
   let url = window.location.href
@@ -67,7 +68,7 @@ function Profile() {
           </div>
           <MatchHistory className="grow w-full lg:rounded-br-lg lg:rounded-none rounded-b-lg" />
         </div>
-        <ProfileNavBottom />
+          <BottomNaveBar activeSection="UserIcon" />
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ import chatUsers from '../../assets/ChatUsers.json'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import axios from 'axios'
 import testUser from '../../assets/users/user (9).png'
+import BottomNaveBar from '../../components/BottomNavBar.jsx'
 
 const chatHeaderOnClick = createContext()
 
@@ -157,7 +158,8 @@ function Chat() {
             />
           </div>
         </chatHeaderOnClick.Provider>
-        <ChatNavBottom hide={!chatHeader.ChatShown ? 'hidden ' : ''} />
+        {/* <ChatNavBottom hide={!chatHeader.ChatShown ? 'hidden ' : ''} /> */}
+        <BottomNaveBar activeSection="ChatIcon" />
       </div>
     </div>
   )

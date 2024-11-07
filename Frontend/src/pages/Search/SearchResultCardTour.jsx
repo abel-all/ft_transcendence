@@ -12,7 +12,7 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
     console.log(userName)
     setIsIconCliced(true)
     await Axios.post(
-      'https://fttran.tech/api/profile/notification/join-tournament/',
+      'http://localhost:8800/api/profile/notification/join-tournament/',
       {
         username: userName,
         tournament_name: 'test',

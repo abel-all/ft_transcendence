@@ -15,7 +15,7 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 
   useEffect(() => {
     const times = setTimeout(() => {
-      axios.get('https://fttran.tech/api/chat/chats/').then((res) => {
+      axios.get('http://localhost:8800/api/chat/chats/').then((res) => {
         setUserList(res.data)
         setSorted(res.data)
       })
@@ -27,7 +27,7 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
     if (lastMessage) {
       setUserList((prevUserList) => {
         const updatedUserList = prevUserList.map((user) => {
-          if (user.username === JSON.parse(lastMessage.data).from) {
+          if ((user.username === JSON.parse(lastMessage.data).from)) {
             return {
               ...user,
               last_message_content: JSON.parse(lastMessage.data).message
@@ -66,7 +66,7 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
           if (user.username == VoidedUsername) {
             return {
               ...user,
-              total_messages: 0,
+              unread_messages: 0,
             }
           }
           return user

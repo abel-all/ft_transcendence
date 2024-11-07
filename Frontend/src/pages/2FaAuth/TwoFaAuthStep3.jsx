@@ -14,7 +14,7 @@ const TwoFaAuthStep3 = () => {
   useEffect(() => {
     setIsLoading(true)
     const fetchBackUpCodes = async () => {
-      await Axios.get('https://fttran.tech/api/auth/2fa/backup-codes/', {
+      await Axios.get('http://localhost:8800/api/auth/2fa/backup-codes/', {
         withCredentials: true,
       })
         .then((response) => {

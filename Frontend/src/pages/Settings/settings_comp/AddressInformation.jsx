@@ -56,7 +56,7 @@ function AddressInformation({ SettingsData, className }) {
           else {
             removeErrors('ZP')
             axios
-              .post('https://fttran.tech/api/profile/edit/address/', {
+              .post('http://localhost:8800/api/profile/edit/address/', {
                 country: country != Country ? Country : 'None',
                 city: city != City ? City : 'None',
                 address: address != Address ? Address : 'None',

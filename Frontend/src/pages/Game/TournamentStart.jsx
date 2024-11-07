@@ -77,7 +77,7 @@ const TournamentStart = () => {
   const navigate = useNavigate()
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://fttran.tech/ws/tournament/'
+    'ws://localhost:8800/ws/tournament/'
   )
 
   useEffect(() => {
@@ -372,7 +372,7 @@ const TournamentStart = () => {
 
   const fetchSettings = async (data) => {
     await Axios.post(
-      `https://fttran.tech/api/tournament/matches/update/${data?.match_id}/`,
+      `http://localhost:8800/api/tournament/matches/update/${data?.match_id}/`,
       {
         completed: true,
         winner: data?.winner_participant?.id,
@@ -401,7 +401,7 @@ const TournamentStart = () => {
     }
 
     await Axios.post(
-      'https://fttran.tech/api/profile/notification/tournament-reminder/',
+      'http://localhost:8800/api/profile/notification/tournament-reminder/',
       {
         // tournament_name: gameContext.tournamentInfo?.tournament_name,
         users: participantsNames,
@@ -420,7 +420,7 @@ const TournamentStart = () => {
   // const handleEndGame = (data) => {
   // const fetchSettings = async () => {
   //   await Axios.post(
-  //     `https://fttran.tech/api/tournament/matches/update/${data?.match_id}/`,
+  //     `http://localhost:8800/api/tournament/matches/update/${data?.match_id}/`,
   //     {
   //       completed: true,
   //       winner: data?.winner_profile?.id,

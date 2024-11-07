@@ -25,7 +25,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
   useEffect(() => {
     const fetchActiveTournament = async () => {
-      await Axios.get('https://fttran.tech/api/tournament/names/', {
+      await Axios.get('http://localhost:8800/api/tournament/names/', {
         withCredentials: true,
       })
         .then((response) => {
@@ -60,7 +60,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
     if (nameReGex.test(name) && nameReGex.test(tour)) {
       await Axios.post(
-        'https://fttran.tech/api/tournament/check-name/',
+        'http://localhost:8800/api/tournament/check-name/',
         {
           tournament_name: tour,
         },
@@ -88,7 +88,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
     if (nameReGex.test(name) && nameReGex.test(tour)) {
       await Axios.post(
-        'https://fttran.tech/api/tournament/check-alias/',
+        'http://localhost:8800/api/tournament/check-alias/',
         {
           alias: name,
           tournament_name: tour,

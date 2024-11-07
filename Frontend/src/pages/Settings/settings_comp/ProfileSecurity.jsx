@@ -2,7 +2,11 @@ import MenuBar from './MenuBar'
 import Button from '../../../components/Button'
 import close from '../../../assets/imgs/close.svg'
 import { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
 import axios from 'axios'
+import { Navigate } from 'react-router-dom';
+
+
 
 function ProfileSecurity({ className, token, setShown }) {
   const [display, setDisplay] = useState(false)
@@ -61,7 +65,7 @@ function ProfileSecurity({ className, token, setShown }) {
   useEffect(() => {
     if (token) {
       axios
-        .get(`https://fttran.tech/api/auth/deleteaccount/check/${token}/`)
+        .get(`http://localhost:8800/api/auth/deleteaccount/check/${token}/`)
         .then((res) => {
           window.location = '/'
         })
@@ -111,7 +115,7 @@ function ProfileSecurity({ className, token, setShown }) {
     else {
       setShowErrors(false)
       axios
-        .post('https://fttran.tech/api/auth/passwordchange/', {
+        .post('http://localhost:8800/api/auth/passwordchange/', {
           old_password: OldPassword,
           new_password: NewPassword,
         })
@@ -149,7 +153,7 @@ function ProfileSecurity({ className, token, setShown }) {
           Change My Passowrd
         </div>
         <div className="text-[16px] font-[500] font-[Outfit] text-[#219EBC] mb-[20px] cursor-pointer">
-          Two-factor Authentication
+            <div onClick={() => (window.location = "/2fa/setup")}> Two-factor Authentication</div>
         </div>
         <div
           onClick={DeleteHandler}
@@ -255,7 +259,7 @@ function ProfileSecurity({ className, token, setShown }) {
                       e.preventDefault()
                       setDeleteConfirmed(true)
                       axios
-                        .get('https://fttran.tech/api/auth/deleteaccount/')
+                        .get('http://localhost:8800/api/auth/deleteaccount/')
                         .then((res) => {})
                         .catch((ers) => {})
                     }

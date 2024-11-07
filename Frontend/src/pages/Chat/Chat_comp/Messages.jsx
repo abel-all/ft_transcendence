@@ -33,7 +33,7 @@ function Messages({ setMessages, username, className, toUser }) {
   useEffect(() => {
     async function fetchUsername() {
       await axios
-        .get('https://fttran.tech/api/profile/WhoAmI/')
+        .get('http://localhost:8800/api/profile/WhoAmI/')
         .then((res) => {
           setWhoAmI(res.data.username)
         })
@@ -63,7 +63,7 @@ function Messages({ setMessages, username, className, toUser }) {
 
         try {
           const res = await axios.post(
-            `https://fttran.tech/api/chat/messages/history/`,
+            `http://localhost:8800/api/chat/messages/history/`,
             {
               username: username,
               start: index.current,

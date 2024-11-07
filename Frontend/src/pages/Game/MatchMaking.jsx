@@ -8,7 +8,7 @@ const MatchMaking = () => {
   const [message, setMessage] = useState('')
   const gameContext = useGameSettings()
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://fttran.tech/ws/game/'
+    'ws://localhost:8800/ws/game/'
   )
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const MatchMaking = () => {
   // useEffect(() => {
   //     // const fetchPlayerData = async () => {
   //     //     if (oneTime === false) {
-  //     //         await Axios.post("https://fttran.tech/api/game/join/",
+  //     //         await Axios.post("http://localhost:8800/api/game/join/",
   //     //         {
   //     //             withCredentials:true,
   //     //         }).then((response) => {

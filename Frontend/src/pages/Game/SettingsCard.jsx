@@ -123,7 +123,7 @@ const ChooseSectionHandler = (name) => {
       console.log(gameContext.selfData)
 
       await Axios.post(
-        'https://fttran.tech/api/game/setting/',
+        'http://localhost:8800/api/game/setting/',
         {
           mapname: mapName,
           ballcolor: ballColor,

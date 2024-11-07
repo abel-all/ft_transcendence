@@ -26,7 +26,7 @@ const TwoFaAuthStep1 = () => {
 
     if (/^[0-9]{6,6}$/.test(code)) {
       await Axios.post(
-        'https://fttran.tech/api/auth/2fa/verify/device/',
+        'http://localhost:8800/api/auth/2fa/verify/device/',
         {
           otp_code: code,
         },
@@ -51,7 +51,7 @@ const TwoFaAuthStep1 = () => {
   if (isLoading) return <LoaderOnTop />
 
   const handleEnableButtonClick = async () => {
-    await Axios.get('https://fttran.tech/api/auth/2fa/enable/', {
+    await Axios.get('http://localhost:8800/api/auth/2fa/enable/', {
       withCredentials: true,
     })
       .then((response) => {

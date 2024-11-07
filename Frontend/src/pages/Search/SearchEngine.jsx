@@ -19,7 +19,7 @@ const SearchEngine = () => {
   const fetchPlayerData = async () => {
     // oneTime = true;
     await Axios.post(
-      'https://fttran.tech/api/profile/search/',
+      'http://localhost:8800/api/profile/search/',
       {
         prefix: searchResult,
       },

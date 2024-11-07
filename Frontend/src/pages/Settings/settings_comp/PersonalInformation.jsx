@@ -46,7 +46,7 @@ function PersonalInformation({ SettingsData, className }) {
         else {
           removeErrors('EM')
           axios
-            .post('https://fttran.tech/api/profile/edit/personal-data/', {
+            .post('http://localhost:8800/api/profile/edit/personal-data/', {
               firstName: first_name != Firstname ? Firstname : 'None',
               lastName: last_name != Lastname ? Lastname : 'None',
             })

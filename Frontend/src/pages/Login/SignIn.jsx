@@ -42,7 +42,7 @@ function SignIn() {
 
   const checkFieldInput = async () => {
     await Axios.post(
-      'https://fttran.tech/api/auth/token/',
+      'http://localhost:8800/api/auth/token/',
       {
         username: formValues.Username,
         password: formValues.Password,
@@ -54,7 +54,7 @@ function SignIn() {
       .then((response) => {
         console.log('first request')
         const fetchUserData = async () => {
-          await Axios.get('https://fttran.tech/api/profile/data/', {
+          await Axios.get('http://localhost:8800/api/profile/data/', {
             withCredentials: true,
           })
             .then((response) => {
@@ -110,7 +110,7 @@ function SignIn() {
 
     if (fieldReGex.emailReGex.test(email)) {
       await Axios.post(
-        'https://fttran.tech/api/auth/passwordrecovery/',
+        'http://localhost:8800/api/auth/passwordrecovery/',
         {
           email: email,
         },

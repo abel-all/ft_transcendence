@@ -35,7 +35,7 @@ const TwoFaAuthPassStep = () => {
 
     if (passwordReGex.test(password)) {
       await Axios.post(
-        'https://fttran.tech/api/auth/passwd/verify/',
+        'http://localhost:8800/api/auth/passwd/verify/',
         {
           password: password,
         },

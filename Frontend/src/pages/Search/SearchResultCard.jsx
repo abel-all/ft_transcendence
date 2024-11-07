@@ -14,7 +14,7 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
     console.log(userName)
     setIsIconCliced(true)
     await Axios.post(
-      'https://fttran.tech/api/profile/send-palywithme-request/',
+      'http://localhost:8800/api/profile/send-palywithme-request/',
       {
         id: 4,
         // tournament_name: gameContext?.tournamentInfo?.tournament_name,

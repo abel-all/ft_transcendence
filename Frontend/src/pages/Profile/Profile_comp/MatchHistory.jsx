@@ -8,7 +8,7 @@ function MatchHistory({ username, className , UrlUsername}) {
     useEffect(() => {
         if (username || UrlUsername) {
 
-            axios.get(`https://fttran.tech/api/game/match-history/${username ? username : UrlUsername}/`, {
+            axios.get(`http://localhost:8800/api/game/match-history/${username ? username : UrlUsername}/`, {
                 headers: {
                     'Accept': 'application/json'
                 }})
@@ -23,7 +23,7 @@ function MatchHistory({ username, className , UrlUsername}) {
   return (
     <div
         className={
-          'MatchHistor max-h-[685px] mb-[82px] w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]' +
+          'MatchHistor min-h-[685px] mb-[82px] w-[620px] p-[5px] md:p-[25px] bg-[var(--bg-color)] border-[1px] border-[#626262]' +
           (className ? ` ${className}` : '')
         }>
         <div className="Title text-[20px] md:text-[30px] font-[500] font-Outfit  text-[#FFFFFF] opacity-80 block mb-[25px]">

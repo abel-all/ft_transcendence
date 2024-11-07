@@ -95,7 +95,7 @@ function ChatSide({ setVoidedUsername, className }) {
           )
         }
         axios
-          .post(`https://fttran.tech/api/chat/messages/history/`, {
+          .post(`http://localhost:8800/api/chat/messages/history/`, {
             username: username,
             start: 0,
           })
@@ -168,7 +168,7 @@ function ChatSide({ setVoidedUsername, className }) {
         JSON.parse(ChatContext.lastMessage.data).from == username &&
         JSON.parse(ChatContext.lastMessage.data).type == 'chat_message'
       ) {
-        const msg = JSON.parse(ChatContext.lastMessage.data).message
+        const msg = JSON.parse(ChatContext.lastMessage.data).message;
         msg &&
           setMessagesAdded((prevState) => [
             ...prevState,

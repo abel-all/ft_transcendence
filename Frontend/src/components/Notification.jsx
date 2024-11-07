@@ -16,7 +16,7 @@ const Notification = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       await Axios.post(
-        'https://fttran.tech/api/profile/notifications/',
+        'http://localhost:8800/api/profile/notifications/',
         {
           start: 10 * isBottomCounter,
         },

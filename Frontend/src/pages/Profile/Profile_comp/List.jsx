@@ -4,14 +4,14 @@ import Friend from '../../../components/Friend'
 import axios from 'axios'
 
 function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
-  const [friendlist, setfriendlist] = useState(AlreadyDated)
+  const [friendlist, setfriendlist] = useState(AlreadyDated);
 
   useEffect(() => {
     if (!friendlist) {
       const fetchmydata = async () => {
         try {
           const res = await axios.get(
-            `https://fttran.tech/api/profile/${EndPoint}/`
+            `http://localhost:8800/api/profile/${EndPoint}/`
           )
           setfriendlist(res.data)
           console.log(`List of ${EndPoint} Fetched data with success ${res}`)
@@ -25,7 +25,7 @@ function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
 
   return (
     <>
-      {Array.isArray(friendlist) ? (
+      {Array.isArray(friendlist) && friendlist.length > 0 ? (
         friendlist.map((friends, index) => {
           console.log(`fetched data ${friendlist}`)
           return (
@@ -37,6 +37,8 @@ function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
                 rank={friends.rank}
                 reason={reason}
                 isFriend={true}
+                friendlist={friendlist}
+                setfriendlist={setfriendlist}
               />
             </div>
           )

@@ -24,7 +24,7 @@ function FriendsList({ className, UrlUsername }) {
     TimeToDown = setTimeout(() => {
       e.target.value &&
         axios
-          .post('https://fttran.tech/api/profile/search/', {
+          .post('http://localhost:8800/api/profile/search/', {
             prefix: e.target.value,
           })
           .then((res) => {

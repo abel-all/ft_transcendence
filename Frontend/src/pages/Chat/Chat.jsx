@@ -15,7 +15,7 @@ const chatHeaderOnClick = createContext()
 function Chat() {
   const [isFrom, setIsFrom] = useState(false)
   const [lastMessageUserSend, setlastMessageUserSend] = useState('')
-  const [socketURL, setSocketURL] = useState('wss://fttran.tech/ws/chat/')
+  const [socketURL, setSocketURL] = useState('ws://localhost:8800/ws/chat/')
   const [messageHistory, setMessageHistory] = useState([])
   const [VoidedUsername, setVoidedUsername] = useState('')
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
@@ -45,7 +45,7 @@ function Chat() {
 
   const [chatHeader, setChatHeader] = useState({
     name: '',
-    rank: 9,
+    rank: 0,
     userProfile: null,
     windowSize: '',
     clicked: false,
@@ -88,7 +88,7 @@ function Chat() {
       let FromUser = windo.substring(windo.lastIndexOf('user=') + 5)
       sendMessage(JSON.stringify({ action: 'create_room', username: FromUser }))
       axios
-        .post('https://fttran.tech/api/chat/user/', {
+        .post('http://localhost:8800/api/chat/user/', {
           username: FromUser,
         })
         .then((res) => {

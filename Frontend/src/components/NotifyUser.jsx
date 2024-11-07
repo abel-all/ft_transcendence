@@ -24,7 +24,7 @@ const NotifyUser = () => {
 	
 		if (auth.isAuth) {
 			const { lastMessage } = useWebSocket(
-				'wss://fttran.tech/ws/notifications/',
+				'ws://localhost:8800/ws/notifications/',
 				{
 					onError: (error) => console.error('WebSocket error:', error),
 					shouldReconnect: () => true,

@@ -23,13 +23,13 @@ function ProprtesSide({VoidedUsername, className}) {
 
     return (
         <div className={" " + (className) ? className : ``}>
-            <div className="SearchInpute relative my-[5px] mt-[15px]">
+            {/* <div className="SearchInpute relative my-[5px] mt-[15px]">
                 <input 
                     className={styleSearch}
                     onChange={handelchange}
                     type="text" placeholder="Search" />
                 <img src={Search} className="w-[37px] h-[37px] cursor-pointer absolute top-[12px] opacity-50 right-[17px]" alt=""/>
-            </div>
+            </div> */}
             { (!input) ? <BoxInboxUsers VoidedUsername={VoidedUsername} lastMessage={ChatContext.lastMessage} lMUS={ChatContext.lastMessageUserSend}/> : <BoxSearch data= {input} />}
         </div>
     )

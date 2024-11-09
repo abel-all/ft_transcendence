@@ -13,156 +13,139 @@ import BottomNaveBar from '../../components/BottomNavBar.jsx'
 const chatHeaderOnClick = createContext()
 
 function Chat() {
-  const [isFrom, setIsFrom] = useState(false)
-  const [lastMessageUserSend, setlastMessageUserSend] = useState('')
-  const [socketURL, setSocketURL] = useState('ws://localhost:8800/ws/chat/')
-  const [messageHistory, setMessageHistory] = useState([])
-  const [VoidedUsername, setVoidedUsername] = useState('')
-  const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
-    onOpen: () => console.log('WebSocket connection opened.'),
-    onClose: () => console.log('WebSocket connection closed.'),
-    onError: (error) => console.error('WebSocket error:', error),
-    onMessage: (message) => {
-      setMessageHistory((prev) => [...prev, message.data.toString()])
-    },
-    shouldReconnect: () => true,
-    reconnectInterval: 3000,
-  })
+	const [isFrom, setIsFrom] = useState(false)
+	const [lastMessageUserSend, setlastMessageUserSend] = useState('')
+	const [socketURL, setSocketURL] = useState('ws://localhost:8800/ws/chat/')
+	const [messageHistory, setMessageHistory] = useState([])
+	const [VoidedUsername, setVoidedUsername] = useState('')
+	const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
+		onOpen: () => console.log('WebSocket connection opened.'),
+		onClose: () => console.log('WebSocket connection closed.'),
+		onError: (error) => console.error('WebSocket error:', error),
+		onMessage: (message) => {
+			setMessageHistory((prev) => [...prev, message.data.toString()])
+		},
+		shouldReconnect: () => true,
+		reconnectInterval: 3000,
+	})
 
-  const [userFromUrl, setUserFromUrl] = useState({
-    user: '',
-    url: '',
-    rank: '',
-  })
+	const [userFromUrl, setUserFromUrl] = useState({
+		user: '',
+		url: '',
+		rank: '',
+	})
 
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: 'Connecting',
-    [ReadyState.OPEN]: 'Open',
-    [ReadyState.CLOSING]: 'Closing',
-    [ReadyState.CLOSED]: 'Closed',
-    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  }[readyState]
+	const connectionStatus = {
+		[ReadyState.CONNECTING]: 'Connecting',
+		[ReadyState.OPEN]: 'Open',
+		[ReadyState.CLOSING]: 'Closing',
+		[ReadyState.CLOSED]: 'Closed',
+		[ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+	}[readyState]
 
-  const [chatHeader, setChatHeader] = useState({
-    name: '',
-    rank: 0,
-    userProfile: null,
-    windowSize: '',
-    clicked: false,
-    ChatShown: true,
-  })
+	const [chatHeader, setChatHeader] = useState({
+		name: '',
+		rank: 0,
+		userProfile: null,
+		windowSize: '',
+		clicked: false,
+		ChatShown: true,
+	})
 
-  useEffect(() => {}, [VoidedUsername])
+	// useEffect(() => {}, [VoidedUsername])
 
-  function handelSetingUser(username, userurl, userrank) {
-    setUserFromUrl((prevState) => ({
-      ...prevState,
-      user: username ? username : prevState.user,
-      url: userurl ? userurl : prevState.url,
-      rank: userrank ? userrank : prevState.rank,
-    }))
-  }
+	function handelSetingUser(username, userurl, userrank) {
+		setUserFromUrl((prevState) => ({
+			...prevState,
+			user: username ? username : prevState.user,
+			url: userurl ? userurl : prevState.url,
+			rank: userrank ? userrank : prevState.rank,
+		}))
+	}
 
-  const handelChatHeader = (names, ranks, userProfiles) => {
-    setChatHeader((prevState) => ({
-      ...prevState,
-      name: names,
-      rank: ranks,
-      userProfile: userProfiles,
-      clicked: true,
-      ChatShown: false,
-      windowSize: window.innerWidth < 768 ? 'Mobile' : 'Desktop',
-    }))
-  }
+	const handelChatHeader = (names, ranks, userProfiles) => {
+		setChatHeader((prevState) => ({
+			...prevState,
+			name: names,
+			rank: ranks,
+			userProfile: userProfiles,
+			clicked: true,
+			ChatShown: false,
+			windowSize: window.innerWidth < 768 ? 'Mobile' : 'Desktop',
+		}))
+	}
 
-  const handelChatShown = (state) => {
-    setChatHeader((prevState) => ({
-      ...prevState,
-      ChatShown: state,
-    }))
-  }
+	const handelChatShown = (state) => {
+		setChatHeader((prevState) => ({
+			...prevState,
+			ChatShown: state,
+		}))
+	}
 
-  function SetFrom() {
-    let windo = window.location.href
-    if (windo.lastIndexOf('user=') != -1) {
-      let FromUser = windo.substring(windo.lastIndexOf('user=') + 5)
-      sendMessage(JSON.stringify({ action: 'create_room', username: FromUser }))
-      axios
-        .post('http://localhost:8800/api/chat/user/', {
-          username: FromUser,
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            setIsFrom(true)
-            handelSetingUser(FromUser, res.data.picture, res.data.rank)
-            handelChatShown(false)
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-  }
+	function SetFrom() {
+		let windo = window.location.href
+		if (windo.lastIndexOf('user=') != -1) {
+			let FromUser = windo.substring(windo.lastIndexOf('user=') + 5)
+			sendMessage(JSON.stringify({ action: 'create_room', username: FromUser }))
+			axios
+				.post('http://localhost:8800/api/chat/user/', {
+					username: FromUser,
+				})
+				.then((res) => {
+					if (res.status == 200) {
+						setIsFrom(true)
+						handelSetingUser(FromUser, res.data.picture, res.data.rank)
+						handelChatShown(false)
+					}
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		}
+	}
 
-  useEffect(() => {
-    // handelSetingUser("","","");
-    SetFrom()
-  }, [])
+	useEffect(() => {
+		// handelSetingUser("","","");
+		SetFrom()
+	}, [])
 
-  const handelChatClick = (state) => {
-    setChatHeader((prevState) => ({
-      ...prevState,
-      clicked: state,
-    }))
-  }
+	const handelChatClick = (state) => {
+		setChatHeader((prevState) => ({
+			...prevState,
+			clicked: state,
+		}))
+	}
 
-  useEffect(() => {
-    chatHeader
-  }, [])
-
-  return (
-    <div className="container mx-auto flex justify-center w-full h-full">
-      <div className="w-full">
-        <Header
-          title="Chat"
-          activeSection="ChatIcon"
-          hide={!chatHeader.ChatShown ? 'hidden md:flex' : ''}
-        />
-        <chatHeaderOnClick.Provider
-          value={{
-            chatHeader,
-            setChatHeader,
-            handelChatHeader,
-            handelChatShown,
-            handelChatClick,
-            lastMessage,
-            userFromUrl,
-            sendMessage,
-            readyState,
-            lastMessageUserSend,
-            setlastMessageUserSend,
-          }}
-        >
-          <div className="flex indexchatHolder mt-[101px] flex-row">
-            <ProprtesSide
-              VoidedUsername={VoidedUsername}
-              className={`ProprtesSide basis-full ${
-                chatHeader.ChatShown == false ? ' hidden md:flex' : 'flex'
-              } md:basis-4/12 flex flex-col`}
-            />
-            <ChatSide
-              setVoidedUsername={setVoidedUsername}
-              className={`ChatSide ${
-                chatHeader.ChatShown == true ? ' hidden ' : ''
-              } md:flex md:basis-8/12`}
-            />
-          </div>
-        </chatHeaderOnClick.Provider>
-        {/* <ChatNavBottom hide={!chatHeader.ChatShown ? 'hidden ' : ''} /> */}
-        <BottomNaveBar activeSection="ChatIcon" />
-      </div>
-    </div>
-  )
+	return (
+		<div className="container mx-auto flex justify-center w-full h-full">
+			<div className="w-full">
+				<Header
+					title="Chat"
+					activeSection="ChatIcon"
+					hide={!chatHeader.ChatShown ? 'hidden md:flex' : ''}
+				/>
+				<chatHeaderOnClick.Provider
+					value={{ chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage, readyState, lastMessageUserSend, setlastMessageUserSend,}}>
+					<div className="flex indexchatHolder mt-[101px] flex-row">
+						<ProprtesSide
+							VoidedUsername={VoidedUsername}
+							className={`ProprtesSide basis-full ${
+								chatHeader.ChatShown == false ? ' hidden md:flex' : 'flex'
+							} md:basis-4/12 flex flex-col`}
+						/>
+						<ChatSide
+							setVoidedUsername={setVoidedUsername}
+							className={`ChatSide ${
+								chatHeader.ChatShown == true ? ' hidden ' : ''
+							} md:flex md:basis-8/12`}
+						/>
+					</div>
+				</chatHeaderOnClick.Provider>
+				{/* <ChatNavBottom hide={!chatHeader.ChatShown ? 'hidden ' : ''} /> */}
+				<BottomNaveBar activeSection="ChatIcon" />
+			</div>
+		</div>
+	)
 }
 
 export { chatHeaderOnClick }

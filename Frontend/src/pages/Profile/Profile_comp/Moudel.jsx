@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-function Buttn({ toggles, rsn, user, content }) {
+function Buttn({ toggles, rsn, user, content, friendlist, setfriendlist}) {
   const handelClick = () => {
     if (rsn == 'Block') {
       console.log(`${user} is blocked`)
@@ -9,30 +9,33 @@ function Buttn({ toggles, rsn, user, content }) {
           username: user,
         })
         .then((response) => {
+          setfriendlist(friendlist.filter(obj => obj.username != user));
           console.log('user block sent with suecsses!')
         })
         .catch((error) => {
           console.log('user block failed !')
         })
-    } else if (rsn == 'Unblock') {
-      console.log(`${user} is Unblocked`)
-      axios
+      } else if (rsn == 'Unblock') {
+        console.log(`${user} is Unblocked`)
+        axios
         .post('http://localhost:8800/api/profile/unblock-friend/', {
           username: user,
         })
         .then((response) => {
+          setfriendlist(friendlist.filter(obj => obj.username != user));
           console.log('user Unblock sent with suecsses!')
         })
         .catch((error) => {
           console.log('user Unblock failed !')
         })
-    } else if (rsn == 'undo') {
-      console.log(`${user} is undo`)
-      axios
+      } else if (rsn == 'undo') {
+        console.log(`${user} is undo`)
+        axios
         .post('http://localhost:8800/api/profile/eliminate-friendship-request/', {
           username: user,
         })
         .then((response) => {
+          setfriendlist(friendlist.filter(obj => obj.username != user));
           console.log('user undo sent with suecsses!')
         })
         .catch((error) => {
@@ -64,6 +67,8 @@ function Moudel(Data) {
         <div className="flex flex-row justify-center">
           {
             <Buttn
+              friendlist={Data.friendlist}
+              setfriendlist={Data.setfriendlist}
               content="Yes"
               toggles={Data.tggl}
               rsn={Data.reason}

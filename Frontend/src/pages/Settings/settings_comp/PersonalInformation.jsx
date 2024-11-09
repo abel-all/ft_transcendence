@@ -113,7 +113,7 @@ function PersonalInformation({ SettingsData, className }) {
             FieldName="FirstName"
             VarLoad={Firstname}
             PlaceFeild={first_name}
-          />
+            />
           <Inputes
             DivHolder={DivHolder}
             errors={errors}

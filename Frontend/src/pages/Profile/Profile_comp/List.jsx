@@ -4,7 +4,7 @@ import Friend from '../../../components/Friend'
 import axios from 'axios'
 
 function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
-  const [friendlist, setfriendlist] = useState(AlreadyDated)
+  const [friendlist, setfriendlist] = useState(AlreadyDated);
 
   useEffect(() => {
     if (!friendlist) {
@@ -25,14 +25,11 @@ function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
 
   return (
     <>
-      {Array.isArray(friendlist) ? (
+      {Array.isArray(friendlist) && friendlist.length > 0 ? (
         friendlist.map((friends, index) => {
           console.log(`fetched data ${friendlist}`)
           return (
-            <div
-              key={index}
-              className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5"
-            >
+            <div key={index} className="relative friend flex items-center justify-between h-[57px] px-2  bg-[#2d3c3f] rounded-full border-[1px] border-[#000000] sm:mr-5">
               <Friend
                 username={friends.username}
                 picture={friends.picture}
@@ -40,6 +37,8 @@ function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
                 rank={friends.rank}
                 reason={reason}
                 isFriend={true}
+                friendlist={friendlist}
+                setfriendlist={setfriendlist}
               />
             </div>
           )

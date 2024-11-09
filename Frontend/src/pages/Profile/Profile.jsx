@@ -28,8 +28,8 @@ function Profile() {
   const [DataFetched, setDataFetched] = useState(false)
 
   const handelData = (res) => {
-    const { picture, username, background_picture, rank } = res
-    setData({ picture, username, background_picture, rank })
+    const { picture, username, background_picture, rank , badge} = res
+    setData({ picture, username, background_picture, rank, badge })
   }
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function Profile() {
       : 'http://localhost:8800/api/profile/data/'
     const fetchmydata = async () => {
       try {
-        const res = await axios.get(`${url}`)
+        const res = await axios.get(`${url}`, {})
         handelData(res.data)
       } catch (error) {}
     }
@@ -57,6 +57,7 @@ function Profile() {
           username={data.username}
           picture={data.picture}
           rank={data.rank}
+          badge={data.badge}
         />
         <div className="w-full flex flex-col mt-[0.5rem] lg:flex-row gap-2">
           <div className="flex flex-col w-full gap-2">
@@ -66,9 +67,9 @@ function Profile() {
               className="w-full rounded-none lg:rounded-bl-lg"
             />
           </div>
-          <MatchHistory className="grow w-full lg:rounded-br-lg lg:rounded-none rounded-b-lg" />
+          <MatchHistory username={data.username} UrlUsername={UrlUsername} className="grow w-full lg:rounded-br-lg lg:rounded-none rounded-b-lg" />
         </div>
-          <BottomNaveBar activeSection="UserIcon" />
+        <BottomNaveBar activeSection="UserIcon" />
       </div>
     </div>
   )

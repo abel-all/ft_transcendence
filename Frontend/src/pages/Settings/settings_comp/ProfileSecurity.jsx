@@ -2,7 +2,11 @@ import MenuBar from './MenuBar'
 import Button from '../../../components/Button'
 import close from '../../../assets/imgs/close.svg'
 import { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
 import axios from 'axios'
+import { Navigate } from 'react-router-dom';
+
+
 
 function ProfileSecurity({ className, token, setShown }) {
   const [display, setDisplay] = useState(false)
@@ -149,7 +153,7 @@ function ProfileSecurity({ className, token, setShown }) {
           Change My Passowrd
         </div>
         <div className="text-[16px] font-[500] font-[Outfit] text-[#219EBC] mb-[20px] cursor-pointer">
-          Two-factor Authentication
+            <div onClick={() => (window.location = "/2fa/setup")}> Two-factor Authentication</div>
         </div>
         <div
           onClick={DeleteHandler}

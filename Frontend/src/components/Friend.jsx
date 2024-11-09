@@ -33,7 +33,9 @@ function Friend(Data) {
           username: user,
           status: statusOfReq,
         })
-        .then((respons) => {})
+        .then((respons) => {
+          Data.setfriendlist(Data.friendlist.filter(obj => obj.username != user));
+        })
         .catch((error) => {})
     }
   }
@@ -44,7 +46,8 @@ function Friend(Data) {
         username: user,
       })
       .then((respons) => {
-        handelRender(respons.data.message)
+        handelRender(respons.data.message);
+        Data.setfriendlist(Data.friendlist.filter(obj => obj.username != user));
       })
       .catch((error) => {
         if (error.response) {
@@ -105,6 +108,8 @@ function Friend(Data) {
               {isTrue && (
                 <Moudel
                   tggl={toggle}
+                  friendlist={Data.friendlist}
+                  setfriendlist={Data.setfriendlist}
                   username={Data.username}
                   message="Are you sure you want to Block"
                   reason="Block"
@@ -150,6 +155,8 @@ function Friend(Data) {
               {isTrue && (
                 <Moudel
                   tggl={toggle}
+                  friendlist={Data.friendlist}
+                  setfriendlist={Data.setfriendlist}
                   username={Data.username}
                   message="Are you sure you want to UnBlock"
                   reason="Unblock"
@@ -165,6 +172,8 @@ function Friend(Data) {
               {isTrue && (
                 <Moudel
                   tggl={toggle}
+                  friendlist={Data.friendlist}
+                  setfriendlist={Data.setfriendlist}
                   username={Data.username}
                   message="Are you sure you want to Undo"
                   reason="undo"

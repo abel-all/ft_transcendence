@@ -5,7 +5,7 @@ function Buttn({ toggles, rsn, user, content }) {
     if (rsn == 'Block') {
       console.log(`${user} is blocked`)
       axios
-        .post('https://fttran.tech/api/profile/block-friend/', {
+        .post('http://localhost:8800/api/profile/block-friend/', {
           username: user,
         })
         .then((response) => {
@@ -17,7 +17,7 @@ function Buttn({ toggles, rsn, user, content }) {
     } else if (rsn == 'Unblock') {
       console.log(`${user} is Unblocked`)
       axios
-        .post('https://fttran.tech/api/profile/unblock-friend/', {
+        .post('http://localhost:8800/api/profile/unblock-friend/', {
           username: user,
         })
         .then((response) => {
@@ -29,7 +29,7 @@ function Buttn({ toggles, rsn, user, content }) {
     } else if (rsn == 'undo') {
       console.log(`${user} is undo`)
       axios
-        .post('https://fttran.tech/api/profile/eliminate-friendship-request/', {
+        .post('http://localhost:8800/api/profile/eliminate-friendship-request/', {
           username: user,
         })
         .then((response) => {

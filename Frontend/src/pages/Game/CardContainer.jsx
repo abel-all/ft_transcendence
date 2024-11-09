@@ -39,7 +39,7 @@ const cardsData = [
     },
 ];
 
-function CardContainer({ showSettings }) {
+function CardContainer() {
 
     const gameContext = useGameSettings();
 
@@ -52,13 +52,13 @@ function CardContainer({ showSettings }) {
             {gameContext.isSettings ? (
                 <GameSettings />
             ) : (
-                <div className={`mx-[50px] ${showSettings ? "my-[300px]" : "my-[590px]"} max-md:mx-[0px] max-md:mt-[200px] flex flex-col gap-[250px]`}>
-                    {showSettings && <div className="w-full flex justify-end sm:pr-[50px]">
+                <div className={`mx-[50px] my-[300px] max-md:mx-[0px] max-md:mt-[200px] flex flex-col gap-[250px]`}>
+                    <div className="w-full flex justify-end sm:pr-[50px]">
                         <button onClick={settingsClickHandler} className='flex gap-[5px] items-center'>
                             <img className="w-[40px] h-[40px]" src={gameSettings} />
                             <div className='text-[20px] text-[#eee] font-light'>Settings</div>
                         </button>
-                    </div>}
+                    </div>
                     <div className="flex gap-x-[15px] gap-y-[162px] flex-wrap justify-center">
                         {cardsData.map((card, index) => (
                             <Card

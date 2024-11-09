@@ -29,7 +29,7 @@ const OauthCallBack = () => {
     } else {
       const checkCode = async () => {
         await Axios.post(
-          'https://fttran.tech/api/auth/GnrToken/',
+          'http://localhost:8800/api/auth/GnrToken/',
           {
             user_id: paramValue,
           }, // must edited

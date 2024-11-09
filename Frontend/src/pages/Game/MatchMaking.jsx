@@ -1,50 +1,50 @@
-import { useCallback, useEffect, useState } from 'react'
-import MatchMakingCard from './MatchMakingCard.jsx'
-import { useGameSettings } from './GameSettingsContext'
-import useWebSocket from 'react-use-websocket'
+import { useCallback, useEffect, useState } from "react";
+import MatchMakingCard from "./MatchMakingCard.jsx";
+import { useGameSettings } from "./GameSettingsContext";
+import useWebSocket from "react-use-websocket";
 
 const MatchMaking = () => {
-  const [avatar, setAvatar] = useState(true)
-  const [message, setMessage] = useState('')
-  const gameContext = useGameSettings()
+  const [avatar, setAvatar] = useState(true);
+  const [message, setMessage] = useState("");
+  const gameContext = useGameSettings();
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://fttran.tech/ws/game/'
-  )
+    "ws://localhost:8800/ws/game/"
+  );
 
   useEffect(() => {
     if (readyState === 1) {
-      sendMessage(JSON.stringify({ action: 'join_queue' }))
-      console.log('WebSocket connection is open')
+      sendMessage(JSON.stringify({ action: "join_queue" }));
+      console.log("WebSocket connection is open");
     } else {
-      console.log('WebSocket connection is not open')
-      console.log(readyState)
+      console.log("WebSocket connection is not open");
+      console.log(readyState);
     }
-  }, [readyState, sendMessage])
+  }, [readyState, sendMessage]);
 
   const handleLastMessage = useCallback(() => {
-    console.log(lastMessage)
+    console.log(lastMessage);
     if (lastMessage) {
-      const data = JSON.parse(lastMessage.data)
-      console.log(lastMessage)
-      if (data.status === 'matched') {
-        gameContext.setHandler('userData', data)
-        console.log(data)
-        gameContext.setHandler('matchDelay', false)
-        setAvatar(false)
-      } else if (data.status === 'no match found') {
-        setMessage('No one wants to play right now. Please try again!')
+      const data = JSON.parse(lastMessage.data);
+      console.log(lastMessage);
+      if (data.status === "matched") {
+        gameContext.setHandler("userData", data);
+        console.log(data);
+        gameContext.setHandler("matchDelay", false);
+        setAvatar(false);
+      } else if (data.status === "no match found") {
+        setMessage("No one wants to play right now. Please try again!");
       }
     }
-  }, [lastMessage, gameContext])
+  }, [lastMessage, gameContext]);
 
   useEffect(() => {
-    handleLastMessage()
-  }, [handleLastMessage])
+    handleLastMessage();
+  }, [handleLastMessage]);
 
   // useEffect(() => {
   //     // const fetchPlayerData = async () => {
   //     //     if (oneTime === false) {
-  //     //         await Axios.post("https://fttran.tech/api/game/join/",
+  //     //         await Axios.post("http://localhost:8800/api/game/join/",
   //     //         {
   //     //             withCredentials:true,
   //     //         }).then((response) => {
@@ -112,7 +112,7 @@ const MatchMaking = () => {
         {message}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MatchMaking
+export default MatchMaking;

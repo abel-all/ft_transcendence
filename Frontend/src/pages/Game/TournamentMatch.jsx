@@ -117,10 +117,10 @@ const Match = ({nbr}) => {
     )
 }
 
-const TournamentMatchCard = ({rank, userImg, userName, gradeColor}) => {
+const TournamentMatchCard = ({rank, userImg, userName, gradeColor, isLose=false}) => {
 
     return (
-            <div className=" bg-[#4a515b] h-[44px] w-[160px] px-[5px] rounded-[20px] flex justify-center items-center gap-[10px]">
+            <div className={`bg-[#4a515b] h-[44px] w-[160px] px-[5px] rounded-[20px] flex justify-center items-center gap-[10px] ${isLose ? "grayscale" : ""}`}>
                 <img className="w-[40px] h-[40px] rounded-[20px]" src={userImg} alt="" />
                 <div className="flex-1 flex flex-col">
                     <div className="font-light text-[#eee]">{userName}</div>

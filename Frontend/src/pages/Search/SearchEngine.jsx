@@ -5,6 +5,8 @@ import '../Game/css/index.css'
 import './css/index.css'
 import Spiner from '../Game/Spiner'
 import SearchResultCard from './SearchResultCard.jsx'
+import badgeConverter from '../../hooks/badgeConverter.jsx'
+import RefreshToken from "../../hooks/RefreshToken"
 
 // let oneTime = false;
 
@@ -19,7 +21,7 @@ const SearchEngine = () => {
   const fetchPlayerData = async () => {
     // oneTime = true;
     await Axios.post(
-      'https://fttran.tech/api/profile/search/',
+      'http://localhost:8800/api/profile/search/',
       {
         prefix: searchResult,
       },
@@ -28,13 +30,17 @@ const SearchEngine = () => {
       }
     )
       .then((response) => {
-        setLoading(false)
-        console.log('data of friends is : ', response?.data)
         setListOfSearchResult(response?.data)
+        setLoading(false)
+        setErrorMessage(false)
       })
       .catch((err) => {
+        if (err.response?.status === 401) {
+          RefreshToken();
+          fetchPlayerData();
+        }
         console.log(err)
-        // setErrorMessage(true);
+        setErrorMessage(true);
       })
   }
 
@@ -42,6 +48,7 @@ const SearchEngine = () => {
     let getData
 
     if (searchResult) {
+      setLoading(true)
       getData = setTimeout(() => {
         fetchPlayerData()
       }, 500)
@@ -84,7 +91,7 @@ const SearchEngine = () => {
                 rank={rank}
                 userImage={picture || 'https://picsum.photos/100/100'}
                 userName={username}
-                bgColor={badge || 'bg-[#CB3401]'}
+                bgColor={badgeConverter(badge)}
               />
             )
           )

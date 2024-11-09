@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import xIcon from '../../assets/imgs/xIcon.svg'
 import search from '../../assets/imgs/search.svg'
 import { useGameSettings } from './GameSettingsContext'
 import SearchResultCardTour from '../Search/SearchResultCardTour'
 import Spiner from './Spiner'
 import Axios from 'axios'
+import badgeConverter from '../../hooks/badgeConverter'
+import RefreshToken from "../../hooks/RefreshToken"
 
 const SearchModal = () => {
   const [focusOnFrnds, setFocusOnFrnds] = useState(true)
@@ -16,12 +18,11 @@ const SearchModal = () => {
   // const [isBottomCounter, setIsBottomCounter] = useState(1);
   const [listOfSearchResult, setListOfSearchResult] = useState([])
   // const [isLoaded, setIsLoaded] = useState(false);
-  const targetRef = useRef(null)
   const gameContext = useGameSettings()
 
   const fetchUsersData = async () => {
     await Axios.post(
-      'https://fttran.tech/api/profile/search/',
+      'http://localhost:8800/api/profile/search/',
       {
         prefix: searchResult,
       },
@@ -31,20 +32,22 @@ const SearchModal = () => {
     )
       .then((response) => {
         setLoading(false)
-        console.log('data of friends is : ', response?.data)
         setListOfSearchResult(response?.data)
         setErrorMessage(false)
       })
       .catch((err) => {
+        if (err.response?.status === 401) {
+          RefreshToken();
+          fetchUsersData();
+        }
         console.log(err)
         setErrorMessage(true)
       })
   }
 
   const fetchFriendsData = async () => {
-    console.log('searchrs : ', searchResult)
     await Axios.post(
-      'https://fttran.tech/api/profile/search/friends/',
+      'http://localhost:8800/api/profile/search/friends/',
       {
         prefix: searchResult,
       },
@@ -54,11 +57,14 @@ const SearchModal = () => {
     )
       .then((response) => {
         setLoading(false)
-        console.log('data of friends is : ', response?.data)
         setListOfSearchResult(response?.data)
         setErrorMessage(false)
       })
       .catch((err) => {
+        if (err.response?.status === 401) {
+          RefreshToken();
+          fetchFriendsData();
+        }
         console.log(err)
         setErrorMessage(true)
       })
@@ -83,48 +89,7 @@ const SearchModal = () => {
     gameContext.handleModalClick()
   }
 
-  // useEffect(() => {
-  // const fetchUserData = async () => {
-  // onetime = true;
-
-  // await Axios.post("https://fttran.tech/api/notifications/", {
-  //     offset: 10
-  // }, {
-  //     withCredentials:true,
-  // }).then((response) => {
-  //     setNotiData(response.data.message)
-  // }).catch(err => {
-  //         console.log(err);
-  //         console.log("Please try again!")
-  // })
-  // }
-  // console.log("isBottomCounter");
-  // const getData = setTimeout(() => {
-  //     setNotiData(prev => [...prev, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter, isBottomCounter]);
-  //     setIsLoaded(false);
-  //     // setIsLoading(false);
-  // }, 2000);
-  // if (!onetime)
-  // fetchUserData();
-
-  // return () => {
-  //     clearTimeout(getData);
-  // }
-  // } ,[isBottomCounter])
-
   useEffect(() => {
-    // if (searchResult) {
-    //     if (focusOnFrnds) {
-    //         setLoading(true);
-    //         fetchFriendsData();
-    //     }
-    //     else {
-    //         setLoading(true);
-    //         fetchUsersData();
-    //     }
-    // }
-    // else
-    //     fetchUsersData();
     let getData
 
     if (searchResult) {
@@ -139,43 +104,9 @@ const SearchModal = () => {
     }
   }, [searchResult, focusOnFrnds])
 
-  // useEffect(() => {
-  //     const currentRef = targetRef.current;
-  //     let isFetching = false;
-  //     let setCounter;
-  //     const handleScroll = () => {
-
-  //         if (currentRef && !isFetching) {
-  //             const { scrollTop, scrollHeight, clientHeight } = currentRef;
-  //             if (scrollTop + clientHeight >= scrollHeight) {
-  //                 setIsLoaded(true);
-  //                 isFetching = true;
-  //                 // setIsBottomCounter(prev => prev + 1);
-  //                 setCounter = setTimeout(() => {
-  //                     setIsBottomCounter((prev) => prev + 1);
-  //                     isFetching = false;
-  //                 }, 2000);
-
-  //             }
-  //         }
-
-  //     }
-
-  //     if (currentRef)
-  //         currentRef.addEventListener("scroll", handleScroll);
-
-  //     return () => {
-  //         if (currentRef) {
-  //             clearTimeout(setCounter);
-  //             currentRef.removeEventListener("scroll", handleScroll);
-  //         }
-  //     }
-  // }, [])
 
   return (
     <div className="modal-container w-full flex justify-center mt-[200px]">
-      {/* <div className=""> */}
-      {/* </div> */}
       <div className="modal-container p-[20px] rounded-[15px] w-full h-full max-w-[600px] bg-gradient-to-t from-[#161c20] to-[#43515b] relative">
         <div
           onClick={handleXClick}
@@ -227,36 +158,17 @@ const SearchModal = () => {
                     No One!
                   </div>
                 ) : (
-                  <div
-                    ref={targetRef}
-                    className="flex flex-col gap-[20px] h-[800px] overflow-y-scroll scrollbar-w"
-                  >
-                    {listOfSearchResult.map(
-                      ({ username, is_online }, index) => (
-                        <div
-                          key={index}
-                          className="flex-shrink-0 flex w-full h-[80px] bg-[#DA5644] rounded-[10px]"
-                        >
-                          {username + '-----' + is_online}
-                        </div>
+                    listOfSearchResult.map(
+                      ({ username, rank, badge, picture }, index) => (
+                          <SearchResultCardTour
+                            key={index}
+                            rank={rank}
+                            userImage={picture || 'https://picsum.photos/100/100'}
+                            userName={username}
+                            bgColor={badgeConverter(badge)}
+                          />
                       )
-                    )}
-                    {/* {isLoaded && <Spiner/>} */}
-                    <SearchResultCardTour
-                      rank="5343"
-                      userImage="https://picsum.photos/100/100"
-                      userName="abel-all"
-                      bgColor="bg-[#CB3401]"
-                      type="tournament"
-                    />
-                    <SearchResultCardTour
-                      rank="5343"
-                      userImage="https://picsum.photos/100/100"
-                      userName="abel-all"
-                      bgColor="bg-[#CB3401]"
-                      type="tournament"
-                    />
-                  </div>
+                    )
                 )}
               </>
             )}

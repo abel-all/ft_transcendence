@@ -29,6 +29,7 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [winners, setWinners] = useState([])
   const [winnersFinal, setWinnersFinal] = useState([])
   const [endGameData, setEndGameData] = useState({})
+  const [gameSettings, setGameSettings] = useState({})
 
   const [player1Score, setPlayer1Score] = useState(0)
   const [player2Score, setPlayer2Score] = useState(0)
@@ -58,6 +59,7 @@ export const GameSettingsContextProvider = ({ children }) => {
     setPlayer1Score(0)
     setPlayer2Score(0)
     setEndGameData({})
+    setGameSettings({})
   }
 
   const handleModalClick = () => {
@@ -150,6 +152,9 @@ export const GameSettingsContextProvider = ({ children }) => {
       case 'participantsData':
         setParticipantsData(value)
         break
+      case 'gameSettings':
+        setGameSettings(value)
+        break
     }
   }
 
@@ -194,6 +199,7 @@ export const GameSettingsContextProvider = ({ children }) => {
         selfData,
         loading,
         isTournament,
+        gameSettings,
       }}
     >
       {children}

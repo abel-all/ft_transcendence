@@ -3,6 +3,7 @@ import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import logoImg from '../../assets/imgs/logo.png'
 import { useNavigate } from 'react-router-dom'
+import RefreshToken from "../../hooks/RefreshToken"
 
 const TwoFaAuthStep3 = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -14,7 +15,7 @@ const TwoFaAuthStep3 = () => {
   useEffect(() => {
     setIsLoading(true)
     const fetchBackUpCodes = async () => {
-      await Axios.get('https://fttran.tech/api/auth/2fa/backup-codes/', {
+      await Axios.get('http://localhost:8800/api/auth/2fa/backup-codes/', {
         withCredentials: true,
       })
         .then((response) => {
@@ -22,7 +23,11 @@ const TwoFaAuthStep3 = () => {
           setIsLoading(false)
           setOneTime(true)
         })
-        .catch(() => {
+        .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            fetchBackUpCodes();
+          }
           setIsLoading(false)
           setMessage('Invalid request, please try again')
         })

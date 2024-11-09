@@ -3,6 +3,7 @@ import LoaderOntop from '../../components/LoaderOntop.jsx'
 import { useGameSettings } from './GameSettingsContext'
 import Axios from 'axios'
 import '../2FaAuth/css/index.css'
+import RefreshToken from "../../hooks/RefreshToken"
 
 const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
   const [focusColor, setFocusColor] = useState(
@@ -25,7 +26,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
   useEffect(() => {
     const fetchActiveTournament = async () => {
-      await Axios.get('https://fttran.tech/api/tournament/names/', {
+      await Axios.get('http://localhost:8800/api/tournament/names/', {
         withCredentials: true,
       })
         .then((response) => {
@@ -33,6 +34,10 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           setActiveTournament(response?.data)
         })
         .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            fetchActiveTournament();
+          }
           setIsLoading(false)
           setMessage(err?.response?.data.message)
         })
@@ -60,7 +65,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
     if (nameReGex.test(name) && nameReGex.test(tour)) {
       await Axios.post(
-        'https://fttran.tech/api/tournament/check-name/',
+        'http://localhost:8800/api/tournament/check-name/',
         {
           tournament_name: tour,
         },
@@ -75,6 +80,10 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
         })
         .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            createTournament();
+          }
           setIsLoading(false)
           setMessage(err?.response?.data?.message)
         })
@@ -88,7 +97,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
 
     if (nameReGex.test(name) && nameReGex.test(tour)) {
       await Axios.post(
-        'https://fttran.tech/api/tournament/check-alias/',
+        'http://localhost:8800/api/tournament/check-alias/',
         {
           alias: name,
           tournament_name: tour,
@@ -104,6 +113,10 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
         })
         .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            joinTournament();
+          }
           setIsLoading(false)
           setMessage(err?.response?.data.message)
         })

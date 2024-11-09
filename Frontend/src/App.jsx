@@ -67,7 +67,10 @@ function App() {
                   </DontRequireAuth>
                 }
               />
-              <Route path="/search" element={<Search />} />
+              <Route path="/search" element={
+                <RequireAuth>
+                  <Search />
+                </RequireAuth>} />
               <Route path="/oauth/callback" element={<OauthCallBack />} />
               <Route
                 path="/settings"
@@ -99,9 +102,9 @@ function App() {
               />
               <Route path="/game" element={<Game />} />
               <Route path="game/online" element={<PlayOnline />} />
-              <Route path="game/bot" element={<PlayWithBot />} />
               <Route path="game/friend" element={<PlayWithFriend />} />
               <Route path="game/tournament" element={<Tournament />} /> */}
+              {/* <Route path="game/friend" element={<PlayWithBot />} /> */}
               <Route
                 path="/game"
                 element={
@@ -119,7 +122,7 @@ function App() {
                 }
                 />
               <Route
-                path="game/online"
+                path="/game/online"
                 element={
                   <RequireAuth>
                     <PlayOnline />
@@ -127,7 +130,7 @@ function App() {
                 }
               />
               <Route
-                path="game/bot"
+                path="/game/bot"
                 element={
                   <RequireAuth>
                     <PlayWithBot />
@@ -135,7 +138,7 @@ function App() {
                 }
               />
               <Route
-                path="game/friend"
+                path="/game/friend"
                 element={
                   <RequireAuth>
                     <PlayWithFriend />
@@ -143,13 +146,14 @@ function App() {
                 }
               />
               <Route
-                path="game/tournament"
+                path="/game/tournament"
                 element={
                   <RequireAuth>
                     <Tournament />
                   </RequireAuth>
                 }
               />
+              {/* <Route path="game/tournament" element={<Tournament />} /> */}
               <Route path="*" element={<Page404 />} />
             </Routes>
           </ContextProvider>

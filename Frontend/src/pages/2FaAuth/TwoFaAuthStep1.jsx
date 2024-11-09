@@ -3,6 +3,7 @@ import logoImg from '../../assets/imgs/logo.png'
 import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import { useTwoFaContext } from './TwoFaContext'
+import RefreshToken from "../../hooks/RefreshToken"
 
 const TwoFaAuthStep1 = () => {
   const [message, setMessage] = useState('')
@@ -26,7 +27,7 @@ const TwoFaAuthStep1 = () => {
 
     if (/^[0-9]{6,6}$/.test(code)) {
       await Axios.post(
-        'https://fttran.tech/api/auth/2fa/verify/device/',
+        'http://localhost:8800/api/auth/2fa/verify/device/',
         {
           otp_code: code,
         },
@@ -38,7 +39,11 @@ const TwoFaAuthStep1 = () => {
           TwoFaContext.setHandler('step1', false)
           TwoFaContext.setHandler('step2', true)
         })
-        .catch(() => {
+        .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            verifyOtpCode();
+          }
           setIsLoading(false)
           setMessage('Incorrect code')
         })
@@ -51,14 +56,18 @@ const TwoFaAuthStep1 = () => {
   if (isLoading) return <LoaderOnTop />
 
   const handleEnableButtonClick = async () => {
-    await Axios.get('https://fttran.tech/api/auth/2fa/enable/', {
+    await Axios.get('http://localhost:8800/api/auth/2fa/enable/', {
       withCredentials: true,
     })
       .then((response) => {
         setImage(`data:image/png;base64,${response.data.qr_code}`)
         setIsEnable(false)
       })
-      .catch(() => {
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          RefreshToken();
+          handleEnableButtonClick();
+        }
         setIsEnable(true)
         console.log('Invalid request, try again')
       })

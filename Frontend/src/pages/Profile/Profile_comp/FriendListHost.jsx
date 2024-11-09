@@ -10,7 +10,7 @@ const FriendListHost = ({ className, UrlUsername }) => {
     const fetchmydata = async () => {
       try {
         const res = await axios.get(
-          `https://fttran.tech/api/profile/friends/`,
+          `http://localhost:8800/api/profile/friends/`,
           { username: UrlUsername }
         )
         setAlreadyDated(res.data)

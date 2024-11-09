@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import Axios from 'axios'
 import Spiner from './Spiner'
 import './css/index.css'
+import RefreshToken from "../../hooks/RefreshToken"
 
 const mapData = [
   {
@@ -123,7 +124,7 @@ const ChooseSectionHandler = (name) => {
       console.log(gameContext.selfData)
 
       await Axios.post(
-        'https://fttran.tech/api/game/setting/',
+        'http://localhost:8800/api/game/setting/',
         {
           mapname: mapName,
           ballcolor: ballColor,
@@ -136,6 +137,7 @@ const ChooseSectionHandler = (name) => {
         }
       )
         .then((response) => {
+          gameContext.setHandler('gameSettings', response?.data?.setting)
           console.log('setting is updated seccesfully')
           console.log('settings is : ', response.data)
           gameContext.setHandler('last', false)
@@ -146,6 +148,10 @@ const ChooseSectionHandler = (name) => {
           } else gameContext.setHandler('isHowToPlay', true)
         })
         .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            postSettingsData();
+          }
           console.log(err)
           setMessage('Please try again!')
         })

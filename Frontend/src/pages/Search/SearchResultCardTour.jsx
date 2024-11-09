@@ -2,9 +2,11 @@ import rankImg from '../../assets/imgs/rank.svg'
 import playImg from '../../assets/imgs/paly_friend.svg'
 import { useGameSettings } from '../Game/GameSettingsContext'
 import { Axios } from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import RefreshToken from "../../hooks/RefreshToken"
 
 const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
+  
   const gameContext = useGameSettings()
   const [isIconCliced, setIsIconCliced] = useState(false)
 
@@ -12,11 +14,10 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
     console.log(userName)
     setIsIconCliced(true)
     await Axios.post(
-      'https://fttran.tech/api/profile/notification/join-tournament/',
+      'http://localhost:8800/api/profile/notification/join-tournament/',
       {
         username: userName,
-        tournament_name: 'test',
-        // tournament_name: gameContext?.tournamentInfo?.tournament_name,
+        tournament_name: gameContext?.tournamentInfo?.tournament_name,
       },
       {
         withCredentials: true,
@@ -26,9 +27,22 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         console.log('data of friends is ', response?.data)
       })
       .catch((err) => {
+        if (err.response?.status === 401) {
+          RefreshToken();
+          handlePlayWithMeClick();
+        }
         console.log(err)
       })
   }
+
+  useEffect(() => {
+    if (isIconCliced) {
+      setTimeout(() => {
+        setIsIconCliced(false);
+      }, 1000)
+    }
+
+  }, [isIconCliced])
 
   return (
     <div className="bg-[#6e6e6e] rounded-lg bg-opacity-30 w-full flex sm:justify-between max-sm:flex-col max-sm:gap-[10px] px-[10px] py-[4px]">

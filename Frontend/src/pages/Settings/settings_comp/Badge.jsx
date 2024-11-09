@@ -47,7 +47,7 @@ function Badge({ SettingsData }) {
 
       try {
         const sendFile = await axios.post(
-          `https://fttran.tech/api/profile/upload-${endPoint}/`,
+          `http://localhost:8800/api/profile/upload-${endPoint}/`,
           formData,
           {
             headers: {

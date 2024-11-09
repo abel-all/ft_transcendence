@@ -17,6 +17,7 @@ import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
 import { useAuth } from '../../components/Auth'
 import { useGameSettings } from '../Game/GameSettingsContext'
 import './css/index.css'
+import RefreshToken from "../../hooks/RefreshToken"
 
 function SignIn() {
   const [formValues, setFormValues] = useState({})
@@ -42,7 +43,7 @@ function SignIn() {
 
   const checkFieldInput = async () => {
     await Axios.post(
-      'https://fttran.tech/api/auth/token/',
+      'http://localhost:8800/api/auth/token/',
       {
         username: formValues.Username,
         password: formValues.Password,
@@ -54,14 +55,37 @@ function SignIn() {
       .then((response) => {
         console.log('first request')
         const fetchUserData = async () => {
-          await Axios.get('https://fttran.tech/api/profile/data/', {
+          await Axios.get('http://localhost:8800/api/profile/data/', {
             withCredentials: true,
           })
             .then((response) => {
               console.log('data of user : ', response.data)
               gameContext.setHandler('selfData', response.data)
+              const fetchSettings = async () => {
+    
+                await Axios.get(`http://localhost:8800/api/game/settings/`, {
+                  withCredentials: true,
+                })
+                  .then((response) => {
+                    console.log('sign in settings is : ', response.data)
+                    gameContext.setHandler('gameSettings', response?.data)
+                  })
+                  .catch((err) => {
+                    if (err.response?.status === 401) {
+                      RefreshToken();
+                      fetchSettings();
+                    }
+                    console.log(err)
+                    console.log('Please try again!')
+                  })
+              }
+              fetchSettings()
             })
             .catch((err) => {
+              if (err.response?.status === 401) {
+                RefreshToken();
+                fetchUserData();
+              }
               console.log(err)
               console.log('Please try again!')
             })
@@ -78,6 +102,10 @@ function SignIn() {
         }
       })
       .catch((err) => {
+        if (err.response?.status === 401) {
+          RefreshToken();
+          checkFieldInput();
+        }
         console.log(err)
         setMessage('Somethings wrong, please try again!')
       })
@@ -110,7 +138,7 @@ function SignIn() {
 
     if (fieldReGex.emailReGex.test(email)) {
       await Axios.post(
-        'https://fttran.tech/api/auth/passwordrecovery/',
+        'http://localhost:8800/api/auth/passwordrecovery/',
         {
           email: email,
         },

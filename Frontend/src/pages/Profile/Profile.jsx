@@ -34,8 +34,8 @@ function Profile() {
 
   useEffect(() => {
     let url = UrlUsername
-      ? `https://fttran.tech/api/profile/data/${UrlUsername}/`
-      : 'https://fttran.tech/api/profile/data/'
+      ? `http://localhost:8800/api/profile/data/${UrlUsername}/`
+      : 'http://localhost:8800/api/profile/data/'
     const fetchmydata = async () => {
       try {
         const res = await axios.get(`${url}`)

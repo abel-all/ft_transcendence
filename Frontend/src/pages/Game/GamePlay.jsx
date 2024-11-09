@@ -44,7 +44,7 @@ const ball = {
     color: "#FFFFFF",
 };
 
-const GamePlay = ({levelOfBot = 0}) => {
+const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
 
     const canvasRef = useRef();
     const [player1Score, setPlayer1Score] = useState(0);
@@ -87,7 +87,7 @@ const GamePlay = ({levelOfBot = 0}) => {
         const ctx = canvas.getContext("2d");
 
         const render = () => {
-            drawRect(0, 0, canvasWidth, canvasHeight, "#1F1F1F", ctx);
+            drawRect(0, 0, canvasWidth, canvasHeight, mapColor, ctx);
             drawNet(ctx);
             drawPaddles(ctx);
             drawBall(ctx);
@@ -113,7 +113,7 @@ const GamePlay = ({levelOfBot = 0}) => {
                 ball.velocityX *= -1;
 
             // ball collision with players:
-            if (ball.y + ball.radius >= paddleOne.y) {
+            if (ball.y + ball.radius >= paddleOne.y ) {
                 if (ball.x > paddleOne.x && ball.x < paddleOne.x + paddleOne.width) {
                     ball.y = paddleOne.y - ball.radius;
                     ball.velocityY *= -1;
@@ -171,7 +171,7 @@ const GamePlay = ({levelOfBot = 0}) => {
             setIsMobileVersion(window.innerWidth <= 640);
             render();
             update();
-            if (player1Score === 5 || player2Score === 5)
+            if (player1Score === score || player2Score === score)
                 setGameFinished(true);
 
         };
@@ -207,12 +207,12 @@ const GamePlay = ({levelOfBot = 0}) => {
     }
 
     const drawPaddles = (ctx) => {
-        drawRect(paddleOne.x, paddleOne.y, paddleOne.width, paddleOne.height, paddleOne.color, ctx);
-        drawRect(paddleTwo.x, paddleTwo.y, paddleTwo.width, paddleTwo.height, paddleTwo.color, ctx);
+        drawRect(paddleOne.x, paddleOne.y, paddleOne.width, paddleOne.height, ballColor.paddleColor, ctx);
+        drawRect(paddleTwo.x, paddleTwo.y, paddleTwo.width, paddleTwo.height, ballColor.paddleColor, ctx);
     }
 
     const drawBall = (ctx) => {
-        drawCircle(ball.x, ball.y,ball.radius, ball.color, ctx);
+        drawCircle(ball.x, ball.y,ball.radius, ballColor.ballColor, ctx);
     }
 
     const handleKeyPress = (keyCode, value) => {

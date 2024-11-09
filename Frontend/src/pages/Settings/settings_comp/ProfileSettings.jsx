@@ -11,7 +11,7 @@ function ProfileSettings(className) {
 
   useEffect(() => {
     axios
-      .get('https://fttran.tech/api/profile/personal-data/')
+      .get('http://localhost:8800/api/profile/personal-data/')
       .then((res) => {
         setSettingsData(res.data)
         console.log('Data for settings : ', res)

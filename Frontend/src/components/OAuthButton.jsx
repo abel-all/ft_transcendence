@@ -3,9 +3,9 @@ import arrowRight from '../assets/imgs/arrow-right.svg'
 function OAuthButton(props) {
   const clickHandler = () => {
     if (props.imgTilte === 'google')
-      window.location.href =
-        'https://accounts.google.com/o/oauth2/auth?client_id=895845289499-jt7kib2t1n5tr6ah3oekfdp6l6i29abm.apps.googleusercontent.com&redirect_uri=https://fttran.tech/api/auth/oauth/google/callback/&response_type=code&scope=email%20profile'
-    else window.location.href = 'https://bit.ly/oAuth42'
+      window.location.href = 'https://accounts.google.com/o/oauth2/auth?client_id=895845289499-jt7kib2t1n5tr6ah3oekfdp6l6i29abm.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/oauth/google/callback/&response_type=code&scope=email%20profile'
+    else
+      window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-f64caba64b208f5cb8e10ed71b8c6073df6796995e4be9f5d5c07eacf1d37752&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fauth%2Fintra42%2Fcallback%2F&response_type=code'
   }
 
   return (

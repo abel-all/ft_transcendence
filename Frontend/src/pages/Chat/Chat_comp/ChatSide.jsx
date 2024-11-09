@@ -95,7 +95,7 @@ function ChatSide({ setVoidedUsername, className }) {
           )
         }
         axios
-          .post(`https://fttran.tech/api/chat/messages/history/`, {
+          .post(`http://localhost:8800/api/chat/messages/history/`, {
             username: username,
             start: 0,
           })

@@ -15,7 +15,7 @@ function Statistics({ className, UrlUsername }) {
     const fetchmydata = async () => {
       try {
         const res = await axios.get(
-          'https://fttran.tech/api/profile/statistics/',
+          'http://localhost:8800/api/profile/statistics/',
           { username: UrlUsername }
         )
         handelStat(res.data)

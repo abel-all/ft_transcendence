@@ -5,6 +5,7 @@ import Axios from 'axios'
 import { useTwoFaContext } from './TwoFaContext'
 import './css/index.css'
 import usePasswordToggle from '../../hooks/usePasswordToggle.jsx'
+import RefreshToken from "../../hooks/RefreshToken.jsx"
 
 const TwoFaAuthPassStep = () => {
   const [focusColor, setFocusColor] = useState('')
@@ -35,7 +36,7 @@ const TwoFaAuthPassStep = () => {
 
     if (passwordReGex.test(password)) {
       await Axios.post(
-        'https://fttran.tech/api/auth/passwd/verify/',
+        'http://localhost:8800/api/auth/passwd/verify/',
         {
           password: password,
         },
@@ -47,7 +48,11 @@ const TwoFaAuthPassStep = () => {
           TwoFaContext.setHandler('pass', false)
           TwoFaContext.setHandler('step1', true)
         })
-        .catch(() => {
+        .catch((err) => {
+          if (err.response?.status === 401) {
+            RefreshToken();
+            verifyPassword();
+          }
           setIsLoading(false)
           setMessage('Incorrect password, try again')
         })

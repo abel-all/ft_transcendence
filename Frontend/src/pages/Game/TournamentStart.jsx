@@ -1,232 +1,234 @@
-import plusIcon from '../../assets/imgs/plusIcon.svg'
-import SearchModal from './SearchModal.jsx'
-import TournamentMatch from './TournamentMatch.jsx'
-import { Final, SemiFinal } from './TournamentStages.jsx'
-import { useGameSettings } from './GameSettingsContext'
-import useWebSocket from 'react-use-websocket'
-import { useCallback, useEffect, useState, useRef } from 'react'
-import Spiner from './Spiner'
-import PlayerScore from './PlayerScore'
-import Axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import GameEndScreen from './GameEndScreen'
-import './css/index.css'
+import plusIcon from "../../assets/imgs/plusIcon.svg";
+import SearchModal from "./SearchModal.jsx";
+import TournamentMatch from "./TournamentMatch.jsx";
+import { SemiFinal } from "./TournamentStages.jsx";
+import { useGameSettings } from "./GameSettingsContext";
+import useWebSocket from "react-use-websocket";
+import { useCallback, useEffect, useState, useRef } from "react";
+import Spiner from "./Spiner";
+import PlayerScore from "./PlayerScore";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+import GameEndScreen from "./GameEndScreen";
+import "./css/index.css";
+import RefreshToken from "../../hooks/RefreshToken"
 
-const playerHeight = 15
-const playerWidth = 70
-let canvasWidth = 450
-let canvasHeight = 700
-const paddleSpeed = 13
+const playerHeight = 15;
+const playerWidth = 70;
+let canvasWidth = 450;
+let canvasHeight = 700;
+const paddleSpeed = 13;
 
 const paddleTwo = {
   y: 0,
   x: canvasWidth / 2 - playerWidth / 2,
   width: playerWidth,
   height: playerHeight,
-  color: '#D9D9D9',
+  color: "#D9D9D9",
   speed: paddleSpeed,
-}
+};
 const paddleOne = {
   y: canvasHeight - playerHeight,
   x: canvasWidth / 2 - playerWidth / 2,
   width: playerWidth,
   height: playerHeight,
-  color: '#D9D9D9',
+  color: "#D9D9D9",
   speed: paddleSpeed,
-}
+};
 const net = {
   y: canvasHeight / 2 - 1,
   x: 0,
   width: 2,
   height: 26,
-  color: '#FFFFFF',
-}
+  color: "#FFFFFF",
+};
 const ball = {
   x: canvasWidth / 2,
   y: canvasHeight / 2,
   radius: 10,
-  color: '#FFFFFF',
-}
+  color: "#FFFFFF",
+};
 
 // let PlayerNbr = 0
-let isGameStart = false
+let isGameStart = false;
 
 const TournamentStart = () => {
-  const canvasRef = useRef(null)
-  const [player1Score, setPlayer1Score] = useState(0)
-  const [player2Score, setPlayer2Score] = useState(0)
-  const [isMobileVersion, setIsMobileVersion] = useState(false)
-  const [playerData, setPlayerData] = useState({})
-  const [selfData, setSelfData] = useState({})
-  const [keyLeftpressed, setKeyLeftpressed] = useState(false)
-  const [keyRightpressed, setKeyRightpressed] = useState(false)
-  const [matchId, setMatchId] = useState(-1)
-  const [isGameEnd, isIsGameEnd] = useState(false)
-  const [endMatchWinner, setEndMatchWinner] = useState(0)
-  const [endMatchScore, setEndMatchScore] = useState('')
-  const [playerNumber, setPlayerNumber] = useState(0)
+  const canvasRef = useRef(null);
+  const [player1Score, setPlayer1Score] = useState(0);
+  const [player2Score, setPlayer2Score] = useState(0);
+  const [isMobileVersion, setIsMobileVersion] = useState(false);
+  const [playerData, setPlayerData] = useState({});
+  const [selfData, setSelfData] = useState({});
+  const [keyLeftpressed, setKeyLeftpressed] = useState(false);
+  const [keyRightpressed, setKeyRightpressed] = useState(false);
+  const [matchId, setMatchId] = useState(-1);
+  const [isGameEnd, isIsGameEnd] = useState(false);
+  const [endMatchWinner, setEndMatchWinner] = useState(0);
+  const [endMatchScore, setEndMatchScore] = useState("");
+  const [playerNumber, setPlayerNumber] = useState(0);
+  const [isWinTournament, setIsWinTournament] = useState(false);
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,
-  })
-  const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2)
+  });
+  const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
 
-  const [isTimeToPlay, setIsTimeToPlay] = useState(false)
-  const [isGame, setIsGame] = useState(false)
-  const gameContext = useGameSettings()
-  const navigate = useNavigate()
+  const [isTimeToPlay, setIsTimeToPlay] = useState(false);
+  const [isGame, setIsGame] = useState(false);
+  const gameContext = useGameSettings();
+  const navigate = useNavigate();
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://fttran.tech/ws/tournament/'
-  )
+    "ws://localhost:8800/ws/tournament/"
+  );
 
   useEffect(() => {
     if (readyState === 1) {
-      console.log('tournament infos : ', gameContext.tournamentInfo)
+      console.log("tournament infos : ", gameContext.tournamentInfo);
       gameContext.isCreateTour
         ? sendMessage(
             JSON.stringify({
-              action: 'create_tournament',
+              action: "create_tournament",
               tournament_name: gameContext.tournamentInfo.name,
               alias: gameContext.tournamentInfo.alias,
             })
           )
         : sendMessage(
             JSON.stringify({
-              action: 'join_tournament',
+              action: "join_tournament",
               tournament_name: gameContext.tournamentInfo.name,
               alias: gameContext.tournamentInfo.alias,
             })
-          )
-      console.log('WebSocket connection is open')
+          );
+      console.log("WebSocket connection is open");
     } else {
-      console.log('WebSocket connection is not open')
-      console.log(readyState)
+      console.log("WebSocket connection is not open");
+      console.log(readyState);
     }
   }, [
     readyState,
     sendMessage,
     gameContext.isCreateTour,
     gameContext.tournamentInfo,
-  ])
+  ]);
 
   const handleLastMessage = useCallback(() => {
-    if (!lastMessage) return
+    if (!lastMessage) return;
 
-    const data = JSON.parse(lastMessage.data)
+    const data = JSON.parse(lastMessage.data);
     switch (data?.type) {
-      case 'tournament_created':
-        gameContext.setHandler('participants', data?.tournament?.participants)
-        break
-      case 'participants_update':
-        console.log('parts update : ', data?.participants)
-        gameContext.setHandler('participants', data?.participants)
-        gameContext.setHandler('participantsData', data?.participants)
-        break
-      case 'match_detail':
-        console.log('match details <<< : ', data)
-        setPlayerNumber(data?.player_number)
-        sendNotification()
+      case "tournament_created":
+        gameContext.setHandler("participants", data?.tournament?.participants);
+        break;
+      case "participants_update":
+        console.log("parts update : ", data?.participants);
+        gameContext.setHandler("participants", data?.participants);
+        gameContext.setHandler("participantsData", data?.participants);
+        break;
+      case "match_detail":
+        console.log("match details <<< : ", data);
+        setPlayerNumber(data?.player_number);
+        sendNotification();
         sendMessage(
           JSON.stringify({
-            action: 'match_received',
+            action: "match_received",
             match_id: data?.match?.id,
           })
-        )
+        );
         // PlayerNbr = data?.player_number
-        setMatchId(data?.match?.id)
+        setMatchId(data?.match?.id);
         if (data?.player_number === 1) {
-          setPlayerData(data?.match?.player2?.profile)
-          setSelfData(data?.match?.player1?.profile)
+          setPlayerData(data?.match?.player2?.profile);
+          setSelfData(data?.match?.player1?.profile);
         } else {
-          setPlayerData(data?.match?.player1?.profile)
-          setSelfData(data?.match?.player2?.profile)
+          setPlayerData(data?.match?.player1?.profile);
+          setSelfData(data?.match?.player2?.profile);
         }
-        setIsTimeToPlay(true)
-        console.log('isTimeToPlay is : true')
-        console.log('ready to send start Game')
+        setIsTimeToPlay(true);
+        console.log("isTimeToPlay is : true");
+        console.log("ready to send start Game");
         setTimeout(() => {
           if (!isGameStart) {
             sendMessage(
               JSON.stringify({
-                action: 'start_game',
+                action: "start_game",
                 match_id: data?.match?.id,
               })
-            )
-            console.log('start game is sent')
+            );
+            console.log("start game is sent");
           }
-          setIsGame(true)
-        }, 15000)
-        break
-      case 'game_update':
+          setIsGame(true);
+        }, 15000);
+        break;
+      case "game_update":
         // console.log("ball corr : ", data);
-        setBallCor({ x: data?.ball?.x, y: data?.ball?.y })
-        break
-      case 'score_update':
-        console.log('score update : ', data)
-        handleScoreUpdate(data)
-        break
-      case 'paddle_update':
-        handlePaddleUpdate(data)
-        break
-      case 'end_game':
-        console.log('end game >> ', data)
-        console.log('Player NUmber : ????? ', playerNumber)
-        setEndMatchWinner(data?.winner)
-        setEndMatchScore(data?.score)
-        sendMessage(JSON.stringify({ action: 'stop_game' }))
-        isIsGameEnd(true)
-        isGameStart = true
-        setPlayer1Score(0)
-        setPlayer2Score(0)
-        setPaddleCor(canvasWidth / 2 - playerWidth / 2)
+        setBallCor({ x: data?.ball?.x, y: data?.ball?.y });
+        break;
+      case "score_update":
+        console.log("score update : ", data);
+        handleScoreUpdate(data);
+        break;
+      case "paddle_update":
+        handlePaddleUpdate(data);
+        break;
+      case "end_game":
+        console.log("end game >> ", data);
+        console.log("Player NUmber : ????? ", playerNumber);
+        setEndMatchWinner(data?.winner);
+        setEndMatchScore(data?.score);
+        sendMessage(JSON.stringify({ action: "stop_game" }));
+        isIsGameEnd(true);
+        isGameStart = true;
+        setPlayer1Score(0);
+        setPlayer2Score(0);
+        setPaddleCor(canvasWidth / 2 - playerWidth / 2);
         if (data?.loser === playerNumber) {
-          sendMessage(JSON.stringify({ action: 'disconnect' }))
+          sendMessage(JSON.stringify({ action: "disconnect" }));
           setTimeout(() => {
             // setPlayer1Score(0)
             // setPlayer2Score(0)
-            setMatchId(-1)
-            isIsGameEnd(false)
+            setMatchId(-1);
+            isIsGameEnd(false);
             // setPlayerNumber(0)
-            setIsTimeToPlay(false)
-            setIsGame(false)
-            navigate('/game', { replace: true })
-          }, 5000)
+            setIsTimeToPlay(false);
+            setIsGame(false);
+            navigate("/game", { replace: true });
+          }, 5000);
         } else {
-          fetchSettings(data)
-          gameContext.setHandler('endgame', data)
+          fetchSettings(data);
+          gameContext.setHandler("endgame", data);
           setTimeout(() => {
             // setPlayer1Score(0)
             // setPlayer2Score(0)
-            isIsGameEnd(false)
-            isGameStart = false
+            isIsGameEnd(false);
+            isGameStart = false;
             // setPlayerNumber(0)
-            setIsTimeToPlay(false)
-            setIsGame(false)
-          }, 5000)
+            setIsTimeToPlay(false);
+            setIsGame(false);
+          }, 5000);
         }
         // handleEndGame(data)
-        break
-      case 'already_connected':
-        console.log('User already connected from another tab')
-        break
-      case 'update_winner':
-        console.log('winner array : ', data)
-        gameContext.setHandler('participantsData', data?.winners)
-        if (data?.round === 'completed') {
-          sendMessage(JSON.stringify({ action: 'disconnect' }))
-          navigate('/game')
+        break;
+      case "already_connected":
+        console.log("User already connected from another tab");
+        break;
+      case "update_winner":
+        console.log("winner array : ", data);
+        gameContext.setHandler("participantsData", data?.winners);
+        if (data?.round === "completed") {
+          sendMessage(JSON.stringify({ action: "disconnect" }));
+          setIsWinTournament(true);
         }
-        data?.round && !isGameStart === 'final'
-          ? gameContext.setHandler('winnersFinal', data?.winners)
-          : gameContext.setHandler('winners', data?.winners)
-        break
+        data?.round && !isGameStart === "final"
+          ? gameContext.setHandler("winnersFinal", data?.winners)
+          : gameContext.setHandler("winners", data?.winners);
+        break;
     }
-  }, [lastMessage])
+  }, [lastMessage]);
 
   useEffect(() => {
-    handleLastMessage()
-  }, [handleLastMessage])
+    handleLastMessage();
+  }, [handleLastMessage]);
 
   // useEffect(() => {
 
@@ -245,85 +247,85 @@ const TournamentStart = () => {
   // }, [isTimeToPlay]);
 
   useEffect(() => {
-    if (!isGame) return
-    const canvas = canvasRef.current
-    if (!canvas) return
+    if (!isGame) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext("2d");
     const render = () => {
-      drawRect(0, 0, canvasWidth, canvasHeight, '#1F1F1F', ctx)
-      drawNet(ctx)
-      drawPaddles(ctx)
-      drawBall(ctx)
-    }
+      drawRect(0, 0, canvasWidth, canvasHeight, "#1F1F1F", ctx);
+      drawNet(ctx);
+      drawPaddles(ctx);
+      drawBall(ctx);
+    };
 
     const gameLoop = () => {
-      setIsMobileVersion(window.innerWidth <= 640)
-      render()
+      setIsMobileVersion(window.innerWidth <= 640);
+      render();
 
       if (keyLeftpressed && paddleOne.x > 0) {
-        paddleOne.x -= paddleSpeed
+        paddleOne.x -= paddleSpeed;
         sendMessage(
           JSON.stringify({
-            action: 'move_paddle',
+            action: "move_paddle",
             y: paddleOne.x,
             match_id: matchId,
             player_number: playerNumber,
           })
-        )
+        );
       } else if (
         keyRightpressed &&
         paddleOne.x < canvasWidth - paddleOne.width
       ) {
-        paddleOne.x += paddleSpeed
+        paddleOne.x += paddleSpeed;
         sendMessage(
           JSON.stringify({
-            action: 'move_paddle',
+            action: "move_paddle",
             y: paddleOne.x,
             match_id: matchId,
             player_number: playerNumber,
           })
-        )
+        );
       }
 
-      ball.x = ballCor.y
+      ball.x = ballCor.y;
       playerNumber === 2
         ? (ball.y = canvasHeight - ballCor.x)
-        : (ball.y = ballCor.x)
-      paddleTwo.x = paddleCor
-    }
+        : (ball.y = ballCor.x);
+      paddleTwo.x = paddleCor;
+    };
 
-    const intervalId = setInterval(gameLoop, 1000 / 60)
+    const intervalId = setInterval(gameLoop, 1000 / 60);
 
-    const handleKeyDown = (e) => handleKeyPress(e.keyCode, true)
-    const handleKeyUp = (e) => handleKeyPress(e.keyCode, false)
+    const handleKeyDown = (e) => handleKeyPress(e.keyCode, true);
+    const handleKeyUp = (e) => handleKeyPress(e.keyCode, false);
     const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect()
-      let newX = e.clientX - rect.left - paddleOne.width / 2
-      if (isMobileVersion) newX *= 1.7
+      const rect = canvas.getBoundingClientRect();
+      let newX = e.clientX - rect.left - paddleOne.width / 2;
+      if (isMobileVersion) newX *= 1.7;
       if (newX < canvasWidth - paddleOne.width && newX > 0) {
-        paddleOne.x = newX
+        paddleOne.x = newX;
         sendMessage(
           JSON.stringify({
-            action: 'move_paddle',
+            action: "move_paddle",
             y: newX,
             match_id: matchId,
             player_number: playerNumber,
           })
-        )
+        );
       }
-    }
+    };
 
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
-      clearInterval(intervalId)
-    }
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      clearInterval(intervalId);
+    };
   }, [
     sendMessage,
     isMobileVersion,
@@ -334,7 +336,7 @@ const TournamentStart = () => {
     playerNumber,
     paddleCor,
     matchId,
-  ])
+  ]);
 
   // const handleMatchFound = (data) => {
   //     clearTimeout(waitingTimeout);
@@ -350,29 +352,29 @@ const TournamentStart = () => {
   const handleScoreUpdate = (data) => {
     sendMessage(
       JSON.stringify({
-        action: 'score_update',
+        action: "score_update",
         player1_score: data?.player1_score,
         player2_score: data?.player2_score,
       })
-    )
-    setPlayer1Score(data?.player1_score)
-    setPlayer2Score(data?.player2_score)
-  }
+    );
+    setPlayer1Score(data?.player1_score);
+    setPlayer2Score(data?.player2_score);
+  };
 
   const handlePaddleUpdate = (data) => {
-    setPaddleCor(data?.y)
+    setPaddleCor(data?.y);
     sendMessage(
       JSON.stringify({
-        action: 'update_paddle',
+        action: "update_paddle",
         y: data?.y,
         player_number: data?.player_number,
       })
-    )
-  }
+    );
+  };
 
   const fetchSettings = async (data) => {
     await Axios.post(
-      `https://fttran.tech/api/tournament/matches/update/${data?.match_id}/`,
+      `http://localhost:8800/api/tournament/matches/update/${data?.match_id}/`,
       {
         completed: true,
         winner: data?.winner_participant?.id,
@@ -384,43 +386,50 @@ const TournamentStart = () => {
       }
     )
       .then((response) => {
-        console.log('update match api res : ', response)
-        setMatchId(-1)
+        console.log("update match api res : ", response);
+        setMatchId(-1);
       })
       .catch((err) => {
-        console.log(err)
-        console.log('Please try again!')
-      })
-  }
+        if (err.response?.status === 401) {
+          RefreshToken();
+          fetchSettings();
+        }
+        console.log(err);
+        console.log("Please try again!");
+      });
+  };
   const sendNotification = async () => {
-    let participantsNames = []
-    for (let i = 0; i < gameContext.participantsData.length; i++) {
+    let participantsNames = [];
+    for (let i = 0; i < gameContext?.participantsData.length; i++) {
       participantsNames.push(
         gameContext?.participantsData[i]?.profile?.username
-      )
+      );
     }
 
     await Axios.post(
-      'https://fttran.tech/api/profile/notification/tournament-reminder/',
+      "http://localhost:8800/api/profile/notification/tournament-reminder/",
       {
-        // tournament_name: gameContext.tournamentInfo?.tournament_name,
-        users: participantsNames,
+        usernames: participantsNames,
       },
       {
         withCredentials: true,
       }
     )
       .then((response) => {
-        console.log('data of friends is ', response?.data)
+        console.log("data of friends is ", response?.data);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        if (err.response?.status === 401) {
+          RefreshToken();
+          sendNotification();
+        }
+        console.log(err);
+      });
+  };
   // const handleEndGame = (data) => {
   // const fetchSettings = async () => {
   //   await Axios.post(
-  //     `https://fttran.tech/api/tournament/matches/update/${data?.match_id}/`,
+  //     `http://localhost:8800/api/tournament/matches/update/${data?.match_id}/`,
   //     {
   //       completed: true,
   //       winner: data?.winner_profile?.id,
@@ -470,23 +479,23 @@ const TournamentStart = () => {
 
   // draw functions
   const drawRect = (x, y, width, height, color, ctx) => {
-    ctx.fillStyle = color
-    ctx.fillRect(x, y, width, height)
-  }
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, width, height);
+  };
 
   const drawCircle = (x, y, r, color, ctx) => {
-    ctx.fillStyle = color
-    ctx.beginPath()
-    ctx.arc(x, y, r, 0, Math.PI * 2, false)
-    ctx.closePath()
-    ctx.fill()
-  }
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2, false);
+    ctx.closePath();
+    ctx.fill();
+  };
 
   const drawNet = (ctx) => {
     for (let i = 0; i <= canvasWidth; i += net.height * 2) {
-      drawRect(net.x + i, net.y, net.height, net.width, net.color, ctx)
+      drawRect(net.x + i, net.y, net.height, net.width, net.color, ctx);
     }
-  }
+  };
 
   const drawPaddles = (ctx) => {
     drawRect(
@@ -496,7 +505,7 @@ const TournamentStart = () => {
       paddleOne.height,
       paddleOne.color,
       ctx
-    )
+    );
     drawRect(
       paddleTwo.x,
       paddleTwo.y,
@@ -504,37 +513,38 @@ const TournamentStart = () => {
       paddleTwo.height,
       paddleTwo.color,
       ctx
-    )
-  }
+    );
+  };
 
   const drawBall = (ctx) => {
-    drawCircle(ball.x, ball.y, ball.radius, ball.color, ctx)
-  }
+    drawCircle(ball.x, ball.y, ball.radius, ball.color, ctx);
+  };
 
   const handleKeyPress = (keyCode, value) => {
     switch (keyCode) {
       case 37:
-        setKeyLeftpressed(value)
-        break
+        setKeyLeftpressed(value);
+        break;
       case 39:
-        setKeyRightpressed(value)
-        break
+        setKeyRightpressed(value);
+        break;
     }
-  }
+  };
 
   const clickHandler = () => {
-    gameContext.handleModalClick()
-  }
+    gameContext.handleModalClick();
+  };
 
   return (
     <>
       {isGame ? (
         <>
-          {isGameEnd && (
+          {(isGameEnd || isWinTournament) && (
             <GameEndScreen
               winner={endMatchWinner}
               score={endMatchScore}
               playerNumber={playerNumber}
+              winTournament={isWinTournament}
             />
           )}
           <div className="h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0">
@@ -544,7 +554,7 @@ const TournamentStart = () => {
                 rank={selfData?.rank}
                 userImage={
                   selfData?.picture ||
-                  'https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg'
+                  "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"
                 }
               />
               <div className="score-container w-full flex items-center justify-center flex-1">
@@ -561,7 +571,7 @@ const TournamentStart = () => {
                 rank={playerData?.rank}
                 userImage={
                   playerData?.picture ||
-                  'https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg'
+                  "https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg"
                 }
               />
             </div>
@@ -592,12 +602,6 @@ const TournamentStart = () => {
                   </div>
                   <SemiFinal />
                 </div>
-                {/* <div className="Final">
-                  <div className="font-light text-[#eee] text-[20px] mb-[30px]">
-                    Final
-                  </div>
-                  <Final />
-                </div> */}
               </div>
               <div className="button flex justify-center">
                 <button
@@ -623,7 +627,7 @@ const TournamentStart = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default TournamentStart
+export default TournamentStart;

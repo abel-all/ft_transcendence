@@ -3,6 +3,7 @@ import Axios from 'axios'
 import axios from 'axios'
 import GetCookie from '../hooks/GetCookie'
 import { useGameSettings } from '../pages/Game/GameSettingsContext'
+import RefreshToken from '../hooks/RefreshToken.jsx'
 
 export const Authcontext = createContext(null)
 
@@ -27,44 +28,66 @@ export const ContextProvider = ({ children }) => {
   }
 
   const isAuthenticated = async () => {
-    await Axios.get('https://fttran.tech/api/auth/token/', {
+    
+    const refrechToken = async () => {
+      await Axios.get('http://localhost:8800/api/auth/token/refresh/', {
+        withCredentials: true,
+      })
+        .then(() => {
+          console.log('second request')
+          setIsAuth(true)
+        })
+        .catch((err) => {
+          console.log(err)
+          setIsAuth(false)
+        })
+    }
+
+    await Axios.get('http://localhost:8800/api/auth/token/', {
       withCredentials: true,
     })
       .then(() => {
         const fetchUserData = async () => {
-          await Axios.get('https://fttran.tech/api/profile/data/', {
+          await Axios.get('http://localhost:8800/api/profile/data/', {
             withCredentials: true,
           })
-            .then(async (response) => {
+            .then((response) => {
               console.log('data of user : ', response.data)
               gameContext.setHandler('selfData', response.data)
               console.log('selfData of user : ', gameContext.selfData)
+              const fetchSettings = async () => {
+    
+                await Axios.get(`http://localhost:8800/api/game/settings/`, {
+                  withCredentials: true,
+                })
+                  .then((response) => {
+                    gameContext.setHandler('gameSettings', response?.data[0])
+                    console.log('settings is : ', response?.data[0])
+                  })
+                  .catch((err) => {
+                    if (err.response?.status == 401)
+                      RefreshToken()
+                    console.log(err)
+                    console.log('Please try again!')
+                  })
+              }
+              fetchSettings()
             })
             .catch((err) => {
+              if (err.response?.status === 401)
+                RefreshToken()
               console.log(err)
               console.log('Please try again!')
             })
         }
         fetchUserData()
         setIsAuth(true)
+        return 
       })
       .catch((err) => {
         console.log('hello from auth ', err)
         if (err.response?.status === undefined) setIsAuth(false)
         if (err.response?.status == 403) {
-          const refrechToken = async () => {
-            await Axios.get('https://fttran.tech/api/auth/token/refresh/', {
-              withCredentials: true,
-            })
-              .then(() => {
-                console.log('second request')
-                setIsAuth(true)
-              })
-              .catch((err) => {
-                console.log(err)
-                setIsAuth(false)
-              })
-          }
           refrechToken()
         } else {
           setIsAuth(false)

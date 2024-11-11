@@ -1,6 +1,6 @@
 import UserIcon from '../../../assets/imgs/UserIcon.png'
 import Edit from '../../../assets/imgs/edit.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import upload from '../../../assets/imgs/upload.svg'
 import userbg from '../../../assets/imgs/userbg.png'
 import axios from 'axios'
@@ -15,6 +15,7 @@ const CheckPath = (file) => {
 
 function Badge({ SettingsData }) {
   const [save, setSave] = useState(false)
+  const [badge, setBadge] = useState("BRONZE")
   const [image, setImage] = useState(null)
   const [imagefile, setimagefile] = useState(null)
   const [background, setBackground] = useState(null)
@@ -77,6 +78,15 @@ function Badge({ SettingsData }) {
       readbackground.readAsDataURL(backgroundfile)
     }
   }
+
+  useEffect(async () => {
+    await axios.get('http://localhost:8800/api/profile/data/')
+      .then((response) => {
+        setBadge(response.data.badge)
+      })
+      .catch((err) => {
+      })
+  }, [])
 
   return (
     <form action="" method="POST">
@@ -170,7 +180,7 @@ function Badge({ SettingsData }) {
             <span className="trendup-icon-white"></span>
             <span className="Rank text-[12px] text-[#FFFFFF] text-center font-semibold font-Outfit">
               {' '}
-              Bronze
+              {badge}
             </span>
           </div>
         </div>

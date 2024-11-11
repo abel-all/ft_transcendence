@@ -35,16 +35,12 @@ function PersonalInformation({ SettingsData, className }) {
   const HandelSubmet = (e) => {
     e.preventDefault()
     const NamesRegix = /^[a-zA-Z-]{2,16}$/
-    const EmailRegix = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!NamesRegix.test(Firstname)) handelErrors('FN')
     else {
       removeErrors('FN')
       if (!NamesRegix.test(Lastname)) handelErrors('LN')
       else {
         removeErrors('LN')
-        if (!EmailRegix.test(Email)) handelErrors('EM')
-        else {
-          removeErrors('EM')
           axios
             .post('http://localhost:8800/api/profile/edit/personal-data/', {
               firstName: first_name != Firstname ? Firstname : 'None',
@@ -52,11 +48,11 @@ function PersonalInformation({ SettingsData, className }) {
             })
             .then((res) => {
               console.log(res)
+              setSave(false);
             })
             .catch((err) => {
               console.log(err)
             })
-        }
       }
     }
   }

@@ -17,6 +17,7 @@ function ChatHeader() {
         setDisplay(!display);
     }
 
+    console.log(" 00000      Hhhfjhsdkfhdskfhksjskjhfskjfhskjfsdj: ", ChatContext.chatHeader.name);
     return (
         <div className="ChatHeader flex flex-row items-center border-b-[1px] py-[10px] border-[#626262] bg-[#161c20]">
             <div className="flex md:hidden cursor-pointer" onClick={() => {ChatContext.handelChatShown(true)}}> <img src={chevron} alt=""/></div>
@@ -38,7 +39,7 @@ function ChatHeader() {
             <Link to={`/game?playWith=${ChatContext.chatHeader.name}`}><img className=" w-[30px] mr-[7px] h-[30px] opacity-60 cursor-pointer" src={play} alt="" /></Link>
             <div className=" cursor-pointer">
                 <img onClick={handelDisplay} className=" w-[30px] opacity-60 mr-[7px] h-[30px]" src={dots} alt=""/>
-                {display && <UserProfileBlock username={ChatContext.chatHeader.name} dplay={display} dhand={handelDisplay}/>}
+                {display && <UserProfileBlock username={!ChatContext.chatHeader.clicked ? ChatContext.userFromUrl.user : ChatContext.chatHeader.name} dplay={display} dhand={handelDisplay}/>}
             </div>
         </div>
     )

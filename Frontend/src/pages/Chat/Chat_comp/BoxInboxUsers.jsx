@@ -42,7 +42,7 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 	}
 
 	useEffect(() => {
-		if (lastMessage) {
+		if (lastMessage && JSON.parse(lastMessage.data).message) {
 			checkForNewUsers(JSON.parse(lastMessage.data).from);
 			setUserList((prevUserList) => {
 				const updatedUserList = prevUserList.map((user) => {

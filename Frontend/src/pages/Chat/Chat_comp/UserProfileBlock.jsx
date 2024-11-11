@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from "react"
 import profile from "../../../assets/imgs/chat/user-profile-01.svg"
 import block from "../../../assets/imgs/chat/user-profile-x.svg"
 import { Link } from "react-router-dom"
@@ -6,19 +5,8 @@ import { Link } from "react-router-dom"
 
 function UserProfileBlock(data) {
 
-    // const divRefer = useRef(null);
-    // const handelClick = (e) => {
-    //     if (!divRefer.current.contains(e.target)) {
-    //         console.log("Clicked from here ! and dhnd = ", data.dplay);
-    //     }
-    // }
 
-    // useEffect(() => {
-    //     document.addEventListener('click', handelClick)
-    //     return () => {
-    //         document.removeEventListener('click', handelClick)
-    //     }
-    // }, []);
+    console.log("Hhhfjhsdkfhdskfhksjskjhfskjfhskjfsdj: ", data.username);
     return (
         <>
             <div className="w-screen h-screen absolute bg-transparent right-[0px] top-[0px] z-[1]" onClick={data.dhand}></div>

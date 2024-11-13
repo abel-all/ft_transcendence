@@ -65,8 +65,10 @@ export const ContextProvider = ({ children }) => {
                     console.log('settings is : ', response?.data[0])
                   })
                   .catch((err) => {
-                    if (err.response?.status == 401)
+                    if (err.response?.status === 403)
                       RefreshToken()
+                    else if (err.response?.status === 401)
+                      setIsAuth(false)
                     console.log(err)
                     console.log('Please try again!')
                   })
@@ -74,8 +76,11 @@ export const ContextProvider = ({ children }) => {
               fetchSettings()
             })
             .catch((err) => {
-              if (err.response?.status === 401)
+              if (err.response?.status === 403)
                 RefreshToken()
+              else if (err.response?.status === 401)
+                setIsAuth(false)
+              setIsAuth(false)
               console.log(err)
               console.log('Please try again!')
             })
@@ -87,7 +92,7 @@ export const ContextProvider = ({ children }) => {
       .catch((err) => {
         console.log('hello from auth ', err)
         if (err.response?.status === undefined) setIsAuth(false)
-        if (err.response?.status == 403) {
+        if (err.response?.status === 403) {
           refrechToken()
         } else {
           setIsAuth(false)

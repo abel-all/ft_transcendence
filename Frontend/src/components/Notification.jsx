@@ -9,10 +9,12 @@ import tournReminder from "../assets/imgs/tournReminder.svg"
 import joinMatch from "../assets/imgs/joinMatch.svg"
 import notiJoinTourn from "../assets/imgs/notiJoinTourn.svg"
 import RefreshToken from "../hooks/RefreshToken"
+import { useAuth } from './Auth'
 
-// let onetime = false;
+let onetime = false;
 
 const Notification = () => {
+  const notification = useAuth();
   const targetRef = useRef(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -24,6 +26,7 @@ const Notification = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      onetime = true;
       await Axios.post(
         'http://localhost:8800/api/profile/notifications/',
         {
@@ -42,9 +45,12 @@ const Notification = () => {
           setIsLoading(false)
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             fetchUserData();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           console.log(err)
           console.log('Please try again!')
@@ -64,9 +70,11 @@ const Notification = () => {
       //     ]);
       //     setIsLoading(false);
       // }, 2000);
-    // if (!onetime)
-    fetchUserData()
-    // return () => { onetime =false }
+    if (!onetime)
+      fetchUserData()
+    return () => { 
+      onetime =false
+    }
   }, [isBottomCounter])
 
   useEffect(() => {
@@ -101,10 +109,14 @@ const Notification = () => {
   const handleClick = (e) => {
     switch (e.currentTarget.dataset.id) {
       case "PLAYWITHME_REQUEST":
-        navigate("/game/online");
+        notification.setShowNotificationHandler();
+        onetime = false
+        navigate(`/game/online?param=${e.currentTarget.dataset.id1}`);
         break;
       case "JOINING_TOURNAMENT":
-        navigate("/game/tournament");
+        notification.setShowNotificationHandler();
+        onetime = false
+        navigate(`/game/tournament?param=${e.currentTarget.dataset.id2.split(" ")[2]}`);
         break;
       default:
         break;
@@ -112,7 +124,7 @@ const Notification = () => {
   }
   const handleImg = (notificationType) => {
     switch (notificationType) {
-      case "FIENDSHIP_REQUEST":
+      case "FRIENDSHIP_REQUEST":
         return friendReq
       case "HANDLE_REQUESTED_FRIENDSHIP":
         return friendship
@@ -136,10 +148,13 @@ const Notification = () => {
           No Notifications
         </div>
       ) : (
-        notiData.map(({ content, notification_type }, index) => (
+        notiData.map(({ content, notification_type, from_user }, index) => (
           <div
+          data
           key={index}
           data-id={notification_type}
+          data-id1={from_user}
+          data-id2={content}
           className={`flex-shrink-0 max-md:w-full w-full mx-3 h-[70px] bg-[#878787] rounded-[10px] flex justify-between items-center px-3 ${(notification_type === "PLAYWITHME_REQUEST" || notification_type === "JOINING_TOURNAMENT") ? "cursor-pointer": ""}`}
           onClick={handleClick}
           >

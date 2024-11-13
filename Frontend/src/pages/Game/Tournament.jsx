@@ -5,10 +5,15 @@ import BottomNaveBar from '../../components/BottomNavBar.jsx'
 import { useGameSettings } from './GameSettingsContext'
 import CreateTournament from './CreateTournament.jsx'
 import TournamentStart from './TournamentStart.jsx'
+import { mapColorConverter, paddleAndBallColorConverter } from "../../hooks/badgeConverter.jsx";
 
 const Tournament = () => {
   const [isLoaded, setIsLoaded] = useState(true)
   const gameContext = useGameSettings()
+  const [settings, setSettings] = useState({
+    mapColor:  mapColorConverter(gameContext.gameSettings.mapname),
+    ballColor: paddleAndBallColorConverter(gameContext.gameSettings.ballcolor),
+});
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -20,6 +25,13 @@ const Tournament = () => {
     }
   }, [])
 
+  useEffect(() => {
+    setSettings({
+        mapColor:  mapColorConverter(gameContext.gameSettings.mapname),
+        ballColor: paddleAndBallColorConverter(gameContext.gameSettings.ballcolor),
+    })
+  }, [gameContext.gameSettings])
+
   return (
     <>
       {isLoaded ? (
@@ -27,8 +39,7 @@ const Tournament = () => {
       ) : (
         <div className="container mx-auto px-[10px]">
           <Header title="Tournament" activeSection="GametableIcon" />
-          {/* {<TournamentStart />} */}
-          {!gameContext.isTournament ? <CreateTournament /> : <TournamentStart />}
+          {!gameContext.isTournament ? <CreateTournament /> : <TournamentStart mapColor={settings.mapColor} ballColor={settings.ballColor} />}
           <BottomNaveBar activeSection="GametableIcon" />
         </div>
       )}

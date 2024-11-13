@@ -1,10 +1,20 @@
 import { useEffect, useRef, useState } from "react"
 import tryImg from "../../assets/imgs/tryImg.svg"
+import gamePage from "../../assets/imgs/gamePageBlack.svg"
 import avatarIcon from "../../assets/imgs/avatarImgWhite.svg"
 import BotImgOne from "../../assets/imgs/botImgOne.svg"
+import botLevelTwo from "../../assets/imgs/botLevelTwo.svg"
+import botLevelThree from "../../assets/imgs/botLevelThree.svg"
+import botImgFour from "../../assets/imgs/botImg.svg"
 import PlayerScore from "./PlayerScore"
 import { useGameSettings } from './GameSettingsContext'
 import "./css/index.css"
+import { useNavigate } from "react-router-dom"
+import {toBadgeConverter} from "../../hooks/badgeConverter"
+import gameRightKey from "../../assets/imgs/gameRightKey.svg"
+import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
+import gameRightKeyWhite from "../../assets/imgs/gameRightKeyWhite.svg"
+import gameLeftKeyWhite from "../../assets/imgs/gameLeftKeyWhite.svg"
 
 
 // Game vars:
@@ -25,8 +35,8 @@ const createPaddle = (y) => ({
     speed: paddleSpeed,
 });
 
-const paddleTwo = createPaddle(0);
-const paddleOne = createPaddle(canvasHeight - playerHeight);
+let paddleTwo = createPaddle(0);
+let paddleOne = createPaddle(canvasHeight - playerHeight);
 const net = {
     y: (canvasHeight / 2) - 1,
     x: 0,
@@ -34,7 +44,7 @@ const net = {
     height: 26,
     color: "#FFFFFF",
 };
-const ball = {
+let ball = {
     x: canvasWidth / 2,
     y: canvasHeight / 2,
     radius: 10,
@@ -47,6 +57,8 @@ const ball = {
 const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
 
     const canvasRef = useRef();
+    const gameContext = useGameSettings();
+    const navigate = useNavigate();
     const [player1Score, setPlayer1Score] = useState(0);
     const [player2Score, setPlayer2Score] = useState(0);
     const [counter, setCounter] = useState(0);
@@ -58,8 +70,26 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
     const [keyDpressed, setKeyDpressed] = useState(false);
     const [keyLeftpressed, setKeyLeftpressed] = useState(false);
     const [keyRightpressed, setKeyRightpressed] = useState(false);
+    const [botDetails, setBotDetails] = useState(() => {
+        switch (levelOfBot) {
+            case 0:
+                return {img: avatarIcon, rank: "0", name: "Player", grColor: "to-[#ffffff]"}
+            case 0.1:
+                return {img: BotImgOne, rank: "50", name: "Beginner", grColor: "to-[#a8e6a3]"}
+            case 0.2:
+                return {img: botLevelTwo, rank: "150", name: "Intermediate", grColor: "to-[#f9d648]"}
+            case 0.5:
+                return {img: botLevelThree, rank: "300", name: "Advanced", grColor: "to-[#f08a24]"}
+            case 0.8:
+                return {img: botImgFour, rank: "750", name: "Expert", grColor: "to-[#ff4949]"}
+        }
+    });
+    const [gradientColor, setGradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
 
-    const gameContext = useGameSettings();
+
+    useEffect(() => {
+        setGradientColor(toBadgeConverter(gameContext.selfData?.badge))
+    }, [gameContext.selfData])
 
     useEffect(() => {
         const counterTimeout = setTimeout(() => {
@@ -71,6 +101,7 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
         }, 1000);
 
         return () => {
+            handleTryAgainClick();
             clearTimeout(counterTimeout);
             clearInterval(counterInterval);
         }
@@ -164,7 +195,7 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
 
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
-        levelOfBot && window.addEventListener("mousemove", handleMouseMove);
+        levelOfBot && !isMobileVersion && window.addEventListener("mousemove", handleMouseMove);
 
         const gameLoop = () => {
 
@@ -246,13 +277,23 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
     //update: pos, move score:
 
     const handleTryAgainClick = () => {
-        ball.x = canvasWidth / 2;
-        ball.y = canvasHeight / 2;
-        ball.speed = ballStartSpeed;
-        ball.velocityY *= -1;
+        paddleTwo = createPaddle(0);
+        paddleOne = createPaddle(canvasHeight - playerHeight);
+        ball = {
+            x: canvasWidth / 2,
+            y: canvasHeight / 2,
+            radius: 10,
+            velocityX: 5,
+            velocityY: 5,
+            speed: ballStartSpeed,
+            color: "#FFFFFF",
+        };
         setPlayer1Score(0);
         setPlayer2Score(0);
         setGameFinished(false);
+    }
+    const handleBackToGamePage = () => {
+        navigate("/game")
     }
 
     return (
@@ -261,9 +302,19 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
                 {4 - counter}
             </div>}
             {gameFinished && <div className="fixed z-[49] top-0 left-0 backdrop-blur w-full h-full flex justify-center items-center">
-                <div className="text-[#fff6f9] items-center flex flex-col gap-[20px]">
-                    <div className="font-medium text-[50px] max-sm:text-[30px]">Game Finished</div>
-                    <img onClick={handleTryAgainClick} className="cursor-pointer w-[40px] max-sm:w-[30px] hover:opacity-80" src={tryImg} />
+                <div className="text-[#fff6f9] items-center flex flex-col gap-[80px]">
+                    <div className="font-light text-[50px] max-sm:text-[30px]">Game Finished</div>
+                    <div className="flex gap-3 items-center max-md:flex-col">
+                        <button onClick={handleTryAgainClick} className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center">
+                            <div>Try again</div>
+                            <img className="w-6 h-6" src={tryImg} alt="try again icon" />
+                        </button>
+                        <div>Or</div>
+                        <button onClick={handleBackToGamePage} className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center">
+                            <div>Back to game page</div>
+                            <img className="w-6 h-6" src={gamePage} alt="game page icon" />
+                        </button>
+                    </div>
                 </div>
             </div>}
             <div className='h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0'>
@@ -274,18 +325,44 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
                         userImage={gameContext.selfData?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
                     />
                     <div className="score-container w-full flex items-center justify-center flex-1">
-                        <div className="player1-score-gradient flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light">{player1Score}</div>
-                        <div className="player2-score-gradient flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light">{player2Score}</div>
+                        <div className={`bg-gradient-to-r from-[#161c20] via-[#161c20] ${gradientColor} flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light`}>{player1Score}</div>
+                        <div className={`bg-gradient-to-l from-[#161c20] via-[#161c20] ${botDetails?.grColor} flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light`}>{player2Score}</div>
                     </div>
                     <PlayerScore
                         flexDirection="flex-row-reverse"
-                        username={levelOfBot ? "Bot" : "Player2"}
-                        rank={levelOfBot ? "300" : "0"}
-                        userImage={levelOfBot ? BotImgOne : avatarIcon}
+                        username={botDetails?.name}
+                        rank={botDetails?.rank}
+                        userImage={botDetails?.img}
                     />
                 </div>
-                <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px] max-sm:scale-[0.70]">
-                    <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} className="rounded-[15px]"></canvas>
+                <div className="flex flex-col">
+                    {isMobileVersion && !levelOfBot && 
+                        <div className="relative">
+                            <div className="w-full flex justify-around mb-[200px] absolute max-sm:top-[35px]">
+                                <button onMouseDown={() => setKeyApressed(true)} onMouseUp={() => setKeyApressed(false)}>
+                                    <img className="w-16 h-w-16" src={gameLeftKeyWhite} alt="ping pong game" />
+                                </button>
+                                <button onMouseDown={() => setKeyDpressed(true)} onMouseUp={() => setKeyDpressed(false)}>
+                                    <img className="w-16 h-w-16" src={gameRightKeyWhite} alt="ping pong game" />
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    <div className="canvas-container border border-[#eee] w-fit rounded-[15px] max-sm:scale-[0.70]">
+                        <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} className="rounded-[15px]"></canvas>
+                    </div>
+                    {isMobileVersion && 
+                        <div className="relative">
+                            <div className="w-full flex justify-around mb-[200px] absolute max-sm:top-[-100px]">
+                                <button onMouseDown={() => setKeyLeftpressed(true)} onMouseUp={() => setKeyLeftpressed(false)}>
+                                    <img className="w-16 h-w-16" src={gameLeftKey} alt="ping pong game" />
+                                </button>
+                                <button onMouseDown={() => setKeyRightpressed(true)} onMouseUp={() => setKeyRightpressed(false)}>
+                                    <img className="w-16 h-w-16" src={gameRightKey} alt="ping pong game" />
+                                </button>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </>

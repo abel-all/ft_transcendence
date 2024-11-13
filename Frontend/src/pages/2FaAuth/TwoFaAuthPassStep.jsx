@@ -6,8 +6,10 @@ import { useTwoFaContext } from './TwoFaContext'
 import './css/index.css'
 import usePasswordToggle from '../../hooks/usePasswordToggle.jsx'
 import RefreshToken from "../../hooks/RefreshToken.jsx"
+import { useNavigate } from 'react-router-dom'
 
 const TwoFaAuthPassStep = () => {
+  const navigate = useNavigate();
   const [focusColor, setFocusColor] = useState('')
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -49,9 +51,12 @@ const TwoFaAuthPassStep = () => {
           TwoFaContext.setHandler('step1', true)
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             verifyPassword();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           setIsLoading(false)
           setMessage('Incorrect password, try again')
@@ -97,7 +102,7 @@ const TwoFaAuthPassStep = () => {
             >
               <input
                 onChange={handleInputChange}
-                className="flex-1 m-[0px] outline-[0px] text-[#eee] bg-transparent"
+                className="flex-1 m-[0px] outline-none text-[#eee] bg-transparent"
                 placeholder="Password"
                 type={inputType}
                 onBlur={() => {

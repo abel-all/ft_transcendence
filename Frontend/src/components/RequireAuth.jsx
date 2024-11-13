@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./Auth";
 import { useEffect, useState } from "react";
 import LoaderOntop from "./LoaderOntop";
@@ -9,28 +9,26 @@ const RequireAuth = ({ children }) => {
 
     const [loading, setLoading] = useState(true);
     const [oneTime, setOneTime] = useState(false);
-    // const [isGame, setIsGame] = useState(false);
     const auth = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     // const gameContext = useGameSettings();
 
     useEffect(() => {
-        let isMounted = true;
+        console.log("RequireAuth is calling : ", oneTime)
         const authIsChecked = async () => {
                 await auth.isAuthenticated();
-                if (isMounted) {
                     setLoading(false);
-                    setOneTime(true);
-                }
+                    // setOneTime(true);
         };
-        if (isMounted && !oneTime && !auth.isGame) {
+        if (!auth.isGame) {
             authIsChecked();
         }
+    }, [oneTime])
 
-        return () => {
-            isMounted = false;
-        }
-    }, [auth, oneTime])
+    useEffect(() => {
+        setOneTime(!oneTime);
+    }, [location]);
 
     useEffect(() => {
         if (!loading && !auth.isAuth) {

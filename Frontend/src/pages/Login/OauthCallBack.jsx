@@ -10,18 +10,8 @@ const OauthCallBack = () => {
 
   useEffect(() => {
     let isMounted = true
-
-    // const urlSearchString = "param=1";
-    // // const urlSearchString = window.location.search;
-    // const params = new URLSearchParams(urlSearchString);
-
-    // setCode(params.get("param"));
-    // console.log("uuuu");
-    // console.log(params.get("param"));
     const urlSearchString = location.search
     const params = new URLSearchParams(urlSearchString)
-
-    // Get the value of 'param' from the query parameters
     const paramValue = params.get('param')
     if (paramValue === '0') {
       auth.setHandler('login', true)
@@ -32,7 +22,7 @@ const OauthCallBack = () => {
           'http://localhost:8800/api/auth/GnrToken/',
           {
             user_id: paramValue,
-          }, // must edited
+          },
           {
             withCredentials: true,
           }

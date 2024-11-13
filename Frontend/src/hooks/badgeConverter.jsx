@@ -22,6 +22,29 @@ const badgeConverter = (badge) => {
 
 }
 
+export const toBadgeConverter = (badge) => {
+
+    switch (badge) {
+        case "BRONZE" :
+            return "to-[#CD7F32]"
+        case "SILVER" :
+            return "to-[#C0C0C0]"
+        case "GOLD" :
+            return "to-[#FFD700]"
+        case "PLATINUM" :
+            return "to-[#A0B2C6]"
+        case "DIAMOND" :
+            return "to-[#B9F2FF]"
+        case "HEROIC" :
+            return "to-[#CB3401]"
+        case "GRAND MASTER" :
+            return "to-[#FF0000]"
+        default:
+            return "to-[#ffffff]"
+    }
+
+}
+
 export const scoreConverter = (score) => {
     switch (score) {
         case "Three" :

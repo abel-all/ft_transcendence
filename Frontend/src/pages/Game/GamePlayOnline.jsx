@@ -5,8 +5,9 @@ import MatchMakingCard from "./MatchMakingCard.jsx";
 import { useGameSettings } from "./GameSettingsContext";
 import PlayerScore from "./PlayerScore";
 import GameEndScreen from "./GameEndScreen";
-import { mapColorConverter, paddleAndBallColorConverter } from "../../hooks/badgeConverter.jsx";
-// import { useNavigate } from "react-router-dom"
+import badgeConverter, {toBadgeConverter}  from "../../hooks/badgeConverter"
+import gameRightKey from "../../assets/imgs/gameRightKey.svg"
+import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
 
 // Game vars:
 const playerHeight = 15;
@@ -15,10 +16,7 @@ let canvasWidth = 450;
 let canvasHeight = 700;
 const paddleSpeed = 13;
 
-let paddleAndBallColor = {}
-let mapColor
-
-const paddleTwo = {
+let paddleTwo = {
   y: 0,
   x: canvasWidth / 2 - playerWidth / 2,
   width: playerWidth,
@@ -26,7 +24,7 @@ const paddleTwo = {
   color: "#D9D9D9",
   speed: paddleSpeed,
 };
-const paddleOne = {
+let paddleOne = {
   y: canvasHeight - playerHeight,
   x: canvasWidth / 2 - playerWidth / 2,
   width: playerWidth,
@@ -41,7 +39,7 @@ const net = {
   height: 26,
   color: "#FFFFFF",
 };
-const ball = {
+let ball = {
   x: canvasWidth / 2,
   y: canvasHeight / 2,
   radius: 10,
@@ -50,8 +48,9 @@ const ball = {
 
 let waitingTimeout;
 
-const GamePlay = () => {
+const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
+  const gameContext = useGameSettings();
   const [player1Score, setPlayer1Score] = useState(0);
   const [player2Score, setPlayer2Score] = useState(0);
   // const [counter, setCounter] = useState(0);
@@ -75,34 +74,32 @@ const GamePlay = () => {
     x: canvasWidth / 2,
     y: canvasHeight / 2,
   });
-  const gameContext = useGameSettings();
   const oneTime = useRef(false);
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
   const [message, setMessage] = useState("");
-  const [gameColors, setGameColors] = useState({
-    paddleAndBallColor: {},
-    mapColor: ""
-  });
-
-  useEffect(() => {
-    setGameColors({
-      paddleAndBallColor: paddleAndBallColorConverter(gameContext?.gameSettings?.ballcolor),
-      mapColor: mapColorConverter(gameContext?.gameSettings?.mapname)
-    });
-  }, [gameContext.gameSettings]);
+  const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
+  const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.player?.badge))
+  const urlSearchString = location.search
+  const params = new URLSearchParams(urlSearchString)
+  const paramValue = params.get('param')
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8800/ws/game/"
   );
 
   useEffect(() => {
+    setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
+    setPlayer2GradientColor(toBadgeConverter(playerData?.player?.badge))
+  }, [playerData, gameContext.selfData])
+
+  useEffect(() => {
     if (readyState === 1) {
-      gameContext.isRandomGame === true
+      gameContext.isRandomGame === true && !paramValue
         ? sendMessage(JSON.stringify({ action: "join_queue" }))
-        : sendMessage(JSON.stringify({ action: "invitation" }));
+        : sendMessage(JSON.stringify({ action: "invitation", username: paramValue }));
       console.log("WebSocket connection is open");
       waitingTimeout = setTimeout(() => {
-        setIsWaiting(false);
+        if (!paramValue) setIsWaiting(false);
       }, 200000);
     } else {
       console.log("WebSocket connection is not open");
@@ -110,6 +107,28 @@ const GamePlay = () => {
     }
 
     return () => {
+      paddleTwo = {
+        y: 0,
+        x: canvasWidth / 2 - playerWidth / 2,
+        width: playerWidth,
+        height: playerHeight,
+        color: "#D9D9D9",
+        speed: paddleSpeed,
+      };
+      paddleOne = {
+        y: canvasHeight - playerHeight,
+        x: canvasWidth / 2 - playerWidth / 2,
+        width: playerWidth,
+        height: playerHeight,
+        color: "#D9D9D9",
+        speed: paddleSpeed,
+      };
+      ball = {
+        x: canvasWidth / 2,
+        y: canvasHeight / 2,
+        radius: 10,
+        color: "#FFFFFF",
+      };
       oneTime.current = false;
       clearTimeout(waitingTimeout);
     };
@@ -121,6 +140,10 @@ const GamePlay = () => {
       setMessage("No one wants to play right now. Please try again!");
     }
   }, [isWaiting, sendMessage]);
+
+  useEffect(() => {
+    console.log("value of ballColor : ", ballColor)
+  }, [ballColor]);
 
   const handleLastMessage = useCallback(() => {
     if (!lastMessage) return;
@@ -160,7 +183,7 @@ const GamePlay = () => {
 
     const ctx = canvas.getContext("2d");
     const render = () => {
-      drawRect(0, 0, canvasWidth, canvasHeight, gameColors.mapColor , ctx);
+      drawRect(0, 0, canvasWidth, canvasHeight, mapColor , ctx);
       drawNet(ctx);
       drawPaddles(ctx);
       drawBall(ctx);
@@ -223,7 +246,7 @@ const GamePlay = () => {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    !isMobileVersion && window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
@@ -315,7 +338,7 @@ const GamePlay = () => {
       paddleOne.y,
       paddleOne.width,
       paddleOne.height,
-      gameColors.paddleAndBallColor.paddleColor,
+      ballColor.paddleColor,
       ctx
     );
     drawRect(
@@ -323,13 +346,13 @@ const GamePlay = () => {
       paddleTwo.y,
       paddleTwo.width,
       paddleTwo.height,
-      gameColors.paddleAndBallColor.paddleColor,
+      ballColor.paddleColor,
       ctx
     );
   };
 
   const drawBall = (ctx) => {
-    drawCircle(ball.x, ball.y, ball.radius, gameColors.paddleAndBallColor.ballColor, ctx);
+    drawCircle(ball.x, ball.y, ball.radius, ballColor.ballColor, ctx);
   };
 
   const handleKeyPress = (keyCode, value) => {
@@ -350,11 +373,7 @@ const GamePlay = () => {
           <div className=" flex justify-center items-center max-md:flex-col gap-[100px] max-md:gap-[30px]">
             <MatchMakingCard
               avatar={false}
-              bgColor={
-                gameContext.selfData.badge === "BRONZE"
-                  ? "bg-[#CD7F32]"
-                  : "bg-[#fff6f9]"
-              }
+              bgColor={badgeConverter(gameContext.selfData.badge)}
               image={
                 gameContext.selfData?.picture ||
                 "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"
@@ -365,9 +384,7 @@ const GamePlay = () => {
             <div className="font-bold text-[50px] text-white">VS</div>
             <MatchMakingCard
               avatar={avatar}
-              bgColor={
-                playerData?.player?.badge === "BRONZE" ? "#CD7F32" : "#fff6f9"
-              }
+              bgColor={badgeConverter(playerData?.player?.badge)}
               image={
                 playerData?.player?.picture ||
                 "https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg"
@@ -384,6 +401,7 @@ const GamePlay = () => {
         <>
           {isGameEnd && (
             <GameEndScreen
+              isOnlineGame={true}
               winner={endMatchWinner}
               score={endMatchScore}
               playerNumber={playerNumber}
@@ -400,10 +418,10 @@ const GamePlay = () => {
                 }
               />
               <div className="score-container w-full flex items-center justify-center flex-1">
-                <div className="player1-score-gradient flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light">
+                <div className={`bg-gradient-to-r from-[#161c20] via-[#161c20] ${player1GradientColor} flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light`}>
                   {player1Score}
                 </div>
-                <div className="player2-score-gradient flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light">
+                <div className={`bg-gradient-to-l from-[#161c20] via-[#161c20] ${player2GradientColor} flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light`}>
                   {player2Score}
                 </div>
               </div>
@@ -417,13 +435,27 @@ const GamePlay = () => {
                 }
               />
             </div>
-            <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px] max-sm:scale-[0.70]">
-              <canvas
-                ref={canvasRef}
-                width={canvasWidth}
-                height={canvasHeight}
-                className="rounded-[15px]"
-              ></canvas>
+            <div className="flex flex-col">
+              <div className="canvas-container border border-[#eee] w-fit rounded-[15px] max-sm:scale-[0.70]">
+                <canvas
+                  ref={canvasRef}
+                  width={canvasWidth}
+                  height={canvasHeight}
+                  className="rounded-[15px]"
+                ></canvas>
+              </div>
+              {isMobileVersion && 
+                  <div className="relative">
+                      <div className="w-full flex justify-around mb-[200px] absolute max-sm:top-[-100px]">
+                          <button onMouseDown={() => setKeyLeftpressed(true)} onMouseUp={() => setKeyLeftpressed(false)}>
+                              <img className="w-16 h-w-16" src={gameLeftKey} alt="ping pong game" />
+                          </button>
+                          <button onMouseDown={() => setKeyRightpressed(true)} onMouseUp={() => setKeyRightpressed(false)}>
+                              <img className="w-16 h-w-16" src={gameRightKey} alt="ping pong game" />
+                          </button>
+                      </div>
+                  </div>
+              }
             </div>
           </div>
         </>
@@ -432,4 +464,4 @@ const GamePlay = () => {
   );
 };
 
-export default GamePlay;
+export default GamePlayOnline;

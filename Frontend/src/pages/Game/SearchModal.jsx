@@ -7,8 +7,10 @@ import Spiner from './Spiner'
 import Axios from 'axios'
 import badgeConverter from '../../hooks/badgeConverter'
 import RefreshToken from "../../hooks/RefreshToken"
+import { useNavigate } from 'react-router-dom'
 
 const SearchModal = () => {
+  const navigate = useNavigate();
   const [focusOnFrnds, setFocusOnFrnds] = useState(true)
   const [focusOnSrch, setFocusOnSrch] = useState(false)
   const [errorMessage, setErrorMessage] = useState(false)
@@ -36,9 +38,12 @@ const SearchModal = () => {
         setErrorMessage(false)
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           fetchUsersData();
+        }
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
         }
         console.log(err)
         setErrorMessage(true)
@@ -61,9 +66,12 @@ const SearchModal = () => {
         setErrorMessage(false)
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           fetchFriendsData();
+        }
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
         }
         console.log(err)
         setErrorMessage(true)

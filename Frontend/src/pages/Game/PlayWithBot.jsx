@@ -12,13 +12,27 @@ const PlayWithBot = () => {
 
     const [isLoaded, setIsLoaded] = useState(true);
     const gameContext = useGameSettings();
+    const [settings, setSettings] = useState({
+            levelOfBot: gameContext.gameSettings.botlevel,
+            score: scoreConverter(gameContext.gameSettings.score),
+            mapColor:  mapColorConverter(gameContext.gameSettings.mapname),
+            ballColor: paddleAndBallColorConverter(gameContext.gameSettings.ballcolor),
+    });
 
     useEffect(() => {
         setTimeout(() => {
             setIsLoaded(false)
         }, 500);
-
     }, [])
+
+    useEffect(() => {
+        setSettings({
+            levelOfBot: gameContext.gameSettings.botlevel,
+            score: scoreConverter(gameContext.gameSettings.score),
+            mapColor:  mapColorConverter(gameContext.gameSettings.mapname),
+            ballColor: paddleAndBallColorConverter(gameContext.gameSettings.ballcolor),
+        })
+    }, [gameContext.gameSettings])
 
     if (isLoaded)
         return <LoaderOntop />
@@ -29,10 +43,10 @@ const PlayWithBot = () => {
                 <Header title="Bot Game" activeSection="GametableIcon" />
                 {gameContext.isHowToPlay && <HowToPlay />}
                 {true && !gameContext.isHowToPlay && <GamePlay
-                    levelOfBot={gameContext.gameSettings.botlevel}
-                    score={scoreConverter(gameContext.gameSettings.score)}
-                    mapColor={mapColorConverter(gameContext.gameSettings.mapname)}
-                    ballColor={paddleAndBallColorConverter(gameContext.gameSettings.ballcolor)}
+                    levelOfBot={settings.levelOfBot}
+                    score={settings.score}
+                    mapColor={settings.mapColor}
+                    ballColor={settings.ballColor}
                 />}
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>

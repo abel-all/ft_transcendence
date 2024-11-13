@@ -3,9 +3,7 @@ import plusIconWhite from "../../assets/imgs/plusIconWhite.svg";
 import tourCreate from "../../assets/imgs/tourCreate.svg";
 import { useGameSettings } from "./GameSettingsContext";
 import CreateTournamentSection from "./CreateTournamentSection";
-import LoaderOntop from "../../components/LoaderOntop";
 import Spiner from "./Spiner";
-import Axios from "axios";
 
 const TournamentCard = ({
   image,
@@ -14,8 +12,14 @@ const TournamentCard = ({
   title,
   description,
   hoverColor,
+  paramvalue
 }) => {
   const gameContext = useGameSettings();
+
+  useEffect(() => {
+    console.log("vals tourns : ", paramvalue)
+    if (paramvalue) joinATournament()
+  }, [])
 
   const createNewTournament = () => {
     gameContext.setHandler("loading", true);
@@ -77,6 +81,9 @@ const CreateTournament = () => {
   const gameContext = useGameSettings();
   const [createTour, setCreateTour] = useState(false);
   const [joinTour, setJoinTour] = useState(false);
+  const urlSearchString = location.search
+  const params = new URLSearchParams(urlSearchString)
+  const paramValue = params.get('param')
 
   useEffect(() => {
     if (gameContext.loading) {
@@ -93,26 +100,6 @@ const CreateTournament = () => {
     gameContext.joinTour,
   ]);
 
-  const handleReminderClick = async () => {
-        let participantsNames = ["aaa", "bbb", "ccc", "ddd"];
-    
-        await Axios.post(
-          "http://localhost:8800/api/profile/notification/tournament-reminder/",
-          {
-            usernames: participantsNames,
-          },
-          {
-            withCredentials: true,
-          }
-        )
-          .then((response) => {
-            console.log("data of friends is ", response?.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-  };
-
   return (
     <div className="h-[calc(100vh-65px)] min-h-[1300px] py-[200px] w-full flex max-md:flex-col justify-center items-center gap-[10px]">
       {!createTour && !joinTour && (
@@ -126,9 +113,9 @@ const CreateTournament = () => {
               title={item.title}
               description={item.description}
               hoverColor={item.hoverColor}
+              paramvalue={paramValue}
             />
           ))}
-          <button className="text-[#000] bg-[#fff] p-3 rounded-xl" onClick={handleReminderClick}>Tourn Reminder for testing!</button>
         </>
       )}
       {gameContext.loading && <Spiner height="h-full" />}
@@ -137,6 +124,7 @@ const CreateTournament = () => {
           title="Create new Tournament"
           callToAction="Create"
           buttonColor="bg-[#0f8ce9]"
+          params={paramValue}
         />
       )}
       {joinTour && !gameContext.loading && (
@@ -144,6 +132,7 @@ const CreateTournament = () => {
           title="Join a Tournament"
           callToAction="Join"
           buttonColor="bg-[#8a38f5]"
+          params={paramValue}
         />
       )}
     </div>

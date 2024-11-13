@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 export const GameSettingContext = createContext(null)
 
@@ -161,6 +161,10 @@ export const GameSettingsContextProvider = ({ children }) => {
   const addsettingsData = (data) => {
     setSettingsData((prevData) => [...prevData, data])
   }
+
+  useEffect(() => {
+    console.log('gameSettings changed', gameSettings)
+  }, [gameSettings])
 
   return (
     <GameSettingContext.Provider

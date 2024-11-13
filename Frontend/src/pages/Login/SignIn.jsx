@@ -71,7 +71,7 @@ function SignIn() {
                     gameContext.setHandler('gameSettings', response?.data)
                   })
                   .catch((err) => {
-                    if (err.response?.status === 401) {
+                    if (err.response?.status === 403) {
                       RefreshToken();
                       fetchSettings();
                     }
@@ -82,7 +82,7 @@ function SignIn() {
               fetchSettings()
             })
             .catch((err) => {
-              if (err.response?.status === 401) {
+              if (err.response?.status === 403) {
                 RefreshToken();
                 fetchUserData();
               }
@@ -102,7 +102,7 @@ function SignIn() {
         }
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           checkFieldInput();
         }

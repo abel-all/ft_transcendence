@@ -15,6 +15,7 @@ import Axios from 'axios'
 import Spiner from './Spiner'
 import './css/index.css'
 import RefreshToken from "../../hooks/RefreshToken"
+import { useNavigate } from 'react-router-dom'
 
 const mapData = [
   {
@@ -85,6 +86,7 @@ const botLevelData = [
 ]
 
 const ChooseSectionHandler = (name) => {
+  const navigate = useNavigate();
   const gameContext = useGameSettings()
   const [message, setMessage] = useState('')
 
@@ -148,9 +150,12 @@ const ChooseSectionHandler = (name) => {
           } else gameContext.setHandler('isHowToPlay', true)
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             postSettingsData();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           console.log(err)
           setMessage('Please try again!')

@@ -1,23 +1,23 @@
 import rankImg from '../../assets/imgs/rank.svg'
 import playImg from '../../assets/imgs/paly_friend.svg'
 import { useGameSettings } from '../Game/GameSettingsContext'
-import { Axios } from 'axios'
+import Axios from 'axios'
 import { useEffect, useState } from 'react'
 import RefreshToken from "../../hooks/RefreshToken"
+import { useNavigate } from 'react-router-dom'
 
 const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
-  
+  const navigate = useNavigate();
   const gameContext = useGameSettings()
   const [isIconCliced, setIsIconCliced] = useState(false)
 
   const handlePlayWithMeClick = async () => {
-    console.log(userName)
     setIsIconCliced(true)
     await Axios.post(
       'http://localhost:8800/api/profile/notification/join-tournament/',
       {
         username: userName,
-        tournament_name: gameContext?.tournamentInfo?.tournament_name,
+        tournament_name: gameContext?.tournamentInfo?.name,
       },
       {
         withCredentials: true,
@@ -27,9 +27,12 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         console.log('data of friends is ', response?.data)
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           handlePlayWithMeClick();
+        }
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
         }
         console.log(err)
       })

@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom";
 import GameEndScreen from "./GameEndScreen";
 import "./css/index.css";
 import RefreshToken from "../../hooks/RefreshToken"
+import {toBadgeConverter}  from "../../hooks/badgeConverter"
+import gameRightKey from "../../assets/imgs/gameRightKey.svg"
+import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
 
 const playerHeight = 15;
 const playerWidth = 70;
@@ -52,8 +55,10 @@ const ball = {
 // let PlayerNbr = 0
 let isGameStart = false;
 
-const TournamentStart = () => {
+const TournamentStart = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
+  const gameContext = useGameSettings();
+  const navigate = useNavigate();
   const [player1Score, setPlayer1Score] = useState(0);
   const [player2Score, setPlayer2Score] = useState(0);
   const [isMobileVersion, setIsMobileVersion] = useState(false);
@@ -75,12 +80,17 @@ const TournamentStart = () => {
 
   const [isTimeToPlay, setIsTimeToPlay] = useState(false);
   const [isGame, setIsGame] = useState(false);
-  const gameContext = useGameSettings();
-  const navigate = useNavigate();
+  const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
+  const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.player?.badge))
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8800/ws/tournament/"
   );
+
+  useEffect(() => {
+    setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
+    setPlayer2GradientColor(toBadgeConverter(playerData?.player?.badge))
+  }, [playerData, gameContext.selfData])
 
   useEffect(() => {
     if (readyState === 1) {
@@ -253,7 +263,7 @@ const TournamentStart = () => {
 
     const ctx = canvas.getContext("2d");
     const render = () => {
-      drawRect(0, 0, canvasWidth, canvasHeight, "#1F1F1F", ctx);
+      drawRect(0, 0, canvasWidth, canvasHeight, mapColor , ctx);
       drawNet(ctx);
       drawPaddles(ctx);
       drawBall(ctx);
@@ -316,7 +326,7 @@ const TournamentStart = () => {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    !isMobileVersion && window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
@@ -390,9 +400,12 @@ const TournamentStart = () => {
         setMatchId(-1);
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           fetchSettings();
+        }
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
         }
         console.log(err);
         console.log("Please try again!");
@@ -419,9 +432,12 @@ const TournamentStart = () => {
         console.log("data of friends is ", response?.data);
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           sendNotification();
+        }
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
         }
         console.log(err);
       });
@@ -503,7 +519,7 @@ const TournamentStart = () => {
       paddleOne.y,
       paddleOne.width,
       paddleOne.height,
-      paddleOne.color,
+      ballColor.paddleColor,
       ctx
     );
     drawRect(
@@ -511,13 +527,13 @@ const TournamentStart = () => {
       paddleTwo.y,
       paddleTwo.width,
       paddleTwo.height,
-      paddleTwo.color,
+      ballColor.paddleColor,
       ctx
     );
   };
 
   const drawBall = (ctx) => {
-    drawCircle(ball.x, ball.y, ball.radius, ball.color, ctx);
+    drawCircle(ball.x, ball.y, ball.radius, ballColor.ballColor, ctx);
   };
 
   const handleKeyPress = (keyCode, value) => {
@@ -558,10 +574,10 @@ const TournamentStart = () => {
                 }
               />
               <div className="score-container w-full flex items-center justify-center flex-1">
-                <div className="player1-score-gradient flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light">
+                <div className={`bg-gradient-to-r from-[#161c20] via-[#161c20] ${player1GradientColor} flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light`}>
                   {player1Score}
                 </div>
-                <div className="player2-score-gradient flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light">
+                <div className={`bg-gradient-to-l from-[#161c20] via-[#161c20] ${player2GradientColor} flex flex-1 p-[11px] pl-[20px] score text-[#000] text-[32px] font-light`}>
                   {player2Score}
                 </div>
               </div>
@@ -575,13 +591,27 @@ const TournamentStart = () => {
                 }
               />
             </div>
-            <div className="canvas-container border border-[#eee] w-fit rounded-[15px] mb-[200px] max-sm:scale-[0.70]">
-              <canvas
-                ref={canvasRef}
-                width={canvasWidth}
-                height={canvasHeight}
-                className="rounded-[15px]"
-              ></canvas>
+            <div className="flex flex-col">
+              <div className="canvas-container border border-[#eee] w-fit rounded-[15px] max-sm:scale-[0.70]">
+                <canvas
+                  ref={canvasRef}
+                  width={canvasWidth}
+                  height={canvasHeight}
+                  className="rounded-[15px]"
+                ></canvas>
+              </div>
+              {isMobileVersion && 
+                  <div className="relative">
+                      <div className="w-full flex justify-around mb-[200px] absolute max-sm:top-[-100px]">
+                          <button onMouseDown={() => setKeyLeftpressed(true)} onMouseUp={() => setKeyLeftpressed(false)}>
+                              <img className="w-16 h-w-16" src={gameLeftKey} alt="ping pong game" />
+                          </button>
+                          <button onMouseDown={() => setKeyRightpressed(true)} onMouseUp={() => setKeyRightpressed(false)}>
+                              <img className="w-16 h-w-16" src={gameRightKey} alt="ping pong game" />
+                          </button>
+                      </div>
+                  </div>
+              }
             </div>
           </div>
         </>

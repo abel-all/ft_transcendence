@@ -40,8 +40,9 @@ function AddressInformation({ SettingsData, className }) {
 
   const HandelSubmet = (e) => {
     e.preventDefault()
-    const NamesRegix = /^[a-zA-Z\s]+$/
-    const ZipForma = /^[1-9]\d{1,14}$/
+    const NamesRegix = /^[a-zA-Z\s]*$/;
+    const ZipForma = /^(?:[1-9]\d{1,14})?$/;
+    const AddressRegex = /^[a-zA-Z0-9\s.,'-]*$/;
 
     if (!NamesRegix.test(Country)) handelErrors('CN')
     else {
@@ -49,7 +50,7 @@ function AddressInformation({ SettingsData, className }) {
       if (!NamesRegix.test(City)) handelErrors('CT')
       else {
         removeErrors('CT')
-        if (!NamesRegix.test(Address)) handelErrors('AD')
+        if (!AddressRegex.test(Address)) handelErrors('AD')
         else {
           removeErrors('AD')
           if (!ZipForma.test(Zip)) handelErrors('ZP')
@@ -57,10 +58,10 @@ function AddressInformation({ SettingsData, className }) {
             removeErrors('ZP')
             axios
               .post('http://localhost:8800/api/profile/edit/address/', {
-                country: country != Country ? Country : 'None',
-                city: city != City ? City : 'None',
-                address: address != Address ? Address : 'None',
-                Code: zip_code != Zip ? Zip : 'None',
+                country: country != Country ? Country : country,
+                city: city != City ? City : city,
+                address: address != Address ? Address : address,
+                Code: zip_code != Zip ? Zip : zip_code,
               })
               .then((res) => {
                 console.log(res)

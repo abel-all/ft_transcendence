@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { IoIosNotifications } from "react-icons/io";
+import { useState, useEffect, useRef } from 'react';
+import { IoIosNotifications } from 'react-icons/io';
 
 const Alert = ({ message, color }) => {
     const [messageQueue, setMessageQueue] = useState([]);
@@ -31,7 +31,7 @@ const Alert = ({ message, color }) => {
                     setCurrentMessage(null);
                     setPercent(100);
                 }, 1000);
-            }, 3000);
+            }, 30000);
 
             return () => {
                 clearTimeout(hideTimeout.current);
@@ -54,7 +54,7 @@ const Alert = ({ message, color }) => {
     }
 
     return (
-        <div className="m-auto absolute">
+        <div className="absolute">
             <div
                 className={`Alert top-[120px] p-[6px] z-[100] rounded-md text-center fixed text-white h-[41px]`}
                 style={{
@@ -72,9 +72,4 @@ const Alert = ({ message, color }) => {
     );
 };
 
-
-
-
-
 export default Alert;
-

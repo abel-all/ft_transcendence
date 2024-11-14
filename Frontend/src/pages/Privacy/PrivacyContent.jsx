@@ -1,48 +1,48 @@
 
-const contentData = [
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-    {
-        title: "By using PING",
-        description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
-    },
-]
+// const contentData = [
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+//     {
+//         title: "By using PING",
+//         description: "Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details Thanks for using PING! Our Privacy Policy details how we handle your info.Thanks for using PING! Our Privacy Policy details how we handle your info. Thanks for using PING! Our Privacy Policy details how we handle your info.",
+//     },
+// ]
 
-const PrivacyContent = () => {
+const PrivacyContent = ({ contentData=[] }) => {
     return (
         <div className="mt-[160px] flex flex-col items-center gap-[80px]">
             <div className="flex flex-col items-center gap-[20px]">

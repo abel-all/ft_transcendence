@@ -7,10 +7,12 @@ import Spiner from '../Game/Spiner'
 import SearchResultCard from './SearchResultCard.jsx'
 import badgeConverter from '../../hooks/badgeConverter.jsx'
 import RefreshToken from "../../hooks/RefreshToken"
+import { useNavigate } from 'react-router-dom'
 
 // let oneTime = false;
 
 const SearchEngine = () => {
+  const navigate = useNavigate();
   // const [inSearch, setInSearch] = useState("false");
   // const [focusOnSearch, setFocusOnSearch] = useState(false);
   const [searchResult, setSearchResult] = useState('')
@@ -35,9 +37,12 @@ const SearchEngine = () => {
         setErrorMessage(false)
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           fetchPlayerData();
+        }
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
         }
         console.log(err)
         setErrorMessage(true);

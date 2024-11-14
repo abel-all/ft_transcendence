@@ -14,8 +14,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 import LoaderOntop from '../../components/LoaderOntop.jsx'
 import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
-import { useAuth } from '../../components/Auth'
-import { useGameSettings } from '../Game/GameSettingsContext'
 import './css/index.css'
 import RefreshToken from "../../hooks/RefreshToken"
 
@@ -32,8 +30,6 @@ function SignIn() {
     'focus:border focus:border-[#FF0000]'
   )
   const navigate = useNavigate()
-  const gameContext = useGameSettings()
-  const auth = useAuth()
 
   useEffect(() => {
     setTimeout(() => {
@@ -54,55 +50,16 @@ function SignIn() {
     )
       .then((response) => {
         console.log('first request')
-        const fetchUserData = async () => {
-          await Axios.get('http://localhost:8800/api/profile/data/', {
-            withCredentials: true,
-          })
-            .then((response) => {
-              console.log('data of user : ', response.data)
-              gameContext.setHandler('selfData', response.data)
-              const fetchSettings = async () => {
-    
-                await Axios.get(`http://localhost:8800/api/game/settings/`, {
-                  withCredentials: true,
-                })
-                  .then((response) => {
-                    console.log('sign in settings is : ', response.data)
-                    gameContext.setHandler('gameSettings', response?.data)
-                  })
-                  .catch((err) => {
-                    if (err.response?.status === 401) {
-                      RefreshToken();
-                      fetchSettings();
-                    }
-                    console.log(err)
-                    console.log('Please try again!')
-                  })
-              }
-              fetchSettings()
-            })
-            .catch((err) => {
-              if (err.response?.status === 401) {
-                RefreshToken();
-                fetchUserData();
-              }
-              console.log(err)
-              console.log('Please try again!')
-            })
-        }
-        console.log('hhhhhhh>>>>>')
-        fetchUserData()
         setUserId(response.data.user_id)
         if (response.data.is_2fa_enabled) {
           // is 2fa enable must redirect them to 2fa page
           setIsVerify(true)
         } else {
-          auth.setHandler('game', true)
           navigate('/game', { replace: true }) // is 2fa disable must redirect them to game page
         }
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           checkFieldInput();
         }
@@ -170,7 +127,7 @@ function SignIn() {
   }
 
   const handleUserAgreementClick = () => {
-    navigate('/useragreement')
+    navigate('/termsofuse')
   }
 
   const handlePrivacyClick = () => {
@@ -243,7 +200,7 @@ function SignIn() {
                 onClick={handleUserAgreementClick}
                 className="cursor-pointer text-[#00CEFF]"
               >
-                User Agreement
+                Terms of Use
               </span>{' '}
               and acknowledge that you understand the{' '}
               <span

@@ -1,18 +1,20 @@
-import MatchMaking from "./MatchMaking.jsx";
-import GameSettings from "./GameSettings.jsx";
 import { useEffect, useState } from "react"
 import LoaderOntop from "../../components/LoaderOntop.jsx";
 import Header from "../../components/Header.jsx"
 import BottomNaveBar from "../../components/BottomNavBar.jsx"
 import { useGameSettings } from './GameSettingsContext'
 import GamePlayOnline from "./GamePlayOnline.jsx"
+import { mapColorConverter, paddleAndBallColorConverter } from "../../hooks/badgeConverter.jsx";
 
 
 const PlayOnline = () => {
 
     const [isLoaded, setIsLoaded] = useState(true);
-    const [gameDelay, setGameDelay] = useState(true);
     const gameContext = useGameSettings();
+    const [settings, setSettings] = useState({
+        mapColor:  mapColorConverter(gameContext.gameSettings.mapname),
+        ballColor: paddleAndBallColorConverter(gameContext.gameSettings.ballcolor),
+    });
 
     useEffect(() => {
         setTimeout(() => {
@@ -21,22 +23,22 @@ const PlayOnline = () => {
     }, [])
 
     useEffect(() => {
-        if (!gameContext.matchDelay)
-            setTimeout(() => {
-                setGameDelay(false)
-            }, 6000);
-    }, [gameContext.matchDelay])
+        setSettings({
+            mapColor:  mapColorConverter(gameContext.gameSettings.mapname),
+            ballColor: paddleAndBallColorConverter(gameContext.gameSettings.ballcolor),
+        })
+    }, [gameContext.gameSettings])
 
     if (isLoaded)
         return <LoaderOntop />
 
     return (
-            <div className="h-[100vh] container mx-auto px-[10px]">
+            <div className="h-screen container mx-auto px-[10px]">
                 <Header title="Online Game" activeSection="GametableIcon" />
-                {/* {(gameContext.matchDelay || gameDelay) && <MatchMaking />} */}
-                {/* {!gameContext.selfData.isSettings && <GameSettings isOnlineGame={true}/>}
-                {(gameContext.isGame || gameContext.selfData.isSettings) && <GamePlayOnline />} */}
-                <GamePlayOnline />
+                <GamePlayOnline 
+                    mapColor={settings.mapColor}
+                    ballColor={settings.ballColor}
+                />
                 <BottomNaveBar activeSection="GametableIcon" />
             </div>
         )

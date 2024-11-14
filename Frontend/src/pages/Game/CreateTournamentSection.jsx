@@ -4,8 +4,10 @@ import { useGameSettings } from './GameSettingsContext'
 import Axios from 'axios'
 import '../2FaAuth/css/index.css'
 import RefreshToken from "../../hooks/RefreshToken"
+import { useNavigate } from 'react-router-dom'
 
-const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
+const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) => {
+  const navigate = useNavigate();
   const [focusColor, setFocusColor] = useState(
     'focus:border focus:border-[#FF0000]'
   )
@@ -18,7 +20,6 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
   const nameReGex = /^[a-zA-Z-]{2,16}$/
 
   useEffect(() => {
-    console.log('hello')
     setTimeout(() => {
       setIsLoading(false)
     }, 300)
@@ -34,9 +35,12 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           setActiveTournament(response?.data)
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             fetchActiveTournament();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           setIsLoading(false)
           setMessage(err?.response?.data.message)
@@ -80,9 +84,12 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             createTournament();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           setIsLoading(false)
           setMessage(err?.response?.data?.message)
@@ -113,9 +120,12 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             joinTournament();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           setIsLoading(false)
           setMessage(err?.response?.data.message)
@@ -160,13 +170,24 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
                   type="text"
                   required
                 />
-                <input
-                  onChange={handleTourChange}
-                  className={`rounded-[15px] bg-[#eee]/20 text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`}
-                  placeholder="Tournament Name"
-                  type="text"
-                  required
-                />
+                {params ?
+                  <input
+                    value={params}
+                    onChange={handleTourChange}
+                    className={`rounded-[15px] bg-[#eee]/20 text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`}
+                    placeholder="Tournament Name"
+                    type="text"
+                    disabled
+                    required
+                  /> :
+                  <input
+                    onChange={handleTourChange}
+                    className={`rounded-[15px] bg-[#eee]/20 text-[#eee] placeholder:text-[#c5c5c5b8] outline-none px-[10px] h-[50px] flex w-full ${focusColor}`}
+                    placeholder="Tournament Name"
+                    type="text"
+                    required
+                  />
+                }
                 <button className="hidden" type="submit"></button>
               </form>
               <div className="text-[#ff0000] flex justify-center mb-[20px]">
@@ -182,7 +203,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor }) => {
           </div>
           {title !== 'Join a Tournament' ? (
             <></>
-          ) : (
+          ) : (!params &&
             <div className="input-gradient p-[20px] pb-0 w-full max-w-[400px] h-[500px] rounded-[15px] flex flex-col items-center gap-[10px]">
               <div className="font-light text-[#fff6f9] text-[20px] pb-[10px]">
                 Active Tournament

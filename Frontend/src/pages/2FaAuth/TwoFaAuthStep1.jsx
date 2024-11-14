@@ -1,18 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logoImg from '../../assets/imgs/logo.png'
 import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import { useTwoFaContext } from './TwoFaContext'
 import RefreshToken from "../../hooks/RefreshToken"
+import { useNavigate } from 'react-router-dom'
 
 const TwoFaAuthStep1 = () => {
+  const navigate = useNavigate();
   const [message, setMessage] = useState('')
   const [focusColor, setFocusColor] = useState('focus:border-[#FF0000]')
   const [isLoading, setIsLoading] = useState(false)
-  const [isEnable, setIsEnable] = useState(true)
   const [code, setCode] = useState('')
   const [image, setImage] = useState(null)
   const TwoFaContext = useTwoFaContext()
+
+  useEffect(() => {
+    setIsLoading(true)
+    handleEnableButtonClick()
+  }, [])
 
   const handleInputChange = (e) => {
     setCode(e.currentTarget.value)
@@ -40,9 +46,12 @@ const TwoFaAuthStep1 = () => {
           TwoFaContext.setHandler('step2', true)
         })
         .catch((err) => {
-          if (err.response?.status === 401) {
+          if (err.response?.status === 403) {
             RefreshToken();
             verifyOtpCode();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
           }
           setIsLoading(false)
           setMessage('Incorrect code')
@@ -61,14 +70,17 @@ const TwoFaAuthStep1 = () => {
     })
       .then((response) => {
         setImage(`data:image/png;base64,${response.data.qr_code}`)
-        setIsEnable(false)
+        setIsLoading(false)
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (err.response?.status === 403) {
           RefreshToken();
           handleEnableButtonClick();
         }
-        setIsEnable(true)
+        else if (err.response?.status === 401) {
+          navigate("/signin", { replace: true })
+        }
+        setIsLoading(true)
         console.log('Invalid request, try again')
       })
   }
@@ -82,17 +94,17 @@ const TwoFaAuthStep1 = () => {
     verifyOtpCode()
   }
 
-  if (isEnable)
-    return (
-      <div className="w-full h-[100vh] flex justify-center items-center">
-        <button
-          className="main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]"
-          onClick={handleEnableButtonClick}
-        >
-          Enable 2FA
-        </button>
-      </div>
-    )
+  // if (isEnable)
+  //   return (
+  //     <div className="w-full h-[100vh] flex justify-center items-center">
+  //       <button
+  //         className="main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]"
+  //         onClick={handleEnableButtonClick}
+  //       >
+  //         Enable 2FA
+  //       </button>
+  //     </div>
+  //   )
 
   return (
     <div className="container mx-auto p-[10px] sm:my-[300px] max-sm:scale-[0.8] flex justify-center items-center">

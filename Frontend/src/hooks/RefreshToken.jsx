@@ -9,13 +9,11 @@ const RefreshToken = async () => {
       withCredentials: true,
     })
       .then(() => {
-        console.log('second request')
-        // setIsAuth(true)
+        console.log('your tocken is refreshed successfully')
       })
       .catch((err) => {
         console.log(err)
         navigate("/signin", { replace: true })
-        // setIsAuth(false)
       })
   }
 

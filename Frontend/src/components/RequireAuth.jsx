@@ -1,49 +1,59 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./Auth";
 import { useEffect, useState } from "react";
 import LoaderOntop from "./LoaderOntop";
-// import { useGameSettings } from "../pages/Game/GameSettingsContext"
+import { useGameSettings } from '../pages/Game/GameSettingsContext'
+import Axios from 'axios'
+import RefreshToken from '../hooks/RefreshToken.jsx'
 
 
 const RequireAuth = ({ children }) => {
 
-    const [loading, setLoading] = useState(true);
-    const [oneTime, setOneTime] = useState(false);
-    // const [isGame, setIsGame] = useState(false);
-    const auth = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    // const gameContext = useGameSettings();
+    const gameContext = useGameSettings()
 
     useEffect(() => {
-        let isMounted = true;
-        const authIsChecked = async () => {
-                await auth.isAuthenticated();
-                if (isMounted) {
-                    setLoading(false);
-                    setOneTime(true);
+        const checkAuthAndFetchUserData = async () => {
+            await Axios.get('http://localhost:8800/api/profile/data/', { withCredentials: true })
+            .then((response) => {
+                console.log('data of user : ', response.data)
+                gameContext.setHandler('selfData', response.data)
+                const fetchSettings = async () => {
+                    await Axios.get(`http://localhost:8800/api/game/settings/`, {
+                        withCredentials: true,
+                    }).then((response) => {
+                        console.log('settings is : ', response)
+                        gameContext.setHandler('gameSettings', response.data[0] || response.data)
+                    })
+                    .catch((err) => {
+                        if (err.response?.status === 403) {
+                            RefreshToken()
+                            fetchSettings()
+                        }
+                        else if (err.response?.status === 401)
+                            navigate("/signin", { replace: true });
+                        console.log(err)
+                        console.log('Please try again!')
+                    })
                 }
-        };
-        if (isMounted && !oneTime && !auth.isGame) {
-            authIsChecked();
+                fetchSettings()
+                setIsLoading(false)
+            }).catch((err) => {
+                if (err.response?.status === 403) {
+                    RefreshToken()
+                    checkAuthAndFetchUserData()
+                }
+                else if (err.response?.status === 401)
+                    navigate("/signin", { replace: true });
+                console.log(err)
+                console.log('Please try again!')
+                setIsLoading(false)
+            })
         }
+        checkAuthAndFetchUserData()
+    }, [navigate])
 
-        return () => {
-            isMounted = false;
-        }
-    }, [auth, oneTime])
-
-    useEffect(() => {
-        if (!loading && !auth.isAuth) {
-            navigate("/signin", { replace: true });
-        }
-
-    }, [loading, auth.isAuth, navigate])
-
-    if (loading && !auth.isGame) {
-        return <LoaderOntop />
-    }
-
-    return children;
+    return isLoading ? <LoaderOntop /> : children
 }
 
 export default RequireAuth

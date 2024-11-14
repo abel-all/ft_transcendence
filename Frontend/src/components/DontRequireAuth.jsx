@@ -1,54 +1,34 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./Auth";
 import { useEffect, useState } from "react";
-import Loader from "./LoaderOntop";
+import LoaderOntop from "./LoaderOntop";
+import Axios from 'axios'
+import RefreshToken from '../hooks/RefreshToken.jsx'
 
 const DontRequireAuth = ({ children }) => {
-    const [loading, setLoading] = useState(true);
-    const [oneTime, setOneTime] = useState(false);
-    // const [isLogin, setIsLogin] = useState(false);
-    const auth = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        let isMounted = true;
-        const authIsChecked = async () => {
-            await auth.isAuthenticated();
-            if (isMounted) {
-                setLoading(false);
-                setOneTime(true);
-            }
-        }
-
-        if (isMounted && !oneTime && !auth.isLogin) {
-            authIsChecked();
-        }
-
-        return () => {
-            isMounted = false;
-        }
-    }, [auth, oneTime])
     
     useEffect(() => {
-        if (!loading && auth.isAuth) {
-            navigate("/game", { replace: true });
-            // if (isMounted) {
-            //     if (!auth.isAuth) {
-            //         console.log("signinnnnnn")
-            //         setIsLogin(true);
-            //     }
-            //     else {
-            //         // auth.setHandler("game", true);
-            //     }
-            // }
+        const checkAuth = async () => {
+            await Axios.get('http://localhost:8800/api/auth/token/', {
+                withCredentials: true,
+            })
+            .then(() => {
+                navigate("/game", { replace: true });
+            }).catch((err) => {
+                if (err.response?.status === 403) {
+                    RefreshToken()
+                    navigate("/game", { replace: true });
+                }
+                console.log(err)
+                console.log('Please try again!')
+                setIsLoading(false)
+            })
         }
-        
-    }, [loading, auth.isAuth, navigate]) 
+        checkAuth()
+    }, [navigate]) 
 
-    if (loading && !auth.isLogin)
-        return <Loader />
-        
-    return children;
+    return isLoading ? <LoaderOntop /> : children
 }
 
 export default DontRequireAuth

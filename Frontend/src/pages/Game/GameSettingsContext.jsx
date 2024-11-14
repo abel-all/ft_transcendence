@@ -162,10 +162,6 @@ export const GameSettingsContextProvider = ({ children }) => {
     setSettingsData((prevData) => [...prevData, data])
   }
 
-  useEffect(() => {
-    console.log('gameSettings changed', gameSettings)
-  }, [gameSettings])
-
   return (
     <GameSettingContext.Provider
       value={{

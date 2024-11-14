@@ -92,18 +92,17 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
     }, [gameContext.selfData])
 
     useEffect(() => {
-        const counterTimeout = setTimeout(() => {
-            setIsGameStart(true);
-        }, 4000);
-
         const counterInterval = setInterval(() => {
             setCounter(prev => prev + 1);
         }, 1000);
+        const counterTimeout = setTimeout(() => {
+            setIsGameStart(true);
+            clearInterval(counterInterval);
+        }, 4000);
 
         return () => {
             handleTryAgainClick();
             clearTimeout(counterTimeout);
-            clearInterval(counterInterval);
         }
 
     }, [])

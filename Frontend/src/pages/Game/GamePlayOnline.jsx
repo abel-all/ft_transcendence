@@ -8,6 +8,7 @@ import GameEndScreen from "./GameEndScreen";
 import badgeConverter, {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
+import "./css/index.css"
 
 // Game vars:
 const playerHeight = 15;
@@ -77,6 +78,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const oneTime = useRef(false);
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
   const [message, setMessage] = useState("");
+  const [counter, setCounter] = useState(0);
   const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
   const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.player?.badge))
   const urlSearchString = location.search
@@ -91,6 +93,25 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
     setPlayer2GradientColor(toBadgeConverter(playerData?.player?.badge))
   }, [playerData, gameContext.selfData])
+
+  useEffect(() => {
+    if (avatar) return
+    const counterTimeout = setTimeout(() => {
+      sendMessage(
+        JSON.stringify({ action: "start_game", match_id: matchId })
+      );
+      setIsGame(true);
+      clearInterval(counterInterval);
+    }, 5000)
+
+    const counterInterval = setInterval(() => {
+        setCounter(prev => prev + 1);
+    }, 1000);
+
+  return () => {
+      clearTimeout(counterTimeout);
+  }
+  }, [avatar])
 
   useEffect(() => {
     if (readyState === 1) {
@@ -270,14 +291,10 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
 
   const handleMatchFound = (data) => {
     clearTimeout(waitingTimeout);
+    setMatchId(data?.match_id);
     oneTime.current = true;
     setPlayerData(data);
-    setMatchId(data?.match_id);
     setPlayerNumber(data?.player_number);
-    sendMessage(
-      JSON.stringify({ action: "start_game", match_id: data?.match_id })
-    );
-    setIsGame(true);
     setAvatar(false);
   };
 
@@ -393,6 +410,11 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
               rank={playerData?.player?.rank}
             />
           </div>
+          {!avatar &&
+            <div className="font-medium text-[24px] max-md:text-[16px] text-[#f1f1f1] animated-bg">
+              The game will start in {5 - counter} seconds ...
+            </div>
+          }
           <div className="font-light text-[18px] max-md:text-[15px] text-[#ff0000]">
             {message}
           </div>

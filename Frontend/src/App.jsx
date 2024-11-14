@@ -44,7 +44,7 @@ function App() {
             <Suspense fallback={<LoaderOntop />}>
               <Routes>
                 <Route index element={<Home />} />
-                <Route path="/useragreement" element={<UserAgreement />} />
+                <Route path="/termsofuse" element={<UserAgreement />} />
                 <Route path="/privacypolicy" element={<PrivacyPolicy />} />
                 <Route path="/resetpassword/*" element={<ResetPassword />} />
                 <Route path="/contact" element={<Contact />} />

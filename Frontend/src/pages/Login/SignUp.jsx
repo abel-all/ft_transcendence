@@ -68,7 +68,7 @@ function SignUp() {
   }
 
   const handleUserAgreementClick = () => {
-    navigate('/useragreement')
+    navigate('/termsofuse')
   }
 
   const handlePrivacyClick = () => {
@@ -91,7 +91,7 @@ function SignUp() {
             onClick={handleUserAgreementClick}
             className="cursor-pointer text-[#00CEFF]"
           >
-            User Agreement
+            Terms of Use
           </span>{' '}
           and acknowledge that you understand the{' '}
           <span

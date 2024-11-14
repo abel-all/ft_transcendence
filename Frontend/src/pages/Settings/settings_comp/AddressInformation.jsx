@@ -65,6 +65,7 @@ function AddressInformation({ SettingsData, className }) {
               })
               .then((res) => {
                 console.log(res)
+                setSave(false);
               })
               .catch((err) => {
                 console.log(err)

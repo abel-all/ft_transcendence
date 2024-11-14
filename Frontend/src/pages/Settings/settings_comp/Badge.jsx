@@ -79,8 +79,8 @@ function Badge({ SettingsData }) {
     }
   }
 
-  useEffect(async () => {
-    await axios.get('http://localhost:8800/api/profile/data/')
+  useEffect(() => {
+    axios.get('http://localhost:8800/api/profile/data/')
       .then((response) => {
         setBadge(response.data.badge)
       })

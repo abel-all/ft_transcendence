@@ -5,29 +5,19 @@ import Header from "../../components/Header";
 import "./Chat.css";
 import { useState, createContext, useEffect, useRef } from "react";
 import chatUsers from "../../assets/ChatUsers.json";
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import axios from "axios";
 import testUser from "../../assets/users/user (9).png";
 import BottomNaveBar from "../../components/BottomNavBar.jsx";
+import { useGameSettings } from "../Game/GameSettingsContext.jsx";
+
 
 const chatHeaderOnClick = createContext();
 
 function Chat() {
 	const [isFrom, setIsFrom] = useState(false)
 	const [lastMessageUserSend, setlastMessageUserSend] = useState('')
-	const [socketURL, setSocketURL] = useState('ws://localhost:8800/ws/chat/')
-	const [messageHistory, setMessageHistory] = useState([])
 	const [VoidedUsername, setVoidedUsername] = useState('')
-	const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
-		onOpen: () => console.log('WebSocket connection opened.'),
-		onClose: () => console.log('WebSocket connection closed.'),
-		onError: (error) => console.error('WebSocket error:', error),
-		onMessage: (message) => {
-			setMessageHistory((prev) => [...prev, message.data.toString()])
-		},
-		shouldReconnect: () => true,
-		reconnectInterval: 3000,
-	})
+	const {sendMessage, lastMessage, readyState} = useGameSettings();
 
 	const [userFromUrl, setUserFromUrl] = useState({
 		user: '',
@@ -35,13 +25,6 @@ function Chat() {
 		rank: '',
 	})
 
-	const connectionStatus = {
-		[ReadyState.CONNECTING]: 'Connecting',
-		[ReadyState.OPEN]: 'Open',
-		[ReadyState.CLOSING]: 'Closing',
-		[ReadyState.CLOSED]: 'Closed',
-		[ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-	}[readyState]
 
 	const [chatHeader, setChatHeader] = useState({
 		name: '',

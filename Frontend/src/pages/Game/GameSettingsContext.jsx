@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import axios from 'axios';
 
 export const GameSettingContext = createContext(null)
 
@@ -34,6 +36,37 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [player1Score, setPlayer1Score] = useState(0)
   const [player2Score, setPlayer2Score] = useState(0)
   const [isRandomGame, setIsRandomGame] = useState(true)
+
+  const [Auth, setAuth] = useState(false);
+
+  useEffect(() => {
+		axios.get('http://localhost:8800/api/auth/token/')
+		.then((res) => {
+			if (res.status == 200) {
+				setAuth(true)
+			}
+		})
+		.catch((err) => {
+			setAuth(false);
+		})
+	}, [])
+	const [messageHistory, setMessageHistory] = useState([])
+	const { sendMessage, lastMessage, readyState } = useWebSocket('ws://localhost:8800/ws/chat/', {
+		onMessage: (message) => {
+			setMessageHistory((prev) => [...prev, message.data.toString()])
+		},
+		shouldReconnect: () => true,
+		reconnectInterval: 3000,
+    enabled: Auth,
+	})
+	const connectionStatus = {
+		[ReadyState.CONNECTING]: 'Connecting',
+		[ReadyState.OPEN]: 'Open',
+		[ReadyState.CLOSING]: 'Closing',
+		[ReadyState.CLOSED]: 'Closed',
+		[ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+	}[readyState]
+
 
   const resetStates = () => {
     setIsMapSection(true)
@@ -168,6 +201,9 @@ export const GameSettingsContextProvider = ({ children }) => {
         participantsData,
         isRandomGame,
         winnersFinal,
+        sendMessage,
+        lastMessage,
+        readyState,
         winners,
         endGameData,
         participants,

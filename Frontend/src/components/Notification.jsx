@@ -56,20 +56,6 @@ const Notification = () => {
           console.log('Please try again!')
         })
       }
-      // setTimeout(() => {
-      //     setNotiData(prev => [...prev, {content: "hello world my friends", from_user: "abdessamad", notification_type: "FIENDSHIP_REQUEST", created_at: "2024-52-55"},
-      //     {content: "hello world my friends", from_user: "abdessamad", notification_type: "FIENDSHIP_REQUEST", created_at: "2024-52-55"},
-      //     {content: "HANDLE_REQUESTED_FRIENDSHIP", from_user: "abdessamad", notification_type: "HANDLE_REQUESTED_FRIENDSHIP", created_at: "2024-52-55"},
-      //     {content: "HANDLE_REQUESTED_FRIENDSHIP", from_user: "abdessamad", notification_type: "HANDLE_REQUESTED_FRIENDSHIP", created_at: "2024-52-55"},
-      //     {content: "HANDLE_REQUESTED_FRIENDSHIP", from_user: "abdessamad", notification_type: "HANDLE_REQUESTED_FRIENDSHIP", created_at: "2024-52-55"},
-      //     {content: "PLAYWITHME_REQUEST", from_user: "abdessamad", notification_type: "PLAYWITHME_REQUEST", created_at: "2024-52-55"},
-      //     {content: "PLAYWITHME_REQUEST", from_user: "abdessamad", notification_type: "PLAYWITHME_REQUEST", created_at: "2024-52-55"},
-      //     {content: "PLAYWITHME_REQUEST", from_user: "abdessamad", notification_type: "PLAYWITHME_REQUEST", created_at: "2024-52-55"},
-      //     {content: "JOINING_TOURNAMENT", from_user: "abdessamad", notification_type: "JOINING_TOURNAMENT", created_at: "2024-52-55"},
-      //     {content: "TOURNAMENT_REMINDER", from_user: "abdessamad", notification_type: "TOURNAMENT_REMINDER", created_at: "2024-52-55"},
-      //     ]);
-      //     setIsLoading(false);
-      // }, 2000);
     if (!onetime)
       fetchUserData()
     return () => { 
@@ -143,7 +129,7 @@ const Notification = () => {
       className="flex flex-col items-center flex-nowrap gap-[10px] max-md:pb-[100px] p-[10px] max-md:pr-[25px] w-[400px] h-[600px] max-md:w-[100vw] max-md:h-[100vh] overflow-y-scroll scrollbar-w bg-[#393e42] absolute max-md:fixed right-[5px] top-[53px] max-md:top-0 max-md:right-0 max-md:left-0 md:rounded-[15px] md:rounded-tr-[0]"
     >
       {isLoading && <Spiner height="h-full" />}
-      {isZeroNotification ? (
+      {isZeroNotification && isBottomCounter === 0 ? (
         <div className="text-[#fff6f9] text-[20px] flex flex-col justify-center  h-full">
           No Notifications
         </div>

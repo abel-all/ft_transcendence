@@ -46,7 +46,10 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           setMessage(err?.response?.data.message)
         })
     }
-    if (title === 'Join a Tournament') fetchActiveTournament()
+    if (title === 'Join a Tournament' && !params) {
+      fetchActiveTournament()
+    }
+    else if (params) setTour(params)
   }, [])
 
   const checkInput = (input) => {

@@ -5,8 +5,6 @@ import { Link } from "react-router-dom"
 
 function UserProfileBlock(data) {
 
-
-    console.log("Hhhfjhsdkfhdskfhksjskjhfskjfhskjfsdj: ", data.username);
     return (
         <>
             <div className="w-screen h-screen absolute bg-transparent right-[0px] top-[0px] z-[1]" onClick={data.dhand}></div>

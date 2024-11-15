@@ -47,11 +47,9 @@ function PersonalInformation({ SettingsData, className }) {
               lastName: last_name != Lastname ? Lastname : 'None',
             })
             .then((res) => {
-              console.log(res)
               setSave(false);
             })
             .catch((err) => {
-              console.log(err)
             })
       }
     }

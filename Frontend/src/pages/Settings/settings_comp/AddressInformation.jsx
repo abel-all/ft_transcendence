@@ -64,13 +64,10 @@ function AddressInformation({ SettingsData, className }) {
                 Code: zip_code != Zip ? Zip : zip_code,
               })
               .then((res) => {
-                console.log(res)
                 setSave(false);
               })
               .catch((err) => {
-                console.log(err)
               })
-            console.log('All Is Right Ready To Send ')
           }
         }
       }

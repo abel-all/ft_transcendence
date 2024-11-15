@@ -9,7 +9,6 @@ function InboxUsers({isActive, userProfile, lastMessage, nickname, total_message
         Status = "status bg-[#00FF00] w-[10px] h-[10px] rounded-full absolute bottom-0 right-[3px]";
     else
         Status = "status bg-[#ccc] w-[10px] h-[10px] rounded-full absolute bottom-0 right-[3px]";
-    console.log(`The log: ${total_messages} ${nickname}`);
     return (
         <div className="inboxChatHolder flex flex-col pt-[10px]">
             <div className="Chatuser flex flex-row">

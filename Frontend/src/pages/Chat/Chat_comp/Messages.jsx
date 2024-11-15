@@ -11,7 +11,6 @@ function Messages({ setMessages, username, className, toUser }) {
 	const [Oldest, setOldest] = useState([]);
 	const [NewmessagesAdded, setNewmessagesAdded] = useState(messagesAdded);
 	const [Scroll, setScroll] = useState(0);
-	const Scrolllll = useRef(0);
 	const [LoadingMessage, setLoadingMessage] = useState('');
 	const [WhoAmI, setWhoAmI] = useState('');
 
@@ -27,7 +26,6 @@ function Messages({ setMessages, username, className, toUser }) {
 			messageContext.goToButtom('smooth')
 			clearTimeout(times)
 		}, 10)
-		console.log('Message got updated new Value ', messagesAdded)
 	}, [messagesAdded])
 
 	useEffect(() => {
@@ -53,7 +51,6 @@ function Messages({ setMessages, username, className, toUser }) {
 			return []
 		})
 		setNewmessagesAdded(prev => []);
-		console.log(`Hello : ${username}`);
 	}, [username])
 
 	useEffect(() => {
@@ -94,14 +91,13 @@ function Messages({ setMessages, username, className, toUser }) {
 			}
 		}
 		handleScroll()
-	}, [Scrolllll])
+	}, [Scroll])
 
 	return (
 		<div
 			ref={messagesRef}
 			onScroll={() => {
-			// setScroll(messagesRef.current.scrollTop)
-			Scrolllll.current = messagesRef.current.scrollTop;
+			setScroll(messagesRef.current.scrollTop)
 			}}
 			className={'' + className ? className : ''}
 		>

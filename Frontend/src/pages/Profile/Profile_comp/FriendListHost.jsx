@@ -14,13 +14,7 @@ const FriendListHost = ({ className, UrlUsername }) => {
           { username: UrlUsername }
         )
         setAlreadyDated(res.data)
-        console.log(
-          `List of FRIENDS Fetched data with success for user ${UrlUsername} ${res.data}`
-        )
       } catch (error) {
-        console.log(
-          `List of FRIENDS fetchig data Error for user ${UrlUsername}`
-        )
       }
     }
     fetchmydata()

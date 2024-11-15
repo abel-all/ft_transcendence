@@ -79,7 +79,6 @@ function ChatSide({ setVoidedUsername, className }) {
 			}
 			if (username && username != lastUserFetched.current) {
 				if (ChatContext.readyState == ReadyState.OPEN) {
-					console.log('set seen for user : ', username)
 					ChatContext.sendMessage(
 						JSON.stringify({
 							action: 'read_receipt',
@@ -193,12 +192,10 @@ function ChatSide({ setVoidedUsername, className }) {
 			JSON.parse(ChatContext.lastMessage.data).from == username &&
 			JSON.parse(ChatContext.lastMessage.data).type == 'read_receipt'
 		) {
-			console.log(username, 'before Seen your message Array : ', messagesAdded)
 			let arrs = messagesAdded
 			for (let i = 0; i < messagesAdded.length; i++) {
 				arrs[i].seen = true
 			}
-			console.log(username, 'after Seen your message Array : ', arrs)
 			setMessagesAdded((prevState) => [...arrs])
 		}
 	}, [ChatContext.lastMessage])

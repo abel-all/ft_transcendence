@@ -17,7 +17,6 @@ function ChatHeader() {
         setDisplay(!display);
     }
 
-    console.log(" 00000      Hhhfjhsdkfhdskfhksjskjhfskjfhskjfsdj: ", ChatContext.chatHeader.name);
     return (
         <div className="ChatHeader flex flex-row items-center border-b-[1px] py-[10px] border-[#626262] bg-[#161c20]">
             <div className="flex md:hidden cursor-pointer" onClick={() => {ChatContext.handelChatShown(true)}}> <img src={chevron} alt=""/></div>

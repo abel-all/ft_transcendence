@@ -28,13 +28,10 @@ function FriendsList({ className, UrlUsername }) {
             prefix: e.target.value,
           })
           .then((res) => {
-            console.log('message sent : ', res)
             setFriendlistFromSearch(res.data)
           })
           .catch((err) => {
-            console.log('there is an error : ', err)
           })
-      console.log(e.target.value)
     }, 500)
   }
 

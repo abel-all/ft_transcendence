@@ -11,7 +11,6 @@ function StoreMessages({chatMessages, username, WhoAmI}) {
     let userStyle;
 
     (chatMessages.sender == username) ? userStyle = "text-white bg-[#0A0C0E] rounded-tr-lg " : userStyle = "text-black bg-white self-end rounded-tl-lg ";
-    console.log("What message got ", chatMessages);
     return (
             <div className={`${userStyle} + 'break-all relative flex rounded-b-lg w-[70%] lg:w-[450px] m-[10px] p-[20px]`}>
                 <p className='pb-[15px] break-all'>{chatMessages.message}</p>

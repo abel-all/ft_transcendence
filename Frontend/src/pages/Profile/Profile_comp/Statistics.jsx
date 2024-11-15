@@ -20,7 +20,6 @@ function Statistics({ className, UrlUsername }) {
         )
         handelStat(res.data)
       } catch (error) {
-        console.log('Statistics page Failed')
       }
     }
     fetchmydata()

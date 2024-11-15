@@ -125,7 +125,6 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 				return updatedUserList
 			})
 		}
-		console.log(`VoidedUsername : ${VoidedUsername}`);
 	}, [VoidedUsername])
 
 	return (

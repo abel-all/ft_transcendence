@@ -23,14 +23,15 @@ const Badge = ({username, picture, rank, badge}) => {
         ["GRAND MASTER", "#FF0000"],
     ]);
 
-    console.log("The badge is : ", badge);
     return (
         <div className="Badge bg-[#15262A] text-center h-[182px] w-full border-x-[1px] border-b-[1px] border-[#626262] flex flex-col items-center">
             <div
                 style={{backgroundColor: Colors.get(badge) ? Colors.get(badge) : "#CD7F32"}} 
                 className={twMerge(`BadgeRank w-[100px] h-[110px] flex flex-col`)}>
                 <div className='profileImgaeHolder relative top-[-57px] h-[53px]'>
-                    <img className="rounded-full w-[107.69px] h-[107.69px] absolute" src={picture ? picture : UserIcon} alt=""></img>
+                    <img className="rounded-full w-[107.69px] h-[107.69px] absolute" src={picture ?
+                        `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${picture.split("/")[picture.split("/").length - 1]}&version_id=null`
+                        : UserIcon} alt=""></img>
                 </div>
                 <div className='InfoHolder flex flex-col relative top-[13px]'>
                     <span className="Rank text-[16px] text-center font-semibold font-Outfit"> {badge}</span>

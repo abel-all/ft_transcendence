@@ -14,10 +14,8 @@ function ProfileSettings(className) {
       .get('http://localhost:8800/api/profile/personal-data/')
       .then((res) => {
         setSettingsData(res.data)
-        console.log('Data for settings : ', res)
       })
       .catch((err) => {
-        console.log('Data got an error : ', err)
       })
   }, [])
 

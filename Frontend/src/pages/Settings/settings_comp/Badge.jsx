@@ -9,7 +9,6 @@ const CheckPath = (file) => {
   const Exarray = ['jpeg', 'jpg', 'png', 'gif']
   const extantion = file.split('.')
   if (!Exarray.includes(extantion[extantion.length - 1]))
-    console.log('error the extiontion is not allowed ')
   return Exarray.includes(extantion[extantion.length - 1])
 }
 
@@ -34,6 +33,7 @@ function Badge({ SettingsData }) {
       const readimage = new FileReader()
       readimage.onloadend = () => {
         setImage(readimage.result)
+        console.log("Hello");
         handelUpload(imagefile, 'picture')
       }
       readimage.readAsDataURL(imagefile)
@@ -59,9 +59,7 @@ function Badge({ SettingsData }) {
 
         const res = await sendFile.data
 
-        console.log('Done uploading res : ', res)
       } catch (Error) {
-        console.log('FileUpload Error ', Error)
       }
     }
   }
@@ -79,8 +77,8 @@ function Badge({ SettingsData }) {
     }
   }
 
-  useEffect(async () => {
-    await axios.get('http://localhost:8800/api/profile/data/')
+  useEffect(() => {
+    axios.get('http://localhost:8800/api/profile/data/')
       .then((response) => {
         setBadge(response.data.badge)
       })
@@ -121,7 +119,7 @@ function Badge({ SettingsData }) {
           src={
             background == null
               ? background_picture
-                ? background_picture
+                ? `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${background_picture.split("/")[background_picture.split("/").length - 1]}&version_id=null`
                 : userbg
               : background
           }
@@ -150,7 +148,9 @@ function Badge({ SettingsData }) {
       <div className="Badge relative md:static bg-[#15262A] h-[182px] md:h-[73px] w-full border-x-[1px] mb-[10px] border-b-[1px] border-[#626262] flex flex-col md:flex-row items-center">
         <img
           className=" rounded-full md:ml-[25px] w-[107.69px] h-[107.69px] top-[-57px] absolute md:relative "
-          src={image == null ? (picture ? picture : UserIcon) : image}
+          src={image == null ? (picture ? 
+            `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${picture.split("/")[picture.split("/").length - 1]}&version_id=null`
+            : UserIcon) : image}
           alt=""
         ></img>
         <div className="relative">

@@ -31,7 +31,7 @@ const Alert = ({ message, color }) => {
                     setCurrentMessage(null);
                     setPercent(100);
                 }, 1000);
-            }, 30000);
+            }, 3000);
 
             return () => {
                 clearTimeout(hideTimeout.current);

@@ -7,7 +7,9 @@ function Userbg({background_picture, UrlUsername}) {
     return (
         <div className="userbgHolder mt-[101px] relative">
             <div className={`rounded-t-lg bg-cover bg-center h-[182px] w-full`}
-                style={{ backgroundImage: `url(${background_picture ? background_picture : UserBackground})`}} />
+                style={{ backgroundImage: `url(${background_picture ? 
+                    `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${background_picture.split("/")[background_picture.split("/").length - 1]}&version_id=null`
+                     : UserBackground})`}} />
             {!UrlUsername && <Link to="/settings">
                 <div className="Btn-dec flex flex-row justify-around bg-[#15262A]  opacity-90 font-Outfit rounded-full top-[3px] right-[6px] absolute w-[153px] h-[42px] ">
                     <button className="btn-editProfile text-[16px]  text-[#EEEEEE] font-medium">Edit profile</button>

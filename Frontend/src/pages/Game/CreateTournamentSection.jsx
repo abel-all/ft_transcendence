@@ -31,7 +31,6 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         withCredentials: true,
       })
         .then((response) => {
-          console.log('get active tournament seccess', response?.data)
           setActiveTournament(response?.data)
         })
         .catch((err) => {
@@ -80,8 +79,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           withCredentials: true,
         }
       )
-        .then((response) => {
-          console.log('create tournament success : ', response?.data)
+        .then(() => {
           gameContext.setHandler('isTournament', true)
           gameContext.setHandler('isCreateTour', true)
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
@@ -117,8 +115,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           withCredentials: true,
         }
       )
-        .then((response) => {
-          console.log('join tournament success : ', response?.data)
+        .then(() => {
           gameContext.setHandler('isTournament', true)
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
         })

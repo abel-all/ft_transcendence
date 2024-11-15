@@ -24,7 +24,6 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
       }
     )
       .then((response) => {
-        console.log('data of friends is ', response?.data)
       })
       .catch((err) => {
         if (err.response?.status === 403) {
@@ -34,7 +33,6 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
-        console.log(err)
       })
   }
 

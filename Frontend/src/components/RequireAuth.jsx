@@ -16,13 +16,11 @@ const RequireAuth = ({ children }) => {
         const checkAuthAndFetchUserData = async () => {
             await Axios.get('http://localhost:8800/api/profile/data/', { withCredentials: true })
             .then((response) => {
-                console.log('data of user : ', response.data)
                 gameContext.setHandler('selfData', response.data)
                 const fetchSettings = async () => {
                     await Axios.get(`http://localhost:8800/api/game/settings/`, {
                         withCredentials: true,
                     }).then((response) => {
-                        console.log('settings is : ', response)
                         gameContext.setHandler('gameSettings', response.data[0] || response.data)
                     })
                     .catch((err) => {
@@ -32,8 +30,6 @@ const RequireAuth = ({ children }) => {
                         }
                         else if (err.response?.status === 401)
                             navigate("/signin", { replace: true });
-                        console.log(err)
-                        console.log('Please try again!')
                     })
                 }
                 fetchSettings()
@@ -45,8 +41,6 @@ const RequireAuth = ({ children }) => {
                 }
                 else if (err.response?.status === 401)
                     navigate("/signin", { replace: true });
-                console.log(err)
-                console.log('Please try again!')
                 setIsLoading(false)
             })
         }

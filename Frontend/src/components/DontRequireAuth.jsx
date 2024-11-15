@@ -20,8 +20,6 @@ const DontRequireAuth = ({ children }) => {
                     RefreshToken()
                     navigate("/game", { replace: true });
                 }
-                console.log(err)
-                console.log('Please try again!')
                 setIsLoading(false)
             })
         }

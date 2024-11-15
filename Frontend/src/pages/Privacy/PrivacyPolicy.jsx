@@ -7,13 +7,13 @@ const contentData = [
         description: `
             We strive to be transparent about our use of personal data and make it easy to understand your rights and choices.
             
-            Thanks for using PingPong! We've written this policy to help you understand what information we collect, how we use it,
+            Thanks for using PING! We've written this policy to help you understand what information we collect, how we use it,
             and the choices you have regarding that information. Some of the concepts below are a bit technical, but we've done our best
             to explain things in a simple and clear manner.
         `,
     },
     {
-        title: "Thanks for using PingPong!",
+        title: "Thanks for using PING!",
         description: `We've written this policy to help you understand what information we collect, how we use it,
             and the choices you have regarding that information. Some of the concepts below are a bit
             technical, but we've done our best to explain things in a simple and clear manner.        `,
@@ -22,7 +22,7 @@ const contentData = [
         description: `
             When you give them to us or when you give us permission to obtain them.<br/><br/>
             
-            When you use PingPong websites you voluntarily share certain information.<br/><br/>
+            When you use PING! websites you voluntarily share certain information.<br/><br/>
 
             - <strong>Account Information</strong>: When you join our Services, we collect information such as your name, email address, and country of residence.<br/>
             - <strong>Content</strong>: We collect information when you save or upload photos, when you play, or when you message and interact with other users.<br/>
@@ -46,14 +46,14 @@ const contentData = [
     {
         title: "Our Children's Information Policy",
         description: `
-            Children under the age of 13 are not permitted to use PingPong. If you live in a state or country with an age requirement
+            Children under the age of 13 are not permitted to use PING!. If you live in a state or country with an age requirement
             of over 13, you may use the Services only if you are of legal age to consent to the processing of your data.
         `,
     },
     {
         title: "How we make changes to this policy",
         description: `
-            We may make changes to this policy from time to time. We will post those changes on this page. If you continue to use PingPong
+            We may make changes to this policy from time to time. We will post those changes on this page. If you continue to use PING!
             after those changes take effect, the new policy will apply to you. If the changes are significant, we may notify you more
             explicitly about the changes, such as by sending you an email.
         `,
@@ -62,8 +62,8 @@ const contentData = [
         title: "Contact us",
         description: `
             If you have any questions or concerns regarding this Agreement, please contact us at:<br/><br/>
-            - Email: [The Support Email]<br/>
-            - Address: [The Office Address, if applicable]
+            - Email: contact@ft-transcendence.net<br/>
+            - Address: 1337, Khouribga, Morocco
         `,
     }
 ];

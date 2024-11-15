@@ -4,7 +4,6 @@ import LoaderOntop from '../../components/LoaderOntop.jsx'
 import Axios from 'axios'
 import './css/index.css'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../components/Auth.jsx'
 
 const TwoFaAuthVerify = ({ userId }) => {
   const [focusColor, setFocusColor] = useState(
@@ -14,7 +13,6 @@ const TwoFaAuthVerify = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [code, setCode] = useState(false)
   const navigate = useNavigate()
-  const auth = useAuth()
 
   const handleInputChange = (e) => {
     setCode(e.currentTarget.value)
@@ -39,14 +37,11 @@ const TwoFaAuthVerify = ({ userId }) => {
         }
       )
         .then(() => {
-          console.log('first request')
-          auth.setHandler('game', true)
           navigate('/game', { replace: true })
         })
         .catch(() => {
           setIsLoading(false)
           setMessage('Incorrect code, try again')
-          auth.setHandler('login', true)
           navigate('/signin', { replace: true })
         })
     } else {

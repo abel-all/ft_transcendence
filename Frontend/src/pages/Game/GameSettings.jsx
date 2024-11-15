@@ -1,16 +1,10 @@
 import SettingsCard from "./SettingsCard"
 import {useGameSettings} from "./GameSettingsContext"
-import { useEffect } from "react";
-import HowToPlay from "./HowToPlay";
 
 
-const GameSettings = ({ isOnlineGame=false }) => {
+const GameSettings = () => {
 
     const gameContext = useGameSettings();
-
-    useEffect(() => {
-        gameContext.setHandler("onlineGame", isOnlineGame);
-    }, [isOnlineGame, gameContext]);
 
     return (
         <div className='h-[calc(100vh-105px)] min-h-[900px] flex justify-center items-center'>
@@ -25,12 +19,12 @@ const GameSettings = ({ isOnlineGame=false }) => {
                 title="Do you want to change the Paddle and Ball color?"
                 description="Choose from a variety of exciting paddles and balls to play with."
             />}
-            {gameContext.isScoreSection && !isOnlineGame && <SettingsCard
+            {gameContext.isScoreSection && <SettingsCard
                 name="score"
                 title="Do you want to change the winning score?"
                 description="Choose the winning score to set the ultimate challenge for your ping pong match."
             />}
-            {gameContext.isBotLevelSection && !isOnlineGame && <SettingsCard
+            {gameContext.isBotLevelSection && <SettingsCard
                 name="botLevel"
                 title="Do you want to change the bot's level?"
                 description="Choose the level to set the ultimate challenge for your ping pong match."
@@ -40,7 +34,6 @@ const GameSettings = ({ isOnlineGame=false }) => {
                 title="Congratulations, you set up settings successfully."
                 buttonHidden="hidden"
             />}
-            {gameContext.isHowToPlay && <HowToPlay />}
         </div>
     )
 }

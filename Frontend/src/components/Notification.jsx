@@ -37,7 +37,6 @@ const Notification = () => {
         }
       )
         .then((response) => {
-          console.log('noti data is v1 : ', response?.data)
           response?.data.length === 0
             ? setIsZeroNotification(true)
             : setNotiData((prev) => [...prev, ...response.data])
@@ -52,8 +51,6 @@ const Notification = () => {
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
-          console.log(err)
-          console.log('Please try again!')
         })
       }
     if (!onetime)

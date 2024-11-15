@@ -194,6 +194,9 @@ export const GameSettingsContextProvider = ({ children }) => {
   const addsettingsData = (data) => {
     setSettingsData((prevData) => [...prevData, data])
   }
+  const deleteLastFromSettingsData = () => {
+    setSettingsData((prevData) => prevData.slice(0, -1))
+  }
 
   return (
     <GameSettingContext.Provider
@@ -224,6 +227,7 @@ export const GameSettingsContextProvider = ({ children }) => {
         isScoreSection,
         settingsData,
         addsettingsData,
+        deleteLastFromSettingsData,
         isLastStep,
         isBotLevelSection,
         isOnlineGame,

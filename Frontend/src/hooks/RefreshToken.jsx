@@ -11,8 +11,7 @@ const RefreshToken = async () => {
       .then(() => {
         console.log('your tocken is refreshed successfully')
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
         navigate("/signin", { replace: true })
       })
   }

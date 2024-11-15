@@ -52,7 +52,6 @@ const ball = {
   color: "#FFFFFF",
 };
 
-// let PlayerNbr = 0
 let isGameStart = false;
 
 const TournamentStart = ({ mapColor, ballColor={} }) => {
@@ -94,7 +93,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     if (readyState === 1) {
-      console.log("tournament infos : ", gameContext.tournamentInfo);
       gameContext.isCreateTour
         ? sendMessage(
             JSON.stringify({
@@ -110,10 +108,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
               alias: gameContext.tournamentInfo.alias,
             })
           );
-      console.log("WebSocket connection is open");
-    } else {
-      console.log("WebSocket connection is not open");
-      console.log(readyState);
     }
   }, [
     readyState,
@@ -131,12 +125,10 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
         gameContext.setHandler("participants", data?.tournament?.participants);
         break;
       case "participants_update":
-        console.log("parts update : ", data?.participants);
         gameContext.setHandler("participants", data?.participants);
         gameContext.setHandler("participantsData", data?.participants);
         break;
       case "match_detail":
-        console.log("match details <<< : ", data);
         setPlayerNumber(data?.player_number);
         sendNotification();
         sendMessage(
@@ -145,7 +137,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
             match_id: data?.match?.id,
           })
         );
-        // PlayerNbr = data?.player_number
         setMatchId(data?.match?.id);
         if (data?.player_number === 1) {
           setPlayerData(data?.match?.player2?.profile);
@@ -155,8 +146,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
           setSelfData(data?.match?.player2?.profile);
         }
         setIsTimeToPlay(true);
-        console.log("isTimeToPlay is : true");
-        console.log("ready to send start Game");
         setTimeout(() => {
           if (!isGameStart) {
             sendMessage(
@@ -165,25 +154,20 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
                 match_id: data?.match?.id,
               })
             );
-            console.log("start game is sent");
           }
           setIsGame(true);
         }, 15000);
         break;
       case "game_update":
-        // console.log("ball corr : ", data);
         setBallCor({ x: data?.ball?.x, y: data?.ball?.y });
         break;
       case "score_update":
-        console.log("score update : ", data);
         handleScoreUpdate(data);
         break;
       case "paddle_update":
         handlePaddleUpdate(data);
         break;
       case "end_game":
-        console.log("end game >> ", data);
-        console.log("Player NUmber : ????? ", playerNumber);
         setEndMatchWinner(data?.winner);
         setEndMatchScore(data?.score);
         sendMessage(JSON.stringify({ action: "stop_game" }));
@@ -195,11 +179,8 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
         if (data?.loser === playerNumber) {
           sendMessage(JSON.stringify({ action: "disconnect" }));
           setTimeout(() => {
-            // setPlayer1Score(0)
-            // setPlayer2Score(0)
             setMatchId(-1);
             isIsGameEnd(false);
-            // setPlayerNumber(0)
             setIsTimeToPlay(false);
             setIsGame(false);
             navigate("/game", { replace: true });
@@ -208,22 +189,16 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
           fetchSettings(data);
           gameContext.setHandler("endgame", data);
           setTimeout(() => {
-            // setPlayer1Score(0)
-            // setPlayer2Score(0)
             isIsGameEnd(false);
             isGameStart = false;
-            // setPlayerNumber(0)
             setIsTimeToPlay(false);
             setIsGame(false);
           }, 5000);
         }
-        // handleEndGame(data)
         break;
       case "already_connected":
-        console.log("User already connected from another tab");
         break;
       case "update_winner":
-        console.log("winner array : ", data);
         gameContext.setHandler("participantsData", data?.winners);
         if (data?.round === "completed") {
           sendMessage(JSON.stringify({ action: "disconnect" }));
@@ -239,22 +214,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
   useEffect(() => {
     handleLastMessage();
   }, [handleLastMessage]);
-
-  // useEffect(() => {
-
-  //     if (!isTimeToPlay) return;
-  //     console.log("ready to send start Game");
-  //     const TimeoutId = setTimeout(() => {
-  //         sendMessage(JSON.stringify({ action: 'start_game', match_id: matchId }))
-  //         console.log("start game is sent", );
-  //         setIsGame(true);
-  //     }, 5000)
-
-  //     return () => {
-  //         clearTimeout(TimeoutId);
-  //     }
-
-  // }, [isTimeToPlay]);
 
   useEffect(() => {
     if (!isGame) return;
@@ -348,17 +307,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
     matchId,
   ]);
 
-  // const handleMatchFound = (data) => {
-  //     clearTimeout(waitingTimeout);
-  //     oneTime.current = true;
-  //     setPlayerData(data);
-  //     setMatchId(data?.match_id);
-  //     setPlayerNumber(data?.player_number);
-  //     sendMessage(JSON.stringify({action: 'start_game', match_id: data?.match_id}));
-  //     setIsGame(true);
-  //     setAvatar(false);
-  // }
-
   const handleScoreUpdate = (data) => {
     sendMessage(
       JSON.stringify({
@@ -396,7 +344,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
       }
     )
       .then((response) => {
-        console.log("update match api res : ", response);
         setMatchId(-1);
       })
       .catch((err) => {
@@ -407,8 +354,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
-        console.log(err);
-        console.log("Please try again!");
       });
   };
   const sendNotification = async () => {
@@ -429,7 +374,6 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
       }
     )
       .then((response) => {
-        console.log("data of friends is ", response?.data);
       })
       .catch((err) => {
         if (err.response?.status === 403) {
@@ -439,59 +383,8 @@ const TournamentStart = ({ mapColor, ballColor={} }) => {
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
-        console.log(err);
       });
   };
-  // const handleEndGame = (data) => {
-  // const fetchSettings = async () => {
-  //   await Axios.post(
-  //     `http://localhost:8800/api/tournament/matches/update/${data?.match_id}/`,
-  //     {
-  //       completed: true,
-  //       winner: data?.winner_profile?.id,
-  //       score_player1: data?.player1_score,
-  //       score_player2: data?.player2_score,
-  //     },
-  //     {
-  //       withCredentials: true,
-  //     }
-  //   )
-  //     .then((response) => {
-  //       console.log('update match api res : ', response)
-  //       setMatchId(-1)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //       console.log('Please try again!')
-  //     })
-  // }
-  // isIsGameEnd(true)
-  // if (data?.loser === playerNumber) {
-  //   sendMessage(JSON.stringify({ action: 'disconnect' }))
-  //   setTimeout(() => {
-  //     setPlayer1Score(0)
-  //     setPlayer2Score(0)
-  //     setMatchId(-1)
-  //     isIsGameEnd(false)
-  //     // setPlayerNumber(0)
-  //     setIsTimeToPlay(false)
-  //     setIsGame(false)
-  //     navigate('/game', { replace: true })
-  //   }, 5000)
-  // } else {
-  //   fetchSettings()
-  //   setEndMatchData(data)
-  //   gameContext.setHandler('endgame', data)
-  //   setTimeout(() => {
-  //     setPlayer1Score(0)
-  //     setPlayer2Score(0)
-  //     isIsGameEnd(false)
-  //     // setPlayerNumber(0)
-  //     setIsTimeToPlay(false)
-  //     setIsGame(false)
-  //   }, 5000)
-  // }
-  // }
 
   // draw functions
   const drawRect = (x, y, width, height, color, ctx) => {

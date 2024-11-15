@@ -50,20 +50,17 @@ function SignUp() {
         .then(() => {
           navigate('/signin', { replace: true })
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           setMessage('Please try again!')
         })
     } else setMessage('Invalid Information')
   }
   const handleUserClick = () => {
-    console.log('hello from click')
     checkFieldInput()
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('hello from submit')
     checkFieldInput()
   }
 

@@ -9,19 +9,14 @@ import badgeConverter from '../../hooks/badgeConverter.jsx'
 import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
 
-// let oneTime = false;
-
 const SearchEngine = () => {
   const navigate = useNavigate();
-  // const [inSearch, setInSearch] = useState("false");
-  // const [focusOnSearch, setFocusOnSearch] = useState(false);
   const [searchResult, setSearchResult] = useState('')
   const [errorMessage, setErrorMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [listOfSearchResult, setListOfSearchResult] = useState([])
 
   const fetchPlayerData = async () => {
-    // oneTime = true;
     await Axios.post(
       'http://localhost:8800/api/profile/search/',
       {
@@ -44,7 +39,6 @@ const SearchEngine = () => {
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
-        console.log(err)
         setErrorMessage(true);
       })
   }
@@ -102,19 +96,6 @@ const SearchEngine = () => {
           )
         )}
       </div>
-      {/* {dataArray.map((element, index) => {
-
-            })} */}
-      {/* {inSearch ?
-                (
-                    <div className="w-full max-w-[1000px] flex justify-center items-center">
-                        <div className="spiner-settings w-[50px] h-[50px] rounded-full"></div>
-                    </div>
-                ) :
-                (
-                    {dataArray.map()}
-                )
-            } */}
     </div>
   )
 }

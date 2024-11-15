@@ -81,7 +81,6 @@ const TwoFaAuthStep1 = () => {
           navigate("/signin", { replace: true })
         }
         setIsLoading(true)
-        console.log('Invalid request, try again')
       })
   }
 

@@ -12,15 +12,12 @@ function Header(props) {
 
   const handleLogout = async () => {
     await Axios.post('http://localhost:8800/api/auth/logout/')
-      .then((response) => {
-        console.log(response)
+      .then(() => {
         auth.setHandler('game', false)
         auth.setHandler('login', false)
         navigate('/', { replace: true })
       })
-      .catch((err) => {
-        console.log(err)
-        console.log('No Server Response')
+      .catch(() => {
       })
   }
 

@@ -34,11 +34,9 @@ export const ContextProvider = ({ children }) => {
         withCredentials: true,
       })
         .then(() => {
-          console.log('second request')
           setIsAuth(true)
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           setIsAuth(false)
         })
     }
@@ -52,9 +50,7 @@ export const ContextProvider = ({ children }) => {
             withCredentials: true,
           })
             .then((response) => {
-              console.log('data of user : ', response.data)
               gameContext.setHandler('selfData', response.data)
-              console.log('selfData of user : ', gameContext.selfData)
               const fetchSettings = async () => {
     
                 await Axios.get(`http://localhost:8800/api/game/settings/`, {
@@ -62,15 +58,12 @@ export const ContextProvider = ({ children }) => {
                 })
                   .then((response) => {
                     gameContext.setHandler('gameSettings', response?.data[0])
-                    console.log('settings is : ', response?.data[0])
                   })
                   .catch((err) => {
                     if (err.response?.status === 403)
                       RefreshToken()
                     else if (err.response?.status === 401)
                       setIsAuth(false)
-                    console.log(err)
-                    console.log('Please try again!')
                   })
               }
               fetchSettings()
@@ -81,8 +74,6 @@ export const ContextProvider = ({ children }) => {
               else if (err.response?.status === 401)
                 setIsAuth(false)
               setIsAuth(false)
-              console.log(err)
-              console.log('Please try again!')
             })
         }
         fetchUserData()
@@ -90,7 +81,6 @@ export const ContextProvider = ({ children }) => {
         return 
       })
       .catch((err) => {
-        console.log('hello from auth ', err)
         if (err.response?.status === undefined) setIsAuth(false)
         if (err.response?.status === 403) {
           refrechToken()

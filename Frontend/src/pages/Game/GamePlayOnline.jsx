@@ -118,13 +118,9 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
       gameContext.isRandomGame === true && !paramValue
         ? sendMessage(JSON.stringify({ action: "join_queue" }))
         : sendMessage(JSON.stringify({ action: "invitation", username: paramValue }));
-      console.log("WebSocket connection is open");
       waitingTimeout = setTimeout(() => {
         if (!paramValue) setIsWaiting(false);
       }, 200000);
-    } else {
-      console.log("WebSocket connection is not open");
-      console.log(readyState);
     }
 
     return () => {
@@ -162,10 +158,6 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     }
   }, [isWaiting, sendMessage]);
 
-  useEffect(() => {
-    console.log("value of ballColor : ", ballColor)
-  }, [ballColor]);
-
   const handleLastMessage = useCallback(() => {
     if (!lastMessage) return;
 
@@ -184,7 +176,6 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
         handlePaddleUpdate(data);
         break;
       case "end_game":
-        console.log("end game >> ", data);
         handleEndGame(data);
         break;
       case "already_connected":

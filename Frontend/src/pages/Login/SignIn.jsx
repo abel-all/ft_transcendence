@@ -49,7 +49,6 @@ function SignIn() {
       }
     )
       .then((response) => {
-        console.log('first request')
         setUserId(response.data.user_id)
         if (response.data.is_2fa_enabled) {
           // is 2fa enable must redirect them to 2fa page
@@ -63,7 +62,6 @@ function SignIn() {
           RefreshToken();
           checkFieldInput();
         }
-        console.log(err)
         setMessage('Somethings wrong, please try again!')
       })
   }

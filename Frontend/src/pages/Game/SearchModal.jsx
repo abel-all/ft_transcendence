@@ -45,7 +45,6 @@ const SearchModal = () => {
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
-        console.log(err)
         setErrorMessage(true)
       })
   }
@@ -73,7 +72,6 @@ const SearchModal = () => {
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
-        console.log(err)
         setErrorMessage(true)
       })
   }

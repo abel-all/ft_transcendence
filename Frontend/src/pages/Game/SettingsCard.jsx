@@ -98,10 +98,9 @@ const ChooseSectionHandler = (name) => {
   const paddleClickHandler = (e) => {
     gameContext.addsettingsData(e.currentTarget.dataset.value)
     gameContext.setHandler('paddle', false)
-    if (gameContext.isOnlineGame) gameContext.setHandler('last', true)
-    else gameContext.setHandler('score', true)
-  }
-  const scoreClickHandler = (e) => {
+    gameContext.setHandler('score', true)
+}
+const scoreClickHandler = (e) => {
     gameContext.addsettingsData(e.currentTarget.dataset.value)
     gameContext.setHandler('score', false)
     gameContext.setHandler('botLevel', true)
@@ -123,7 +122,6 @@ const ChooseSectionHandler = (name) => {
         botLevel = gameContext.settingsData[3]
       }
 
-      console.log(gameContext.selfData)
 
       await Axios.post(
         'http://localhost:8800/api/game/setting/',
@@ -140,14 +138,10 @@ const ChooseSectionHandler = (name) => {
       )
         .then((response) => {
           gameContext.setHandler('gameSettings', response?.data?.setting)
-          console.log('setting is updated seccesfully')
-          console.log('settings is : ', response.data)
           gameContext.setHandler('last', false)
-          if (gameContext.issetting) {
-            gameContext.setHandler('game', true)
-            gameContext.setHandler('map', true)
-            gameContext.setHandler('settings', false)
-          } else gameContext.setHandler('isHowToPlay', true)
+          gameContext.setHandler('game', true)
+          gameContext.setHandler('map', true)
+          gameContext.setHandler('settings', false)
         })
         .catch((err) => {
           if (err.response?.status === 403) {
@@ -157,7 +151,6 @@ const ChooseSectionHandler = (name) => {
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
-          console.log(err)
           setMessage('Please try again!')
         })
     }
@@ -244,6 +237,7 @@ const ChooseSectionHandler = (name) => {
 const SettingsCard = ({ name, title, description = '', buttonHidden = '' }) => {
   const [isLoaded, setIsLoaded] = useState(true)
   const chooseSectionData = ChooseSectionHandler(name)
+  const gameContext = useGameSettings();
 
   useEffect(() => {
     setTimeout(() => {
@@ -251,24 +245,46 @@ const SettingsCard = ({ name, title, description = '', buttonHidden = '' }) => {
     }, 300)
   }, [])
 
-  if (isLoaded) return <Spiner />
+  const handleBackButtonClick = () => {
+    switch (name) {
+      case "paddleAndBall":
+        gameContext.deleteLastFromSettingsData()
+        gameContext.setHandler('map', true)
+        gameContext.setHandler('paddle', false)
+        break
+      case "score":
+        gameContext.deleteLastFromSettingsData()
+        gameContext.setHandler('paddle', true)
+        gameContext.setHandler('score', false)
+        break
+      case "botLevel":
+        gameContext.deleteLastFromSettingsData()
+        gameContext.setHandler('score', true)
+        gameContext.setHandler('botLevel', false)
+        break
+    }
+  }
 
   return (
-    <div className="sm:border-l-[3px] sm:border-l-[#525455] w-full max-w-[1000px] flex flex-col mb-[150px] pl-[20px] gap-[100px]">
-      <div className="text-container">
-        <div className="w-full text-[#eee] font-medium text-[30px] max-sm:text-[30px]">
-          {title}
+    <>
+      {isLoaded ? <Spiner /> :
+      <div className="sm:border-l-[3px] sm:border-l-[#525455] w-full max-w-[1000px] flex flex-col mb-[150px] pl-[20px] gap-[100px]">
+        <div className="text-container">
+          <div className="w-full text-[#eee] font-medium text-[30px] max-sm:text-[30px]">
+            {title}
+          </div>
+          <div className="w-full text-white opacity-50">{description}</div>
         </div>
-        <div className="w-full text-white opacity-50">{description}</div>
+        <div className="cards-container flex flex-wrap gap-[10px] justify-center">
+          {chooseSectionData}
+        </div>
+        <button onClick={handleBackButtonClick} className={`back-button flex gap-[5px] ${buttonHidden}`}>
+          <img src={backArrow} />
+          <div className="font-medium text-[#eee]">Back</div>
+        </button>
       </div>
-      <div className="cards-container flex flex-wrap gap-[10px] justify-center">
-        {chooseSectionData}
-      </div>
-      <button className={`back-button flex gap-[5px] ${buttonHidden}`}>
-        <img src={backArrow} />
-        <div className="font-medium text-[#eee]">Back</div>
-      </button>
-    </div>
+      }
+    </>
   )
 }
 

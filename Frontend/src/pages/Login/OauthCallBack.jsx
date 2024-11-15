@@ -28,12 +28,10 @@ const OauthCallBack = () => {
           }
         )
           .then(() => {
-            console.log('first request')
             auth.setHandler('game', true)
             navigate('/game', { replace: true }) // is 2fa disable must redirect them to game page
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(() => {
             auth.setHandler('login', true)
             navigate('/signin', { replace: true }) // is an error catched must redirect them to game page
           })
@@ -49,10 +47,6 @@ const OauthCallBack = () => {
   }, [auth, navigate])
 
   return (
-    // must receive redirect from backend, and send a request to ckeck :
-    //    1- 2fa (enable): redirect them to 2fa page to provide the key,
-    //      then send a request to backend include the key.
-    //    2- if something wrong redirect user to sign-in page.
     <Loader />
   )
 }

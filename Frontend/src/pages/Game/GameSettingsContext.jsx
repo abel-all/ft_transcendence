@@ -36,6 +36,7 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [player1Score, setPlayer1Score] = useState(0)
   const [player2Score, setPlayer2Score] = useState(0)
   const [isRandomGame, setIsRandomGame] = useState(true)
+  const [socketUrl, setSocketUrl] = useState(null);
 
   const [Auth, setAuth] = useState(false);
 
@@ -51,15 +52,26 @@ export const GameSettingsContextProvider = ({ children }) => {
 		})
 	}, [])
   
+
+
+	useEffect(() => {
+	  if (Auth) {
+		setSocketUrl('ws://localhost:8800/ws/chat/');
+	  } else {
+		setSocketUrl(null);
+	  }
+	}, [Auth]);
 	const [messageHistory, setMessageHistory] = useState([])
-	const { sendMessage, lastMessage, readyState } = useWebSocket('ws://localhost:8800/ws/chat/', {
-		onMessage: (message) => {
+	const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+    filter: () => Auth,
+    onMessage: (message) => {
 			setMessageHistory((prev) => [...prev, message.data.toString()])
 		},
 		shouldReconnect: () => true,
 		reconnectInterval: 3000,
     enabled: Auth,
 	})
+
 	const connectionStatus = {
 		[ReadyState.CONNECTING]: 'Connecting',
 		[ReadyState.OPEN]: 'Open',

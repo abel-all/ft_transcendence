@@ -9,6 +9,7 @@ const NotifyUser = () => {
 	const [ShowAlert, setShowAlert] = useState(true);
 	const [message, setMessage] = useState('');
 	const [color, setColor] = useState('');
+	const [socketUrl, setSocketUrl] = useState(null);
 
 	const handelShowingAlert = (stats) => {
 		setShowAlert(stats)
@@ -31,17 +32,27 @@ const NotifyUser = () => {
 		})
 	}, [])
 
-	const { lastMessage } = useWebSocket(
-		'ws://localhost:8800/ws/notifications/',
+
+	useEffect(() => {
+	  if (isAuth) {
+		setSocketUrl('ws://localhost:8800/ws/notifications/');
+	  } else {
+		setSocketUrl(null);
+	  }
+	}, [isAuth]);
+
+	const { lastMessage } = useWebSocket(socketUrl,
 		{
+			filter: () => Auth,
+			enabled: isAuth,
 			onError: (error) => console.error('WebSocket error:', error),
 			shouldReconnect: () => true,
 			reconnectInterval: 3000,
-			enabled: isAuth,
 		}
 	)
+	
 	useEffect(() => {
-		if (lastMessage) {
+		if (lastMessage && lastMessage != null) {
 			handelShowingAlert(true)
 			console.log('The message from webSocket ', lastMessage)
 			const { type, from, status } = JSON.parse(lastMessage.data)
@@ -50,7 +61,22 @@ const NotifyUser = () => {
 				setMessage(`${from} sent you a friend request`)
 				setColor('green')
 			}
-			
+						
+			if (type == 'tournament_reminder_notification') {
+				setMessage(`The tournament will start in 5 seconds.`)
+				setColor('green')
+			}
+						
+			if (type == 'send_playwithme_request') {
+				setMessage(`${from} has sent you a game request`)
+				setColor('green')
+			}
+						
+			if (type == 'join_tournament_notification') {
+				setMessage(`${from} sent you a tournament join request`)
+				setColor('green')
+			}
+						
 			if (type == 'handle_friendship_request') {
 				if (status == 'rejected') {
 					setMessage(`${from} has rejected your friend request`)

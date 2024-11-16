@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import Edit from '../../../assets/imgs/edit.svg'
 import Inputes from './InputesComp'
 import axios from 'axios'
+import Alert from '../../../components/Alert'
+
 
 function PersonalInformation({ SettingsData, className }) {
   const [save, setSave] = useState(false)
@@ -10,6 +12,9 @@ function PersonalInformation({ SettingsData, className }) {
   const [Firstname, setFirstname] = useState(first_name)
   const [Lastname, setLastname] = useState(last_name)
   const [Email, setEmail] = useState(email)
+  const [showNotification, setShowNotification] = useState(false)
+  const [NotificationAllert, setNotificationAllert] = useState({message:"", color:""})
+
 
   function HandelSave() {
     setSave(!save)
@@ -25,6 +30,17 @@ function PersonalInformation({ SettingsData, className }) {
     if (errors.includes(str)) setErrors(errors.filter((item) => item !== str))
   }
 
+  useEffect(() => {
+    setShowNotification(true);
+    if (NotificationAllert.message) {
+      const time = setTimeout(() => {
+        setNotificationAllert((prevState) => {return {message:"", color:""}});
+        setShowNotification(false);
+        return clearTimeout(time);
+      }, 3000)
+    }
+  }, [NotificationAllert]);
+  
   const FNfiled = (e, str) => {
     e.preventDefault()
     str == 'FN' && setFirstname(e.target.value)
@@ -48,8 +64,10 @@ function PersonalInformation({ SettingsData, className }) {
             })
             .then((res) => {
               setSave(false);
+              setNotificationAllert(prev => {return {message:"Your personal information has been successfully updated.", color:"green"}});
             })
             .catch((err) => {
+              setNotificationAllert(prev => {return {message:"An error occurred while updating your personal information. Please try again later.", color:"red"}});
             })
       }
     }
@@ -67,6 +85,7 @@ function PersonalInformation({ SettingsData, className }) {
         (className.className ? ` ${className.className}` : '')
       }
     >
+      {showNotification && NotificationAllert.message && <Alert message={NotificationAllert.message} color={NotificationAllert.color}/>}
       <form action="" method="POST">
         <div className="flex flex-row justify-between">
           <div className="font-[600] font-[Outfit]">Personal Information</div>

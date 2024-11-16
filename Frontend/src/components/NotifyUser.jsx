@@ -40,19 +40,20 @@ const NotifyUser = () => {
 			enabled: isAuth,
 		}
 	)
-	if (lastMessage) {
-		handelShowingAlert(true)
-		console.log('The message from webSocket ', lastMessage)
-		const { type, from, status } = JSON.parse(lastMessage.data)
-		
-		if (type == 'friendship_request') {
-			setMessage(`${from} sent you a friend request`)
-			setColor('green')
-		}
-
-		if (type == 'handle_friendship_request') {
-			if (status == 'rejected') {
-				setMessage(`${from} has rejected your friend request`)
+	useEffect(() => {
+		if (lastMessage) {
+			handelShowingAlert(true)
+			console.log('The message from webSocket ', lastMessage)
+			const { type, from, status } = JSON.parse(lastMessage.data)
+			
+			if (type == 'friendship_request') {
+				setMessage(`${from} sent you a friend request`)
+				setColor('green')
+			}
+			
+			if (type == 'handle_friendship_request') {
+				if (status == 'rejected') {
+					setMessage(`${from} has rejected your friend request`)
 				setColor('#ff0000')
 			} else if (status === 'accepted') {
 				setMessage(`${from} has accepted your friend request`)
@@ -61,8 +62,7 @@ const NotifyUser = () => {
 			console.log(status)
 		}
 	}
-
-	// useEffect(() => {}, [message, color])
+	}, [lastMessage])
 	return ShowAlert && <Alert message={message} color={color} />
 }
 

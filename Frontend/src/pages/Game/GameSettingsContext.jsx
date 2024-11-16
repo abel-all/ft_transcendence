@@ -50,6 +50,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 			setAuth(false);
 		})
 	}, [])
+  
 	const [messageHistory, setMessageHistory] = useState([])
 	const { sendMessage, lastMessage, readyState } = useWebSocket('ws://localhost:8800/ws/chat/', {
 		onMessage: (message) => {

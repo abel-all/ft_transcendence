@@ -52,7 +52,6 @@ const Alert = ({ message, color }) => {
     if (!currentMessage) {
         return null;
     }
-
     return (
         <div className="absolute">
             <div

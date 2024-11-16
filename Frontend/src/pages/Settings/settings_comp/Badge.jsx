@@ -4,11 +4,15 @@ import { useEffect, useState } from 'react'
 import upload from '../../../assets/imgs/upload.svg'
 import userbg from '../../../assets/imgs/userbg.png'
 import axios from 'axios'
+import Alert from '../../../components/Alert'
+
+
 
 const CheckPath = (file) => {
   const Exarray = ['jpeg', 'jpg', 'png', 'gif']
   const extantion = file.split('.')
   if (!Exarray.includes(extantion[extantion.length - 1]))
+    console.log("File type not allowed!");
   return Exarray.includes(extantion[extantion.length - 1])
 }
 
@@ -18,11 +22,19 @@ function Badge({ SettingsData }) {
   const [image, setImage] = useState(null)
   const [imagefile, setimagefile] = useState(null)
   const [background, setBackground] = useState(null)
+  const [backgroundfile, setbackgroundfile] = useState(null)
+  const [showNotification, setShowNotification] = useState(false)
+  const [NotificationAllert, setNotificationAllert] = useState({message:"", color:""})
   const { first_name, last_name, background_picture, picture } = SettingsData
   const ClassStyle =
     'flex flex-row lg:right-[-463px] xl:right-[-673px] 2xl:right-[-883px] md:relative md:top-[-220px] md:right-[-248px] bg-[#15262a] justify-center m-auto px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]'
 
-  function HandelSave() {
+  function HandelSave(e) {
+    e.preventDefault();
+    if (save) {
+      imagefile && handelUpload(imagefile, 'picture')
+      backgroundfile && handelUpload(backgroundfile, 'background_picture')
+    }
     setSave(!save)
   }
 
@@ -33,19 +45,28 @@ function Badge({ SettingsData }) {
       const readimage = new FileReader()
       readimage.onloadend = () => {
         setImage(readimage.result)
-        console.log("Hello");
-        handelUpload(imagefile, 'picture')
+        setimagefile(imagefile)
       }
       readimage.readAsDataURL(imagefile)
     }
   }
+
+  useEffect(() => {
+    setShowNotification(true);
+    if (NotificationAllert.message) {
+      const time = setTimeout(() => {
+        setNotificationAllert((prevState) => {return {message:"", color:""}});
+        setShowNotification(false);
+        return clearTimeout(time);
+      }, 3000)
+    }
+    }, [NotificationAllert]);
 
   const handelUpload = async (file, endPoint) => {
     if (file) {
       const formData = new FormData()
 
       formData.append(endPoint, file)
-
       try {
         const sendFile = await axios.post(
           `http://localhost:8800/api/profile/upload-${endPoint}/`,
@@ -56,10 +77,10 @@ function Badge({ SettingsData }) {
             },
           }
         )
-
         const res = await sendFile.data
-
+				setNotificationAllert(prev => {return {message:`Your ${endPoint} has been successfully uploaded.`, color:"green"}});
       } catch (Error) {
+				setNotificationAllert(prev => {return {message:`An error occurred while uploading your ${endPoint}. Please try again later.`, color:"red"}});
       }
     }
   }
@@ -71,7 +92,7 @@ function Badge({ SettingsData }) {
       const readbackground = new FileReader()
       readbackground.onloadend = () => {
         setBackground(readbackground.result)
-        handelUpload(backgroundfile, 'background_picture')
+        setbackgroundfile(backgroundfile)
       }
       readbackground.readAsDataURL(backgroundfile)
     }
@@ -87,7 +108,8 @@ function Badge({ SettingsData }) {
   }, [])
 
   return (
-    <form action="" method="POST">
+    <div>
+      	{showNotification && NotificationAllert.message && <Alert message={NotificationAllert.message} color={NotificationAllert.color}/>}
       {!save && (
         <div className="flex relative justify-center top-[310px] md:justify-end z-10 h-0 md:top-6 md:right-6">
           <div className="Holder flex h-[40px] justify-end items-center w-[80px] bg-[#15262b] px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]">
@@ -105,7 +127,7 @@ function Badge({ SettingsData }) {
         <div className="flex relative justify-center top-[310px] md:justify-end z-10 h-0 md:top-6 md:right-6">
           <div className="Holder flex h-[40px] justify-center items-center w-[80px] bg-[#15262b] px-[10px] py-[6px] rounded-full border-[1px] border-solid border-[#626262]">
             <button
-              type="submit"
+              onClick={HandelSave}
               className="px-[2px] font-[500] font-[Outfit] text-[#626262] md:text-white md:opacity-60"
             >
               Save
@@ -185,7 +207,7 @@ function Badge({ SettingsData }) {
           </div>
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 

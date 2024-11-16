@@ -4,6 +4,7 @@ import tourCreate from "../../assets/imgs/tourCreate.svg";
 import { useGameSettings } from "./GameSettingsContext";
 import CreateTournamentSection from "./CreateTournamentSection";
 import Spiner from "./Spiner";
+import Axios from "axios";
 
 const TournamentCard = ({
   image,
@@ -99,6 +100,26 @@ const CreateTournament = () => {
     gameContext.joinTour,
   ]);
 
+  const handleReminderClick = async () => {
+    let participantsNames = ["aaa", "bbb", "ccc", "ddd"];
+
+    await Axios.post(
+      "http://localhost:8800/api/profile/notification/tournament-reminder/",
+      {
+        usernames: participantsNames,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+      .then((response) => {
+        console.log("data of friends is ", response?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+};
+
   return (
     <div className="h-[calc(100vh-65px)] min-h-[1300px] py-[200px] w-full flex max-md:flex-col justify-center items-center gap-[10px]">
       {!createTour && !joinTour && (
@@ -115,6 +136,7 @@ const CreateTournament = () => {
               paramvalue={paramValue}
             />
           ))}
+          <button className="text-[#000] bg-[#fff] p-3 rounded-xl" onClick={handleReminderClick}>Tourn Reminder for testing!</button>
         </>
       )}
       {gameContext.loading && <Spiner height="h-full" />}

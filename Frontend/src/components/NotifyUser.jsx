@@ -61,7 +61,22 @@ const NotifyUser = () => {
 				setMessage(`${from} sent you a friend request`)
 				setColor('green')
 			}
-			
+						
+			if (type == 'tournament_reminder_notification') {
+				setMessage(`The tournament will start in 5 seconds.`)
+				setColor('green')
+			}
+						
+			if (type == 'send_playwithme_request') {
+				setMessage(`${from} has sent you a game request`)
+				setColor('green')
+			}
+						
+			if (type == 'join_tournament_notification') {
+				setMessage(`${from} sent you a tournament join request`)
+				setColor('green')
+			}
+						
 			if (type == 'handle_friendship_request') {
 				if (status == 'rejected') {
 					setMessage(`${from} has rejected your friend request`)

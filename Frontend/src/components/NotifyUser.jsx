@@ -9,6 +9,7 @@ const NotifyUser = () => {
 	const [ShowAlert, setShowAlert] = useState(true);
 	const [message, setMessage] = useState('');
 	const [color, setColor] = useState('');
+	const [socketUrl, setSocketUrl] = useState(null);
 
 	const handelShowingAlert = (stats) => {
 		setShowAlert(stats)
@@ -31,17 +32,27 @@ const NotifyUser = () => {
 		})
 	}, [])
 
-	const { lastMessage } = useWebSocket(
-		'ws://localhost:8800/ws/notifications/',
+
+	useEffect(() => {
+	  if (isAuth) {
+		setSocketUrl('ws://localhost:8800/ws/notifications/');
+	  } else {
+		setSocketUrl(null);
+	  }
+	}, [isAuth]);
+
+	const { lastMessage } = useWebSocket(socketUrl,
 		{
+			filter: () => Auth,
+			enabled: isAuth,
 			onError: (error) => console.error('WebSocket error:', error),
 			shouldReconnect: () => true,
 			reconnectInterval: 3000,
-			enabled: isAuth,
 		}
 	)
+	
 	useEffect(() => {
-		if (lastMessage) {
+		if (lastMessage && lastMessage != null) {
 			handelShowingAlert(true)
 			console.log('The message from webSocket ', lastMessage)
 			const { type, from, status } = JSON.parse(lastMessage.data)

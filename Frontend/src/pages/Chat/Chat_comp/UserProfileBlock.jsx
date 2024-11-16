@@ -1,10 +1,13 @@
+import { useState } from "react"
 import profile from "../../../assets/imgs/chat/user-profile-01.svg"
 import block from "../../../assets/imgs/chat/user-profile-x.svg"
 import { Link } from "react-router-dom"
+import axios from "axios";
 
 
 function UserProfileBlock(data) {
-
+    const [blocked, setBlocked] = useState(false);
+    const endPoint = ["http://localhost:8800/api/profile/block-friend/","http://localhost:8800/api/profile/unblock-friend/"];
     return (
         <>
             <div className="w-screen h-screen absolute bg-transparent right-[0px] top-[0px] z-[1]" onClick={data.dhand}></div>
@@ -17,9 +20,19 @@ function UserProfileBlock(data) {
                             <span className="p-[5px] text-[14px] font-[400] text-[#004455] font-[Outfit]" >View Profile</span>
                         </Link>
                     </div>
-                    <div className="w-[150px]  p-[10px] rounded-b-lg flex flex-row pl-[20px] bg-[#BFBFBF] blockUser">
+                    <div
+                        onClick={() => {
+                            axios.post(endPoint[!blocked ? 0 : 1], {
+                                username: data.username
+                            }).then(res => {
+                                setBlocked(prevState => !prevState);
+                            }).catch(error => {
+                                setBlocked(prev => prev);
+                            })
+                        }}
+                        className="w-[150px]  p-[10px] rounded-b-lg flex flex-row pl-[20px] bg-[#BFBFBF] blockUser">
                         <img src={block} alt="" />
-                        <span className="p-[5px] text-[14px] font-[400] text-[#FF0000] font-[Outfit]">Block</span>
+                        <span className="p-[5px] text-[14px] font-[400] text-[#FF0000] font-[Outfit]">{!blocked ? "Block" : "Blocked"}</span>
                     </div>
                 </div>
             </div>

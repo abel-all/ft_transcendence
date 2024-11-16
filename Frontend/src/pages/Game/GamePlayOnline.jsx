@@ -162,6 +162,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     if (!lastMessage) return;
 
     const data = JSON.parse(lastMessage.data);
+    console.log("player data : ", data)
     switch (data?.type) {
       case "match_found":
         if (!oneTime.current) handleMatchFound(data);
@@ -297,8 +298,14 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
         player2_score: data?.player2_score,
       })
     );
-    setPlayer1Score(data.player1_score);
-    setPlayer2Score(data.player2_score);
+    if (playerNumber === 1) {
+      setPlayer1Score(data.player1_score);
+      setPlayer2Score(data.player2_score);
+    }
+    else {
+      setPlayer1Score(data.player2_score);
+      setPlayer2Score(data.player1_score);
+    }
   };
 
   const handlePaddleUpdate = (data) => {
@@ -313,7 +320,6 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   };
 
   const handleEndGame = (data) => {
-    // setEndMatchData(data)
     setEndMatchWinner(data?.winner);
     setEndMatchScore(data?.score);
     isIsGameEnd(true);

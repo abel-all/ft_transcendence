@@ -6,7 +6,7 @@ import SearchResultCardTour from '../Search/SearchResultCardTour'
 import Spiner from './Spiner'
 import Axios from 'axios'
 import badgeConverter from '../../hooks/badgeConverter'
-import useRefreshToken from "../../hooks/RefreshToken"
+import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
 
 const SearchModal = () => {
@@ -16,7 +16,7 @@ const SearchModal = () => {
   const [errorMessage, setErrorMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [searchResult, setSearchResult] = useState('')
-  const RefreshToken = useRefreshToken();
+   
 
   // const [isBottomCounter, setIsBottomCounter] = useState(1);
   const [listOfSearchResult, setListOfSearchResult] = useState([])

@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import LoaderOntop from '../../components/LoaderOntop.jsx'
 import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
 import './css/index.css'
-import useRefreshToken from "../../hooks/RefreshToken"
+import RefreshToken from "../../hooks/RefreshToken"
 
 function SignIn() {
   const [formValues, setFormValues] = useState({})
@@ -26,7 +26,7 @@ function SignIn() {
   const [email, setEmail] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
   const [isForgetPassword, setIsForgetPassword] = useState(false)
-  const RefreshToken = useRefreshToken();
+   
   const [focusColor, setFocusColor] = useState(
     'focus:border focus:border-[#FF0000]'
   )

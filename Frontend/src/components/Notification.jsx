@@ -8,7 +8,7 @@ import friendship from "../assets/imgs/friendship.svg"
 import tournReminder from "../assets/imgs/tournReminder.svg"
 import joinMatch from "../assets/imgs/joinMatch.svg"
 import notiJoinTourn from "../assets/imgs/notiJoinTourn.svg"
-import useRefreshToken from "../hooks/RefreshToken"
+import RefreshToken from "../hooks/RefreshToken"
 import { useAuth } from './Auth'
 
 let onetime = false;
@@ -20,7 +20,7 @@ const Notification = () => {
   const [isZeroNotification, setIsZeroNotification] = useState(false)
   const [isBottomCounter, setIsBottomCounter] = useState(0)
   const [notiData, setNotiData] = useState([])
-  const RefreshToken = useRefreshToken();
+   
 
   const navigate = useNavigate()
 

@@ -3,7 +3,7 @@ import logoImg from '../../assets/imgs/logo.png'
 import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import { useTwoFaContext } from './TwoFaContext'
-import useRefreshToken from "../../hooks/RefreshToken"
+import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
 
 const TwoFaAuthStep1 = () => {
@@ -14,7 +14,7 @@ const TwoFaAuthStep1 = () => {
   const [code, setCode] = useState('')
   const [image, setImage] = useState(null)
   const TwoFaContext = useTwoFaContext()
-  const RefreshToken = useRefreshToken();
+   
 
   useEffect(() => {
     setIsLoading(true)

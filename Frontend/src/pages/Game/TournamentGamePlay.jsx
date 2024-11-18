@@ -11,7 +11,7 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import GameEndScreen from "./GameEndScreen";
 import "./css/index.css";
-import useRefreshToken from "../../hooks/RefreshToken"
+import RefreshToken from "../../hooks/RefreshToken"
 import {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
@@ -72,7 +72,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [endMatchScore, setEndMatchScore] = useState("");
   const [playerNumber, setPlayerNumber] = useState(0);
   const [isWinTournament, setIsWinTournament] = useState(false);
-  const RefreshToken = useRefreshToken();
+   
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,

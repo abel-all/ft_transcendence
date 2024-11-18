@@ -3,7 +3,7 @@ import LoaderOntop from '../../components/LoaderOntop.jsx'
 import { useGameSettings } from './GameSettingsContext'
 import Axios from 'axios'
 import '../2FaAuth/css/index.css'
-import useRefreshToken from "../../hooks/RefreshToken"
+import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
 
 const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) => {
@@ -17,7 +17,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   const [name, setName] = useState('')
   const [tour, setTour] = useState('')
   const gameContext = useGameSettings()
-  const RefreshToken = useRefreshToken();
+   
   const nameReGex = /^[a-zA-Z-]{2,16}$/
 
   useEffect(() => {

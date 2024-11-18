@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LoaderOntop from "./LoaderOntop";
 import { useGameSettings } from '../pages/Game/GameSettingsContext'
 import Axios from 'axios'
-import useRefreshToken from '../hooks/RefreshToken.jsx'
+import RefreshToken from '../hooks/RefreshToken.jsx'
 
 
 const RequireAuth = ({ children }) => {
@@ -11,7 +11,7 @@ const RequireAuth = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const gameContext = useGameSettings()
-    const RefreshToken = useRefreshToken();
+     
 
     useEffect(() => {
         const checkAuthAndFetchUserData = async () => {

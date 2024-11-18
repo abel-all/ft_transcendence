@@ -3,7 +3,7 @@ import LoaderOntop from '../../components/LoaderOntop.jsx'
 import { useGameSettings } from './GameSettingsContext'
 import Axios from 'axios'
 import '../2FaAuth/css/index.css'
-import RefreshToken from "../../hooks/RefreshToken"
+import useRefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
 
 const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) => {
@@ -17,12 +17,19 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   const [name, setName] = useState('')
   const [tour, setTour] = useState('')
   const gameContext = useGameSettings()
+  const RefreshToken = useRefreshToken();
   const nameReGex = /^[a-zA-Z-]{2,16}$/
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
     }, 300)
+
+    return () => {
+      gameContext.setHandler("createtour", false);
+      gameContext.setHandler("jointour", false);
+      gameContext.setHandler("loading", false);
+    }
   }, [])
 
   useEffect(() => {
@@ -80,9 +87,9 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         }
       )
         .then(() => {
-          gameContext.setHandler('isTournament', true)
           gameContext.setHandler('isCreateTour', true)
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
+          navigate("/game/tournament/start", { replace: true })
         })
         .catch((err) => {
           if (err.response?.status === 403) {
@@ -116,8 +123,8 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         }
       )
         .then(() => {
-          gameContext.setHandler('isTournament', true)
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
+          navigate("/game/tournament/start", { replace: true })
         })
         .catch((err) => {
           if (err.response?.status === 403) {

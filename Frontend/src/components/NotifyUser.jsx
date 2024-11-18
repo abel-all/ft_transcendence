@@ -1,10 +1,10 @@
 import useWebSocket from "react-use-websocket";
 import Alert from "./Alert";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useGameSettings } from '../pages/Game/GameSettingsContext'
 
 const NotifyUser = () => {
-	const [isAuth, setIsAuth] = useState(false);
+	const gameContext = useGameSettings()
 
 	const [ShowAlert, setShowAlert] = useState(true);
 	const [message, setMessage] = useState('');
@@ -20,31 +20,17 @@ const NotifyUser = () => {
 		}, 4000)
 	}
 
-	useEffect(() => {
-		axios.get('http://localhost:8800/api/auth/token/')
-		.then((res) => {
-			if (res.status == 200) {
-				setIsAuth(true)
-			}
-		})
-		.catch((err) => {
-			setIsAuth(false);
-		})
-	}, [])
-
 
 	useEffect(() => {
-	  if (isAuth) {
+		if (gameContext.Auth) {
 		setSocketUrl('ws://localhost:8800/ws/notifications/');
-	  } else {
+		} else {
 		setSocketUrl(null);
-	  }
-	}, [isAuth]);
+		}
+	}, [gameContext.Auth]);
 
 	const { lastMessage } = useWebSocket(socketUrl,
 		{
-			filter: () => Auth,
-			enabled: isAuth,
 			onError: (error) => console.error('WebSocket error:', error),
 			shouldReconnect: () => true,
 			reconnectInterval: 3000,

@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import axios from 'axios';
 
 export const GameSettingContext = createContext(null)
 
@@ -20,9 +19,8 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [isHowToPlay, setIsHowToPlay] = useState(false)
   const [matchDelay, setMatchDelay] = useState(true)
   const [issetting, setIssetting] = useState(true)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [isCreateTour, setIsCreateTour] = useState(false)
-  const [isTournament, setIsTournament] = useState(false)
   const [userData, setUserData] = useState({})
   const [selfData, setSelfData] = useState({})
   const [tournamentInfo, setTournamentInfo] = useState({})
@@ -39,18 +37,6 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [socketUrl, setSocketUrl] = useState(null);
 
   const [Auth, setAuth] = useState(false);
-
-  useEffect(() => {
-		axios.get('http://localhost:8800/api/auth/token/')
-		.then((res) => {
-			if (res.status == 200) {
-				setAuth(true)
-			}
-		})
-		.catch((err) => {
-			setAuth(false);
-		})
-	}, [])
   
 
 
@@ -61,6 +47,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 		setSocketUrl(null);
 	  }
 	}, [Auth]);
+
 	const [messageHistory, setMessageHistory] = useState([])
 	const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     filter: () => Auth,
@@ -98,14 +85,29 @@ export const GameSettingsContextProvider = ({ children }) => {
     setMatchDelay(true)
     setIssetting(true)
     setLoading(false)
-    setIsTournament(false)
     setIsCreateTour(false)
-    setIsRandomGame(true)
     setUserData({})
+    // setSelfData({})
+    setTournamentInfo({})
+    setParticipants([])
+    setParticipantsData([])
+    setWinners([])
+    setWinnersFinal([])
+    setEndGameData({})
+    // setGameSettings({})
     setPlayer1Score(0)
     setPlayer2Score(0)
+    setIsRandomGame(true)
+  }
+  const resetTournamentStates = () => {
+    setJoinTour(false)
+    setLoading(false)
+    setIsCreateTour(false)
+    setParticipants([])
+    setParticipantsData([])
     setEndGameData({})
-    setGameSettings({})
+    setWinnersFinal([])
+    setWinners([])
   }
 
   const handleModalClick = () => {
@@ -170,9 +172,6 @@ export const GameSettingsContextProvider = ({ children }) => {
         break
       case 'loading':
         setLoading(value)
-        break
-      case 'isTournament':
-        setIsTournament(value)
         break
       case 'isCreateTour':
         setIsCreateTour(value)
@@ -248,11 +247,13 @@ export const GameSettingsContextProvider = ({ children }) => {
         matchDelay,
         userData,
         resetStates,
+        resetTournamentStates,
         issetting,
         selfData,
         loading,
-        isTournament,
         gameSettings,
+        setAuth,
+        Auth
       }}
     >
       {children}

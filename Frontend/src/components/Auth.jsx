@@ -3,7 +3,7 @@ import Axios from 'axios'
 import axios from 'axios'
 import GetCookie from '../hooks/GetCookie'
 import { useGameSettings } from '../pages/Game/GameSettingsContext'
-import RefreshToken from '../hooks/RefreshToken.jsx'
+import useRefreshToken from '../hooks/RefreshToken.jsx'
 
 export const Authcontext = createContext(null)
 
@@ -13,6 +13,7 @@ export const ContextProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
   const gameContext = useGameSettings()
+  const RefreshToken = useRefreshToken();
 
   axios.defaults.headers.common['X-CSRFToken'] = GetCookie('csrftoken')
 

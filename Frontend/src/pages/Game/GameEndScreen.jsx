@@ -2,6 +2,7 @@ import imageone from "../../assets/imgs/aboutimage1.svg";
 import tryImg from "../../assets/imgs/tryImg.svg";
 import gamePage from "../../assets/imgs/gamePageBlack.svg";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const GameEndScreen = ({
   winner,
@@ -11,12 +12,26 @@ const GameEndScreen = ({
   isOnlineGame = false,
 }) => {
   const navigate = useNavigate();
+  const [color, setColor] = useState(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]");
+  const [winnerMessage, setWinnerMessage] = useState(winner === playerNumber ? "You Win" : "You Lose");
+  const [xpMessage, setXpMessage] = useState(winner === playerNumber ? "+50 xp" : "0 xp");
+
+  useEffect(() => {
+    console.log("the value of playernumber : ", playerNumber)
+    console.log("the value of winner : ", winner)
+    console.log("true or false ? : ", winner === playerNumber)
+
+    setColor(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]")
+    setWinnerMessage(winner === playerNumber ? "You Win" : "You Lose")
+    setXpMessage(winner === playerNumber ? "+50 xp" : "0 xp")
+
+  }, [playerNumber, winner])
 
   const handleTryAgainClick = () => {
-    isOnlineGame === true ? navigate("/game/onlineGame") : navigate("/game/tournament")
+    isOnlineGame === true ? navigate("/game/onlineGame", { replace: true }) : navigate("/game/tournament", { replace: true })
   };
   const handleBackToGamePage = () => {
-    navigate("/game");
+    navigate("/game", { replace: true });
   };
 
   return (
@@ -28,18 +43,14 @@ const GameEndScreen = ({
           </figure>
         )}
         <div
-          className={`font-semibold text-[50px] max-sm:text-[35px] ${
-            winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]"
-          }`}
+          className={`font-semibold text-[50px] max-sm:text-[35px] ${color}`}
         >
-          {winner === playerNumber ? "You Win" : "You Lose"}
+          {winnerMessage}
         </div>
         <div
-          className={`font-normal text-[38px] max-sm:text[22px] ${
-            winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]"
-          }`}
+          className={`font-normal text-[38px] max-sm:text[22px] ${color}`}
         >
-          {winner === playerNumber ? "+50 xp" : "0 xp"}
+          {xpMessage}
         </div>
         <div className="font-normal text-[#fff0f9] text-[38px] max-sm:text[22px]">
           {score}

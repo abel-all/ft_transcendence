@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import Axios from 'axios'
 import Spiner from './Spiner'
 import './css/index.css'
-import RefreshToken from "../../hooks/RefreshToken"
+import useRefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
 
 const mapData = [
@@ -89,6 +89,7 @@ const ChooseSectionHandler = (name) => {
   const navigate = useNavigate();
   const gameContext = useGameSettings()
   const [message, setMessage] = useState('')
+  const RefreshToken = useRefreshToken();
 
   const mapClickHandler = (e) => {
     gameContext.addsettingsData(e.currentTarget.dataset.value)

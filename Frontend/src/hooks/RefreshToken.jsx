@@ -1,10 +1,11 @@
 import Axios from "axios"
 import { useNavigate } from "react-router-dom"
 
-const RefreshToken = async () => {
+const useRefreshToken = () => {
 
   const navigate = useNavigate();
 
+  const RefreshToken = async () => {
     await Axios.get('http://localhost:8800/api/auth/token/refresh/', {
       withCredentials: true,
     })
@@ -15,5 +16,7 @@ const RefreshToken = async () => {
         navigate("/signin", { replace: true })
       })
   }
+  return RefreshToken();
+}
 
-export default RefreshToken;
+export default useRefreshToken;

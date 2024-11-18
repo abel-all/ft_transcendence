@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoaderOntop from "./LoaderOntop";
 import Axios from 'axios'
-import RefreshToken from '../hooks/RefreshToken.jsx'
+import useRefreshToken from '../hooks/RefreshToken.jsx'
 
 const DontRequireAuth = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const RefreshToken = useRefreshToken();
     
     useEffect(() => {
         const checkAuth = async () => {
@@ -14,11 +15,11 @@ const DontRequireAuth = ({ children }) => {
                 withCredentials: true,
             })
             .then(() => {
-                navigate("/game", { replace: true });
+                navigate("/profile", { replace: true });
             }).catch((err) => {
                 if (err.response?.status === 403) {
                     RefreshToken()
-                    navigate("/game", { replace: true });
+                    navigate("/profile", { replace: true });
                 }
                 setIsLoading(false)
             })

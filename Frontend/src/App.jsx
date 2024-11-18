@@ -23,6 +23,7 @@ const OnlineGameMiddleware = lazy(() =>
 );
 const PlayOnline = lazy(() => import("./pages/Game/PlayOnline.jsx"));
 const Tournament = lazy(() => import("./pages/Game/Tournament.jsx"));
+const TournamentStart = lazy(() => import("./pages/Game/TournamentStart.jsx"));
 const PlayWithBot = lazy(() => import("./pages/Game/PlayWithBot.jsx"));
 const PlayWithFriend = lazy(() => import("./pages/Game/PlayWithFriend.jsx"));
 const SetupTwoFa = lazy(() => import("./pages/2FaAuth/SetupTwoFa.jsx"));
@@ -163,7 +164,14 @@ function App() {
                     </RequireAuth>
                   }
                 />
-                {/* <Route path="game/tournament" element={<Tournament />} /> */}
+                <Route
+                  path="/game/tournament/start"
+                  element={
+                    <RequireAuth>
+                      <TournamentStart />
+                    </RequireAuth>
+                  }
+                />
                 <Route path="*" element={<Page404 />} />
               </Routes>
             </Suspense>

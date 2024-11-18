@@ -10,6 +10,9 @@ import axios from 'axios'
 import './Profile.css'
 import Alert from '../../components/Alert'
 import BottomNaveBar from '../../components/BottomNavBar.jsx'
+import { useGameSettings } from '../Game/GameSettingsContext'
+
+
 
 const GetUserFromUrl = () => {
   let url = window.location.href
@@ -23,6 +26,8 @@ const GetUserFromUrl = () => {
 }
 
 function Profile() {
+  const gameContext = useGameSettings();
+  gameContext.setisVistedProfile(prevState => true);
   const [data, setData] = useState({})
   const [UrlUsername, setUrlUsername] = useState(GetUserFromUrl())
   const [DataFetched, setDataFetched] = useState(false)

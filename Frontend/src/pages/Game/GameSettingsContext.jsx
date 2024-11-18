@@ -35,18 +35,19 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [player2Score, setPlayer2Score] = useState(0)
   const [isRandomGame, setIsRandomGame] = useState(true)
   const [socketUrl, setSocketUrl] = useState(null);
-
+  const [isVistedProfile, setisVistedProfile] = useState(false)
+  
   const [Auth, setAuth] = useState(false);
   
 
 
 	useEffect(() => {
-	  if (Auth) {
+	  if (Auth && isVistedProfile) {
 		setSocketUrl('ws://localhost:8800/ws/chat/');
 	  } else {
 		setSocketUrl(null);
 	  }
-	}, [Auth]);
+	}, [Auth, isVistedProfile]);
 
 	const [messageHistory, setMessageHistory] = useState([])
 	const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
@@ -227,6 +228,7 @@ export const GameSettingsContextProvider = ({ children }) => {
         createTour,
         joinTour,
         isSettings,
+        isVistedProfile, setisVistedProfile,
         handleModalClick,
         modal,
         isMapSection,

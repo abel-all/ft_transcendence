@@ -22,12 +22,12 @@ const NotifyUser = () => {
 
 
 	useEffect(() => {
-		if (gameContext.Auth) {
+		if (gameContext.Auth && gameContext.isVistedProfile) {
 		setSocketUrl('ws://localhost:8800/ws/notifications/');
 		} else {
 		setSocketUrl(null);
 		}
-	}, [gameContext.Auth]);
+	}, [gameContext.Auth, gameContext.isVistedProfile]);
 
 	const { lastMessage } = useWebSocket(socketUrl,
 		{

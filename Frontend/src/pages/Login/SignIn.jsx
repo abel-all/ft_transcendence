@@ -55,7 +55,7 @@ function SignIn() {
           // is 2fa enable must redirect them to 2fa page
           setIsVerify(true)
         } else {
-          navigate('/profile', { replace: true }) // is 2fa disable must redirect them to game page
+          navigate('/game', { replace: true }) // is 2fa disable must redirect them to game page
         }
       })
       .catch((err) => {

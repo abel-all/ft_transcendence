@@ -87,6 +87,19 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     "ws://localhost:8800/ws/tournament/"
   );
 
+  // useEffect(() => {
+  //   console.log("hello")
+
+  //   // return () => {
+  //   //   gameContext.setHandler("participants", []);
+  //   //   gameContext.setHandler("participantsData", []);
+  //   //   gameContext.setHandler("winnersFinal", []);
+  //   //   gameContext.setHandler("winners", []);
+  //   //   gameContext.setHandler('isCreateTour', false)
+  //   // }
+  //   gameContext.resetStates()
+  // }, [])
+
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
     setPlayer2GradientColor(toBadgeConverter(playerData?.badge))
@@ -109,17 +122,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
               alias: gameContext.tournamentInfo.alias,
             })
           );
-      
-      gameContext.setHandler('isCreateTour', false)
     }
-
-    return () => {
-      gameContext.setHandler("participants", []);
-      gameContext.setHandler("participantsData", []);
-      gameContext.setHandler("winnersFinal", []);
-      gameContext.setHandler("winners", []);
-    }
-
   }, [
     readyState
   ]);
@@ -128,6 +131,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     if (!lastMessage) return;
 
     const data = JSON.parse(lastMessage.data);
+    console.log("data is : ", data)
     switch (data?.type) {
       case "tournament_created":
         gameContext.setHandler("participants", data?.tournament?.participants);
@@ -187,6 +191,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         setPaddleCor(canvasWidth / 2 - playerWidth / 2);
         if (data?.loser === playerNumber) {
           sendMessage(JSON.stringify({ action: "disconnect" }));
+          gameContext.resetStates()
           setTimeout(() => {
             navigate("/game", { replace: true });
           }, 5000);

@@ -23,14 +23,15 @@ const NotifyUser = () => {
 
 	useEffect(() => {
 		if (gameContext.Auth && gameContext.isVistedProfile) {
-		setSocketUrl('ws://localhost:8800/ws/notifications/');
+			setSocketUrl('ws://localhost:8800/ws/notifications/');
 		} else {
-		setSocketUrl(null);
+			setSocketUrl(null);
 		}
 	}, [gameContext.Auth, gameContext.isVistedProfile]);
 
 	const { lastMessage } = useWebSocket(socketUrl,
 		{
+			onOpen: ()=> console.log('WebSocket notifications'),
 			onError: (error) => console.error('WebSocket error:', error),
 			shouldReconnect: () => true,
 			reconnectInterval: 3000,

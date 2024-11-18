@@ -27,17 +27,17 @@ const GetUserFromUrl = () => {
 
 function Profile() {
   const gameContext = useGameSettings();
-  gameContext.setisVistedProfile(prevState => true);
   const [data, setData] = useState({})
   const [UrlUsername, setUrlUsername] = useState(GetUserFromUrl())
   const [DataFetched, setDataFetched] = useState(false)
-
+  
   const handelData = (res) => {
     const { picture, username, background_picture, rank , badge} = res
     setData({ picture, username, background_picture, rank, badge })
   }
-
+  
   useEffect(() => {
+    gameContext.setisVistedProfile(prevState => true);
     let url = UrlUsername
       ? `http://localhost:8800/api/profile/data/${UrlUsername}/`
       : 'http://localhost:8800/api/profile/data/'

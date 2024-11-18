@@ -51,7 +51,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 
 	const [messageHistory, setMessageHistory] = useState([])
 	const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
-    filter: () => Auth,
+    onOpen: ()=> console.log('WebSocket chat'),
     onMessage: (message) => {
 			setMessageHistory((prev) => [...prev, message.data.toString()])
 		},

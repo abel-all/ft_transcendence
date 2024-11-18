@@ -10,6 +10,9 @@ import axios from 'axios'
 import './Profile.css'
 import Alert from '../../components/Alert'
 import BottomNaveBar from '../../components/BottomNavBar.jsx'
+import { useGameSettings } from '../Game/GameSettingsContext'
+
+
 
 const GetUserFromUrl = () => {
   let url = window.location.href
@@ -23,16 +26,18 @@ const GetUserFromUrl = () => {
 }
 
 function Profile() {
+  const gameContext = useGameSettings();
   const [data, setData] = useState({})
   const [UrlUsername, setUrlUsername] = useState(GetUserFromUrl())
   const [DataFetched, setDataFetched] = useState(false)
-
+  
   const handelData = (res) => {
     const { picture, username, background_picture, rank , badge} = res
     setData({ picture, username, background_picture, rank, badge })
   }
-
+  
   useEffect(() => {
+    gameContext.setisVistedProfile(prevState => true);
     let url = UrlUsername
       ? `http://localhost:8800/api/profile/data/${UrlUsername}/`
       : 'http://localhost:8800/api/profile/data/'

@@ -87,19 +87,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     "ws://localhost:8800/ws/tournament/"
   );
 
-  // useEffect(() => {
-  //   console.log("hello")
-
-  //   // return () => {
-  //   //   gameContext.setHandler("participants", []);
-  //   //   gameContext.setHandler("participantsData", []);
-  //   //   gameContext.setHandler("winnersFinal", []);
-  //   //   gameContext.setHandler("winners", []);
-  //   //   gameContext.setHandler('isCreateTour', false)
-  //   // }
-  //   gameContext.resetStates()
-  // }, [])
-
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
     setPlayer2GradientColor(toBadgeConverter(playerData?.badge))
@@ -200,6 +187,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           gameContext.setHandler("endgame", data);
           setTimeout(() => {
             isIsGameEnd(false);
+            
             isGameStart = false;
             setIsTimeToPlay(false);
             setIsGame(false);

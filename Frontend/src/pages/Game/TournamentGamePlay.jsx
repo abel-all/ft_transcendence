@@ -72,7 +72,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [endMatchScore, setEndMatchScore] = useState("");
   const [playerNumber, setPlayerNumber] = useState(0);
   const [isWinTournament, setIsWinTournament] = useState(false);
-   
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,
@@ -90,7 +89,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
-    setPlayer2GradientColor(toBadgeConverter(playerData?.player?.badge))
+    setPlayer2GradientColor(toBadgeConverter(playerData?.badge))
   }, [playerData, gameContext.selfData])
 
   useEffect(() => {
@@ -113,6 +112,14 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       
       gameContext.setHandler('isCreateTour', false)
     }
+
+    return () => {
+      gameContext.setHandler("participants", []);
+      gameContext.setHandler("participantsData", []);
+      gameContext.setHandler("winnersFinal", []);
+      gameContext.setHandler("winners", []);
+    }
+
   }, [
     readyState
   ]);

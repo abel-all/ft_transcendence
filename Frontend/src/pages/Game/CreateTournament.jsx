@@ -118,7 +118,6 @@ const CreateTournament = () => {
           ))}
         </>
       )}
-      {/* {gameContext.loading && <Spiner height="h-full" />} */}
       {createTour && !gameContext.loading && (
         <CreateTournamentSection
           title="Create new Tournament"

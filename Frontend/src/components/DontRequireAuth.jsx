@@ -15,11 +15,11 @@ const DontRequireAuth = ({ children }) => {
                 withCredentials: true,
             })
             .then(() => {
-                navigate("/profile", { replace: true });
+                navigate("/game", { replace: true });
             }).catch((err) => {
                 if (err.response?.status === 403) {
                     RefreshToken()
-                    navigate("/profile", { replace: true });
+                    navigate("/game", { replace: true });
                 }
                 setIsLoading(false)
             })

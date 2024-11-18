@@ -22,18 +22,24 @@ const NotifyUser = () => {
 
 
 	useEffect(() => {
-		if (gameContext.Auth && gameContext.isVistedProfile) {
+		if (gameContext.Auth && gameContext.isPaused) {
 			setSocketUrl('ws://localhost:8800/ws/notifications/');
 		} else {
+			const socket = getWebSocket();
+			if (socket) {
+			  socket.close();
+			  console.log('notifications WebSocket connection manually closed.');
+			}
 			setSocketUrl(null);
 		}
-	}, [gameContext.Auth, gameContext.isVistedProfile]);
+	}, [gameContext.Auth, gameContext.isPaused]);
 
-	const { lastMessage } = useWebSocket(socketUrl,
+	const { lastMessage, getWebSocket } = useWebSocket(socketUrl,
 		{
 			onOpen: ()=> console.log('WebSocket notifications'),
-			onError: (error) => console.error('WebSocket error:', error),
+			onClose: ()=> console.log('WebSocket notifications Closed!'),
 			shouldReconnect: () => true,
+			onError: (error) => console.error('WebSocket error:', error),
 			reconnectInterval: 3000,
 		}
 	)

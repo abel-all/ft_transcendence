@@ -4,7 +4,8 @@ import Inputes from './InputesComp'
 import { twMerge } from 'tailwind-merge'
 import axios from 'axios'
 import Alert from '../../../components/Alert'
-
+import { useGameSettings } from '../../Game/GameSettingsContext'
+import { flushSync } from 'react-dom';
 
 function AddressInformation({ SettingsData, className }) {
   const [save, setSave] = useState(false)
@@ -16,6 +17,7 @@ function AddressInformation({ SettingsData, className }) {
   const [Zip, setZip] = useState(zip_code)
   const [showNotification, setShowNotification] = useState(false)
   const [NotificationAllert, setNotificationAllert] = useState({message:"", color:""})
+  const gameContext = useGameSettings();
 
   const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`
   const Error = `border-rose-600`
@@ -71,21 +73,29 @@ function AddressInformation({ SettingsData, className }) {
 		  if (!ZipForma.test(Zip)) handelErrors('ZP')
 		  else {
 			removeErrors('ZP')
-			axios
-			  .post('http://localhost:8800/api/profile/edit/address/', {
-				country: country != Country ? Country : country,
-				city: city != City ? City : city,
-				address: address != Address ? Address : address,
-				Code: zip_code != Zip ? Zip : zip_code,
-			  })
-			  .then((res) => {
-				setSave(false);
-				setNotificationAllert(prev => {return {message:"Your address has been successfully updated.", color:"green"}});
-			})
-			.catch((err) => {
-				  setNotificationAllert(prev => {return {message:"An error occurred while updating your address. Please try again later.", color:"red"}});
-			  })
-		  }
+				flushSync(() => {
+					gameContext.setIsPaused((prevState) => !prevState);
+				});
+					const time = setTimeout(() => {
+						axios
+						.post('http://localhost:8800/api/profile/edit/address/', {
+							country: country != Country ? Country : country,
+							city: city != City ? City : city,
+							address: address != Address ? Address : address,
+							Code: zip_code != Zip ? Zip : zip_code,
+						})
+						.then((res) => {
+							setSave(false);
+							setNotificationAllert(prev => {return {message:"Your address has been successfully updated.", color:"green"}});
+						})
+						.catch((err) => {
+							setNotificationAllert(prev => {return {message:"An error occurred while updating your address. Please try again later.", color:"red"}});
+						})
+					},0)
+				flushSync(() => {
+					gameContext.setIsPaused(PrevState => !PrevState);
+				})
+			}
 		}
 	  }
 	}

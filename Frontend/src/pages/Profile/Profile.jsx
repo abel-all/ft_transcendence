@@ -10,7 +10,6 @@ import axios from 'axios'
 import './Profile.css'
 import Alert from '../../components/Alert'
 import BottomNaveBar from '../../components/BottomNavBar.jsx'
-import { useGameSettings } from '../Game/GameSettingsContext'
 
 
 
@@ -26,7 +25,6 @@ const GetUserFromUrl = () => {
 }
 
 function Profile() {
-  const gameContext = useGameSettings();
   const [data, setData] = useState({})
   const [UrlUsername, setUrlUsername] = useState(GetUserFromUrl())
   const [DataFetched, setDataFetched] = useState(false)
@@ -37,7 +35,6 @@ function Profile() {
   }
   
   useEffect(() => {
-    gameContext.setisVistedProfile(prevState => true);
     let url = UrlUsername
       ? `http://localhost:8800/api/profile/data/${UrlUsername}/`
       : 'http://localhost:8800/api/profile/data/'

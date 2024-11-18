@@ -35,31 +35,36 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [player2Score, setPlayer2Score] = useState(0)
   const [isRandomGame, setIsRandomGame] = useState(true)
   const [socketUrl, setSocketUrl] = useState(null);
-  const [isVistedProfile, setisVistedProfile] = useState(false)
   
   const [Auth, setAuth] = useState(false);
-  
+  const [isPaused, setIsPaused] = useState(true);
+
 
 
 	useEffect(() => {
-	  if (Auth && isVistedProfile) {
+	  if (Auth && isPaused) {
 		setSocketUrl('ws://localhost:8800/ws/chat/');
 	  } else {
-		setSocketUrl(null);
+      const socket = getWebSocket();
+      if (socket) {
+        socket.close();
+        console.log('chat WebSocket connection manually closed.');
+      }
+      setSocketUrl(null);
 	  }
-	}, [Auth, isVistedProfile]);
+	}, [Auth, isPaused]);
 
-	const [messageHistory, setMessageHistory] = useState([])
-	const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+	const [messageHistory, setMessageHistory] = useState([]);
+	const { sendMessage, lastMessage, readyState, getWebSocket} = useWebSocket(socketUrl, {
+    shouldReconnect: () => true,
     onOpen: ()=> console.log('WebSocket chat'),
+    onClose: ()=> console.log('WebSocket chat Closed!'),
     onMessage: (message) => {
 			setMessageHistory((prev) => [...prev, message.data.toString()])
 		},
-		shouldReconnect: () => true,
 		reconnectInterval: 3000,
     enabled: Auth,
-	})
-
+	}, isPaused)
 	const connectionStatus = {
 		[ReadyState.CONNECTING]: 'Connecting',
 		[ReadyState.OPEN]: 'Open',
@@ -225,10 +230,11 @@ export const GameSettingsContextProvider = ({ children }) => {
         participants,
         tournamentInfo,
         isCreateTour,
+        setIsPaused,
+        isPaused,
         createTour,
         joinTour,
         isSettings,
-        isVistedProfile, setisVistedProfile,
         handleModalClick,
         modal,
         isMapSection,

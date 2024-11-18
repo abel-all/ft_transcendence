@@ -3,6 +3,8 @@ import Edit from '../../../assets/imgs/edit.svg'
 import Inputes from './InputesComp'
 import axios from 'axios'
 import Alert from '../../../components/Alert'
+import { useGameSettings } from '../../Game/GameSettingsContext'
+import { flushSync } from 'react-dom';
 
 
 function PersonalInformation({ SettingsData, className }) {
@@ -14,6 +16,7 @@ function PersonalInformation({ SettingsData, className }) {
   const [Email, setEmail] = useState(email)
   const [showNotification, setShowNotification] = useState(false)
   const [NotificationAllert, setNotificationAllert] = useState({message:"", color:""})
+	const gameContext = useGameSettings();
 
 
   function HandelSave() {
@@ -50,27 +53,38 @@ function PersonalInformation({ SettingsData, className }) {
 
   const HandelSubmet = (e) => {
     e.preventDefault()
-    const NamesRegix = /^[a-zA-Z-]{2,16}$/
-    if (!NamesRegix.test(Firstname)) handelErrors('FN')
-    else {
-      removeErrors('FN')
+    console.log("start------------");
+    flushSync(() => {
+      gameContext.setIsPaused((prevState) => !prevState);
+    });
+    console.log(gameContext.isPaused);
+    const time = setTimeout(() => {
+      const NamesRegix = /^[a-zA-Z-]{2,16}$/
+        if (!NamesRegix.test(Firstname)) handelErrors('FN')
+          else {
+        removeErrors('FN')
       if (!NamesRegix.test(Lastname)) handelErrors('LN')
-      else {
-        removeErrors('LN')
-          axios
-            .post('http://localhost:8800/api/profile/edit/personal-data/', {
-              firstName: first_name != Firstname ? Firstname : 'None',
-              lastName: last_name != Lastname ? Lastname : 'None',
-            })
-            .then((res) => {
-              setSave(false);
-              setNotificationAllert(prev => {return {message:"Your personal information has been successfully updated.", color:"green"}});
-            })
-            .catch((err) => {
-              setNotificationAllert(prev => {return {message:"An error occurred while updating your personal information. Please try again later.", color:"red"}});
-            })
-      }
-    }
+        else {
+      removeErrors('LN')
+      axios
+      .post('http://localhost:8800/api/profile/edit/personal-data/', {
+        firstName: first_name != Firstname ? Firstname : 'None',
+        lastName: last_name != Lastname ? Lastname : 'None',
+      })
+      .then((res) => {
+        setSave(false);
+                setNotificationAllert(prev => {return {message:"Your personal information has been successfully updated.", color:"green"}});
+              })
+              .catch((err) => {
+                setNotificationAllert(prev => {return {message:"An error occurred while updating your personal information. Please try again later.", color:"red"}});
+              })
+            }
+          }
+          clearTimeout(time);
+    }, 0);
+    flushSync(() => {
+      gameContext.setIsPaused(PrevState => !PrevState);
+    })
   }
 
   const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`

@@ -7,7 +7,7 @@ import Spiner from './Spiner'
 import Axios from 'axios'
 import badgeConverter from '../../hooks/badgeConverter'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth'
 
 
 const SearchModal = () => {

@@ -62,7 +62,7 @@ const contentData = [
         title: "Contact us",
         description: `
             If you have any questions or concerns regarding this Agreement, please contact us at:<br/><br/>
-            - Email: contact@ft-transcendence.net<br/>
+            - Email: teamfttranscendence@gmail.com<br/>
             - Address: 1337, Khouribga, Morocco
         `,
     }

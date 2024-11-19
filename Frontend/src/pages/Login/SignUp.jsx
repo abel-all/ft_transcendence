@@ -50,10 +50,16 @@ function SignUp() {
         .then(() => {
           navigate('/signin', { replace: true })
         })
-        .catch(() => {
-          setMessage('Please try again!')
+        .catch((err) => {
+          setMessage(err?.response?.data?.message)
         })
-    } else setMessage('Invalid Information')
+    } else {
+      if (!fieldReGex.nameReGex.test(formValues['First Name'])) setMessage("Invalid Firstname")
+      else if (!fieldReGex.nameReGex.test(formValues['Last Name'])) setMessage("Invalid Lastname")
+      else if (!fieldReGex.usernameReGex.test(formValues['Username'])) setMessage("Invalid Username")
+      else if (!fieldReGex.emailReGex.test(formValues['Email'])) setMessage("Invalid Email")
+      else setMessage("Invalid Password")
+    }
   }
   const handleUserClick = () => {
     checkFieldInput()

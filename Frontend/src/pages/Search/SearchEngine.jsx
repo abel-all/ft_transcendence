@@ -7,7 +7,7 @@ import Spiner from '../Game/Spiner'
 import SearchResultCard from './SearchResultCard.jsx'
 import badgeConverter from '../../hooks/badgeConverter.jsx'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../components/Auth'
+import { useAuth } from '../../components/Auth.jsx'
 
 const SearchEngine = () => {
   const navigate = useNavigate();

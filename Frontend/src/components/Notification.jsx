@@ -8,7 +8,7 @@ import friendship from "../assets/imgs/friendship.svg"
 import tournReminder from "../assets/imgs/tournReminder.svg"
 import joinMatch from "../assets/imgs/joinMatch.svg"
 import notiJoinTourn from "../assets/imgs/notiJoinTourn.svg"
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 
 // let onetime = false;
 
@@ -46,81 +46,81 @@ const Notification = ({state}) => {
       .catch((err) => {
         if (err.response?.status === 403) {
           notification.RefreshToken();
-          fetchUserData();
+          // fetchUserData();
         }
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
       })
     }
-
-  useEffect(() => {
-    const currentRef = targetRef.current
-
-    let isFetching = false
-    let setCounter
-
-    const handleScroll = () => {
-      if (currentRef && !isFetching) {
-        const { scrollTop, scrollHeight, clientHeight } = currentRef
-        if (scrollTop + clientHeight >= scrollHeight) {
-          isFetching = true
-          console.log("hello from handle scroll", )
-          setIsLoaded(true)
-          setCounter = setTimeout(async () => {
-            setIsBottomCounter((prev) => prev + 1)
-            await fetchUserData()
-            isFetching = false
-          }, 2000)
+    
+    useEffect(() => {
+      const currentRef = targetRef.current
+      
+      let isFetching = false
+      let setCounter
+      
+      const handleScroll = () => {
+        if (currentRef && !isFetching) {
+          const { scrollTop, scrollHeight, clientHeight } = currentRef
+          if (scrollTop + clientHeight >= scrollHeight) {
+            isFetching = true
+            console.log("hello from handle scroll", )
+            setIsLoaded(true)
+            setCounter = setTimeout(async () => {
+              setIsBottomCounter((prev) => prev + 1)
+              await fetchUserData()
+              isFetching = false
+            }, 2000)
+          }
         }
       }
-    }
-
-    
-    if (currentRef) currentRef.addEventListener('scroll', handleScroll)
       
-      return () => {
-        if (currentRef) currentRef.removeEventListener('scroll', handleScroll)
-        clearTimeout(setCounter)
-    }
-  }, [])
+      
+      if (currentRef) currentRef.addEventListener('scroll', handleScroll)
+        
+        return () => {
+          if (currentRef) currentRef.removeEventListener('scroll', handleScroll)
+            clearTimeout(setCounter)
+        }
+      }, [])
 
-  const handleClick = (e) => {
+      const handleClick = (e) => {
     switch (e.currentTarget.dataset.id) {
       case "PLAYWITHME_REQUEST":
         notification.setShowNotification(false);
         notification.setShowNotificationMobile(false);
         navigate(`/game/online?param=${e.currentTarget.dataset.id1}`);
         break;
-      case "JOINING_TOURNAMENT":
-        notification.setShowNotification(false);
-        notification.setShowNotificationMobile(false);
-        navigate(`/game/tournament?param=${e.currentTarget.dataset.id2.split(" ")[2]}`);
-        break;
-      default:
-        break;
-    }
-  }
-  const handleImg = (notificationType) => {
+        case "JOINING_TOURNAMENT":
+          notification.setShowNotification(false);
+          notification.setShowNotificationMobile(false);
+          navigate(`/game/tournament?param=${e.currentTarget.dataset.id2.split(" ")[2]}`);
+          break;
+          default:
+            break;
+          }
+        }
+        const handleImg = (notificationType) => {
     switch (notificationType) {
       case "FRIENDSHIP_REQUEST":
         return friendReq
-      case "HANDLE_REQUESTED_FRIENDSHIP":
-        return friendship
-      case "PLAYWITHME_REQUEST":
-        return joinMatch
-      case "JOINING_TOURNAMENT":
-        return notiJoinTourn
-      case "TOURNAMENT_REMINDER":
+        case "HANDLE_REQUESTED_FRIENDSHIP":
+          return friendship
+          case "PLAYWITHME_REQUEST":
+            return joinMatch
+            case "JOINING_TOURNAMENT":
+              return notiJoinTourn
+              case "TOURNAMENT_REMINDER":
         return tournReminder
+      }
     }
-  }
-
-  return (
-    <div
+    
+    return (
+      <div
       ref={targetRef}
       className="flex flex-col items-center flex-nowrap gap-[10px] max-md:pb-[100px] p-[10px] max-md:pr-[25px] w-[400px] h-[600px] max-md:w-[calc(100vw-15px)] max-md:h-[100vh] overflow-y-scroll scrollbar-w bg-[#393e42] absolute max-md:fixed right-[5px] top-[53px] max-md:top-0 max-md:right-0 max-md:left-0 md:rounded-[15px] md:rounded-tr-[0]"
-    >
+      >
       {isZeroNotification ? (
         <div className="text-[#fff6f9] text-[20px] flex flex-col justify-center h-full">
           No Notifications

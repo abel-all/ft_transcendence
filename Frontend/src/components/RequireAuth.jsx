@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LoaderOntop from "./LoaderOntop";
 import { useGameSettings } from '../pages/Game/GameSettingsContext'
 import Axios from 'axios'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 
 
 const RequireAuth = ({ children }) => {

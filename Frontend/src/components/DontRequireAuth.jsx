@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoaderOntop from "./LoaderOntop";
 import Axios from 'axios'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 
 const DontRequireAuth = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);

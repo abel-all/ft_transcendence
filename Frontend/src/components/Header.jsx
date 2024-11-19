@@ -3,7 +3,7 @@ import search from '../assets/imgs/search.svg'
 import logout from '../assets/imgs/logout.svg'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 import Axios from 'axios'
 
 function Header(props) {

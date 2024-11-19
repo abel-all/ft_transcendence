@@ -4,7 +4,7 @@ import { useGameSettings } from './GameSettingsContext'
 import Axios from 'axios'
 import '../2FaAuth/css/index.css'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth.jsx'
 
 const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) => {
   const navigate = useNavigate();
@@ -48,8 +48,8 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
-          setIsLoading(false)
           setMessage(err?.response?.data.message)
+          setIsLoading(false)
         })
     }
     if (title === 'Join a Tournament' && !params) {
@@ -103,8 +103,10 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           setMessage(err?.response?.data?.message)
         })
     } else {
+      if (!nameReGex.test(name))
+        setMessage('Invalid Alias Name')
+      else setMessage('Invalid Tournamnet Name')
       setIsLoading(false)
-      setMessage('Invalid name, please try again')
     }
   }
   const joinTournament = async () => {
@@ -138,8 +140,10 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           setMessage(err?.response?.data.message)
         })
     } else {
+      if (!nameReGex.test(name))
+        setMessage('Invalid Alias Name')
+      else setMessage('Invalid Tournamnet Name')
       setIsLoading(false)
-      setMessage('Invalid name, please try again')
     }
   }
 

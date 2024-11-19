@@ -26,7 +26,7 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  const RefrechToken = async () => {
+  const RefreshToken = async () => {
     await Axios.get('http://localhost:8800/api/auth/token/refresh/', {
         withCredentials: true,
       })
@@ -57,7 +57,7 @@ export const ContextProvider = ({ children }) => {
         setHandler,
         isGame,
         isLogin,
-        RefrechToken
+        RefreshToken
       }}
     >
       {children}

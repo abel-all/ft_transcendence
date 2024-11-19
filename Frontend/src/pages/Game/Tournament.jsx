@@ -17,6 +17,7 @@ const Tournament = () => {
     }
   }, [])
 
+
   return (
     <>
       {isLoaded ? (

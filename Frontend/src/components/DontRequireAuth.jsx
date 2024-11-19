@@ -16,10 +16,9 @@ const DontRequireAuth = ({ children }) => {
             })
             .then(() => {
                 navigate("/profile", { replace: true });
-            }).catch((err) => {
+            }).catch(async (err) => {
                 if (err.response?.status === 403) {
-                    auth.RefreshToken()
-                    navigate("/profile", { replace: true });
+                    await auth.RefreshToken()
                 }
                 setIsLoading(false)
             })

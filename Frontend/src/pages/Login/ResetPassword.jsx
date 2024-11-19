@@ -4,7 +4,6 @@ import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import { fieldReGex } from './variables.jsx'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../components/Auth.jsx'
 
 const ResetPassword = () => {
   const [message, setMessage] = useState('')
@@ -18,7 +17,6 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const navigate = useNavigate()
-  const auth = useAuth()
 
   const urlSearchString = location.search
   const params = new URLSearchParams(urlSearchString)
@@ -60,7 +58,6 @@ const ResetPassword = () => {
         }
       )
         .then(() => {
-          auth.setHandler('login', true)
           navigate('/signin', { replace: true })
         })
         .catch((err) => {

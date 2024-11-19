@@ -15,6 +15,7 @@ import {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
 import { useAuth } from '../../components/Auth.jsx'
+import Alert from "../../components/Alert.jsx";
 
 const playerHeight = 15;
 const playerWidth = 70;
@@ -73,6 +74,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [endMatchScore, setEndMatchScore] = useState("");
   const [playerNumber, setPlayerNumber] = useState(0);
   const [isWinTournament, setIsWinTournament] = useState(false);
+  const [isError, setIsError] = useState(null)
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,
@@ -358,24 +360,17 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       .then((response) => {
         setMatchId(-1);
       })
-      .catch((err) => {
+      .catch(async (err) => {
         if (err.response?.status === 403) {
-          auth.RefreshToken();
-          fetchSettings();
+          await auth.RefreshToken();
         }
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
+        setIsError(err?.response?.data?.message)
       });
   };
   const sendNotification = async (data) => {
-    // let participantsNames = [];
-    // for (let i = 0; i < gameContext?.participantsData.length; i++) {
-    //   participantsNames.push(
-    //     gameContext?.participantsData[i]?.profile?.username
-    //   );
-    // }
-    // console.log("length of parts : ", gameContext?.participantsData.length)
     await Axios.post(
       "http://localhost:8800/api/profile/notification/tournament-reminder/",
       {
@@ -387,10 +382,9 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     )
       .then((response) => {
       })
-      .catch((err) => {
+      .catch(async (err) => {
         if (err.response?.status === 403) {
-          auth.RefreshToken();
-          sendNotification();
+          await auth.RefreshToken();
         }
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
@@ -458,6 +452,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
 
   return (
     <>
+      {isError && <Alert message={isError} color={"red"}/>}
       {(isGame || isWinTournament) ? (
         <>
           {(isGameEnd || isWinTournament) && (

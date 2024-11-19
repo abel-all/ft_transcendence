@@ -14,7 +14,6 @@ const OauthCallBack = () => {
     const params = new URLSearchParams(urlSearchString)
     const paramValue = params.get('param')
     if (paramValue === '0') {
-      auth.setHandler('login', true)
       navigate('/signin', { replace: true })
     } else {
       const checkCode = async () => {
@@ -28,12 +27,10 @@ const OauthCallBack = () => {
           }
         )
           .then(() => {
-            auth.setHandler('game', true)
-            navigate('/profile', { replace: true }) // is 2fa disable must redirect them to game page
+            navigate('/profile', { replace: true })
           })
           .catch(() => {
-            auth.setHandler('login', true)
-            navigate('/signin', { replace: true }) // is an error catched must redirect them to game page
+            navigate('/signin', { replace: true })
           })
       }
       if (isMounted) {

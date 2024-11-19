@@ -51,10 +51,9 @@ const TwoFaAuthPassStep = () => {
           TwoFaContext.setHandler('pass', false)
           TwoFaContext.setHandler('step1', true)
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            verifyPassword();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })

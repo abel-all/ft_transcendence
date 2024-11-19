@@ -46,10 +46,9 @@ const TwoFaAuthStep1 = () => {
           TwoFaContext.setHandler('step1', false)
           TwoFaContext.setHandler('step2', true)
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            verifyOtpCode();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
@@ -73,10 +72,9 @@ const TwoFaAuthStep1 = () => {
         setImage(`data:image/png;base64,${response.data.qr_code}`)
         setIsLoading(false)
       })
-      .catch((err) => {
+      .catch(async (err) => {
         if (err.response?.status === 403) {
-          auth.RefreshToken();
-          handleEnableButtonClick();
+          await auth.RefreshToken();
         }
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })

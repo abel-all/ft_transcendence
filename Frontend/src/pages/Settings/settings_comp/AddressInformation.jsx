@@ -73,10 +73,10 @@ function AddressInformation({ SettingsData, className }) {
 		  if (!ZipForma.test(Zip)) handelErrors('ZP')
 		  else {
 			removeErrors('ZP')
-				flushSync(() => {
-					gameContext.setIsPaused((prevState) => !prevState);
-				});
-					const time = setTimeout(() => {
+				// flushSync(() => {
+				// 	gameContext.setIsPaused((prevState) => !prevState);
+				// });
+				// 	const time = setTimeout(() => {
 						axios
 						.post('http://localhost:8800/api/profile/edit/address/', {
 							country: country != Country ? Country : country,
@@ -91,10 +91,10 @@ function AddressInformation({ SettingsData, className }) {
 						.catch((err) => {
 							setNotificationAllert(prev => {return {message:"An error occurred while updating your address. Please try again later.", color:"red"}});
 						})
-					},0)
-				flushSync(() => {
-					gameContext.setIsPaused(PrevState => !PrevState);
-				})
+				// 	},0)
+				// flushSync(() => {
+				// 	gameContext.setIsPaused(PrevState => !PrevState);
+				// })
 			}
 		}
 	  }

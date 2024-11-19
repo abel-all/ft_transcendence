@@ -22,17 +22,17 @@ const NotifyUser = () => {
 
 
 	useEffect(() => {
-		if (gameContext.Auth && gameContext.isPaused) {
+		if (gameContext.Auth) {
 			setSocketUrl('ws://localhost:8800/ws/notifications/');
 		} else {
-			const socket = getWebSocket();
-			if (socket) {
-			  socket.close();
-			  console.log('notifications WebSocket connection manually closed.');
-			}
+			// const socket = getWebSocket();
+			// if (socket) {
+			//   socket.close();
+			//   console.log('notifications WebSocket connection manually closed.');
+			// }
 			setSocketUrl(null);
 		}
-	}, [gameContext.Auth, gameContext.isPaused]);
+	}, [gameContext.Auth]);
 
 	const { lastMessage, getWebSocket } = useWebSocket(socketUrl,
 		{

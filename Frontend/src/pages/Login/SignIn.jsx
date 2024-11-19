@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import LoaderOntop from '../../components/LoaderOntop.jsx'
 import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
 import './css/index.css'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth'
 
 function SignIn() {
   const [formValues, setFormValues] = useState({})

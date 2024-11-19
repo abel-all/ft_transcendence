@@ -5,16 +5,16 @@ import Axios from 'axios'
 import { useTwoFaContext } from './TwoFaContext'
 import './css/index.css'
 import usePasswordToggle from '../../hooks/usePasswordToggle.jsx'
-import RefreshToken from "../../hooks/RefreshToken.jsx"
+import { useAuth } from './Auth'
 import { useNavigate } from 'react-router-dom'
 
 const TwoFaAuthPassStep = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const [focusColor, setFocusColor] = useState('')
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [password, setPassword] = useState('')
-   
   const TwoFaContext = useTwoFaContext()
   const passwordReGex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
@@ -53,7 +53,7 @@ const TwoFaAuthPassStep = () => {
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             verifyPassword();
           }
           else if (err.response?.status === 401) {

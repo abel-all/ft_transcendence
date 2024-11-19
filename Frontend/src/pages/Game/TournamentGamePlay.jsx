@@ -11,10 +11,10 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import GameEndScreen from "./GameEndScreen";
 import "./css/index.css";
-import RefreshToken from "../../hooks/RefreshToken"
 import {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
+import { useAuth } from './Auth'
 
 const playerHeight = 15;
 const playerWidth = 70;
@@ -56,6 +56,7 @@ let isGameStart = false;
 
 const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
+  const auth = useAuth();
   const gameContext = useGameSettings();
   const navigate = useNavigate();
   const [player1Score, setPlayer1Score] = useState(0);
@@ -110,6 +111,11 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
             })
           );
     }
+
+    return () => {
+      isGameStart = false
+    }
+
   }, [
     readyState
   ]);
@@ -147,6 +153,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         setIsTimeToPlay(true);
         setTimeout(() => {
           if (!isGameStart) {
+            console.log("start game sent and val of is game is : ", isGameStart)
             sendMessage(
               JSON.stringify({
                 action: "start_game",
@@ -353,7 +360,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           fetchSettings();
         }
         else if (err.response?.status === 401) {
@@ -382,7 +389,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           sendNotification();
         }
         else if (err.response?.status === 401) {

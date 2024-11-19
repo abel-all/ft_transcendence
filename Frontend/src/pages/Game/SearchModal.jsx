@@ -6,8 +6,9 @@ import SearchResultCardTour from '../Search/SearchResultCardTour'
 import Spiner from './Spiner'
 import Axios from 'axios'
 import badgeConverter from '../../hooks/badgeConverter'
-import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from './Auth'
+
 
 const SearchModal = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const SearchModal = () => {
   const [errorMessage, setErrorMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [searchResult, setSearchResult] = useState('')
-   
+  const auth = useAuth();
 
   // const [isBottomCounter, setIsBottomCounter] = useState(1);
   const [listOfSearchResult, setListOfSearchResult] = useState([])
@@ -40,7 +41,7 @@ const SearchModal = () => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           fetchUsersData();
         }
         else if (err.response?.status === 401) {
@@ -67,7 +68,7 @@ const SearchModal = () => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           fetchFriendsData();
         }
         else if (err.response?.status === 401) {

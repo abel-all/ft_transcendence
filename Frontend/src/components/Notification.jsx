@@ -8,7 +8,6 @@ import friendship from "../assets/imgs/friendship.svg"
 import tournReminder from "../assets/imgs/tournReminder.svg"
 import joinMatch from "../assets/imgs/joinMatch.svg"
 import notiJoinTourn from "../assets/imgs/notiJoinTourn.svg"
-import RefreshToken from "../hooks/RefreshToken"
 import { useAuth } from './Auth'
 
 // let onetime = false;
@@ -46,7 +45,7 @@ const Notification = ({state}) => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          notification.RefreshToken();
           fetchUserData();
         }
         else if (err.response?.status === 401) {
@@ -120,15 +119,14 @@ const Notification = ({state}) => {
   return (
     <div
       ref={targetRef}
-      className="border border-red-500 flex flex-col items-center flex-nowrap gap-[10px] max-md:pb-[100px] p-[10px] max-md:pr-[25px] w-[400px] h-[600px] max-md:w-[calc(100vw-15px)] max-md:h-[100vh] overflow-y-scroll scrollbar-w bg-[#393e42] absolute max-md:fixed right-[5px] top-[53px] max-md:top-0 max-md:right-0 max-md:left-0 md:rounded-[15px] md:rounded-tr-[0]"
+      className="flex flex-col items-center flex-nowrap gap-[10px] max-md:pb-[100px] p-[10px] max-md:pr-[25px] w-[400px] h-[600px] max-md:w-[calc(100vw-15px)] max-md:h-[100vh] overflow-y-scroll scrollbar-w bg-[#393e42] absolute max-md:fixed right-[5px] top-[53px] max-md:top-0 max-md:right-0 max-md:left-0 md:rounded-[15px] md:rounded-tr-[0]"
     >
       {isZeroNotification ? (
         <div className="text-[#fff6f9] text-[20px] flex flex-col justify-center h-full">
           No Notifications
         </div>
       ) : (
-        <>
-        {notiData.map(({ content, notification_type, from_user }, index) => (
+        notiData.map(({ content, notification_type, from_user }, index) => (
           <div
           key={index}
           data-id={notification_type}
@@ -140,15 +138,7 @@ const Notification = ({state}) => {
             <div className=''>{content}</div>
             <img className="w-8 h-8" src={handleImg(notification_type)} alt="notification image" />
           </div>
-        ))}
-        <div
-          className={`flex-shrink-0 max-md:w-full w-full mx-3 h-[70px] bg-[#878787] rounded-[10px] flex justify-between items-center px-3`}
-          onClick={handleClick}
-          >
-            <div className=''>{notiData[0]?.content + "---" + notiData[1]?.content}</div>
-            <img className="w-8 h-8" src={friendReq} alt="notification image" />
-          </div>
-        </>
+        ))
       )}
       {isLoaded && <Spiner />}
     </div>

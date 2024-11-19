@@ -3,14 +3,14 @@ import playImg from '../../assets/imgs/paly_friend.svg'
 import { useGameSettings } from '../Game/GameSettingsContext'
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
-import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../components/Auth'
 
 const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
   const navigate = useNavigate();
   const gameContext = useGameSettings()
   const [isIconCliced, setIsIconCliced] = useState(false)
-   
+  const auth = useAuth();
 
   const handlePlayWithMeClick = async () => {
     setIsIconCliced(true)
@@ -28,7 +28,7 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           handlePlayWithMeClick();
         }
         else if (err.response?.status === 401) {

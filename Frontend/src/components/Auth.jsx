@@ -2,19 +2,16 @@ import { createContext, useContext, useState } from 'react'
 import Axios from 'axios'
 import axios from 'axios'
 import GetCookie from '../hooks/GetCookie'
-import { useGameSettings } from '../pages/Game/GameSettingsContext'
-import RefreshToken from '../hooks/RefreshToken.jsx'
+import { useNavigate } from "react-router-dom"
 
 export const Authcontext = createContext(null)
 
 export const ContextProvider = ({ children }) => {
-  const [isAuth, setIsAuth] = useState(false)
   const [isGame, setIsGame] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
   const [showNotificationMobile, setShowNotificationMobile] = useState(false)
-  const gameContext = useGameSettings()
-   
+  const navigate = useNavigate();
 
   axios.defaults.headers.common['X-CSRFToken'] = GetCookie('csrftoken')
 
@@ -29,66 +26,15 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  const isAuthenticated = async () => {
-    
-    const refrechToken = async () => {
-      await Axios.get('http://localhost:8800/api/auth/token/refresh/', {
+  const RefrechToken = async () => {
+    await Axios.get('http://localhost:8800/api/auth/token/refresh/', {
         withCredentials: true,
       })
-        .then(() => {
-          setIsAuth(true)
-        })
-        .catch(() => {
-          setIsAuth(false)
-        })
-    }
-
-    await Axios.get('http://localhost:8800/api/auth/token/', {
-      withCredentials: true,
-    })
       .then(() => {
-        const fetchUserData = async () => {
-          await Axios.get('http://localhost:8800/api/profile/data/', {
-            withCredentials: true,
-          })
-            .then((response) => {
-              gameContext.setHandler('selfData', response.data)
-              const fetchSettings = async () => {
-    
-                await Axios.get(`http://localhost:8800/api/game/settings/`, {
-                  withCredentials: true,
-                })
-                  .then((response) => {
-                    gameContext.setHandler('gameSettings', response?.data[0])
-                  })
-                  .catch((err) => {
-                    if (err.response?.status === 403)
-                      RefreshToken()
-                    else if (err.response?.status === 401)
-                      setIsAuth(false)
-                  })
-              }
-              fetchSettings()
-            })
-            .catch((err) => {
-              if (err.response?.status === 403)
-                RefreshToken()
-              else if (err.response?.status === 401)
-                setIsAuth(false)
-              setIsAuth(false)
-            })
-        }
-        fetchUserData()
-        setIsAuth(true)
-        return 
+        console.log('your tocken is refreshed successfully')
       })
-      .catch((err) => {
-        if (err.response?.status === undefined) setIsAuth(false)
-        if (err.response?.status === 403) {
-          refrechToken()
-        } else {
-          setIsAuth(false)
-        }
+      .catch(() => {
+        navigate("/signin", { replace: true })
       })
   }
 
@@ -108,11 +54,10 @@ export const ContextProvider = ({ children }) => {
         setShowNotification,
         showNotification,
         showNotificationMobile,
-        isAuthenticated,
         setHandler,
-        isAuth,
         isGame,
         isLogin,
+        RefrechToken
       }}
     >
       {children}

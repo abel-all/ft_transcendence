@@ -6,8 +6,8 @@ import './css/index.css'
 import Spiner from '../Game/Spiner'
 import SearchResultCard from './SearchResultCard.jsx'
 import badgeConverter from '../../hooks/badgeConverter.jsx'
-import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../components/Auth'
 
 const SearchEngine = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const SearchEngine = () => {
   const [errorMessage, setErrorMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [listOfSearchResult, setListOfSearchResult] = useState([])
-   
+  const auth = useAuth();
 
   const fetchPlayerData = async () => {
     await Axios.post(
@@ -34,7 +34,7 @@ const SearchEngine = () => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           fetchPlayerData();
         }
         else if (err.response?.status === 401) {

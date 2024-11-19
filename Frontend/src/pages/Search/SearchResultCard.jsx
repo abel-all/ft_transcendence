@@ -4,15 +4,15 @@ import addUserImg from '../../assets/imgs/AddUser.svg'
 import chatImg from '../../assets/imgs/chat_friend.svg'
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
-import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../components/Auth'
 
 const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
   
   const [isPlayIconCliced, setIsPlayIconCliced] = useState(false)
   const [isAddIconCliced, setIsAddIconCliced] = useState(false)
   const navigate = useNavigate();
-   
+  const auth = useAuth();
 
   const handlePlayWithMeClick = async () => {
     setIsPlayIconCliced(true)
@@ -29,7 +29,7 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
       })
       .catch((err) => {
         if (err.response?.status === 403) {
-          RefreshToken();
+          auth.RefreshToken();
           handlePlayWithMeClick();
         }
         else if (err.response?.status === 401) {
@@ -49,7 +49,7 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             handleAddUserClick();
           }
           else if (err.response?.status === 401) {

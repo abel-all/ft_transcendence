@@ -14,8 +14,8 @@ import { useEffect, useState } from 'react'
 import Axios from 'axios'
 import Spiner from './Spiner'
 import './css/index.css'
-import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from './Auth'
 
 const mapData = [
   {
@@ -89,7 +89,7 @@ const ChooseSectionHandler = (name) => {
   const navigate = useNavigate();
   const gameContext = useGameSettings()
   const [message, setMessage] = useState('')
-   
+  const auth = useAuth();
 
   const mapClickHandler = (e) => {
     gameContext.addsettingsData(e.currentTarget.dataset.value)
@@ -146,7 +146,7 @@ const scoreClickHandler = (e) => {
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             postSettingsData();
           }
           else if (err.response?.status === 401) {

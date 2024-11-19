@@ -3,14 +3,14 @@ import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import logoImg from '../../assets/imgs/logo.png'
 import { useNavigate } from 'react-router-dom'
-import RefreshToken from "../../hooks/RefreshToken"
+import { useAuth } from './Auth'
 
 const TwoFaAuthStep3 = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState('')
   const [backupCodes, setBackupCodes] = useState([])
   const navigate = useNavigate()
-   
+  const auth = useAuth();
 
   useEffect(() => {
     const fetchBackUpCodes = async () => {
@@ -23,7 +23,7 @@ const TwoFaAuthStep3 = () => {
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             fetchBackUpCodes();
           }
           else if (err.response?.status === 401) {

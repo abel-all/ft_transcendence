@@ -4,7 +4,7 @@ import SettingsIcon from "../assets/icons/settings"
 import GameplayIcon from "../assets/icons/gametable"
 import BellIcon from "../assets/icons/bell"
 import { Link } from 'react-router-dom'
-import { useAuth } from "./Auth";
+import { useAuth } from "../components/Auth";
 import { useEffect, useState } from "react"
 
 

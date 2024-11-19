@@ -3,8 +3,8 @@ import LoaderOntop from '../../components/LoaderOntop.jsx'
 import { useGameSettings } from './GameSettingsContext'
 import Axios from 'axios'
 import '../2FaAuth/css/index.css'
-import RefreshToken from "../../hooks/RefreshToken"
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from './Auth'
 
 const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   const [name, setName] = useState('')
   const [tour, setTour] = useState('')
   const gameContext = useGameSettings()
-   
+  const auth = useAuth();
   const nameReGex = /^[a-zA-Z-]{2,16}$/
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             fetchActiveTournament();
           }
           else if (err.response?.status === 401) {
@@ -93,7 +93,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             createTournament();
           }
           else if (err.response?.status === 401) {
@@ -128,7 +128,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         })
         .catch((err) => {
           if (err.response?.status === 403) {
-            RefreshToken();
+            auth.RefreshToken();
             joinTournament();
           }
           else if (err.response?.status === 401) {

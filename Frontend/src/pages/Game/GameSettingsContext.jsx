@@ -104,16 +104,6 @@ export const GameSettingsContextProvider = ({ children }) => {
     setPlayer2Score(0)
     setIsRandomGame(true)
   }
-  // const resetTournamentStates = () => {
-  //   setJoinTour(false)
-  //   setLoading(false)
-  //   setIsCreateTour(false)
-  //   setParticipants([])
-  //   setParticipantsData([])
-  //   setEndGameData({})
-  //   setWinnersFinal([])
-  //   setWinners([])
-  // }
 
   const handleModalClick = () => {
     setModal(!modal)

@@ -36,22 +36,22 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [socketUrl, setSocketUrl] = useState(null);
   
   const [Auth, setAuth] = useState(false);
-  const [isPaused, setIsPaused] = useState(true);
+  // const [isPaused, setIsPaused] = useState(true);
 
 
 
 	useEffect(() => {
-	  if (Auth && isPaused) {
+	  if (Auth) {
 		setSocketUrl('ws://localhost:8800/ws/chat/');
 	  } else {
-      const socket = getWebSocket();
-      if (socket) {
-        socket.close();
-        console.log('chat WebSocket connection manually closed.');
-      }
+      // const socket = getWebSocket();
+      // if (socket) {
+      //   socket.close();
+      //   console.log('chat WebSocket connection manually closed.');
+      // }
       setSocketUrl(null);
 	  }
-	}, [Auth, isPaused]);
+	}, [Auth]);
 
 	const [messageHistory, setMessageHistory] = useState([]);
 	const { sendMessage, lastMessage, readyState, getWebSocket} = useWebSocket(socketUrl, {
@@ -63,7 +63,7 @@ export const GameSettingsContextProvider = ({ children }) => {
 		},
 		reconnectInterval: 3000,
     enabled: Auth,
-	}, isPaused)
+	})
 	const connectionStatus = {
 		[ReadyState.CONNECTING]: 'Connecting',
 		[ReadyState.OPEN]: 'Open',
@@ -219,8 +219,8 @@ export const GameSettingsContextProvider = ({ children }) => {
         participants,
         tournamentInfo,
         isCreateTour,
-        setIsPaused,
-        isPaused,
+        // setIsPaused,
+        // isPaused,
         createTour,
         joinTour,
         isSettings,

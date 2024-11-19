@@ -54,11 +54,10 @@ function PersonalInformation({ SettingsData, className }) {
   const HandelSubmet = (e) => {
     e.preventDefault()
     console.log("start------------");
-    flushSync(() => {
-      gameContext.setIsPaused((prevState) => !prevState);
-    });
-    console.log(gameContext.isPaused);
-    const time = setTimeout(() => {
+    // flushSync(() => {
+    //   gameContext.setIsPaused((prevState) => !prevState);
+    // });
+    // const time = setTimeout(() => {
       const NamesRegix = /^[a-zA-Z-]{2,16}$/
         if (!NamesRegix.test(Firstname)) handelErrors('FN')
           else {
@@ -80,11 +79,11 @@ function PersonalInformation({ SettingsData, className }) {
               })
             }
           }
-          clearTimeout(time);
-    }, 0);
-    flushSync(() => {
-      gameContext.setIsPaused(PrevState => !PrevState);
-    })
+          // clearTimeout(time);
+    // }, 0);
+    // flushSync(() => {
+    //   gameContext.setIsPaused(PrevState => !PrevState);
+    // })
   }
 
   const placeHolder = `bg-transparent focus-visible:outline-0 border-b-[1px] pb-[5px] pl-[4px] placeholder:text-[#FFFFFF] placeholder:font-[400] placeholder:font-[Outfit] mt-[5px] mb-[20px]`

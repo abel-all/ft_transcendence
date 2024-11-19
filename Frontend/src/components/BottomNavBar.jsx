@@ -10,7 +10,7 @@ function BottomNaveBar(props) {
     return (
         <>
             <div className="md:hidden fixed z-[50]">
-                {notification.showNotification && <Notification/>}
+                {notification.showNotificationMobile && <Notification state={"2"} />}
             </div>
             <div className='fixed bottom-[15px] left-0 right-0 z-50'>
                 <div className="container mx-auto px-[10px]">

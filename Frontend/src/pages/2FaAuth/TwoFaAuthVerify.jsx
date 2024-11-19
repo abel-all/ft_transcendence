@@ -37,7 +37,7 @@ const TwoFaAuthVerify = ({ userId }) => {
         }
       )
         .then(() => {
-          navigate('/game', { replace: true })
+          navigate('/profile', { replace: true })
         })
         .catch(() => {
           setIsLoading(false)

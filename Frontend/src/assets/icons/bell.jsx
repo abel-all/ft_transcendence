@@ -7,13 +7,17 @@ function BellIcon({who, color="#eee", isNotification=true}) {
 
     const notification = useAuth();
 
-
     let opacity = 1;
     if (who == "BellIcon")
         opacity = 0.5;
 
     const handleClick = () => {
-        notification.setShowNotificationHandler();
+        if (window.innerWidth <= 768)
+            notification.setShowNotificationMobileHandler();
+        else {
+            console.log("clicked")
+            notification.setShowNotificationHandler();
+        }
     }
 
     return (
@@ -24,7 +28,7 @@ function BellIcon({who, color="#eee", isNotification=true}) {
             <div className={`w-[17px] h-[17px] bg-[#DA2626] absolute top-0 right-0 rounded-full ${isNotification ? "block" : "hidden"}`} >
             </div>
             <div className="max-md:hidden">
-                {notification.showNotification && <Notification />}
+                {notification.showNotification && <Notification state={"1"}/>}
             </div>
         </div>
     )

@@ -3,6 +3,7 @@ import tryImg from "../../assets/imgs/tryImg.svg";
 import gamePage from "../../assets/imgs/gamePageBlack.svg";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useGameSettings } from "./GameSettingsContext";
 
 const GameEndScreen = ({
   winner,
@@ -15,6 +16,7 @@ const GameEndScreen = ({
   const [color, setColor] = useState(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]");
   const [winnerMessage, setWinnerMessage] = useState(winner === playerNumber ? "You Win" : "You Lose");
   const [xpMessage, setXpMessage] = useState(winner === playerNumber ? "+50 xp" : "0 xp");
+  const gameContext = useGameSettings();
 
   useEffect(() => {
     console.log("the value of playernumber : ", playerNumber)
@@ -28,9 +30,11 @@ const GameEndScreen = ({
   }, [playerNumber, winner])
 
   const handleTryAgainClick = () => {
+    gameContext.resetStates()
     isOnlineGame === true ? navigate("/game/onlineGame", { replace: true }) : navigate("/game/tournament", { replace: true })
   };
   const handleBackToGamePage = () => {
+    gameContext.resetStates()
     navigate("/game", { replace: true });
   };
 

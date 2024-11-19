@@ -72,7 +72,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [endMatchScore, setEndMatchScore] = useState("");
   const [playerNumber, setPlayerNumber] = useState(0);
   const [isWinTournament, setIsWinTournament] = useState(false);
-   
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,
@@ -90,7 +89,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
-    setPlayer2GradientColor(toBadgeConverter(playerData?.player?.badge))
+    setPlayer2GradientColor(toBadgeConverter(playerData?.badge))
   }, [playerData, gameContext.selfData])
 
   useEffect(() => {
@@ -110,8 +109,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
               alias: gameContext.tournamentInfo.alias,
             })
           );
-      
-      gameContext.setHandler('isCreateTour', false)
     }
   }, [
     readyState
@@ -121,6 +118,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     if (!lastMessage) return;
 
     const data = JSON.parse(lastMessage.data);
+    console.log("data is : ", data)
     switch (data?.type) {
       case "tournament_created":
         gameContext.setHandler("participants", data?.tournament?.participants);
@@ -180,6 +178,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         setPaddleCor(canvasWidth / 2 - playerWidth / 2);
         if (data?.loser === playerNumber) {
           sendMessage(JSON.stringify({ action: "disconnect" }));
+          gameContext.resetStates()
           setTimeout(() => {
             navigate("/game", { replace: true });
           }, 5000);
@@ -188,6 +187,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           gameContext.setHandler("endgame", data);
           setTimeout(() => {
             isIsGameEnd(false);
+            
             isGameStart = false;
             setIsTimeToPlay(false);
             setIsGame(false);

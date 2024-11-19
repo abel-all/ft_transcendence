@@ -30,7 +30,6 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [winnersFinal, setWinnersFinal] = useState([])
   const [endGameData, setEndGameData] = useState({})
   const [gameSettings, setGameSettings] = useState({})
-
   const [player1Score, setPlayer1Score] = useState(0)
   const [player2Score, setPlayer2Score] = useState(0)
   const [isRandomGame, setIsRandomGame] = useState(true)
@@ -93,28 +92,28 @@ export const GameSettingsContextProvider = ({ children }) => {
     setLoading(false)
     setIsCreateTour(false)
     setUserData({})
-    // setSelfData({})
+    setSelfData({})
     setTournamentInfo({})
     setParticipants([])
     setParticipantsData([])
     setWinners([])
     setWinnersFinal([])
     setEndGameData({})
-    // setGameSettings({})
+    setGameSettings({})
     setPlayer1Score(0)
     setPlayer2Score(0)
     setIsRandomGame(true)
   }
-  const resetTournamentStates = () => {
-    setJoinTour(false)
-    setLoading(false)
-    setIsCreateTour(false)
-    setParticipants([])
-    setParticipantsData([])
-    setEndGameData({})
-    setWinnersFinal([])
-    setWinners([])
-  }
+  // const resetTournamentStates = () => {
+  //   setJoinTour(false)
+  //   setLoading(false)
+  //   setIsCreateTour(false)
+  //   setParticipants([])
+  //   setParticipantsData([])
+  //   setEndGameData({})
+  //   setWinnersFinal([])
+  //   setWinners([])
+  // }
 
   const handleModalClick = () => {
     setModal(!modal)
@@ -255,7 +254,7 @@ export const GameSettingsContextProvider = ({ children }) => {
         matchDelay,
         userData,
         resetStates,
-        resetTournamentStates,
+        // resetTournamentStates,
         issetting,
         selfData,
         loading,

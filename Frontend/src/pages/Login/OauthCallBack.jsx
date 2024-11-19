@@ -29,7 +29,7 @@ const OauthCallBack = () => {
         )
           .then(() => {
             auth.setHandler('game', true)
-            navigate('/game', { replace: true }) // is 2fa disable must redirect them to game page
+            navigate('/profile', { replace: true }) // is 2fa disable must redirect them to game page
           })
           .catch(() => {
             auth.setHandler('login', true)

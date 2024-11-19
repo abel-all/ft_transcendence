@@ -12,6 +12,7 @@ export const ContextProvider = ({ children }) => {
   const [isGame, setIsGame] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
+  const [showNotificationMobile, setShowNotificationMobile] = useState(false)
   const gameContext = useGameSettings()
    
 
@@ -94,13 +95,19 @@ export const ContextProvider = ({ children }) => {
   const setShowNotificationHandler = () => {
     setShowNotification(!showNotification)
   }
+  const setShowNotificationMobileHandler = () => {
+    setShowNotificationMobile(!showNotificationMobile)
+  }
 
   return (
     <Authcontext.Provider
       value={{
         setShowNotificationHandler,
+        setShowNotificationMobile,
+        setShowNotificationMobileHandler,
         setShowNotification,
         showNotification,
+        showNotificationMobile,
         isAuthenticated,
         setHandler,
         isAuth,

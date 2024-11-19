@@ -8,7 +8,7 @@ import { useAuth } from "./Auth";
 import { useEffect, useState } from "react"
 
 
-const List = ({ to, active, icon}) => {
+const List = ({ to, active, icon }) => {
 
     const [color, setColor] = useState("#eee");
     const [iconComponent, setIconComponent] = useState();
@@ -16,6 +16,7 @@ const List = ({ to, active, icon}) => {
 
     const handleIconClick = () => {
         auth.setShowNotification(false);
+        auth.setShowNotificationMobile(false);
     }
 
     const changeColorHover = () => {
@@ -54,7 +55,7 @@ const List = ({ to, active, icon}) => {
     )
 }
 
-function NavActive(Data) {
+function NavActive({ active }) {
 
     const navData = [
         {to: "/profile", icon: "profile"},
@@ -69,7 +70,7 @@ function NavActive(Data) {
                     <List
                         key={index}
                         to={item.to}
-                        active={Data.active}
+                        active={active}
                         icon={item.icon}
                     />
                 ))}

@@ -53,13 +53,14 @@ const Alert = ({ message, color }) => {
         return null;
     }
     return (
-        <div className="absolute">
+        <div className="absolute w-full flex justify-center">
             <div
-                className={`Alert top-[120px] p-[6px] z-[100] rounded-md text-center fixed text-white h-[41px]`}
+                className={`Alert top-[100px] z-[100] rounded-md text-center border-l-4 border-r-4 border-white fixed text-white px-4 py-2`}
                 style={{
-                    display: 'block',
                     backgroundColor: currentMessage.color,
                     opacity: percent / 100,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
                 }}
             >
                 <p className="flex justify-between items-center">

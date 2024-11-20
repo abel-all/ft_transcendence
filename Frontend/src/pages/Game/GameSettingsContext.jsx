@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import useWebSocket, { ReadyState } from "react-use-websocket";
-
+import {useLocation} from 'react-router-dom';
+import Alert from '../../components/Alert';
 export const GameSettingContext = createContext(null)
 
 export const GameSettingsContextProvider = ({ children }) => {
@@ -34,9 +35,7 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [player2Score, setPlayer2Score] = useState(0)
   const [isRandomGame, setIsRandomGame] = useState(true)
   const [socketUrl, setSocketUrl] = useState(null);
-  
   const [Auth, setAuth] = useState(false);
-  // const [isPaused, setIsPaused] = useState(true);
 
 
 
@@ -44,11 +43,6 @@ export const GameSettingsContextProvider = ({ children }) => {
 	  if (Auth) {
 		setSocketUrl('ws://localhost:8800/ws/chat/');
 	  } else {
-      // const socket = getWebSocket();
-      // if (socket) {
-      //   socket.close();
-      //   console.log('chat WebSocket connection manually closed.');
-      // }
       setSocketUrl(null);
 	  }
 	}, [Auth]);
@@ -205,6 +199,29 @@ export const GameSettingsContextProvider = ({ children }) => {
     setSettingsData((prevData) => prevData.slice(0, -1))
   }
 
+  /*******     chat Notifcation alert       ************/
+
+  const [locationChat, setlocationChat] = useState(false);
+  const [UserSend, setUserSend] = useState("");
+  const location = useLocation();
+  const { pathname } = location;
+
+  useEffect(() => {
+    if (lastMessage && lastMessage != null && pathname != "/chat") {
+      const Message = JSON.parse(lastMessage.data);
+      if (Message.type === "chat_message") {
+        setUserSend(Message.from);
+        setlocationChat(prevSatte => true);
+        const time = setTimeout(() => {
+          setlocationChat(prevSatte => false);
+          clearTimeout(time);
+        }, 3000);
+      }
+    }
+  }, [lastMessage])
+
+  /*******     chat Notifcation alert       ************/
+
   return (
     <GameSettingContext.Provider
       value={{
@@ -219,8 +236,6 @@ export const GameSettingsContextProvider = ({ children }) => {
         participants,
         tournamentInfo,
         isCreateTour,
-        // setIsPaused,
-        // isPaused,
         createTour,
         joinTour,
         isSettings,
@@ -254,6 +269,8 @@ export const GameSettingsContextProvider = ({ children }) => {
       }}
     >
       {children}
+      
+      {locationChat && <Alert message={`You got a new message from ${UserSend} !`} color="green"/>}
     </GameSettingContext.Provider>
   )
 }

@@ -18,7 +18,7 @@ function InboxUsers({isActive, userProfile, lastMessage, nickname, total_message
                 </div>
                 <div className="UserMessage flex flex-col  ml-[7px] pt-[5px]">
                     <span className="text-white font-[500] font-[Outfit] text-[16px]">{nickname}</span>
-                    <div className="inboxUserMessage font-[300] text-[13px] text-[white] opacity-70">
+                    <div className="inboxUserMessage font-[300] text-[13px] text-[white] opacity-70 whitespace-nowrap overflow-hidden text-ellipsis w-40 sm:w-80 md:w-40 lg:w-80">
                         {lastMessage}
                     </div>
                 </div>

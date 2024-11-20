@@ -25,11 +25,6 @@ const NotifyUser = () => {
 		if (gameContext.Auth) {
 			setSocketUrl('ws://localhost:8800/ws/notifications/');
 		} else {
-			// const socket = getWebSocket();
-			// if (socket) {
-			//   socket.close();
-			//   console.log('notifications WebSocket connection manually closed.');
-			// }
 			setSocketUrl(null);
 		}
 	}, [gameContext.Auth]);
@@ -47,7 +42,6 @@ const NotifyUser = () => {
 	useEffect(() => {
 		if (lastMessage && lastMessage != null) {
 			handelShowingAlert(true)
-			console.log('The message from webSocket ', lastMessage)
 			const { type, from, status } = JSON.parse(lastMessage.data)
 			
 			if (type == 'friendship_request') {

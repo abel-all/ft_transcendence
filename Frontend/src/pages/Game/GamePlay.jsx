@@ -15,6 +15,7 @@ import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
 import gameRightKeyWhite from "../../assets/imgs/gameRightKeyWhite.svg"
 import gameLeftKeyWhite from "../../assets/imgs/gameLeftKeyWhite.svg"
+import defualtImg from "../../assets/imgs/defualtImg.jpg"
 
 
 // Game vars:
@@ -321,7 +322,7 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
                     <PlayerScore
                         username={gameContext.selfData?.username}
                         rank={gameContext.selfData?.rank}
-                        userImage={gameContext.selfData?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                        userImage={gameContext.selfData?.picture ? `http://localhost:8888${gameContext.selfData?.picture}` : defualtImg}
                     />
                     <div className="score-container w-full flex items-center justify-center flex-1">
                         <div className={`bg-gradient-to-r from-[#161c20] via-[#161c20] ${gradientColor} flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light`}>{player1Score}</div>

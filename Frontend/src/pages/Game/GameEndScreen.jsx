@@ -4,6 +4,7 @@ import gamePage from "../../assets/imgs/gamePageBlack.svg";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGameSettings } from "./GameSettingsContext";
+import "./css/index.css"
 
 const GameEndScreen = ({
   winner,
@@ -16,16 +17,24 @@ const GameEndScreen = ({
   const [color, setColor] = useState(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]");
   const [winnerMessage, setWinnerMessage] = useState(winner === playerNumber ? "You Win" : "You Lose");
   const [xpMessage, setXpMessage] = useState(winner === playerNumber ? "+50 xp" : "0 xp");
+  const [isWinner, setIsWinner] = useState(winner === playerNumber);
+  const [counter, setCounter] = useState(5);
   const gameContext = useGameSettings();
 
   useEffect(() => {
-    console.log("the value of playernumber : ", playerNumber)
-    console.log("the value of winner : ", winner)
-    console.log("true or false ? : ", winner === playerNumber)
 
     setColor(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]")
     setWinnerMessage(winner === playerNumber ? "You Win" : "You Lose")
     setXpMessage(winner === playerNumber ? "+50 xp" : "0 xp")
+    setIsWinner(winner === playerNumber)
+
+    const counterInterval = setInterval(() => {
+      setCounter(prev => prev - 1);
+  }, 1000);
+
+  return () => {
+    clearInterval(counterInterval)
+  }
 
   }, [playerNumber, winner])
 
@@ -60,23 +69,25 @@ const GameEndScreen = ({
           {score}
         </div>
       </div>
-      <div className="flex gap-3 items-center max-md:flex-col">
-        <button
-          onClick={handleTryAgainClick}
-          className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center"
-        >
-          <div>Try again</div>
-          <img className="w-6 h-6" src={tryImg} alt="try again icon" />
-        </button>
-        <div className="text-[#fff]">Or</div>
-        <button
-          onClick={handleBackToGamePage}
-          className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center"
-        >
-          <div>Back to game page</div>
-          <img className="w-6 h-6" src={gamePage} alt="game page icon" />
-        </button>
-      </div>
+      {!isOnlineGame && !winTournament && !isWinner ? <div className="animated-bg text-[#fff] text-[75px] max-sm:text-[65px]" >{counter}</div> :
+        <div className="flex gap-3 items-center max-md:flex-col">
+          <button
+            onClick={handleTryAgainClick}
+            className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center"
+          >
+            <div>Try again</div>
+            <img className="w-6 h-6" src={tryImg} alt="try again icon" />
+          </button>
+          <div className="text-[#fff]">Or</div>
+          <button
+            onClick={handleBackToGamePage}
+            className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center"
+          >
+            <div>Back to game page</div>
+            <img className="w-6 h-6" src={gamePage} alt="game page icon" />
+          </button>
+        </div>
+      }
     </div>
   );
 };

@@ -25,35 +25,35 @@ const Notification = ({state}) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetchUserData();
-  }, [])
-
-  const fetchUserData = async () => {
-    await Axios.post(
-      'http://localhost:8800/api/profile/notifications/',
-      {
-        start: 10 * isBottomCounter,
-      },
-      {
-        withCredentials: true,
+    const fetchUserData = async () => {
+      await Axios.post(
+        'http://localhost:8800/api/profile/notifications/',
+        {
+          start: 10 * isBottomCounter,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+        .then((response) => {
+          response?.data.length === 0 && isBottomCounter === 0
+            ? setIsZeroNotification(true)
+            : setNotiData((prev) => [...prev, ...response.data])
+          setIsLoaded(false)
+        })
+        .catch((err) => {
+          if (err.response?.status === 403) {
+            notification.RefreshToken();
+          }
+          else if (err.response?.status === 401) {
+            navigate("/signin", { replace: true })
+          }
+          setIsError(err?.response?.data?.message)
+        })
       }
-    )
-      .then((response) => {
-        response?.data.length === 0 && isBottomCounter === 0
-          ? setIsZeroNotification(true)
-          : setNotiData((prev) => [...prev, ...response.data])
-        setIsLoaded(false)
-      })
-      .catch((err) => {
-        if (err.response?.status === 403) {
-          notification.RefreshToken();
-        }
-        else if (err.response?.status === 401) {
-          navigate("/signin", { replace: true })
-        }
-        setIsError(err?.response?.data?.message)
-      })
-    }
+    fetchUserData();
+  }, [isBottomCounter])
+
     
     useEffect(() => {
       const currentRef = targetRef.current
@@ -70,7 +70,6 @@ const Notification = ({state}) => {
             setIsLoaded(true)
             setCounter = setTimeout(async () => {
               setIsBottomCounter((prev) => prev + 1)
-              await fetchUserData()
               isFetching = false
             }, 2000)
           }

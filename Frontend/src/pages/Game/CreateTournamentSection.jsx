@@ -18,7 +18,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   const [tour, setTour] = useState('')
   const gameContext = useGameSettings()
   const auth = useAuth();
-  const nameReGex = /^[a-zA-Z-]{2,16}$/
+  const usernameReGex =  /^[a-zA-Z0-9_]{3,9}$/
 
   useEffect(() => {
     setTimeout(() => {
@@ -58,7 +58,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   }, [])
 
   const checkInput = (input) => {
-    if (nameReGex.test(input))
+    if (usernameReGex.test(input))
       setFocusColor('focus:border focus:border-[#00FF00]')
     else setFocusColor('focus:border focus:border-[#FF0000]')
   }
@@ -75,7 +75,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   const createTournament = async () => {
     setIsLoading(true)
 
-    if (nameReGex.test(name) && nameReGex.test(tour)) {
+    if (usernameReGex.test(name) && usernameReGex.test(tour)) {
       await Axios.post(
         'http://localhost:8800/api/tournament/check-name/',
         {
@@ -101,7 +101,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           setMessage(err?.response?.data?.message)
         })
     } else {
-      if (!nameReGex.test(name))
+      if (!usernameReGex.test(name))
         setMessage('Invalid Alias Name')
       else setMessage('Invalid Tournamnet Name')
       setIsLoading(false)
@@ -110,7 +110,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
   const joinTournament = async () => {
     setIsLoading(true)
 
-    if (nameReGex.test(name) && nameReGex.test(tour)) {
+    if (usernameReGex.test(name) && usernameReGex.test(tour)) {
       await Axios.post(
         'http://localhost:8800/api/tournament/check-alias/',
         {
@@ -137,7 +137,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           setMessage(err?.response?.data.message)
         })
     } else {
-      if (!nameReGex.test(name))
+      if (!usernameReGex.test(name))
         setMessage('Invalid Alias Name')
       else setMessage('Invalid Tournamnet Name')
       setIsLoading(false)

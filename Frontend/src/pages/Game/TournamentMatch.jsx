@@ -1,4 +1,5 @@
 import rankIcon from "../../assets/imgs/rank.svg"
+import defualtImg from "../../assets/imgs/defualtImg.jpg"
 import { useGameSettings } from './GameSettingsContext'
 import "./css/index.css"
 
@@ -13,13 +14,13 @@ const TournamentMatch = () => {
                     <div className="flex flex-col gap-[5px]">
                         <TournamentMatchCard
                             rank={gameContext?.participants[0]?.profile?.rank}
-                            userImg={gameContext?.participants[0]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userImg={gameContext?.participants[0]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[0]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[0]?.alias}
                             gradeColor={gameContext?.participants[0]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
                         />
                         {gameContext?.participants.length > 1 ? <TournamentMatchCard
                             rank={gameContext?.participants[1]?.profile?.rank}
-                            userImg={gameContext?.participants[1]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userImg={gameContext?.participants[1]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[1]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[1]?.alias}
                             gradeColor={gameContext?.participants[1]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
                         /> : <EmptyMatchCard />}
@@ -30,13 +31,13 @@ const TournamentMatch = () => {
                     <div className="flex flex-col gap-[5px]">
                         {gameContext?.participants.length > 2 ? <TournamentMatchCard
                             rank={gameContext?.participants[2]?.profile?.rank}
-                            userImg={gameContext?.participants[2]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userImg={gameContext?.participants[2]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[2]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[2]?.alias}
                             gradeColor={gameContext?.participants[2]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
                         /> : <EmptyMatchCard />}
                         {gameContext?.participants.length > 3 ? <TournamentMatchCard
                             rank={gameContext?.participants[3]?.profile?.rank}
-                            userImg={gameContext?.participants[3]?.profile?.picture || "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"}
+                            userImg={gameContext?.participants[3]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[3]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[3]?.alias}
                             gradeColor={gameContext?.participants[3]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
                         /> : <EmptyMatchCard />}

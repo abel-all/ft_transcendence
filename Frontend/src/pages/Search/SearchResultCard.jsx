@@ -3,7 +3,7 @@ import playImg from '../../assets/imgs/paly_friend.svg'
 import addUserImg from '../../assets/imgs/AddUser.svg'
 import chatImg from '../../assets/imgs/chat_friend.svg'
 import Axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../components/Auth'
 import Alert from '../../components/Alert'
@@ -12,12 +12,14 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
   
   const [isPlayIconCliced, setIsPlayIconCliced] = useState(false)
   const [isAddIconCliced, setIsAddIconCliced] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const [isError, setIsError] = useState(null)
   const navigate = useNavigate();
   const auth = useAuth();
 
   const handlePlayWithMeClick = async () => {
     setIsPlayIconCliced(true)
+    setIsSuccess(false)
     await Axios.post(
       'http://localhost:8800/api/profile/send-palywithme-request/',
       {
@@ -27,20 +29,24 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         withCredentials: true,
       }
     )
-      .then((response) => {
-      })
-      .catch(async (err) => {
-        if (err.response?.status === 403) {
-          await auth.RefreshToken();
-        }
-        else if (err.response?.status === 401) {
-          navigate("/signin", { replace: true })
-        }
-        setIsError(err?.response?.data?.message)
-      })
+    .then(() => {
+      setIsSuccess(true)
+      setIsPlayIconCliced(false)
+    })
+    .catch(async (err) => {
+      setIsPlayIconCliced(false)
+      if (err.response?.status === 403) {
+        await auth.RefreshToken();
+      }
+      else if (err.response?.status === 401) {
+        navigate("/signin", { replace: true })
+      }
+      setIsError(err?.response?.data?.message)
+    })
   }
 
   const handleAddUserClick = () => {
+    setIsSuccess(false)
     setIsAddIconCliced(true)
     Axios.post('http://localhost:8800/api/profile/send-friendship-request/', {
       username: userName,
@@ -48,40 +54,25 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
     {
       withCredentials: true,
     })
-        .then((response) => {
-        })
-        .catch(async (err) => {
-          if (err.response?.status === 403) {
-            await auth.RefreshToken();
-          }
-          else if (err.response?.status === 401) {
-            navigate("/signin", { replace: true })
-          }
-          setIsError(err?.response?.data?.message)
-        })
+    .then(() => {
+      setIsSuccess(true)
+      setIsAddIconCliced(false)
+    })
+    .catch(async (err) => {
+      setIsAddIconCliced(false)
+      if (err.response?.status === 403) {
+        await auth.RefreshToken();
+      }
+      else if (err.response?.status === 401) {
+        navigate("/signin", { replace: true })
+      }
+      setIsError(err?.response?.data?.message)
+    })
   }
 
   const handleChatClick = () => {
     navigate(`/chat?user=${userName}`)
   }
-
-  useEffect(() => {
-    if (isPlayIconCliced) {
-      setTimeout(() => {
-        setIsPlayIconCliced(false);
-      }, 1000)
-    }
-
-  }, [isPlayIconCliced])
-
-  useEffect(() => {
-    if (isAddIconCliced) {
-      setTimeout(() => {
-        setIsAddIconCliced(false);
-      }, 1000)
-    }
-
-  }, [isAddIconCliced])
 
   const handleUserImgClick = () => {
     navigate(`/profile?username=${userName}`)
@@ -90,6 +81,7 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
   return (
     <div className="bg-[#6e6e6e] rounded-lg bg-opacity-30 w-full flex sm:justify-between max-sm:flex-col max-sm:gap-[10px] px-[10px] py-[4px]">
       {isError && <Alert message={isError} color={"red"}/>}
+      {isSuccess && <Alert message={"Your request has been sent successfully"} color={"green"}/>}
       <div className="image-userinfo-container flex gap-[20px] max-sm:flex-col max-sm:items-center">
         <img onClick={handleUserImgClick} className="w-[80px] rounded-md hover:grayscale cursor-pointer" src={userImage} />
         <div className="flex flex-col gap-[6px] sm:justify-center">

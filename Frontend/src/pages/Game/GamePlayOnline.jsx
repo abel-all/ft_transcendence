@@ -12,6 +12,7 @@ import "./css/index.css"
 import { useNavigate } from "react-router-dom";
 import tryImg from "../../assets/imgs/tryImg.svg";
 import gamePage from "../../assets/imgs/gamePageBlack.svg";
+import defualtImg from "../../assets/imgs/defualtImg.jpg";
 
 // Game vars:
 const playerHeight = 15;
@@ -410,15 +411,12 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   return (
     <>
       {!isGame ? (
-        <div className="h-[calc(100vh-105px)] min-h-[1400px] pb-[200px] flex flex-col justify-center items-center gap-[200px] max-md:gap-[120px]">
+        <div className="pb-[200px] mt-[140px] flex flex-col justify-center items-center gap-[200px] max-md:gap-[120px]">
           <div className=" flex justify-center items-center max-md:flex-col gap-[100px] max-md:gap-[30px]">
             <MatchMakingCard
               avatar={false}
               bgColor={badgeConverter(gameContext.selfData.badge)}
-              image={
-                gameContext.selfData?.picture ||
-                "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"
-              }
+              image={gameContext.selfData?.picture ? `http://localhost:8888${gameContext.selfData?.picture}` : defualtImg}
               username={gameContext.selfData?.username}
               rank={gameContext.selfData?.rank}
             />
@@ -426,10 +424,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
             <MatchMakingCard
               avatar={avatar}
               bgColor={badgeConverter(playerData?.player?.badge)}
-              image={
-                playerData?.player?.picture ||
-                "https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg"
-              }
+              image={playerData?.player?.picture ? `http://localhost:8888${playerData?.player?.picture}` : defualtImg}
               username={playerData?.player?.username}
               rank={playerData?.player?.rank}
             />
@@ -477,10 +472,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
               <PlayerScore
                 username={gameContext.selfData?.username}
                 rank={gameContext.selfData?.rank}
-                userImage={
-                  gameContext.selfData?.picture ||
-                  "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"
-                }
+                userImage={gameContext.selfData?.picture ? `http://localhost:8888${gameContext.selfData?.picture}` : defualtImg}
               />
               <div className="score-container w-full flex items-center justify-center flex-1">
                 <div className={`bg-gradient-to-r from-[#161c20] via-[#161c20] ${player1GradientColor} flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light`}>
@@ -494,10 +486,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
                 flexDirection="flex-row-reverse"
                 username={playerData?.player?.username}
                 rank={playerData?.player?.rank}
-                userImage={
-                  playerData?.player?.picture ||
-                  "https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg"
-                }
+                userImage={playerData?.player?.picture ? `http://localhost:8888${playerData?.player?.picture}` : defualtImg}
               />
             </div>
             <div className="flex flex-col">

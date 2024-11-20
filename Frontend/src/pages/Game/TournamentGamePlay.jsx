@@ -14,6 +14,7 @@ import "./css/index.css";
 import {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
+import defualtImg from "../../assets/imgs/defualtImg.jpg"
 import { useAuth } from '../../components/Auth.jsx'
 import Alert from "../../components/Alert.jsx";
 
@@ -54,6 +55,12 @@ const ball = {
 };
 
 let isGameStart = false;
+let isAddOne = true;
+let isTimeToPlay = false;
+let timeOutOne;
+let timeOutTwo;
+let timeOutThree;
+let intervalID;
 
 const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
@@ -75,16 +82,17 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [playerNumber, setPlayerNumber] = useState(0);
   const [isWinTournament, setIsWinTournament] = useState(false);
   const [isError, setIsError] = useState(null)
+  const [counter, setCounter] = useState(0)
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,
   });
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
 
-  const [isTimeToPlay, setIsTimeToPlay] = useState(false);
+  // const [isTimeToPlay, setIsTimeToPlay] = useState(false);
   const [isGame, setIsGame] = useState(false);
   const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
-  const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.badge))
+  const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.profile?.badge))
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8800/ws/tournament/"
@@ -92,8 +100,21 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
-    setPlayer2GradientColor(toBadgeConverter(playerData?.badge))
+    setPlayer2GradientColor(toBadgeConverter(playerData?.profile?.badge))
   }, [playerData, gameContext.selfData])
+
+  useEffect(() => {
+    return () => {
+      console.log("i enter in return !")
+      isGameStart = false
+      isAddOne = false
+      isTimeToPlay = false;
+      clearTimeout(timeOutOne)
+      clearTimeout(timeOutTwo)
+      clearTimeout(timeOutThree)
+      clearInterval(intervalID)
+    }
+  }, [])
 
   useEffect(() => {
     if (readyState === 1) {
@@ -114,10 +135,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           );
     }
 
-    return () => {
-      isGameStart = false
-    }
-
   }, [
     readyState
   ]);
@@ -126,7 +143,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     if (!lastMessage) return;
 
     const data = JSON.parse(lastMessage.data);
-    console.log("data is : ", data)
     switch (data?.type) {
       case "tournament_created":
         gameContext.setHandler("participants", data?.tournament?.participants);
@@ -136,6 +152,9 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         gameContext.setHandler("participantsData", data?.participants);
         break;
       case "match_detail":
+        isTimeToPlay = true;
+        console.log("enter hereeeeeee!")
+        isAddOne = false
         sendNotification();
         setPlayerNumber(data?.player_number);
         sendMessage(
@@ -146,16 +165,19 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         );
         setMatchId(data?.match?.id);
         if (data?.player_number === 1) {
-          setPlayerData(data?.match?.player2?.profile);
-          setSelfData(data?.match?.player1?.profile);
+          setPlayerData(data?.match?.player2);
+          setSelfData(data?.match?.player1);
         } else {
-          setPlayerData(data?.match?.player1?.profile);
-          setSelfData(data?.match?.player2?.profile);
+          setPlayerData(data?.match?.player1);
+          setSelfData(data?.match?.player2);
         }
-        setIsTimeToPlay(true);
-        setTimeout(() => {
+
+        intervalID = setInterval(() => {
+          setCounter(prev => prev - 1);
+        }, 1000)
+
+        timeOutOne = setTimeout(() => {
           if (!isGameStart) {
-            console.log("start game sent and val of is game is : ", isGameStart)
             sendMessage(
               JSON.stringify({
                 action: "start_game",
@@ -164,6 +186,8 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
             );
           }
           setIsGame(true);
+          clearInterval(intervalID)
+          setCounter(15)
         }, 15000);
         break;
       case "game_update":
@@ -188,17 +212,16 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         if (data?.loser === playerNumber) {
           sendMessage(JSON.stringify({ action: "disconnect" }));
           gameContext.resetStates()
-          setTimeout(() => {
+          timeOutTwo = setTimeout(() => {
             navigate("/game", { replace: true });
           }, 5000);
         } else {
           fetchSettings(data);
           gameContext.setHandler("endgame", data);
-          setTimeout(() => {
+          timeOutThree = setTimeout(() => {
             isIsGameEnd(false);
-            
             isGameStart = false;
-            setIsTimeToPlay(false);
+            isTimeToPlay = false;
             setIsGame(false);
           }, 5000);
         }
@@ -466,12 +489,9 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           <div className="h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0">
             <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">
               <PlayerScore
-                username={selfData?.username}
-                rank={selfData?.rank}
-                userImage={
-                  selfData?.picture ||
-                  "https://cdn.intra.42.fr/users/faa4187430345830e7ed57d35c0e4434/abel-all.jpg"
-                }
+                username={selfData?.alias}
+                rank={selfData?.profile?.rank}
+                userImage={selfData?.profile?.picture ? `http://localhost:8888${selfData?.profile?.picture}` : defualtImg}
               />
               <div className="score-container w-full flex items-center justify-center flex-1">
                 <div className={`bg-gradient-to-r from-[#161c20] via-[#161c20] ${player1GradientColor} flex justify-end p-[11px] pr-[20px] flex-1 score text-[#000] text-[32px] font-light`}>
@@ -483,12 +503,9 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
               </div>
               <PlayerScore
                 flexDirection="flex-row-reverse"
-                username={playerData?.username}
-                rank={playerData?.rank}
-                userImage={
-                  playerData?.picture ||
-                  "https://cdn.intra.42.fr/users/d556031145f66ede6c1a71a8ee4b730c/zbendahh.jpg"
-                }
+                username={playerData?.alias}
+                rank={playerData?.profile?.rank}
+                userImage={playerData?.profile?.picture ? `http://localhost:8888${playerData?.profile?.picture}` : defualtImg}
               />
             </div>
             <div className="flex flex-col">
@@ -534,21 +551,17 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
                 </div>
               </div>
               <div className="button flex justify-center">
-                <button
+                <div className="text-[#fff] text-[40px]">{`${isTimeToPlay} --- ${gameContext.isCreateTour} --- ${isAddOne}`}</div>
+                {isTimeToPlay && <div>The game will start in {counter} seconds ...</div>}
+                {gameContext.isCreateTour && isAddOne && <button
                   onClick={clickHandler}
-                  className="bg-[#009f9f] h-[53px] w-full max-w-[140px] rounded-[15px] flex justify-center items-center gap-[10px]"
+                  className="bg-[#009f9f] h-[53px] w-full max-w-[200px] rounded-[15px] flex justify-center items-center gap-[10px]"
                 >
-                  {isTimeToPlay ? (
-                    <Spiner height="h-[18px]" />
-                  ) : (
-                    <>
-                      <div className="text-[#000] font-medium sm:text-[20px]">
-                        Add one
-                      </div>
-                      <img className="w-[26px] h-[26px]" src={plusIcon} />
-                    </>
-                  )}
-                </button>
+                  <div className="text-[#000] font-medium sm:text-[20px]">
+                    Add one
+                  </div>
+                  <img className="w-[26px] h-[26px]" src={plusIcon} />
+                </button>}
               </div>
             </>
           ) : (

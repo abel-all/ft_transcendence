@@ -69,7 +69,8 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const [matchId, setMatchId] = useState(-1);
   const [isGame, setIsGame] = useState(false);
   const [avatar, setAvatar] = useState(true);
-  const [isGameEnd, isIsGameEnd] = useState(false);
+  const [isGameEnd, setIsIsGameEnd] = useState(false);
+  const [isGameCanceled, setIsGameCanceled] = useState(false);
   const [playerNumber, setPlayerNumber] = useState(0);
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
@@ -97,10 +98,12 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   useEffect(() => {
     if (avatar) return
     const counterTimeout = setTimeout(() => {
-      sendMessage(
-        JSON.stringify({ action: "start_game", match_id: matchId })
-      );
-      setIsGame(true);
+      if (!isGameCanceled) {
+        sendMessage(
+          JSON.stringify({ action: "start_game", match_id: matchId })
+        );
+        setIsGame(true);
+      }
       clearInterval(counterInterval);
     }, 5000)
 
@@ -167,7 +170,12 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     const data = JSON.parse(lastMessage.data);
     switch (data?.type) {
       case "match_found":
-        if (!oneTime.current) handleMatchFound(data);
+        if (!oneTime.current) {
+          sendMessage(
+            JSON.stringify({ action: "match_id", match_id: data?.match_id })
+          );
+          handleMatchFound(data);
+        }
         break;
       case "game_update":
         setBallCor({ x: data.ball?.x, y: data.ball?.y });
@@ -183,6 +191,11 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
         break;
       case "already_connected":
         setMessage("User already connected from another tab");
+        break;
+      case "match_canceled":
+        setMessage("The game has been canceled")
+        setIsGameCanceled(true)
+        sendMessage(JSON.stringify({ action: "disconnect", status: "match_canceled"}));
         break;
     }
   }, [lastMessage]);
@@ -331,7 +344,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const handleEndGame = (data) => {
     setEndMatchWinner(data?.winner);
     setEndMatchScore(data?.score);
-    isIsGameEnd(true);
+    setIsIsGameEnd(true);
     sendMessage(JSON.stringify({ action: "disconnect" }));
   };
 
@@ -421,7 +434,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
               The game will start in {5 - counter} seconds ...
             </div>
           }
-          {!isWaiting && <div className="flex flex-col gap-8 items-center">
+          {(!isWaiting || isGameCanceled) && <div className="flex flex-col gap-8 items-center">
             <div className="font-light text-[25px] max-md:text-[18px] text-[#ff0000]">
               {message}
             </div>

@@ -9,6 +9,7 @@ import tournReminder from "../assets/imgs/tournReminder.svg"
 import joinMatch from "../assets/imgs/joinMatch.svg"
 import notiJoinTourn from "../assets/imgs/notiJoinTourn.svg"
 import { useAuth } from '../components/Auth'
+import Alert from './Alert'
 
 // let onetime = false;
 
@@ -19,11 +20,11 @@ const Notification = ({state}) => {
   const [isZeroNotification, setIsZeroNotification] = useState(false)
   const [isBottomCounter, setIsBottomCounter] = useState(0)
   const [notiData, setNotiData] = useState([])
+  const [isError, setIsError] = useState(null)
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log("hello hhhhhhhhh! ", state)
     fetchUserData();
   }, [])
 
@@ -46,11 +47,11 @@ const Notification = ({state}) => {
       .catch((err) => {
         if (err.response?.status === 403) {
           notification.RefreshToken();
-          // fetchUserData();
         }
         else if (err.response?.status === 401) {
           navigate("/signin", { replace: true })
         }
+        setIsError(err?.response?.data?.message)
       })
     }
     
@@ -121,6 +122,7 @@ const Notification = ({state}) => {
       ref={targetRef}
       className="flex flex-col items-center flex-nowrap gap-[10px] max-md:pb-[100px] p-[10px] max-md:pr-[25px] w-[400px] h-[600px] max-md:w-[calc(100vw-15px)] max-md:h-[100vh] overflow-y-scroll scrollbar-w bg-[#393e42] absolute max-md:fixed right-[5px] top-[53px] max-md:top-0 max-md:right-0 max-md:left-0 md:rounded-[15px] md:rounded-tr-[0]"
       >
+      {isError && <Alert message={isError} color={"red"}/>}
       {isZeroNotification ? (
         <div className="text-[#fff6f9] text-[20px] flex flex-col justify-center h-full">
           No Notifications

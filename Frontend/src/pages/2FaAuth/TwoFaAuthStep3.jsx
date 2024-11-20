@@ -21,10 +21,9 @@ const TwoFaAuthStep3 = () => {
           setBackupCodes(response.data.backup_codes)
           setIsLoading(false)
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            fetchBackUpCodes();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })

@@ -40,10 +40,9 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
         .then((response) => {
           setActiveTournament(response?.data)
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            fetchActiveTournament();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
@@ -91,10 +90,9 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
           navigate("/game/tournament/start", { replace: true })
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            createTournament();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
@@ -128,10 +126,9 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           gameContext.setHandler('tournamentInfo', { name: tour, alias: name })
           navigate("/game/tournament/start", { replace: true })
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            joinTournament();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })

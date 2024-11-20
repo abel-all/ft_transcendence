@@ -32,6 +32,7 @@ export const ContextProvider = ({ children }) => {
       })
       .then(() => {
         console.log('your tocken is refreshed successfully')
+        navigate("/profile", { replace: true });
       })
       .catch(() => {
         navigate("/signin", { replace: true })

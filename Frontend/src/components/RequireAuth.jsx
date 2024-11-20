@@ -25,10 +25,9 @@ const RequireAuth = ({ children }) => {
                     }).then((response) => {
                         gameContext.setHandler('gameSettings', response.data[0] || response.data)
                     })
-                    .catch((err) => {
+                    .catch(async (err) => {
                         if (err.response?.status === 403) {
-                            auth.RefreshToken()
-                            fetchSettings()
+                            await auth.RefreshToken()
                         }
                         else if (err.response?.status === 401)
                             navigate("/signin", { replace: true });
@@ -36,10 +35,9 @@ const RequireAuth = ({ children }) => {
                 }
                 fetchSettings()
                 setIsLoading(false)
-            }).catch((err) => {
+            }).catch(async (err) => {
                 if (err.response?.status === 403) {
-                    auth.RefreshToken()
-                    checkAuthAndFetchUserData()
+                    await auth.RefreshToken()
                 }
                 else if (err.response?.status === 401)
                     navigate("/signin", { replace: true });

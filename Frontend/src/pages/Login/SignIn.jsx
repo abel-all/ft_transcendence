@@ -54,16 +54,14 @@ function SignIn() {
         .then((response) => {
           setUserId(response.data.user_id)
           if (response.data.is_2fa_enabled) {
-            // is 2fa enable must redirect them to 2fa page
             setIsVerify(true)
           } else {
-            navigate('/profile', { replace: true }) // is 2fa disable must redirect them to game page
+            navigate('/profile', { replace: true }) 
           }
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            checkFieldInput();
+            await auth.RefreshToken();
           }
           setMessage(err?.response?.data?.message)
         })

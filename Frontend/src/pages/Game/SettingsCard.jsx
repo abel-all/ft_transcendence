@@ -144,10 +144,9 @@ const scoreClickHandler = (e) => {
           gameContext.setHandler('map', true)
           gameContext.setHandler('settings', false)
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response?.status === 403) {
-            auth.RefreshToken();
-            postSettingsData();
+            await auth.RefreshToken();
           }
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })

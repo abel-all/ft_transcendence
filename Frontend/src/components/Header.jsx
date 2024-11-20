@@ -5,9 +5,12 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../components/Auth'
 import Axios from 'axios'
+import Alert from "../components/Alert"
+import { useState } from 'react'
 
 function Header(props) {
   const navigate = useNavigate()
+  const [isError, setIsError] = useState(null)
   const auth = useAuth()
 
   const handleLogout = async () => {
@@ -17,7 +20,8 @@ function Header(props) {
         auth.setHandler('login', false)
         navigate('/', { replace: true })
       })
-      .catch(() => {
+      .catch((err) => {
+        setIsError(err?.response?.data?.message)
       })
   }
 
@@ -27,6 +31,7 @@ function Header(props) {
 
   return (
     <>
+      {isError && <Alert message={isError} color={"red"}/>}
       {auth.showNotification && (
         <div
           onClick={handleOverlayClick}

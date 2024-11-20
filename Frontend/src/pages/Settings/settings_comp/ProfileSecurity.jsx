@@ -162,6 +162,10 @@ function ProfileSecurity({ className, token, setShown }) {
           {' '}
           Delete Account
         </div>
+        <div
+          className="text-[16px] font-[500] font-[Outfit] text-[#219EBC] mb-[20px] cursor-pointer">
+          Download Your Data
+        </div>
         {display && (
           <form action="" method="" className="relative">
             <div className="m-[auto] py-[40px] relative px-[40px] mb-[200px] w-full max-w-[460px] border border-[#626262] rounded-[7px] bg-gradient-to-b from-[#152c2a] to-[#16181c] via-[#161c20] mt-[120px] max-sm:border-none max-sm:px-[0px] max-sm:bg-gradient-to-b max-sm:from-transparent max-sm:to-transparent max-sm:mt-[20px] max-sm:mb-[0px]">

@@ -33,7 +33,7 @@ function Badge({ SettingsData }) {
     e.preventDefault();
     if (save) {
       imagefile && handelUpload(imagefile, 'picture')
-      backgroundfile && handelUpload(backgroundfile, 'background_picture')
+      backgroundfile && handelUpload(backgroundfile, 'background')
     }
     setSave(!save)
   }

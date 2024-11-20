@@ -15,7 +15,7 @@ import Axios from 'axios'
 import Spiner from './Spiner'
 import './css/index.css'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth'
 
 const mapData = [
   {
@@ -152,7 +152,7 @@ const scoreClickHandler = (e) => {
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
-          setMessage('Please try again!')
+          setMessage(err?.response?.data?.message)
         })
     }
     postSettingsData()

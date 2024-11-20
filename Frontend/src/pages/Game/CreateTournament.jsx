@@ -3,7 +3,6 @@ import plusIconWhite from "../../assets/imgs/plusIconWhite.svg";
 import tourCreate from "../../assets/imgs/tourCreate.svg";
 import { useGameSettings } from "./GameSettingsContext";
 import CreateTournamentSection from "./CreateTournamentSection";
-import Spiner from "./Spiner";
 
 const TournamentCard = ({
   image,

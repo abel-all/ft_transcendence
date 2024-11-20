@@ -14,7 +14,7 @@ import "./css/index.css";
 import {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth.jsx'
 
 const playerHeight = 15;
 const playerWidth = 70;

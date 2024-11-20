@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import LoaderOntop from '../../components/LoaderOntop.jsx'
 import TwoFaAuthVerify from '../2FaAuth/TwoFaAuthVerify.jsx'
 import './css/index.css'
-import { useAuth } from '../../components/Auth'
+import { useAuth } from '../../components/Auth.jsx'
 
 function SignIn() {
   const [formValues, setFormValues] = useState({})
@@ -39,32 +39,41 @@ function SignIn() {
   }, [])
 
   const checkFieldInput = async () => {
-    await Axios.post(
-      'http://localhost:8800/api/auth/token/',
-      {
-        username: formValues.Username,
-        password: formValues.Password,
-      },
-      {
-        withCredentials: true,
-      }
-    )
-      .then((response) => {
-        setUserId(response.data.user_id)
-        if (response.data.is_2fa_enabled) {
-          // is 2fa enable must redirect them to 2fa page
-          setIsVerify(true)
-        } else {
-          navigate('/profile', { replace: true }) // is 2fa disable must redirect them to game page
+
+    if (fieldReGex.usernameReGex.test(formValues.Username) && fieldReGex.passwordReGex.test(formValues.Password)) {
+      await Axios.post(
+        'http://localhost:8800/api/auth/token/',
+        {
+          username: formValues.Username,
+          password: formValues.Password,
+        },
+        {
+          withCredentials: true,
         }
-      })
-      .catch((err) => {
-        if (err.response?.status === 403) {
-          auth.RefreshToken();
-          checkFieldInput();
-        }
-        setMessage('Somethings wrong, please try again!')
-      })
+      )
+        .then((response) => {
+          setUserId(response.data.user_id)
+          if (response.data.is_2fa_enabled) {
+            // is 2fa enable must redirect them to 2fa page
+            setIsVerify(true)
+          } else {
+            navigate('/profile', { replace: true }) // is 2fa disable must redirect them to game page
+          }
+        })
+        .catch((err) => {
+          if (err.response?.status === 403) {
+            auth.RefreshToken();
+            checkFieldInput();
+          }
+          setMessage(err?.response?.data?.message)
+        })
+    }
+    else {
+      if (!fieldReGex.usernameReGex.test(formValues.Username))
+        setMessage('Invalid Username')
+      else
+        setMessage('Invalid password')
+    }
   }
   const handleUserClick = () => {
     checkFieldInput()
@@ -106,9 +115,9 @@ function SignIn() {
           setEmailSent(true)
           setIsloaded(false)
         })
-        .catch(() => {
+        .catch((err) => {
           setIsloaded(false)
-          setMessage('Incorrect email')
+          setMessage(err?.response?.data?.message)
         })
     } else {
       setMessage('Invalid email')

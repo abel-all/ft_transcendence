@@ -1,4 +1,4 @@
-import { useAuth } from "../../components/Auth";
+import { useAuth } from "../../components/Auth.jsx";
 import Notification from "../../components/Notification.jsx";
 import "./css/index.css"
 

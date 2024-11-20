@@ -39,14 +39,14 @@ const TwoFaAuthVerify = ({ userId }) => {
         .then(() => {
           navigate('/profile', { replace: true })
         })
-        .catch(() => {
+        .catch((err) => {
+          setMessage(err?.response?.data?.message)
           setIsLoading(false)
-          setMessage('Incorrect code, try again')
-          navigate('/signin', { replace: true })
+          // navigate('/signin', { replace: true })
         })
     } else {
+      setMessage('Invalid Code')
       setIsLoading(false)
-      setMessage('Invalid code, try again')
     }
   }
 

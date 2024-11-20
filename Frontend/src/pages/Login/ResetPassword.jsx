@@ -63,12 +63,12 @@ const ResetPassword = () => {
           auth.setHandler('login', true)
           navigate('/signin', { replace: true })
         })
-        .catch(() => {
-          setMessage('Incorrect password')
+        .catch((err) => {
+          setMessage(err?.response?.data?.message)
           setIsLoading(false)
         })
     } else {
-      setMessage('Invalid password')
+      setMessage('Invalid Password')
       setIsLoading(false)
     }
   }

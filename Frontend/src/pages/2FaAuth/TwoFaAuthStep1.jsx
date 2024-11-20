@@ -3,7 +3,7 @@ import logoImg from '../../assets/imgs/logo.png'
 import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import { useTwoFaContext } from './TwoFaContext'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth.jsx'
 import { useNavigate } from 'react-router-dom'
 
 const TwoFaAuthStep1 = () => {
@@ -54,11 +54,11 @@ const TwoFaAuthStep1 = () => {
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
+          setMessage(err?.response?.data?.message)
           setIsLoading(false)
-          setMessage('Incorrect code')
         })
     } else {
-      setMessage('Invalid code')
+      setMessage('Invalid Code')
       setIsLoading(false)
     }
   }
@@ -93,18 +93,6 @@ const TwoFaAuthStep1 = () => {
     e.preventDefault()
     verifyOtpCode()
   }
-
-  // if (isEnable)
-  //   return (
-  //     <div className="w-full h-[100vh] flex justify-center items-center">
-  //       <button
-  //         className="main-color-gradient p-[6px] w-full max-w-[195px] rounded-[5px] text-center text-[#1cc]"
-  //         onClick={handleEnableButtonClick}
-  //       >
-  //         Enable 2FA
-  //       </button>
-  //     </div>
-  //   )
 
   return (
     <div className="container mx-auto p-[10px] sm:my-[300px] max-sm:scale-[0.8] flex justify-center items-center">

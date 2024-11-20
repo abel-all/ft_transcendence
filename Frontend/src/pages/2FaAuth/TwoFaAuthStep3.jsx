@@ -3,7 +3,7 @@ import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import logoImg from '../../assets/imgs/logo.png'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth.jsx'
 
 const TwoFaAuthStep3 = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -30,7 +30,7 @@ const TwoFaAuthStep3 = () => {
             navigate("/signin", { replace: true })
           }
           setIsLoading(false)
-          setMessage('Invalid request, please try again')
+          setMessage(err?.response?.data?.message)
         })
     }
     fetchBackUpCodes()

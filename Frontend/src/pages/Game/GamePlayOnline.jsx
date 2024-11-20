@@ -9,6 +9,9 @@ import badgeConverter, {toBadgeConverter}  from "../../hooks/badgeConverter"
 import gameRightKey from "../../assets/imgs/gameRightKey.svg"
 import gameLeftKey from "../../assets/imgs/gameLeftKey.svg"
 import "./css/index.css"
+import { useNavigate } from "react-router-dom";
+import tryImg from "../../assets/imgs/tryImg.svg";
+import gamePage from "../../assets/imgs/gamePageBlack.svg";
 
 // Game vars:
 const playerHeight = 15;
@@ -51,12 +54,10 @@ let waitingTimeout;
 
 const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
+  const navigate = useNavigate();
   const gameContext = useGameSettings();
   const [player1Score, setPlayer1Score] = useState(0);
-  const [player2Score, setPlayer2Score] = useState(0);
-  // const [counter, setCounter] = useState(0);
-  // const [isGameStart, setIsGameStart] = useState(false);
-  // const [gameFinished, setGameFinished] = useState(false);
+  const [player2Score, setPlayer2Score] = useState(0);;
   const [isMobileVersion, setIsMobileVersion] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
   const [playerData, setPlayerData] = useState({});
@@ -69,7 +70,6 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const [isGame, setIsGame] = useState(false);
   const [avatar, setAvatar] = useState(true);
   const [isGameEnd, isIsGameEnd] = useState(false);
-  // const [endMatchData, setEndMatchData] = useState({})
   const [playerNumber, setPlayerNumber] = useState(0);
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
@@ -115,12 +115,15 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     if (readyState === 1) {
-      gameContext.isRandomGame === true && !paramValue
-        ? sendMessage(JSON.stringify({ action: "join_queue" }))
-        : sendMessage(JSON.stringify({ action: "invitation", username: paramValue }));
-      waitingTimeout = setTimeout(() => {
-        if (!paramValue) setIsWaiting(false);
-      }, 200000);
+      if (gameContext.isRandomGame === true && !paramValue) {
+        sendMessage(JSON.stringify({ action: "join_queue" }))
+        waitingTimeout = setTimeout(() => {
+          if (!paramValue)
+            setIsWaiting(false);
+        }, 200000);
+      }
+      else
+        sendMessage(JSON.stringify({ action: "invitation", username: paramValue }));
     }
 
     return () => {
@@ -154,7 +157,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   useEffect(() => {
     if (!isWaiting) {
       sendMessage(JSON.stringify({ action: "disconnect" }));
-      setMessage("No one wants to play right now. Please try again!");
+      setMessage("No one wants to play right now!");
     }
   }, [isWaiting, sendMessage]);
 
@@ -280,6 +283,13 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     isMobileVersion,
   ]);
 
+  const handleTryAgainClick = () => {
+    navigate("/game/onlineGame", { replace: true })
+  };
+  const handleBackToGamePage = () => {
+    navigate("/game", { replace: true });
+  };
+
   const handleMatchFound = (data) => {
     clearTimeout(waitingTimeout);
     setMatchId(data?.match_id);
@@ -382,7 +392,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   return (
     <>
       {!isGame ? (
-        <div className="h-[calc(100vh-105px)] min-h-[1000px] pb-[200px] flex flex-col justify-center items-center gap-[200px] max-md:gap-[120px]">
+        <div className="h-[calc(100vh-105px)] min-h-[1400px] pb-[200px] flex flex-col justify-center items-center gap-[200px] max-md:gap-[120px]">
           <div className=" flex justify-center items-center max-md:flex-col gap-[100px] max-md:gap-[30px]">
             <MatchMakingCard
               avatar={false}
@@ -411,9 +421,28 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
               The game will start in {5 - counter} seconds ...
             </div>
           }
-          <div className="font-light text-[18px] max-md:text-[15px] text-[#ff0000]">
-            {message}
+          {!isWaiting && <div className="flex flex-col gap-8 items-center">
+            <div className="font-light text-[25px] max-md:text-[18px] text-[#ff0000]">
+              {message}
+            </div>
+            <div className="flex gap-3 items-center max-md:flex-col">
+              <button
+                onClick={handleTryAgainClick}
+                className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center"
+              >
+                <div>Try again</div>
+                <img className="w-6 h-6" src={tryImg} alt="try again icon" />
+              </button>
+              <div className="text-[#fff]">Or</div>
+              <button
+                onClick={handleBackToGamePage}
+                className="w-60 py-1 px-3 rounded-md text-[#000000] bg-[#fff] flex justify-between items-center"
+              >
+                <div>Back to game page</div>
+                <img className="w-6 h-6" src={gamePage} alt="game page icon" />
+              </button>
           </div>
+          </div>}
         </div>
       ) : (
         <>

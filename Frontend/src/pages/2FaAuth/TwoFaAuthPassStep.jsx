@@ -5,7 +5,7 @@ import Axios from 'axios'
 import { useTwoFaContext } from './TwoFaContext'
 import './css/index.css'
 import usePasswordToggle from '../../hooks/usePasswordToggle.jsx'
-import { useAuth } from './Auth'
+import { useAuth } from '../../components/Auth.jsx'
 import { useNavigate } from 'react-router-dom'
 
 const TwoFaAuthPassStep = () => {
@@ -59,12 +59,12 @@ const TwoFaAuthPassStep = () => {
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
+          setMessage(err?.response?.data?.message)
           setIsLoading(false)
-          setMessage('Incorrect password, try again')
         })
     } else {
+      setMessage('Invalid Password')
       setIsLoading(false)
-      setMessage('Invalid password, try again')
     }
   }
 

@@ -26,6 +26,22 @@ function Friend(Data) {
     })
   }
 
+  const handlePlayWithMeClick =  () => {
+    axios.post(
+      'http://localhost:8800/api/profile/send-palywithme-request/',
+      {
+        username: Data.username,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+      .then((response) => {
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+}
   const AcceptRequest = (user, statusOfReq) => {
     if (Data.reason == 'Invetations') {
       axios
@@ -122,9 +138,9 @@ function Friend(Data) {
               </Link>
             </button>
             <button className="btn-frnds playFriend">
-              <Link to={'/PlayWith?user=' + Data.username}>
-                <img className="px-[7px]" src={playfriend} alt="" />
-              </Link>
+              {/* <Link to={'/PlayWith?user=' + Data.username}> */}
+                <img onClick={handlePlayWithMeClick} className="px-[7px]" src={playfriend} alt="" />
+              {/* </Link> */}
             </button>
           </>
         )}
@@ -142,9 +158,7 @@ function Friend(Data) {
               </Link>
             </button>
             <button className="btn-frnds playFriend">
-              <Link to={'/PlayWith?user=' + Data.username}>
-                <img className="px-[7px]" src={playfriend} alt="" />
-              </Link>
+              <img onClick={handlePlayWithMeClick} className="px-[7px]" src={playfriend} alt="" />
             </button>
           </>
         )}

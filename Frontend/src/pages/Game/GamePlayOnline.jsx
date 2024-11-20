@@ -57,7 +57,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
   const navigate = useNavigate();
   const gameContext = useGameSettings();
   const [player1Score, setPlayer1Score] = useState(0);
-  const [player2Score, setPlayer2Score] = useState(0);;
+  const [player2Score, setPlayer2Score] = useState(0);
   const [isMobileVersion, setIsMobileVersion] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
   const [playerData, setPlayerData] = useState({});
@@ -113,8 +113,9 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
 
   return () => {
       clearTimeout(counterTimeout);
+      clearInterval(counterInterval);
   }
-  }, [avatar])
+  }, [avatar, isGameCanceled])
 
   useEffect(() => {
     if (readyState === 1) {
@@ -127,6 +128,9 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
       }
       else
         sendMessage(JSON.stringify({ action: "invitation", username: paramValue }));
+    }
+    else {
+      console.log("socket is closed!")
     }
 
     return () => {
@@ -159,10 +163,10 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     if (!isWaiting) {
-      sendMessage(JSON.stringify({ action: "disconnect" }));
+      sendMessage(JSON.stringify({ action: "disconnect", status: "" }));
       setMessage("No one wants to play right now!");
     }
-  }, [isWaiting, sendMessage]);
+  }, [isWaiting]);
 
   const handleLastMessage = useCallback(() => {
     if (!lastMessage) return;
@@ -191,11 +195,12 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
         break;
       case "already_connected":
         setMessage("User already connected from another tab");
+        setIsGameCanceled(true)
         break;
       case "match_canceled":
         setMessage("The game has been canceled")
         setIsGameCanceled(true)
-        sendMessage(JSON.stringify({ action: "disconnect", status: "match_canceled"}));
+        sendMessage(JSON.stringify({ action: "disconnect", status: ""}));
         break;
     }
   }, [lastMessage]);
@@ -345,7 +350,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     setEndMatchWinner(data?.winner);
     setEndMatchScore(data?.score);
     setIsIsGameEnd(true);
-    sendMessage(JSON.stringify({ action: "disconnect" }));
+    sendMessage(JSON.stringify({ action: "disconnect", status: "" }));
   };
 
   // draw functions
@@ -429,7 +434,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
               rank={playerData?.player?.rank}
             />
           </div>
-          {!avatar &&
+          {!avatar && !isGameCanceled &&
             <div className="font-medium text-[24px] max-md:text-[16px] text-[#f1f1f1] animated-bg">
               The game will start in {5 - counter} seconds ...
             </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import xIcon from '../../assets/imgs/xIcon.svg'
 import search from '../../assets/imgs/search.svg'
+import defualtImg from '../../assets/imgs/defualtImg.jpg'
 import { useGameSettings } from './GameSettingsContext'
 import SearchResultCardTour from '../Search/SearchResultCardTour'
 import Spiner from './Spiner'
@@ -147,7 +148,7 @@ const SearchModal = () => {
                             <SearchResultCardTour
                               key={index}
                               rank={rank}
-                              userImage={picture || 'https://picsum.photos/100/100'}
+                              userImage={picture ? `http://localhost:8888${picture}` : defualtImg}
                               userName={username}
                               bgColor={badgeConverter(badge)}
                             />

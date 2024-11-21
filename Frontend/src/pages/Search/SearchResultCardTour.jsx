@@ -28,11 +28,13 @@ const SearchResultCard = ({ rank, userImage, userName, bgColor }) => {
         withCredentials: true,
       }
     )
-      .then(() => {
+      .then((res) => {
+        console.log("join tour send success : ", res)
         setIsSuccess(true)
         setIsIconCliced(false)
       })
       .catch(async (err) => {
+        console.log("join tour don't send success : ", err)
         setIsIconCliced(false)
         if (err.response?.status === 403) {
           await auth.RefreshToken();

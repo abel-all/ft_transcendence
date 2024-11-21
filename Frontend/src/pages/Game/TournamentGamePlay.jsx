@@ -89,7 +89,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   });
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
 
-  // const [isTimeToPlay, setIsTimeToPlay] = useState(false);
+  const [isWaitingMsg, setIsWaitingMsg] = useState(false);
   const [isGame, setIsGame] = useState(false);
   const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
   const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.profile?.badge))
@@ -105,7 +105,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     return () => {
-      console.log("i enter in return !")
       isGameStart = false
       isAddOne = false
       isTimeToPlay = false;
@@ -139,6 +138,10 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     readyState
   ]);
 
+  useEffect(() => {
+    setIsWaitingMsg(isTimeToPlay)
+  }, [isTimeToPlay])
+
   const handleLastMessage = useCallback(() => {
     if (!lastMessage) return;
 
@@ -152,8 +155,8 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         gameContext.setHandler("participantsData", data?.participants);
         break;
       case "match_detail":
+        console.log("match details : ", data)
         isTimeToPlay = true;
-        console.log("enter hereeeeeee!")
         isAddOne = false
         sendNotification();
         setPlayerNumber(data?.player_number);
@@ -200,6 +203,8 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         handlePaddleUpdate(data);
         break;
       case "end_game":
+        console.log("end game : ", data)
+        isTimeToPlay = false;
         setEndMatchWinner(data?.winner);
         setEndMatchPlayerNumber(playerNumber);
         setEndMatchScore(data?.score);
@@ -221,7 +226,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           timeOutThree = setTimeout(() => {
             isIsGameEnd(false);
             isGameStart = false;
-            isTimeToPlay = false;
             setIsGame(false);
           }, 5000);
         }
@@ -229,15 +233,15 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       case "already_connected":
         break;
       case "update_winner":
+        console.log("update winner : ", data)
         gameContext.setHandler("participantsData", data?.winners);
         if (data?.round === "completed") {
           console.log("hello from winner!")
           setIsWinTournament(true);
           sendMessage(JSON.stringify({ action: "disconnect" }));
         }
-        data?.round  === "final" && !isGameStart
-          ? gameContext.setHandler("winnersFinal", data?.winners)
-          : gameContext.setHandler("winners", data?.winners);
+        else if (data?.round  === "final")
+          gameContext.setHandler("winners", data?.winners);
         break;
     }
   }, [lastMessage]);
@@ -551,8 +555,8 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
                 </div>
               </div>
               <div className="button flex justify-center">
-                <div className="text-[#fff] text-[40px]">{`${isTimeToPlay} --- ${gameContext.isCreateTour} --- ${isAddOne}`}</div>
-                {isTimeToPlay && <div>The game will start in {counter} seconds ...</div>}
+                <div className="text-[#fff] text-[40px]">{`${isWaitingMsg} --- ${gameContext.isCreateTour} --- ${isAddOne}`}</div>
+                {isWaitingMsg && <div>The game will start in {counter} seconds ...</div>}
                 {gameContext.isCreateTour && isAddOne && <button
                   onClick={clickHandler}
                   className="bg-[#009f9f] h-[53px] w-full max-w-[200px] rounded-[15px] flex justify-center items-center gap-[10px]"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import search from '../../assets/imgs/search.svg'
+import defualtImg from '../../assets/imgs/defualtImg.jpg'
 import Axios from 'axios'
 import '../Game/css/index.css'
 import './css/index.css'
@@ -95,7 +96,7 @@ const SearchEngine = () => {
                 <SearchResultCard
                   key={index}
                   rank={rank}
-                  userImage={picture || 'https://picsum.photos/100/100'}
+                  userImage={picture ? `http://localhost:8888${picture}` : defualtImg}
                   userName={username}
                   bgColor={badgeConverter(badge)}
                 />

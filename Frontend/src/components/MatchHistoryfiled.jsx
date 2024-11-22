@@ -1,26 +1,28 @@
 import FriendPic from "../assets/imgs/FriendPic.svg"
 
-function Player (Data) {
+function Player ({rank, username, profile}) {
+    console.log("Profile : ", profile);
     return (
         <>
-            <img className="w-[44.15px] h-[44.15px]" src={Data.profile} alt="" />
-            <span className="text-[18px] md:text-[20px] font-[400]  w-[150px] font-[Outfit]">{Data.username}</span>
+            <img className="w-[44.15px] h-[44.15px] rounded-full" src={profile} alt="" />
+            <span className="text-[18px] md:text-[20px] font-[400]  w-[150px] font-[Outfit]">{username}</span>
             <div className="flex flex-row justify-start pl-[10px]">
                 <span className="trendup-icon text-[12px] px-[3px] font-[500] font-[Outfit] opacity-60"></span>
-                <span className="text-[12px] px-[3px] font-[500] font-[Outfit] opacity-60">{Data.rank}</span>
+                <span className="text-[12px] px-[3px] font-[500] font-[Outfit] opacity-60">{rank}</span>
             </div>
         </>
     )
 }
 
 function MatchHistoryfiled(Data) {
+    console.log("Data : ", Data);
     return (
         <>
             <div className="playerone flex flex-col text-center justify-between items-center ">
                 <Player
                     rank = {Data.rankone}
                     username = {Data.userone}
-                    profile = {Data.Picone ? Data.Picone : FriendPic}
+                    profile = {Data.Picone ? `http://localhost:8888${Data.Picone}` : FriendPic}
                 />
             </div>
             <div className="detailes flex flex-col items-center">
@@ -35,7 +37,7 @@ function MatchHistoryfiled(Data) {
                 <Player
                         rank = {Data.ranktwo}
                         username = {Data.usertwo}
-                        profile = {Data.Pictow ? Data.Pictow : FriendPic}
+                        profile = {Data.Pictwo ? `http://localhost:8888${Data.Pictwo}` : FriendPic}
                     />
             </div>
         </>

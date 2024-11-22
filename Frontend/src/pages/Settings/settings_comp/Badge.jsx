@@ -33,7 +33,7 @@ function Badge({ SettingsData }) {
     e.preventDefault();
     if (save) {
       imagefile && handelUpload(imagefile, 'picture')
-      backgroundfile && handelUpload(backgroundfile, 'background')
+      backgroundfile && handelUpload(backgroundfile, 'background_picture')
     }
     setSave(!save)
   }
@@ -141,7 +141,7 @@ function Badge({ SettingsData }) {
           src={
             background == null
               ? background_picture
-                ? `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${background_picture.split("/")[background_picture.split("/").length - 1]}&version_id=null`
+                ? `http://localhost:8888${background_picture}`
                 : userbg
               : background
           }
@@ -171,7 +171,7 @@ function Badge({ SettingsData }) {
         <img
           className=" rounded-full md:ml-[25px] w-[107.69px] h-[107.69px] top-[-57px] absolute md:relative "
           src={image == null ? (picture ? 
-            `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${picture.split("/")[picture.split("/").length - 1]}&version_id=null`
+            `http://localhost:8888${picture}`
             : UserIcon) : image}
           alt=""
         ></img>

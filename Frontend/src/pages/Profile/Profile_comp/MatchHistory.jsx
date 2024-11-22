@@ -14,6 +14,7 @@ function MatchHistory({ username, className , UrlUsername}) {
                 }})
                 .then((res) => {
                     setMatchHistory(res.data);
+                    console.log(res.data);
                 }).catch(err => {
                 })
         }

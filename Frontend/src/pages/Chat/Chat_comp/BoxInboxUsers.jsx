@@ -12,7 +12,6 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 	const ChatHeader = useContext(chatHeaderOnClick)
 	const [UserList, setUserList] = useState([])
 	const [Sorted, setSorted] = useState([])
-
 	useEffect(() => {
 		const times = setTimeout(() => {
 			axios.get('http://localhost:8800/api/chat/chats/').then((res) => {
@@ -129,7 +128,7 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 
 	return (
 		<>
-			<div className="inboxField mt-[10px] ">
+			<div className="inboxField mt-[32px] ">
 				<div className="inboxHolder flex flex-row pb-[15px] border-b-[1px] border-white border-opacity-40">
 					<img className="opacity-80" src={inboxIcon} alt="" />
 					<span className="ml-[20px] text-white text-[20px] font-[400] font-[Outfit]">

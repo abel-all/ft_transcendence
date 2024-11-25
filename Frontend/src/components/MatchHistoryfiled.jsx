@@ -1,7 +1,6 @@
 import FriendPic from "../assets/imgs/FriendPic.svg"
 
 function Player ({rank, username, profile}) {
-    console.log("Profile : ", profile);
     return (
         <>
             <img className="w-[44.15px] h-[44.15px] rounded-full" src={profile} alt="" />
@@ -15,7 +14,6 @@ function Player ({rank, username, profile}) {
 }
 
 function MatchHistoryfiled(Data) {
-    console.log("Data : ", Data);
     return (
         <>
             <div className="playerone flex flex-col text-center justify-between items-center ">

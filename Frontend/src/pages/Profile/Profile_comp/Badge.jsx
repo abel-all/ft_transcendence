@@ -30,7 +30,7 @@ const Badge = ({username, picture, rank, badge}) => {
                 className={twMerge(`BadgeRank w-[100px] h-[110px] flex flex-col`)}>
                 <div className='profileImgaeHolder relative top-[-57px] h-[53px]'>
                     <img className="rounded-full w-[107.69px] h-[107.69px] absolute" src={picture ?
-                        `http://localhost:9001/api/v1/buckets/img-cache/objects/download?preview=true&prefix=${picture.split("/")[picture.split("/").length - 1]}&version_id=null`
+                        `http://localhost:8888${picture}`
                         : UserIcon} alt=""></img>
                 </div>
                 <div className='InfoHolder flex flex-col relative top-[13px]'>

@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { flushSync } from 'react-dom'
 import TimeHM from '../../../components/TimeHM'
 import { ReadyState } from 'react-use-websocket'
+import Alert from '../../../components/Alert'
+
 
 const sendMessageContext = createContext()
 
@@ -42,6 +44,7 @@ function ChatSide({ setVoidedUsername, className }) {
 	const [userAbleToSendMessage, serUserAbleToSendMessage] = useState(true)
 	const [CreateMessages, setCreateMessages] = useState(initialState)
 	const lastUserFetched = useRef(null)
+	const [Error, setError] = useState("");
 
 	const UpdateCreatedMessage = (msg, send) => {
 		setCreateMessages((prevState) => ({
@@ -156,6 +159,13 @@ function ChatSide({ setVoidedUsername, className }) {
 	useEffect(() => {
 		if (ChatContext.lastMessage) {
 			setToUser(JSON.parse(ChatContext.lastMessage.data).to)
+			if (JSON.parse(ChatContext.lastMessage.data).type == 'error') {
+				setError(s => JSON.parse(ChatContext.lastMessage.data).error);
+				const time = setTimeout(() => {
+					setError(s => "");
+					clearTimeout(time);
+				}, 3000);
+			}
 			if (
 				ChatContext.lastMessage &&
 				JSON.parse(ChatContext.lastMessage.data).from == username &&
@@ -204,6 +214,7 @@ function ChatSide({ setVoidedUsername, className }) {
 
 	return (
 		<div className={' ' + className ? className : ``}>
+			{Error && username && <Alert message={Error} color={"red"}/>}
 			<div className={'ChatWithUser w-full p-[7px] '}>
 				{(ChatContext.chatHeader.name || ChatContext.userFromUrl.user) &&
 					getMessagesFromDataBase && (

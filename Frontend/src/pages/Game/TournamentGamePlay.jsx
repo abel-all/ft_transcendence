@@ -5,7 +5,6 @@ import { SemiFinal } from "./TournamentStages.jsx";
 import { useGameSettings } from "./GameSettingsContext";
 import useWebSocket from "react-use-websocket";
 import { useCallback, useEffect, useState, useRef } from "react";
-import Spiner from "./Spiner";
 import PlayerScore from "./PlayerScore";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -54,13 +53,6 @@ const ball = {
   color: "#FFFFFF",
 };
 
-let isGameStart = false;
-let isAddOne = true;
-let isTimeToPlay = false;
-let timeOutOne;
-let timeOutTwo;
-let timeOutThree;
-let intervalID;
 
 const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
@@ -82,16 +74,24 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [playerNumber, setPlayerNumber] = useState(0);
   const [isWinTournament, setIsWinTournament] = useState(false);
   const [isError, setIsError] = useState(null)
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(15)
+  // const [isSentGame, setIsSentGame] = useState(true);
+  const [isAddOne, setIsAddOne] = useState(true);
+  const [isTimeToPlay, setIsTimeToPlay] = useState(false);
   const [ballCor, setBallCor] = useState({
     x: canvasWidth / 2,
     y: canvasHeight / 2,
   });
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
-
+  const timeoutRefs = useRef({
+    timeoutOne: null,
+    timeoutTwo: null,
+    timeoutThree: null,
+    intervalId: null
+  });
   const [isWaitingMsg, setIsWaitingMsg] = useState(false);
   const [isGame, setIsGame] = useState(false);
-  const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(gameContext.selfData?.badge))
+  const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(selfData?.profile?.badge))
   const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.profile?.badge))
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
@@ -99,19 +99,19 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   );
 
   useEffect(() => {
-    setPlayer1GradientColor(toBadgeConverter(gameContext.selfData?.badge))
+    setPlayer1GradientColor(toBadgeConverter(selfData?.profile?.badge))
     setPlayer2GradientColor(toBadgeConverter(playerData?.profile?.badge))
-  }, [playerData, gameContext.selfData])
+  }, [playerData, selfData])
 
   useEffect(() => {
     return () => {
-      isGameStart = false
-      isAddOne = false
-      isTimeToPlay = false;
-      clearTimeout(timeOutOne)
-      clearTimeout(timeOutTwo)
-      clearTimeout(timeOutThree)
-      clearInterval(intervalID)
+      // setIsGameStart(false)
+      // setIsAddOne(false)
+      // setIsTimeToPlay(false);
+      clearTimeout(timeoutRefs.timeOutOne)
+      clearTimeout(timeoutRefs.timeOutTwo)
+      clearTimeout(timeoutRefs.timeOutThree)
+      clearInterval(timeoutRefs.intervalID)
     }
   }, [])
 
@@ -154,11 +154,14 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         gameContext.setHandler("participants", data?.participants);
         gameContext.setHandler("participantsData", data?.participants);
         break;
+      case "tournament_reminder":
+        sendNotification(data)
+        break;
       case "match_detail":
         console.log("match details : ", data)
-        isTimeToPlay = true;
-        isAddOne = false
-        sendNotification();
+        // setIsSentGame(true)
+        setIsTimeToPlay(true);
+        setIsAddOne(false)
         setPlayerNumber(data?.player_number);
         sendMessage(
           JSON.stringify({
@@ -175,21 +178,22 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           setSelfData(data?.match?.player2);
         }
 
-        intervalID = setInterval(() => {
+        timeoutRefs.intervalID = setInterval(() => {
           setCounter(prev => prev - 1);
         }, 1000)
 
-        timeOutOne = setTimeout(() => {
-          if (!isGameStart) {
+        timeoutRefs.timeOutOne = setTimeout(() => {
+          // if (isSentGame) {
+            console.log("start match sent successfuly")
             sendMessage(
               JSON.stringify({
                 action: "start_game",
                 match_id: data?.match?.id,
               })
             );
-          }
+          // }
           setIsGame(true);
-          clearInterval(intervalID)
+          clearInterval(timeoutRefs.intervalID)
           setCounter(15)
         }, 15000);
         break;
@@ -204,28 +208,30 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         break;
       case "end_game":
         console.log("end game : ", data)
-        isTimeToPlay = false;
+        // setIsSentGame(false)
+        setIsTimeToPlay(false);
         setEndMatchWinner(data?.winner);
         setEndMatchPlayerNumber(playerNumber);
         setEndMatchScore(data?.score);
         sendMessage(JSON.stringify({ action: "stop_game" }));
         isIsGameEnd(true);
-        isGameStart = true;
+        // setIsGame(false);
+        // setIsGameStart(true);
         setPlayer1Score(0);
         setPlayer2Score(0);
         setPaddleCor(canvasWidth / 2 - playerWidth / 2);
         if (data?.loser === playerNumber) {
           sendMessage(JSON.stringify({ action: "disconnect" }));
           gameContext.resetStates()
-          timeOutTwo = setTimeout(() => {
+          timeoutRefs.timeOutTwo = setTimeout(() => {
             navigate("/game", { replace: true });
           }, 5000);
         } else {
           fetchSettings(data);
           gameContext.setHandler("endgame", data);
-          timeOutThree = setTimeout(() => {
+          timeoutRefs.timeOutThree = setTimeout(() => {
             isIsGameEnd(false);
-            isGameStart = false;
+            // setIsGameStart(false);
             setIsGame(false);
           }, 5000);
         }
@@ -401,7 +407,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     await Axios.post(
       "http://localhost:8800/api/profile/notification/tournament-reminder/",
       {
-        usernames: data?.participants,
+        usernames: data?.usernames,
       },
       {
         withCredentials: true,
@@ -482,14 +488,14 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       {isError && <Alert message={isError} color={"red"}/>}
       {(isGame || isWinTournament) ? (
         <>
-          {(isGameEnd || isWinTournament) && (
-            <GameEndScreen
-              winner={endMatchWinner}
-              score={endMatchScore}
-              playerNumber={endMatchPlayerNumber}
-              winTournament={isWinTournament}
-            />
-          )}
+        {(isGameEnd || isWinTournament) && (
+          <GameEndScreen
+            winner={endMatchWinner}
+            score={endMatchScore}
+            playerNumber={endMatchPlayerNumber}
+            winTournament={isWinTournament}
+          />
+        )}
           <div className="h-[100vh] min-h-[1500px] flex flex-col justify-center items-center gap-[24px] max-sm:gap-0">
             <div className="score-players-container w-full max-w-[600px] flex justify-between max-sm:flex-col max-sm:items-center max-sm:gap-[15px] max-sm:scale-[0.8]">
               <PlayerScore
@@ -555,8 +561,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
                 </div>
               </div>
               <div className="button flex justify-center">
-                <div className="text-[#fff] text-[40px]">{`${isWaitingMsg} --- ${gameContext.isCreateTour} --- ${isAddOne}`}</div>
-                {isWaitingMsg && <div>The game will start in {counter} seconds ...</div>}
+                {isWaitingMsg && <div className="font-medium text-[24px] max-md:text-[16px] text-[#f1f1f1] animated-bg" >The game will start in {counter} seconds ...</div>}
                 {gameContext.isCreateTour && isAddOne && <button
                   onClick={clickHandler}
                   className="bg-[#009f9f] h-[53px] w-full max-w-[200px] rounded-[15px] flex justify-center items-center gap-[10px]"

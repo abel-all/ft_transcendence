@@ -14,7 +14,7 @@ const badgeConverter = (badge) => {
             return "bg-[#B9F2FF]"
         case "HEROIC" :
             return "bg-[#CB3401]"
-        case "GRAND MASTER" :
+        case "GRAND_MASTER" :
             return "bg-[#FF0000]"
         default:
             return "bg-[#ffffff]"
@@ -37,7 +37,7 @@ export const toBadgeConverter = (badge) => {
             return "to-[#B9F2FF]"
         case "HEROIC" :
             return "to-[#CB3401]"
-        case "GRAND MASTER" :
+        case "GRAND_MASTER" :
             return "to-[#FF0000]"
         default:
             return "to-[#ffffff]"

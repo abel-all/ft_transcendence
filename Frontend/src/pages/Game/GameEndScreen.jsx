@@ -15,7 +15,7 @@ const GameEndScreen = ({
 }) => {
   const navigate = useNavigate();
   const [color, setColor] = useState(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]");
-  const [winnerMessage, setWinnerMessage] = useState(winner === playerNumber ? "You Win" : "You Lose");
+  const [winnerMessage, setWinnerMessage] = useState(winner === playerNumber ? winTournament ? "You Win The Tournament" : "You Win" : "You Lose");
   const [xpMessage, setXpMessage] = useState(winner === playerNumber ? "+50 xp" : "0 xp");
   const [isWinner, setIsWinner] = useState(winner === playerNumber);
   const [counter, setCounter] = useState(5);
@@ -24,7 +24,7 @@ const GameEndScreen = ({
   useEffect(() => {
 
     setColor(winner === playerNumber ? "text-[#1e6c0e]" : "text-[#ff0000]")
-    setWinnerMessage(winner === playerNumber ? "You Win" : "You Lose")
+    setWinnerMessage(winner === playerNumber ? winTournament ? "You Win The Tournament" : "You Win" : "You Lose")
     setXpMessage(winner === playerNumber ? "+50 xp" : "0 xp")
     setIsWinner(winner === playerNumber)
 
@@ -36,7 +36,7 @@ const GameEndScreen = ({
     clearInterval(counterInterval)
   }
 
-  }, [playerNumber, winner])
+  }, [playerNumber, winner, winTournament])
 
   const handleTryAgainClick = () => {
     gameContext.resetStates()

@@ -232,7 +232,7 @@ function ChatSide({ setVoidedUsername, className }) {
 									className={`ChatBody bg-[#161c20] ${
 										ChatContext.ChatShown
 											? 'h-[calc(100vh-276px)]'
-											: 'h-[calc(100vh-171px)] md:h-[calc(100vh-276px)]'
+											: 'h-[calc(100vh-249px)] md:h-[calc(100vh-276px)]'
 									} overflow-y-scroll flex flex-col`}
 								/>
 								<ChatBottom />

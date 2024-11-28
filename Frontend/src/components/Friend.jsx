@@ -90,7 +90,7 @@ function Friend(Data) {
         <div className="relative shrink-0 overflow-hidden">
           <img
             className="FriendPic rounded-full m-[5px] w-[45px] h-[45.71px]"
-            src={Data.picture ? `http://localhost:8888/${Data.picture}` : FriendPic}
+            src={Data.picture ? `http://localhost:8888${Data.picture}` : FriendPic}
             alt=""
           />
           {Data.isFriend && Data.status && (

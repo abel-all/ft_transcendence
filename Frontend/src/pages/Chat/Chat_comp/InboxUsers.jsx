@@ -13,7 +13,7 @@ function InboxUsers({isActive, userProfile, lastMessage, nickname, total_message
         <div className="inboxChatHolder flex flex-col pt-[10px]">
             <div className="Chatuser flex flex-row">
                 <div className="InboxUsersList mx-[5px] relative mb-[10px] w-[53.85px] h-[53.85px]">
-                    <img className="InboxUser w-[53.85px] h-[53.85px] rounded-full" src={userProfile ? `http://localhost:8888/${userProfile}` : profilePictute} alt="" />
+                    <img className="InboxUser w-[53.85px] h-[53.85px] rounded-full" src={userProfile ? `http://localhost:8888${userProfile}` : profilePictute} alt="" />
                     <span className={Status}></span>
                 </div>
                 <div className="UserMessage flex flex-col  ml-[7px] pt-[5px]">

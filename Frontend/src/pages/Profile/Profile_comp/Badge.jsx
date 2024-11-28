@@ -20,7 +20,7 @@ const Badge = ({username, picture, rank, badge}) => {
         ["PLATINUM", "#A0B2C6"],
         ["DIAMOND", "#B9F2FF"],
         ["HEROIC", "#CB3401"],
-        ["GRAND MASTER", "#FF0000"],
+        ["GRAND_MASTER", "#FF0000"],
     ]);
 
     return (
@@ -34,7 +34,7 @@ const Badge = ({username, picture, rank, badge}) => {
                         : UserIcon} alt=""></img>
                 </div>
                 <div className='InfoHolder flex flex-col relative top-[13px]'>
-                    <span className="Rank text-[16px] text-center font-semibold font-Outfit"> {badge}</span>
+                    <span className="Rank text-[16px] text-center font-semibold font-Outfit"> {badge == "GRAND_MASTER" ? "G-MASTER" : badge}</span>
                     <span className="Level text-[16px] text-center font-semibold font-Outfit">{rank ? rank : "0"}</span>
                     <span className="trendup-icon-profile"></span>
                 </div>

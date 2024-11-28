@@ -42,8 +42,8 @@ function ChatHeader() {
             <img className=" w-[40px] h-[40px] rounded-full"
                 src={
                     (ChatContext.userFromUrl.url && !ChatContext.chatHeader.clicked)
-                    ? (ChatContext.userFromUrl.url ? ChatContext.userFromUrl.url : testUser)
-                    : (ChatContext.chatHeader.userProfile ? `http://localhost:8888:${ChatContext.chatHeader.userProfile}` : testUser)}
+                    ? (ChatContext.userFromUrl.url ? `http://localhost:8888${ChatContext.userFromUrl.url}` : testUser)
+                    : (ChatContext.chatHeader.userProfile ? `http://localhost:8888${ChatContext.chatHeader.userProfile}` : testUser)}
                 alt=""
             />
             <div className="UserHolder flex basis-3/12 mx-[10px] flex-col pt-[5px]">

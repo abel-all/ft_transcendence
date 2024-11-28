@@ -105,11 +105,12 @@ function Chat() {
 				<Header
 					title="Chat"
 					activeSection="ChatIcon"
-					hide={!chatHeader.ChatShown ? 'hidden md:flex' : ''}
+					// hide={!chatHeader.ChatShown ? 'hidden md:flex' : ''}
+					hide={'hidden md:flex'}
 				/>
 				<chatHeaderOnClick.Provider
 					value={{ chatHeader, setChatHeader, handelChatHeader, handelChatShown, handelChatClick, lastMessage, userFromUrl, sendMessage, readyState, lastMessageUserSend, setlastMessageUserSend,}}>
-					<div className="flex indexchatHolder mt-[101px] flex-row">
+					<div className="flex indexchatHolder md:mb-0 md:mt-[80px] flex-row">
 						<ProprtesSide
 							VoidedUsername={VoidedUsername}
 							className={`ProprtesSide basis-full ${
@@ -120,7 +121,7 @@ function Chat() {
 							setVoidedUsername={setVoidedUsername}
 							className={`ChatSide ${
 								chatHeader.ChatShown == true ? ' hidden ' : ''
-							} md:flex md:basis-8/12`}
+							} md:flex w-full  mb-[76px] md:mb-0 md:basis-8/12`}
 						/>
 					</div>
 				</chatHeaderOnClick.Provider>

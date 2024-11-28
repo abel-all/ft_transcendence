@@ -47,7 +47,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="/termsofuse" element={<UserAgreement />} />
                 <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-                <Route path="/resetpassword/*" element={<ResetPassword />} />
+                <Route path="/resetpassword/:token" element={<ResetPassword />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route
                   path="/2fa/setup"

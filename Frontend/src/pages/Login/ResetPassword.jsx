@@ -3,7 +3,7 @@ import logoImg from '../../assets/imgs/logo.png'
 import Axios from 'axios'
 import LoaderOnTop from '../../components/LoaderOntop.jsx'
 import { fieldReGex } from './variables.jsx'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const ResetPassword = () => {
   const [message, setMessage] = useState('')
@@ -18,9 +18,10 @@ const ResetPassword = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const navigate = useNavigate()
 
-  const urlSearchString = location.search
-  const params = new URLSearchParams(urlSearchString)
-  const tokenValue = params.get('token')
+  // const urlSearchString = location.search
+  // const params = new URLSearchParams(urlSearchString)
+  // const tokenValue = params.get('token')
+  const { token } = useParams();
 
   const handleInputChange1 = (e) => {
     setPassword(e.currentTarget.value)
@@ -40,7 +41,7 @@ const ResetPassword = () => {
   const verifyPassword = async () => {
     setIsLoading(true)
     const paswdendpoint =
-      'http://localhost:8800/api/auth/passwordreset/' + tokenValue + '/'
+      `http://localhost:8800/api/auth/passwordreset/${token}/`
 
     if (
       fieldReGex.passwordReGex.test(password) &&
@@ -83,7 +84,7 @@ const ResetPassword = () => {
 
   return (
     <div className="container mx-auto p-[10px] sm:my-[300px] max-sm:scale-[0.8] flex justify-center items-center">
-      <div className="input-gradient px-[60px] w-full max-w-[500px] h-[600px] bg-[#7b9d18] rounded-[15px] flex flex-col justify-between">
+      <div className="input-gradient px-[60px] w-full max-w-[500px] h-[600px] sm:bg-gradient-to-t sm:from-[#161c20] sm:to-[#273036] rounded-[15px] flex flex-col justify-between">
         <div className="text-input-container flex flex-col gap-[7px]">
           <img
             className="w-[97px] self-center mb-[20px]"

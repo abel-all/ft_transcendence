@@ -15,7 +15,6 @@ function BellIcon({who, color="#eee", isNotification=true}) {
         if (window.innerWidth <= 768)
             notification.setShowNotificationMobileHandler();
         else {
-            console.log("clicked")
             notification.setShowNotificationHandler();
         }
     }

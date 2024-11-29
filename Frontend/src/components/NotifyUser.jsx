@@ -72,7 +72,6 @@ const NotifyUser = () => {
 				setMessage(`${from} has accepted your friend request`)
 				setColor('green')
 			}
-			console.log(status)
 		}
 	}
 	}, [lastMessage])

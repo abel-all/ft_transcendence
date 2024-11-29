@@ -53,7 +53,6 @@ function PersonalInformation({ SettingsData, className }) {
 
   const HandelSubmet = (e) => {
     e.preventDefault()
-    console.log("start------------");
     // flushSync(() => {
     //   gameContext.setIsPaused((prevState) => !prevState);
     // });

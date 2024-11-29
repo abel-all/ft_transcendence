@@ -4,7 +4,7 @@ import video from "../../../assets/imgs/chat/video-on.svg"
 import chevron from "../../../assets/imgs/chat/chevron-left.svg"
 import play from "../../../assets/imgs/gametable.svg"
 import { Link } from "react-router-dom"
-import testUser from '../../../assets/users/user (9).png'
+import testUser from '../../../assets/imgs/defualtImg.jpg'
 import UserProfileBlock from './UserProfileBlock';
 import { useContext, useEffect } from "react"
 import {chatHeaderOnClick} from '../Chat'

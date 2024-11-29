@@ -11,8 +11,6 @@ import notiJoinTourn from "../assets/imgs/notiJoinTourn.svg"
 import { useAuth } from '../components/Auth'
 import Alert from './Alert'
 
-// let onetime = false;
-
 const Notification = ({state}) => {
   const notification = useAuth();
   const targetRef = useRef(null)
@@ -66,7 +64,6 @@ const Notification = ({state}) => {
           const { scrollTop, scrollHeight, clientHeight } = currentRef
           if (scrollTop + clientHeight >= scrollHeight) {
             isFetching = true
-            console.log("hello from handle scroll", )
             setIsLoaded(true)
             setCounter = setTimeout(async () => {
               setIsBottomCounter((prev) => prev + 1)

@@ -6,7 +6,7 @@ import "./Chat.css";
 import { useState, createContext, useEffect, useRef } from "react";
 import chatUsers from "../../assets/ChatUsers.json";
 import axios from "axios";
-import testUser from "../../assets/users/user (9).png";
+import testUser from "../../assets/imgs/defualtImg.jpg";
 import BottomNaveBar from "../../components/BottomNavBar.jsx";
 import { useGameSettings } from "../Game/GameSettingsContext.jsx";
 
@@ -34,8 +34,6 @@ function Chat() {
 		clicked: false,
 		ChatShown: true,
 	})
-
-	// useEffect(() => {}, [VoidedUsername])
 
 	function handelSetingUser(username, userurl, userrank) {
 		setUserFromUrl((prevState) => ({
@@ -82,13 +80,11 @@ function Chat() {
 					}
 				})
 				.catch((err) => {
-					console.log(err)
 				})
 		}
 	}
 
 	useEffect(() => {
-		// handelSetingUser("","","");
 		SetFrom()
 	}, [])
 
@@ -105,7 +101,6 @@ function Chat() {
 				<Header
 					title="Chat"
 					activeSection="ChatIcon"
-					// hide={!chatHeader.ChatShown ? 'hidden md:flex' : ''}
 					hide={'hidden md:flex'}
 				/>
 				<chatHeaderOnClick.Provider

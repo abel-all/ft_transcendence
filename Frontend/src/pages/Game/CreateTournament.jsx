@@ -16,7 +16,6 @@ const TournamentCard = ({
   const gameContext = useGameSettings();
 
   useEffect(() => {
-    console.log("vals tourns : ", paramvalue)
     if (paramvalue) joinATournament()
   }, [])
 

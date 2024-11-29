@@ -18,9 +18,6 @@ const ResetPassword = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const navigate = useNavigate()
 
-  // const urlSearchString = location.search
-  // const params = new URLSearchParams(urlSearchString)
-  // const tokenValue = params.get('token')
   const { token } = useParams();
 
   const handleInputChange1 = (e) => {

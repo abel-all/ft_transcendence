@@ -36,6 +36,7 @@ export const GameSettingsContextProvider = ({ children }) => {
   const [isRandomGame, setIsRandomGame] = useState(true)
   const [socketUrl, setSocketUrl] = useState(null);
   const [Auth, setAuth] = useState(false);
+  const [messageHistory, setMessageHistory] = useState([]);
 
 
 
@@ -47,7 +48,6 @@ export const GameSettingsContextProvider = ({ children }) => {
 	  }
 	}, [Auth]);
 
-	const [messageHistory, setMessageHistory] = useState([]);
 	const { sendMessage, lastMessage, readyState, getWebSocket} = useWebSocket(socketUrl, {
     shouldReconnect: () => true,
     onOpen: ()=> console.log('WebSocket chat'),
@@ -259,7 +259,6 @@ export const GameSettingsContextProvider = ({ children }) => {
         matchDelay,
         userData,
         resetStates,
-        // resetTournamentStates,
         issetting,
         selfData,
         loading,

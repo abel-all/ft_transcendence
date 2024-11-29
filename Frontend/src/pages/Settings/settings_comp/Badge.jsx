@@ -12,7 +12,6 @@ const CheckPath = (file) => {
   const Exarray = ['jpeg', 'jpg', 'png', 'gif']
   const extantion = file.split('.')
   if (!Exarray.includes(extantion[extantion.length - 1]))
-    console.log("File type not allowed!");
   return Exarray.includes(extantion[extantion.length - 1])
 }
 

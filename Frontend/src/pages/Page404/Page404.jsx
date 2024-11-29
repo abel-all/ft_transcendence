@@ -19,7 +19,6 @@ function Page404() {
         }else {
             Canv.current--;
         }
-        console.log(Canv.current);
     }, 1000);
     
 

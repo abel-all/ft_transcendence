@@ -42,7 +42,6 @@ const TwoFaAuthVerify = ({ userId }) => {
         .catch((err) => {
           setMessage(err?.response?.data?.message)
           setIsLoading(false)
-          // navigate('/signin', { replace: true })
         })
     } else {
       setMessage('Invalid Code')

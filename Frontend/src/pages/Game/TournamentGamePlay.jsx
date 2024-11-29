@@ -79,7 +79,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const [isWinTournament, setIsWinTournament] = useState(false);
   const [isError, setIsError] = useState(null)
   const [counter, setCounter] = useState(15)
-  // const [isSentGame, setIsSentGame] = useState(true);
   const [isAddOne, setIsAddOne] = useState(true);
   const [isTimeToPlay, setIsTimeToPlay] = useState(false);
   const [ballCor, setBallCor] = useState({
@@ -95,12 +94,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8800/ws/tournament/"
   );
-  // const timeoutRefs = useRef({
-  //   timeoutOne: null,
-  //   timeoutTwo: null,
-  //   timeoutThree: null,
-  //   intervalId: null
-  // });
 
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(selfData?.profile?.badge))
@@ -109,9 +102,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
 
   useEffect(() => {
     return () => {
-      // setIsGameStart(false)
-      // setIsAddOne(false)
-      // setIsTimeToPlay(false);
       clearTimeout(timeoutOne)
       clearTimeout(timeoutTwo)
       clearTimeout(timeoutThree)
@@ -162,8 +152,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         sendNotification(data)
         break;
       case "match_detail":
-        console.log("match details : ", data)
-        // setIsSentGame(true)
         clearTimeout(timeoutOne)
         clearInterval(intervalIdOne)
         setIsTimeToPlay(true);
@@ -189,15 +177,12 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         }, 1000)
 
         timeoutOne = setTimeout(() => {
-          // if (isSentGame) {
-            console.log("start match sent successfuly")
             sendMessage(
               JSON.stringify({
                 action: "start_game",
                 match_id: data?.match?.id,
               })
             );
-          // }
           setIsGame(true);
           clearInterval(intervalIdOne)
           setCounter(15)
@@ -213,16 +198,12 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         handlePaddleUpdate(data);
         break;
       case "end_game":
-        console.log("end game : ", data)
-        // setIsSentGame(false)
         setIsTimeToPlay(false);
         setEndMatchWinner(data?.winner);
         setEndMatchPlayerNumber(playerNumber);
         setEndMatchScore(data?.score);
         sendMessage(JSON.stringify({ action: "stop_game" }));
         isIsGameEnd(true);
-        // setIsGame(false);
-        // setIsGameStart(true);
         setPlayer1Score(0);
         setPlayer2Score(0);
         setPaddleCor(canvasWidth / 2 - playerWidth / 2);
@@ -237,7 +218,6 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           gameContext.setHandler("endgame", data);
           timeoutThree = setTimeout(() => {
             isIsGameEnd(false);
-            // setIsGameStart(false);
             setIsGame(false);
           }, 5000);
         }
@@ -245,10 +225,8 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       case "already_connected":
         break;
       case "update_winner":
-        console.log("update winner : ", data)
         gameContext.setHandler("participantsData", data?.winners);
         if (data?.round === "completed") {
-          console.log("hello from winner!")
           setIsWinTournament(true);
           sendMessage(JSON.stringify({ action: "disconnect" }));
         }

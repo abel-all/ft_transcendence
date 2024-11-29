@@ -2,6 +2,7 @@ import { EmptyMatchCard } from "./TournamentMatch.jsx"
 import { useGameSettings } from './GameSettingsContext'
 import { TournamentMatchCard } from './TournamentMatch.jsx';
 import defualtImg from "../../assets/imgs/defualtImg.jpg"
+import badgeConverter  from "../../hooks/badgeConverter"
 
 const SemiFinal = () => {
 
@@ -16,13 +17,13 @@ const SemiFinal = () => {
                         rank={gameContext?.winners[0]?.profile?.rank}
                         userImg={gameContext?.winners[0]?.profile?.picture ? `http://localhost:8888${gameContext?.winners[0]?.profile?.picture}` : defualtImg}
                         userName={gameContext?.winners[0]?.alias}
-                        gradeColor={gameContext?.winners[0]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                        gradeColor={badgeConverter(gameContext?.winners[0]?.profile?.badge)}
                     /> : <EmptyMatchCard />}
                     {gameContext?.winners.length > 1 ? <TournamentMatchCard
                         rank={gameContext?.winners[1]?.profile?.rank}
                         userImg={gameContext?.winners[1]?.profile?.picture ? `http://localhost:8888${gameContext?.winners[1]?.profile?.picture}` : defualtImg}
                         userName={gameContext?.winners[1]?.alias}
-                        gradeColor={gameContext?.winners[1]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                        gradeColor={badgeConverter(gameContext?.winners[1]?.profile?.badge)}
                     /> : <EmptyMatchCard />}
                 </div>
             </div>

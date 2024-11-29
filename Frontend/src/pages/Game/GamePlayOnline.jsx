@@ -175,6 +175,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
     const data = JSON.parse(lastMessage.data);
     switch (data?.type) {
       case "match_found":
+        console.log("match found : ", data)
         if (!oneTime.current) {
           sendMessage(
             JSON.stringify({ action: "match_id", match_id: data?.match_id })
@@ -192,6 +193,7 @@ const GamePlayOnline = ({ mapColor, ballColor={} }) => {
         handlePaddleUpdate(data);
         break;
       case "end_game":
+        console.log("end game : ", data)
         handleEndGame(data);
         break;
       case "already_connected":

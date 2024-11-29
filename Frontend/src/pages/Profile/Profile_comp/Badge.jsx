@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import UserIcon from '../../../assets/imgs/UserIcon.png'
+import UserIcon from '../../../assets/imgs/defualtImg.jpg'
 
 
 // Bronze (0 to 200) -> (#CD7F32)

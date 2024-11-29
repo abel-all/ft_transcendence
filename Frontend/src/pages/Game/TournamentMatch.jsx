@@ -2,6 +2,7 @@ import rankIcon from "../../assets/imgs/rank.svg"
 import defualtImg from "../../assets/imgs/defualtImg.jpg"
 import { useGameSettings } from './GameSettingsContext'
 import "./css/index.css"
+import badgeConverter  from "../../hooks/badgeConverter"
 
 const TournamentMatch = () => {
     const gameContext = useGameSettings();
@@ -16,13 +17,13 @@ const TournamentMatch = () => {
                             rank={gameContext?.participants[0]?.profile?.rank}
                             userImg={gameContext?.participants[0]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[0]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[0]?.alias}
-                            gradeColor={gameContext?.participants[0]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                            gradeColor={badgeConverter(gameContext?.participants[0]?.profile?.badge)}
                         />
                         {gameContext?.participants.length > 1 ? <TournamentMatchCard
                             rank={gameContext?.participants[1]?.profile?.rank}
                             userImg={gameContext?.participants[1]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[1]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[1]?.alias}
-                            gradeColor={gameContext?.participants[1]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                            gradeColor={badgeConverter(gameContext?.participants[1]?.profile?.badge)}
                         /> : <EmptyMatchCard />}
                     </div>
                 </div>
@@ -33,13 +34,13 @@ const TournamentMatch = () => {
                             rank={gameContext?.participants[2]?.profile?.rank}
                             userImg={gameContext?.participants[2]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[2]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[2]?.alias}
-                            gradeColor={gameContext?.participants[2]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                            gradeColor={badgeConverter(gameContext?.participants[2]?.profile?.badge)}
                         /> : <EmptyMatchCard />}
                         {gameContext?.participants.length > 3 ? <TournamentMatchCard
                             rank={gameContext?.participants[3]?.profile?.rank}
                             userImg={gameContext?.participants[3]?.profile?.picture ? `http://localhost:8888${gameContext?.participants[3]?.profile?.picture}` : defualtImg}
                             userName={gameContext?.participants[3]?.alias}
-                            gradeColor={gameContext?.participants[3]?.profile?.badge === "BRONZE" ? "bg-[#CD7F32]" : "bg-[#fff6f9]"}
+                            gradeColor={badgeConverter(gameContext?.participants[3]?.profile?.badge)}
                         /> : <EmptyMatchCard />}
                     </div>
                 </div>

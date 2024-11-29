@@ -1,4 +1,4 @@
-import profilePictute from '../../../assets/imgs/UserIcon.png'
+import profilePictute from '../../../assets/imgs/defualtImg.jpg'
 
 
 function InboxUsers({isActive, userProfile, lastMessage, nickname, total_messages, lastMessageTime}){

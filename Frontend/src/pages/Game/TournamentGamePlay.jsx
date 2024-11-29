@@ -53,6 +53,10 @@ const ball = {
   color: "#FFFFFF",
 };
 
+let timeoutOne
+let timeoutTwo
+let timeoutThree
+let intervalIdOne
 
 const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
   const canvasRef = useRef(null);
@@ -83,20 +87,20 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     y: canvasHeight / 2,
   });
   const [paddleCor, setPaddleCor] = useState(canvasWidth / 2 - playerWidth / 2);
-  const timeoutRefs = useRef({
-    timeoutOne: null,
-    timeoutTwo: null,
-    timeoutThree: null,
-    intervalId: null
-  });
   const [isWaitingMsg, setIsWaitingMsg] = useState(false);
   const [isGame, setIsGame] = useState(false);
   const [player1GradientColor, setPlayer1GradientColor] = useState(toBadgeConverter(selfData?.profile?.badge))
   const [player2GradientColor, setPlayer2GradientColor] = useState(toBadgeConverter(playerData?.profile?.badge))
-
+  
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8800/ws/tournament/"
   );
+  // const timeoutRefs = useRef({
+  //   timeoutOne: null,
+  //   timeoutTwo: null,
+  //   timeoutThree: null,
+  //   intervalId: null
+  // });
 
   useEffect(() => {
     setPlayer1GradientColor(toBadgeConverter(selfData?.profile?.badge))
@@ -108,10 +112,10 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       // setIsGameStart(false)
       // setIsAddOne(false)
       // setIsTimeToPlay(false);
-      clearTimeout(timeoutRefs.timeOutOne)
-      clearTimeout(timeoutRefs.timeOutTwo)
-      clearTimeout(timeoutRefs.timeOutThree)
-      clearInterval(timeoutRefs.intervalID)
+      clearTimeout(timeoutOne)
+      clearTimeout(timeoutTwo)
+      clearTimeout(timeoutThree)
+      clearInterval(intervalIdOne)
     }
   }, [])
 
@@ -160,6 +164,8 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
       case "match_detail":
         console.log("match details : ", data)
         // setIsSentGame(true)
+        clearTimeout(timeoutOne)
+        clearInterval(intervalIdOne)
         setIsTimeToPlay(true);
         setIsAddOne(false)
         setPlayerNumber(data?.player_number);
@@ -178,11 +184,11 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
           setSelfData(data?.match?.player2);
         }
 
-        timeoutRefs.intervalID = setInterval(() => {
+        intervalIdOne = setInterval(() => {
           setCounter(prev => prev - 1);
         }, 1000)
 
-        timeoutRefs.timeOutOne = setTimeout(() => {
+        timeoutOne = setTimeout(() => {
           // if (isSentGame) {
             console.log("start match sent successfuly")
             sendMessage(
@@ -193,7 +199,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
             );
           // }
           setIsGame(true);
-          clearInterval(timeoutRefs.intervalID)
+          clearInterval(intervalIdOne)
           setCounter(15)
         }, 15000);
         break;
@@ -223,13 +229,13 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
         if (data?.loser === playerNumber) {
           sendMessage(JSON.stringify({ action: "disconnect" }));
           gameContext.resetStates()
-          timeoutRefs.timeOutTwo = setTimeout(() => {
+          timeoutTwo = setTimeout(() => {
             navigate("/game", { replace: true });
           }, 5000);
         } else {
           fetchSettings(data);
           gameContext.setHandler("endgame", data);
-          timeoutRefs.timeOutThree = setTimeout(() => {
+          timeoutThree = setTimeout(() => {
             isIsGameEnd(false);
             // setIsGameStart(false);
             setIsGame(false);
@@ -331,7 +337,7 @@ const TournamentGamePlay = ({ mapColor, ballColor={} }) => {
     window.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      !isMobileVersion && window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
       clearInterval(intervalId);

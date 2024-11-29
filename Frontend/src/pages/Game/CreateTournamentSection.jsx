@@ -47,7 +47,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
           else if (err.response?.status === 401) {
             navigate("/signin", { replace: true })
           }
-          setMessage(err?.response?.data.message)
+          setMessage(err?.response?.data.error || "Invalid Tournament name")
           setIsLoading(false)
         })
     }
@@ -98,7 +98,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
             navigate("/signin", { replace: true })
           }
           setIsLoading(false)
-          setMessage(err?.response?.data?.message)
+          setMessage(err?.response?.data?.error || "Invalid name")
         })
     } else {
       if (!usernameReGex.test(name))
@@ -134,7 +134,7 @@ const CreateTournamentSection = ({ title, callToAction, buttonColor, params }) =
             navigate("/signin", { replace: true })
           }
           setIsLoading(false)
-          setMessage(err?.response?.data.message)
+          setMessage(err?.response?.data?.error || "Invalid alias")
         })
     } else {
       if (!usernameReGex.test(name))

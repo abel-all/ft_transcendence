@@ -1,4 +1,4 @@
-import UserIcon from '../../../assets/imgs/UserIcon.png'
+import UserIcon from '../../../assets/imgs/defualtImg.jpg'
 import Edit from '../../../assets/imgs/edit.svg'
 import { useEffect, useState } from 'react'
 import upload from '../../../assets/imgs/upload.svg'

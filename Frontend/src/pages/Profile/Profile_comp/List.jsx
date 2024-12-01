@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import friendlistTest from '../../../assets/friendlist.json'
 import Friend from '../../../components/Friend'
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth';
 
 function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
   const [friendlist, setfriendlist] = useState(AlreadyDated);
@@ -15,6 +16,7 @@ function List({ reason, EndPoint, AlreadyDated, isfriend } = data) {
           )
           setfriendlist(res.data)
         } catch (error) {
+          if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
         }
       }
       fetchmydata()

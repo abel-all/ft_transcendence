@@ -5,6 +5,7 @@ import axios from 'axios'
 import Alert from '../../../components/Alert'
 import { useGameSettings } from '../../Game/GameSettingsContext'
 import { flushSync } from 'react-dom';
+import { useAuth } from '../../../components/Auth'
 
 
 function PersonalInformation({ SettingsData, className }) {
@@ -75,6 +76,7 @@ function PersonalInformation({ SettingsData, className }) {
               })
               .catch((err) => {
                 setNotificationAllert(prev => {return {message:"An error occurred while updating your personal information. Please try again later.", color:"red"}});
+                if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
               })
             }
           }

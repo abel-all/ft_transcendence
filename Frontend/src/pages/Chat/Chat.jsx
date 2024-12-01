@@ -9,7 +9,7 @@ import axios from "axios";
 import testUser from "../../assets/imgs/defualtImg.jpg";
 import BottomNaveBar from "../../components/BottomNavBar.jsx";
 import { useGameSettings } from "../Game/GameSettingsContext.jsx";
-
+import { useAuth } from "../../components/Auth.jsx";
 
 const chatHeaderOnClick = createContext();
 
@@ -80,6 +80,7 @@ function Chat() {
 					}
 				})
 				.catch((err) => {
+					if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
 				})
 		}
 	}

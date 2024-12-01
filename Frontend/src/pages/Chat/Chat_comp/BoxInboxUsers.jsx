@@ -7,6 +7,9 @@ import chatUsers from '../../../assets/ChatUsers.json'
 import { chatHeaderOnClick } from '../Chat'
 import { useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth'
+
+
 
 function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 	const ChatHeader = useContext(chatHeaderOnClick)
@@ -17,6 +20,8 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 			axios.get('http://localhost:8800/api/chat/chats/').then((res) => {
 				setUserList(res.data)
 				setSorted(res.data)
+			}).catch(err => {
+				if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
 			})
 			clearTimeout(times)
 		}, 300)
@@ -34,6 +39,8 @@ function BoxInboxUsers({ lastMessage, VoidedUsername, lMUS }) {
 				axios.get('http://localhost:8800/api/chat/chats/').then((res) => {
 					setUserList(res.data)
 					setSorted(res.data)
+				}).catch(err => {
+					if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
 				})
 				clearTimeout(times)
 			}, 1000)

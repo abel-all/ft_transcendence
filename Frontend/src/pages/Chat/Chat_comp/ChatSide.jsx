@@ -9,6 +9,7 @@ import { flushSync } from 'react-dom'
 import TimeHM from '../../../components/TimeHM'
 import { ReadyState } from 'react-use-websocket'
 import Alert from '../../../components/Alert'
+import { useAuth } from '../../../components/Auth'
 
 
 const sendMessageContext = createContext()
@@ -103,7 +104,9 @@ function ChatSide({ setVoidedUsername, className }) {
 							return true
 						})
 					})
-					.catch((error) => {})
+					.catch((error) => {
+						if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
+					})
 			}
 		}
 

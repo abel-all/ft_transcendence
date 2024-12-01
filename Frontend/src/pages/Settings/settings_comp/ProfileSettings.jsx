@@ -5,6 +5,7 @@ import PersonalInformation from './PersonalInformation'
 import AddressInformation from './AddressInformation'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth'
 
 function ProfileSettings(className) {
   const [SettingsData, setSettingsData] = useState([])
@@ -16,6 +17,7 @@ function ProfileSettings(className) {
         setSettingsData(res.data)
       })
       .catch((err) => {
+        if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
       })
   }, [])
 

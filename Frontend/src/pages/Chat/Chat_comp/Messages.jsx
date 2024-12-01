@@ -3,6 +3,7 @@ import { sendMessageContext } from './ChatSide'
 import GetChatFromDataBase from '../../../components/GetChatFromDataBase'
 import StoreMessages from '../../../components/StoreMessages'
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth'
 
 function Messages({ setMessages, username, className, toUser }) {
 	const messageContext = useContext(sendMessageContext)
@@ -35,7 +36,9 @@ function Messages({ setMessages, username, className, toUser }) {
 			.then((res) => {
 				setWhoAmI(res.data.username)
 			})
-			.catch((error) => {})
+			.catch((error) => {
+				if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
+			})
 		}
 		fetchUsername();
 
@@ -87,6 +90,7 @@ function Messages({ setMessages, username, className, toUser }) {
 				}, 0)
 			} catch (error) {
 				setIsLoading(false)
+				if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
 			}
 			}
 		}

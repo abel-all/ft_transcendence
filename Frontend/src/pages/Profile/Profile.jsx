@@ -10,7 +10,7 @@ import axios from 'axios'
 import './Profile.css'
 import Alert from '../../components/Alert'
 import BottomNaveBar from '../../components/BottomNavBar.jsx'
-
+import { useAuth } from '../../components/Auth.jsx'
 
 
 const GetUserFromUrl = () => {
@@ -36,13 +36,15 @@ function Profile() {
   
   useEffect(() => {
     let url = UrlUsername
-      ? `http://localhost:8800/api/profile/data/${UrlUsername}/`
-      : 'http://localhost:8800/api/profile/data/'
+    ? `http://localhost:8800/api/profile/data/${UrlUsername}/`
+    : 'http://localhost:8800/api/profile/data/'
     const fetchmydata = async () => {
       try {
         const res = await axios.get(`${url}`, {})
         handelData(res.data)
-      } catch (error) {}
+      } catch (error) {
+        if (error.response?.status === 403) {const auth = useAuth(); await auth.RefreshToken()}
+      }
     }
     fetchmydata()
   }, [])

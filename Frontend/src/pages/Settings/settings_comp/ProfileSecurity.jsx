@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../../../components/Auth';
 
 
 
@@ -89,6 +90,7 @@ function ProfileSecurity({ className, token, setShown }) {
               clearTimeout(times)
             }, 1500)
           }
+          if (ers.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
         })
     }
   }, [])
@@ -132,6 +134,7 @@ function ProfileSecurity({ className, token, setShown }) {
               clearTimeout(times)
             }, 2000)
           }
+        if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
         })
     }
   }
@@ -265,7 +268,9 @@ function ProfileSecurity({ className, token, setShown }) {
                       axios
                         .get('http://localhost:8800/api/auth/deleteaccount/')
                         .then((res) => {})
-                        .catch((ers) => {})
+                        .catch((ers) => {
+                          if (ers.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
+                        })
                     }
                   }}
                 >

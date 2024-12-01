@@ -9,7 +9,7 @@ import UserProfileBlock from './UserProfileBlock';
 import { useContext, useEffect } from "react"
 import {chatHeaderOnClick} from '../Chat'
 import axios from 'axios';
-
+import { useAuth } from '../../../components/Auth';
 
 function ChatHeader() {
     const [display, setDisplay] = useState(false);
@@ -32,7 +32,7 @@ function ChatHeader() {
           .then((response) => {
           })
           .catch((err) => {
-            console.error(err);
+            if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
           })
     }
     

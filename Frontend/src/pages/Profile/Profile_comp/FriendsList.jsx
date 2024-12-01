@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import FriendListCurrent from './FriendListCurrent'
 import FriendListHost from './FriendListHost'
+import { useAuth } from '../../../components/Auth'
 
 function FriendsList({ className, UrlUsername }) {
   const [toggle, setToggle] = useState(false)
@@ -31,6 +32,7 @@ function FriendsList({ className, UrlUsername }) {
             setFriendlistFromSearch(res.data)
           })
           .catch((err) => {
+            if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
           })
     }, 500)
   }

@@ -11,6 +11,8 @@ import unblock from '../assets/imgs/unblock.svg'
 import panding from '../assets/imgs/panding.svg'
 import axios from 'axios'
 import Alert from './Alert'
+import { useAuth } from './Auth'
+
 
 function Friend(Data) {
   const [isTrue, setIsTrue] = useState(false)
@@ -39,12 +41,14 @@ function Friend(Data) {
       .then((response) => {
       })
       .catch((err) => {
-        console.error(err);
+        // import { useAuth } from '../components/Auth'
+        if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
+        if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
       })
-}
-  const AcceptRequest = (user, statusOfReq) => {
-    if (Data.reason == 'Invetations') {
-      axios
+    }
+    const AcceptRequest = (user, statusOfReq) => {
+      if (Data.reason == 'Invetations') {
+        axios
         .post('http://localhost:8800/api/profile/handle-friendship-request/', {
           username: user,
           status: statusOfReq,
@@ -52,7 +56,9 @@ function Friend(Data) {
         .then((respons) => {
           Data.setfriendlist(Data.friendlist.filter(obj => obj.username != user));
         })
-        .catch((error) => {})
+        .catch((error) => {
+          if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
+        })
     }
   }
 
@@ -69,6 +75,7 @@ function Friend(Data) {
         if (error.response) {
           if (error.response.status == 403) {
             handelRender(error.response.data.message, 'red')
+            if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
           }
         }
       })

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth'
 
 function Statistics({ className, UrlUsername }) {
   const [Status, setStatus] = useState({})
@@ -20,6 +21,7 @@ function Statistics({ className, UrlUsername }) {
         )
         handelStat(res.data)
       } catch (error) {
+        if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
       }
     }
     fetchmydata()

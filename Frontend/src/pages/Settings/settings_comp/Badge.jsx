@@ -5,13 +5,13 @@ import upload from '../../../assets/imgs/upload.svg'
 import userbg from '../../../assets/imgs/userbg.png'
 import axios from 'axios'
 import Alert from '../../../components/Alert'
+import { useAuth } from '../../../components/Auth'
 
 
 
 const CheckPath = (file) => {
   const Exarray = ['jpeg', 'jpg', 'png', 'gif']
   const extantion = file.split('.')
-  if (!Exarray.includes(extantion[extantion.length - 1]))
   return Exarray.includes(extantion[extantion.length - 1])
 }
 
@@ -31,8 +31,14 @@ function Badge({ SettingsData }) {
   function HandelSave(e) {
     e.preventDefault();
     if (save) {
-      imagefile && handelUpload(imagefile, 'picture')
-      backgroundfile && handelUpload(backgroundfile, 'background_picture')
+      const timeer = setTimeout(() => {
+        imagefile && handelUpload(imagefile, 'picture')
+        clearTimeout(timeer);
+      }, 200)
+      const times = setTimeout(() => {
+        backgroundfile && handelUpload(backgroundfile, 'background_picture')
+        clearTimeout(times);
+      }, 200)
     }
     setSave(!save)
   }
@@ -80,6 +86,7 @@ function Badge({ SettingsData }) {
 				setNotificationAllert(prev => {return {message:`Your ${endPoint} has been successfully uploaded.`, color:"green"}});
       } catch (Error) {
 				setNotificationAllert(prev => {return {message:`An error occurred while uploading your ${endPoint}. Please try again later.`, color:"red"}});
+        if (Error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
       }
     }
   }
@@ -103,6 +110,7 @@ function Badge({ SettingsData }) {
         setBadge(response.data.badge)
       })
       .catch((err) => {
+        if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
       })
   }, [])
 

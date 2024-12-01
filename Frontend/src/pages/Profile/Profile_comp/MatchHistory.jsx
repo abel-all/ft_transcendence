@@ -1,6 +1,7 @@
 import MatchHistoryfiled from '../../../components/MatchHistoryfiled'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth';
 
 function MatchHistory({ username, className , UrlUsername}) {
 
@@ -15,6 +16,7 @@ function MatchHistory({ username, className , UrlUsername}) {
                 .then((res) => {
                     setMatchHistory(res.data);
                 }).catch(err => {
+                    if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
                 })
         }
     }, [username, UrlUsername]);

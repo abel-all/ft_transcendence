@@ -3,7 +3,7 @@ import profile from "../../../assets/imgs/chat/user-profile-01.svg"
 import block from "../../../assets/imgs/chat/user-profile-x.svg"
 import { Link } from "react-router-dom"
 import axios from "axios";
-
+import {useAuth} from '../../../components/Auth'
 
 function UserProfileBlock(data) {
     const [blocked, setBlocked] = useState(false);
@@ -28,6 +28,7 @@ function UserProfileBlock(data) {
                                 setBlocked(prevState => !prevState);
                             }).catch(error => {
                                 setBlocked(prev => prev);
+                                if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
                             })
                         }}
                         className="w-[150px]  p-[10px] rounded-b-lg flex flex-row pl-[20px] bg-[#BFBFBF] blockUser">

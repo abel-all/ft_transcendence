@@ -39,9 +39,9 @@ const RequireAuth = ({ children }) => {
                 if (err.response?.status === 403) {
                     await auth.RefreshToken()
                 }
-                else if (err.response?.status === 401)
+                // else if (err.response?.status === 401)
+                    setIsLoading(false)
                     navigate("/signin", { replace: true });
-                setIsLoading(false)
             })
         }
         checkAuthAndFetchUserData()

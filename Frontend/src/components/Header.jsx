@@ -22,6 +22,7 @@ function Header(props) {
       })
       .catch((err) => {
         setIsError(err?.response?.data?.message)
+        if (err.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
       })
   }
 

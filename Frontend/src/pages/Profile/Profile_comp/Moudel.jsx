@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuth } from '../../../components/Auth';
 
 function Buttn({ toggles, rsn, user, content, friendlist, setfriendlist}) {
   const handelClick = () => {
@@ -11,6 +12,7 @@ function Buttn({ toggles, rsn, user, content, friendlist, setfriendlist}) {
           setfriendlist(friendlist.filter(obj => obj.username != user));
         })
         .catch((error) => {
+          if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
         })
       } else if (rsn == 'Unblock') {
         axios
@@ -21,6 +23,7 @@ function Buttn({ toggles, rsn, user, content, friendlist, setfriendlist}) {
           setfriendlist(friendlist.filter(obj => obj.username != user));
         })
         .catch((error) => {
+          if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
         })
       } else if (rsn == 'undo') {
         axios
@@ -31,6 +34,7 @@ function Buttn({ toggles, rsn, user, content, friendlist, setfriendlist}) {
           setfriendlist(friendlist.filter(obj => obj.username != user));
         })
         .catch((error) => {
+          if (error.response?.status === 403) {const auth = useAuth(); auth.RefreshToken()}
         })
     }
     toggles()

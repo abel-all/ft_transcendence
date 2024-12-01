@@ -144,7 +144,7 @@ const GamePlay = ({levelOfBot = 0, ballColor={}, mapColor, score}) => {
                 ball.velocityX *= -1;
 
             // ball collision with players:
-            if (ball.y + ball.radius >= paddleOne.y ) {
+            if (ball.y + ball.radius >= paddleOne.y) {
                 if (ball.x > paddleOne.x && ball.x < paddleOne.x + paddleOne.width) {
                     ball.y = paddleOne.y - ball.radius;
                     ball.velocityY *= -1;

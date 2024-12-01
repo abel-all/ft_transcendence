@@ -11,7 +11,6 @@ import Alert from '../../../components/Alert'
 const CheckPath = (file) => {
   const Exarray = ['jpeg', 'jpg', 'png', 'gif']
   const extantion = file.split('.')
-  if (!Exarray.includes(extantion[extantion.length - 1]))
   return Exarray.includes(extantion[extantion.length - 1])
 }
 
